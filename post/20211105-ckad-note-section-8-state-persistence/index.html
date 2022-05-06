@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>CKAD Note Section 8 State Persistence - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="105. Volumes hostPath 這個範例 mount worker-node 的 /data 進 pod 裡面，並且 mapping 到 container 裡面的 /test-pd。 實際上我們並不會這樣做，因為 worker-node 之間的資料並沒辦法同步，一般來說會使用 shared storage 例" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.98.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20211105-ckad-note-section-8-state-persistence/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="CKAD Note Section 8 State Persistence" />
+<meta property="og:description" content="105. Volumes hostPath 這個範例 mount worker-node 的 /data 進 pod 裡面，並且 mapping 到 container 裡面的 /test-pd。 實際上我們並不會這樣做，因為 worker-node 之間的資料並沒辦法同步，一般來說會使用 shared storage 例" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.xxzk.me/post/20211105-ckad-note-section-8-state-persistence/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-11-05T20:54:44+00:00" />
+<meta property="article:modified_time" content="2021-11-05T20:54:44+00:00" />
+
+<meta itemprop="name" content="CKAD Note Section 8 State Persistence">
+<meta itemprop="description" content="105. Volumes hostPath 這個範例 mount worker-node 的 /data 進 pod 裡面，並且 mapping 到 container 裡面的 /test-pd。 實際上我們並不會這樣做，因為 worker-node 之間的資料並沒辦法同步，一般來說會使用 shared storage 例"><meta itemprop="datePublished" content="2021-11-05T20:54:44+00:00" />
+<meta itemprop="dateModified" content="2021-11-05T20:54:44+00:00" />
+<meta itemprop="wordCount" content="1806">
+<meta itemprop="keywords" content="CKAD,Kubernetes," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="CKAD Note Section 8 State Persistence"/>
+<meta name="twitter:description" content="105. Volumes hostPath 這個範例 mount worker-node 的 /data 進 pod 裡面，並且 mapping 到 container 裡面的 /test-pd。 實際上我們並不會這樣做，因為 worker-node 之間的資料並沒辦法同步，一般來說會使用 shared storage 例"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">CKAD Note Section 8 State Persistence</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-11-05 </span>
+        <div class="post-category">
+            <a href="/categories/ckad-note/"> CKAD-Note </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#105-volumes">105. Volumes</a>
+          <ul>
+            <li><a href="#hostpath">hostPath</a></li>
+          </ul>
+        </li>
+        <li><a href="#106-persistent-volumes">106. Persistent Volumes</a></li>
+        <li><a href="#107-persistent-volume-claims">107. Persistent Volume Claims</a></li>
+        <li><a href="#ckad-不考-112-storage-classes">(CKAD 不考) 112. Storage Classes</a></li>
+        <li><a href="#ckad-不考-114-why-stateful-sets">(CKAD 不考) 114. Why Stateful Sets?</a>
+          <ul>
+            <li><a href="#deployment">Deployment</a></li>
+            <li><a href="#stateful-sets">Stateful Sets</a></li>
+          </ul>
+        </li>
+        <li><a href="#ckad-不考-115-stateful-sets-introduction">(CKAD 不考) 115. Stateful Sets Introduction</a></li>
+        <li><a href="#ckad-不考-116-headless-services">(CKAD 不考) 116. Headless Services</a></li>
+        <li><a href="#ckad-不考-117-storage-in-statefulsets">(CKAD 不考) 117. Storage in StatefulSets</a>
+          <ul>
+            <li><a href="#問問筆記">問問筆記</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="105-volumes">105. Volumes</h2>
+<br>
+<h3 id="hostpath">hostPath</h3>
+<br>
+<p>這個範例 mount worker-node 的 <code>/data</code> 進 <code>pod</code> 裡面，並且 mapping 到 container 裡面的 <code>/test-pd</code>。<br>
+實際上我們並不會這樣做，因為 worker-node 之間的資料並沒辦法同步，一般來說會使用 shared storage 例如: NFS, ClusterFS, Ceph, AWS EBS, AzureDisk &hellip;.</p>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Pod</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">test-pd</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">containers</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">k8s.gcr.io/test-webserver</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">test-container</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">volumeMounts</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l">/test-pd</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">test-volume</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">test-volume</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">hostPath</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="c"># directory location on host</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l">/data</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="c"># this field is optional</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">Directory</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<h2 id="106-persistent-volumes">106. Persistent Volumes</h2>
+<br>
+<p>Persistent Volumes 將 Storage (Disk) 抽象化，供上層 PVC (Persistent Volume Claim) 使用。並且擁有自己的 lifecycle (<code>pv.spec.persistentVolumeReclaimPolicy</code>)</p>
+<br>
+<p><img src="pv_and_pvc_relationship_diagram.jpg" alt="pv_and_pvc_relationship_diagram"></p>
+<p>▲ Persistent Volume 與 PVC 關係示意圖。 <a href="https://medium.com/devops-mojo/kubernetes-storage-options-overview-persistent-volumes-pv-claims-pvc-and-storageclass-sc-k8s-storage-df71ca0fccc3">圖片來源</a></p>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">PersistentVolume</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">pv-vol1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">capacity</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l">1Gi</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">accessModes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="l">ReadWriteOnce</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">hostPath</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l">/tmp/data</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>一樣要再講一次， <strong>hostPath 測試環境 Only (local filesystem)</strong></p>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl apply -f pv.yml
+</span></span><span class="line"><span class="cl">kubectl get persistentvolume
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<h2 id="107-persistent-volume-claims">107. Persistent Volume Claims</h2>
+<br>
+<ul>
+<li><strong><span style='color:red'>Persistent Volume 與 Persistent Volume Claim 是 1:1 的關係。</span></strong></li>
+<li>PV 與 PVC 在 Kubernetes namespace 當中是不同的物件。</li>
+<li>PVC 透過 YAML 定義的 <code>Sufficient Capacity</code>, <code>Access Modes</code>, <code>Volume Modes</code>, <code>Storage Class</code> 去尋找合適的 PV 對應 (配對成功!)。</li>
+<li>(承上) 或者增加 <code>selector</code> 直接給定指定 PV。</li>
+</ul>
+<br>
+<p><img src="pvc_1.jpg" alt="pvc_1"></p>
+<p>▲ 可能的情形就是 PVC matching 到的 PV 比 PVC 定義所需的空間還大，<strong><span style='color:red'>由於 1:1 的關係，剩餘的空間沒辦法給其它 PVC 使用</span></strong></p>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">PersistentVolumeClaim</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">myclaim</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">accessModes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="l">ReadWriteOnce</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">resources</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">requests</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l">500Mi</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl apply -f pvc.yml
+</span></span><span class="line"><span class="cl">kubectl get persistentvolumeclaims
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p><img src="pvc_2.jpg" alt="pvc_2"></p>
+<p>▲ 驗證即使沒有使用 <code>selector</code> ，條件配對成功還是可以的 (<code>STATUS == Bound</code>)</p>
+<br>
+<p><code>pv.spec.persistentVolumeReclaimPolicy</code> 定義當 PV 不被 PVC 使用時，該怎麼被處理。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">PersistentVolume</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">pv0003</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">capacity</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l">5Gi</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">volumeMode</span><span class="p">:</span><span class="w"> </span><span class="l">Filesystem</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">accessModes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="l">ReadWriteOnce</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">persistentVolumeReclaimPolicy</span><span class="p">:</span><span class="w"> </span><span class="l">Recycle</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">storageClassName</span><span class="p">:</span><span class="w"> </span><span class="l">slow</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">mountOptions</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="l">hard</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="l">nfsvers=4.1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">nfs</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l">/tmp</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">server</span><span class="p">:</span><span class="w"> </span><span class="m">172.17.0.2</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<ul>
+<li>(Default) Retain: 除非被 Administrator 刪除，不然保留 <strong><span style='color:red'>而且不被其它 PVC 使用</span></strong>。</li>
+<li>【Deprecated】Recycle: 刪除 PV 底下的資料 (<code>rm -rf /thevolume/*</code>) <strong><span style='color:blue'>可以被其它 PVC 使用</span></strong>。</li>
+<li>Delete: 直接刪除 PV。</li>
+</ul>
+<p>recycle 已被 deprecated 的 Announcement: <a href="https://groups.google.com/g/kubernetes-dev/c/uexugCza84I">Re: Persistent Volume Recycler Deprecation Annoucement</a></p>
+<br>
+<p>PVC 宣告完之後 <code>pod</code> 或者其它 K8s Object 要怎麼使用呢? 這邊有範例:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="w">    </span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Pod</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">mypod</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">containers</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">myfrontend</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">nginx</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">volumeMounts</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;/var/www/html&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">mypd</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">mypd</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">claimName</span><span class="p">:</span><span class="w"> </span><span class="l">myclaim</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<hr>
+<h2 id="ckad-不考-112-storage-classes">(CKAD 不考) 112. Storage Classes</h2>
+<br>
+<p>每次創 PVC 之前都要先創建 PV 很煩、很不自動，怎麼辦 ? <strong><span style='color:red'>Storage Classes</span></strong> 可以讓你在建立 PVC 時順便幫你建好 PV~<br>
+vSphere, ProxmoxVE 的 provisor 都有內建在 K8s 裡面!!</p>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">storage.k8s.io/v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">StorageClass</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">vsphere</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">provisioner</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes.io/vsphere-volume</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">parameters</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">diskformat</span><span class="p">:</span><span class="w"> </span><span class="l">zeroedthick</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>▲ vSphere 的 <code>Storage Class</code></p>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">PersistentVolumeClaim</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">my-vsphere-claim</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">accessModes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="l">ReadWriteOnce</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">resources</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">requests</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l">8Gi</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">storageClassName</span><span class="p">:</span><span class="w"> </span><span class="l">vsphere</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>▲ 在建立 PVC 的時候加入 <code>storageClassName: vsphere</code> 就可以使用囉!</p>
+<br>
+<h2 id="ckad-不考-114-why-stateful-sets">(CKAD 不考) 114. Why Stateful Sets?</h2>
+<br>
+<p>作者用 MySQL DB 做 HA 架構來解釋為什麼需要 <code>StatefulSet</code>，總共三台 instance (master and two slaves) 分別有這些要求:</p>
+<ol>
+<li>Setup master first and then slaves. (第一個被 部屬/設定 的必須是 master，接著 slave)</li>
+<li>Clone data from master to <code>slave-1</code>. (<code>slave-1</code> 必須從 master 拉資料)</li>
+<li>Enable continouous replication from master to <code>slave-1</code>. (持續從 master sync data 到 slave)</li>
+<li>Wait for <code>slave-1</code> to be ready. (等待 <code>slave-1</code> 準備好可以被使用)</li>
+<li>Clone data from <code>slave-1</code> to <code>slave-2</code>. (為了避免造成 master 網路上的負擔，<code>slave-2</code> 必須先從 <code>slave-1</code> 拉資料)</li>
+<li>Enable continouous replication from master to <code>slave-2</code>. (持續從 master sync data 到 slave)</li>
+<li>Configure master node address on slave. (因為 sync 必須知道誰是 master)</li>
+</ol>
+<br>
+<h3 id="deployment">Deployment</h3>
+<ul>
+<li><code>Deployment</code> 裡面的 <code>pod</code> 沒辦法保證順序，也因此無法定義 Master。</li>
+<li>Slaves 無法透過 IP address 或者 hostname, DNS domain name 去找 master 做 sync；反之亦然。 (<code>pod</code> name 有隨機產生的部分，Evernote 筆記有: <code>kubernetes (k8s) Deployment 是直接納管 pods 嗎? 還是透過 replica set (rs)</code>)</li>
+</ul>
+<br>
+<p><img src="statefulset_0.jpg" alt="statefulset_0"></p>
+<p>▲ <code>Deployment</code> 做不到上述要求，宣告失敗!</p>
+<br>
+<h3 id="stateful-sets">Stateful Sets</h3>
+<ul>
+<li><code>pod</code> 會被依序建立。</li>
+<li><code>StatefulSet</code> 會指定有序的 index 給每一個 <code>pod</code></li>
+</ul>
+<p><img src="statefulset_1.jpg" alt="statefulset_1"></p>
+<p>▲ 每個 <code>pod</code> 都掛依序掛編號，解決 <code>pod</code> name 有隨機產生的部分問題。即使 <code>pod</code> 被 re-create 名稱也不會跑掉~</p>
+<br>
+<h2 id="ckad-不考-115-stateful-sets-introduction">(CKAD 不考) 115. Stateful Sets Introduction</h2>
+<br>
+<p><code>StatefulSet</code> (<span style='color:red'>開頭兩個 <code>S</code> 都是大寫</span>) 與 <code>Deployment</code> 87% 像~<br>
+<code>.spec.serviceName</code> 的部分是搭配 <code>Headless service</code> (後面會提到)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">apps/v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">StatefulSet</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">web</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">selector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">matchLabels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">nginx</span><span class="w"> </span><span class="c"># has to match .spec.template.metadata.labels</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">serviceName</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;nginx&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="c"># by default is 1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">template</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">nginx</span><span class="w"> </span><span class="c"># has to match .spec.selector.matchLabels</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">containers</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">nginx</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">k8s.gcr.io/nginx-slim:0.8</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">containerPort</span><span class="p">:</span><span class="w"> </span><span class="m">80</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">web</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p><img src="statefulset_2.jpg" alt="statefulset_2"></p>
+<p>▲ <code>kubectl scale statefulset mysql --replicas=5</code> 也會依序增加，並給予獨特 <code>pod</code> name；down scale 反之亦然</p>
+<br>
+<p>如果你只想享受 <code>StatefulSet</code> 帶來指定、獨一無二 的 <code>pod</code> name <strong><span style='color:red'>而不想讓它按照順序 scale up/down <code>pod</code> 時 (包含第一次產生)</span></strong><br>
+可以設定 <code>.spec.podManagementPolicy == Parallel</code> 詳細參考 <a href="https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#pod-management-policies">Pod Management Policies</a></p>
+<br>
+<h2 id="ckad-不考-116-headless-services">(CKAD 不考) 116. Headless Services</h2>
+<br>
+<p><img src="headless_service_0.jpg" alt="headless_service_0"></p>
+<p>▲ 一般的 <code>service</code> 長這樣。其它位於 K8s cluster 內的 app 可以透過 <code>mysql-default.svc.cluster.local</code> 訪問 MySQL。</p>
+<br>
+<p>還記得這是 MySQL 服務嗎? <strong><span style='color:red'>Master 可以 R/W 沒問題，但是 Slaves 只能 R</span></strong></p>
+<br>
+<p><img src="headless_service_1.jpg" alt="headless_service_1"></p>
+<p>▲ <code>Deployment</code> 內，每個 <code>pod</code> 的 IP Address 的 DNS A record 長這樣: <code>10-40-2-8.default.pod.cluster.local</code> <strong><span style='color:red'>不過 IP Address 是變動的<span></strong></p>
+<br>
+<p>這時候就需要 <code>Headless service</code> 了!</p>
+<ul>
+<li><code>Headless service</code> 不做 Load Blance，只幫每一個 <code>pod</code> 按照順序創造獨一無二的 DNS domain name。</li>
+<li>格式如下: <code>&lt;pod_name&gt;.&lt;headless_service_name&gt;.&lt;namespace&gt;.&lt;svc&gt;.&lt;cluster_domain&gt;</code>。</li>
+</ul>
+<br>
+<p><img src="headless_service_2.jpg" alt="headless_service_2"></p>
+<p>▲ 各個 <code>pod</code> 的 DNS domain name 如上~</p>
+<br>
+<p><strong><span style='color:blue'><code>Headless service</code> 與一般 <code>service</code> 的差異只在於 <code>.spec.clusterIP == Node</code></span></strong></p>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Service</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">nginx</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">nginx</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">80</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">web</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">clusterIP</span><span class="p">:</span><span class="w"> </span><span class="l">None</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">selector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">nginx</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p><img src="headless_service_3.jpg" alt="headless_service_3"></p>
+<p>▲ 如果是使用 <code>pod</code> 搭配 <code>Headless service</code> 的話必須加 <code>.spec.subdomain</code>, <code>.spec.hostname</code></p>
+<br>
+<p><img src="headless_service_4.jpg" alt="headless_service_4"></p>
+<p>▲ 如果我們在 <code>Deployment</code> 當中給定 <code>.spec.template.spec.hostname</code> 的話，整個 DNS A record 都會一樣 (左下角)。<br>
+<strong><span style='color:blue'>這也是改用 <code>StatefulSet</code> 的好處之一，我們不需要去定義 <code>.spec.subdomain</code>, <code>.spec.hostname</code>，而是透過 <code>.spec.serviceName</code> 去連結 <code>Headless servie</code></span></strong></p>
+<br>
+<h2 id="ckad-不考-117-storage-in-statefulsets">(CKAD 不考) 117. Storage in StatefulSets</h2>
+<br>
+<p><img src="storage_statefulset_0.jpg" alt="storage_statefulset_0"></p>
+<p>▲ 在 <code>StatefulSet</code> 沒有使用 <code>.spec.volumeClaimTemplates</code> 的話，三個 MySQL <code>pod</code> 都會共用同一個 <code>PVC</code>。</p>
+<br>
+<p><img src="storage_statefulset_1.jpg" alt="storage_statefulset_1"></p>
+<p>▲ 用上 <code>.spec.volumeClaimTemplates</code> 就會長這樣，其中 <code>.spec.volumeClaimTemplates</code> 的內容就是 <code>PVC</code> 啦~<br>
+<strong><span style='color:red'>不過當 <code>pod</code> 因為某些原因被 re-create 的話，它將延續使用舊有 <code>PVC</code></span></strong></p>
+<br>
+<h3 id="問問筆記">問問筆記</h3>
+<p>大家好，我想請問一個關於 <code>StatefulSet</code> 使用 <code>.spec.volumeClaimTemplates</code> 的問題:</p>
+<p>以這個範例來說會產生三個 <code>pod</code> (假設叫做 <code>pod{1..3}</code>)，當 <code>pod1</code> 因為某些原因被 re created 了，它將延續使用舊有的 PVC。
+如果我不想呢? 想給 <code>pod1</code> 全新的一個 PVC
+請問有什麼做法呢?
+如果在 PVC <code>.spec.persistentVolumeReclaimPolicy</code> 設定 Recycle/Delete 是不是可行? 謝謝</p>
+<p>範例: <a href="https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#components">https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#components</a></p>
+<p><strong><span style='color:red'>Ans:</span></strong></p>
+<p>不行，Policy 定義的是當 PVC 消失後 PV 被怎麼處理。而且這個需求與 <code>StatefulSet</code> 反其道而行。<br>
+<a href="https://t.me/hiskio_k8s/7000">Hiskio-Kubernetes</a></p>
+<br>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2021-11-05
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/ckad/">CKAD</a>
+          <a href="/tags/kubernetes/">Kubernetes</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/20211110-ckad-note-section-9-updates-for-sep-2021-changes/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">CKAD Note Section 9 Updates for Sep 2021 Changes</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/20211104-ckad-note-section-7-service-and-networking/">
+            <span class="next-text nav-default">CKAD Note Section 7 Service and Networking</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.64437849d125a2d603b3e71d6de5225d641a32d17168a58106e0b61852079683.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

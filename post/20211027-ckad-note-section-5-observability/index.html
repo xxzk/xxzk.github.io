@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>CKAD Note Section 5 Observability - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="70. Readiness and Liveness Probes Readiness Probes 透過前面的章節我們可以得知 Pod 具有狀態 (status) 與 條件 (condition)，前者顯示 lifecycle 階段 (pending, containerCreating, running) pending: scheduler 正在安排 pod 到 worker-node 上，或者有問題 (kubectl describe 可" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.98.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20211027-ckad-note-section-5-observability/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="CKAD Note Section 5 Observability" />
+<meta property="og:description" content="70. Readiness and Liveness Probes Readiness Probes 透過前面的章節我們可以得知 Pod 具有狀態 (status) 與 條件 (condition)，前者顯示 lifecycle 階段 (pending, containerCreating, running) pending: scheduler 正在安排 pod 到 worker-node 上，或者有問題 (kubectl describe 可" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.xxzk.me/post/20211027-ckad-note-section-5-observability/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-10-27T16:52:37+00:00" />
+<meta property="article:modified_time" content="2021-10-27T16:52:37+00:00" />
+
+<meta itemprop="name" content="CKAD Note Section 5 Observability">
+<meta itemprop="description" content="70. Readiness and Liveness Probes Readiness Probes 透過前面的章節我們可以得知 Pod 具有狀態 (status) 與 條件 (condition)，前者顯示 lifecycle 階段 (pending, containerCreating, running) pending: scheduler 正在安排 pod 到 worker-node 上，或者有問題 (kubectl describe 可"><meta itemprop="datePublished" content="2021-10-27T16:52:37+00:00" />
+<meta itemprop="dateModified" content="2021-10-27T16:52:37+00:00" />
+<meta itemprop="wordCount" content="758">
+<meta itemprop="keywords" content="CKAD,Kubernetes," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="CKAD Note Section 5 Observability"/>
+<meta name="twitter:description" content="70. Readiness and Liveness Probes Readiness Probes 透過前面的章節我們可以得知 Pod 具有狀態 (status) 與 條件 (condition)，前者顯示 lifecycle 階段 (pending, containerCreating, running) pending: scheduler 正在安排 pod 到 worker-node 上，或者有問題 (kubectl describe 可"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">CKAD Note Section 5 Observability</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-10-27 </span>
+        <div class="post-category">
+            <a href="/categories/ckad-note/"> CKAD-Note </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#70-readiness-and-liveness-probes">70. Readiness and Liveness Probes</a>
+          <ul>
+            <li><a href="#readiness-probes">Readiness Probes</a></li>
+          </ul>
+        </li>
+        <li><a href="#71-liveness-probe">71. Liveness probe</a></li>
+        <li><a href="#76-monitor-and-debug-application">76. Monitor and Debug Application</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="70-readiness-and-liveness-probes">70. Readiness and Liveness Probes</h2>
+<br>
+<h3 id="readiness-probes">Readiness Probes</h3>
+<p>透過前面的章節我們可以得知 <code>Pod</code> 具有狀態 (status) 與 條件 (condition)，前者顯示 lifecycle 階段 (pending, containerCreating, running)</p>
+<ul>
+<li>pending: scheduler 正在安排 <code>pod</code> 到 worker-node 上，或者有問題 (<code>kubectl describe</code> 可以查)</li>
+<li>containerCreating: <code>pod</code> 已經被放在 worker-node 上，正在建立容器</li>
+<li>running: 執行中</li>
+</ul>
+<p>Condition 的部分就有點類似細項，透過 <code>kubectl describe</code> 可以觀察。</p>
+<br>
+<p><img src="pod_condition_0.jpg" alt="pod_condition_0"></p>
+<p>▲ <code>pod</code> condition 項目列表</p>
+<br>
+<p>不過在這麼多項目當中，在這個章節我們只關心 <strong><span style='color:blue'>ContainersReady 與 Ready</span></strong><br>
+依據不同 Application 種類，當 ContainersReady 後會需要一些時間來準備提供服務。<strong>所以當 <code>Ready == True</code> 時才是這個 <code>pod</code> 可以提供服務的時候。</strong><br>
+這個章節主要是介紹如何請 K8s 去偵測 <code>pod</code> 裡面的服務 Are ready to serve。</p>
+<br>
+<p><img src="readiness_probe_method_0.jpg" alt="readiness_probe_method_0"></p>
+<p>▲ readiness probe method 總共有這幾個: HTTP GET / TCP / Exec command</p>
+<br>
+<p><img src="http_method_sample.jpg" alt="http_method_sample"></p>
+<p>▲ HTTP GET 範例</p>
+<br>
+<p><img src="the_three_method.jpg" alt="the_three_method"></p>
+<p>▲ 所有 method 範例</p>
+<br>
+<p><strong><span style='color:red'>另外還有三個常用的參數: <code>initialDelaySeconds</code>, <code>periodSeconds</code>, <code>failureThreshold</code> 可以被設定</span></strong></p>
+<ul>
+<li><code>initialDelaySeconds</code>: 首次探測前 delay，如果已知這個 Application 勢必會花超過 n 秒那就不用請 K8s 一開始就去煩人家。</li>
+<li><code>periodSeconds</code>: How often，間隔多久探測一次 (單位: 秒)。</li>
+<li><code>failureThreshold</code>: 最高失敗幾次，預設次數 <code>3</code> (當達到上限，以 readniness probe 來說 <code>Pod</code> 會被 mark 成 un-ready)</li>
+</ul>
+<br>
+<p><img src="if_not_setting_readiness_probe.jpg" alt="if_not_setting_readiness_probe"></p>
+<p>▲ 如果在 <code>pod</code> 內沒有設定 readiness probe 的話，就很有可能發生 service 把流量導到尚未 ready to serve 的 <code>pod</code> 身上。</p>
+<br>
+<p><strong><span style='color:red'><code>kubectl get pods</code> 只能看到 status， <code>kubectl describe pod</code> 才能看到 condition。</span></strong></p>
+<h2 id="71-liveness-probe">71. Liveness probe</h2>
+<br>
+<p>與 readiness probe 不同的是 <strong>liveness probe 偵測 App 的健康度</strong>，雖然說 K8s 偵測到 <code>pod</code> crash 會自動 restart (透過 <code>kubectl get pod</code> 可以查看 RESTART 次數) 但有些時候 <code>pod</code> 正常運作，但是裡面的 App 掛了，如果有用定義 liveness probe 的話，K8s 才能幫你 restart container。</p>
+<br>
+<hr>
+<h2 id="76-monitor-and-debug-application">76. Monitor and Debug Application</h2>
+<br>
+<p>要對 K8s 做監控 (moniting) 必須借助 metric server 例如: Promethues, Elastic Stack (ELK 之類的), DATADOG, dynatrace。<br>
+從 Kubernetes v1.1 開始原本的 Heapster 就即將退場 (<a href="https://github.com/kubernetes-retired/heapster/blob/master/docs/deprecation.md">deprecation</a>)，取而代之的是 <a href="https://github.com/kubernetes-sigs/metrics-server">metrics server</a> (對，就叫這個名子)</p>
+<ul>
+<li>metrics server 只把蒐集來的資料儲存在 RAM 裡面 (in-memory)。</li>
+<li>每個 worker node 上面的 kubelet 除了負責接收來自 master node 的指令、建立 <code>pod</code> 以外，其中的一個元件 <a href="https://github.com/google/cadvisor">cAdvisor</a> 就是負責收集 metrics 透過 API 回傳給 metrics server。</li>
+<li>如果使用 minikube 練習的話，透過 <code>minikube addons enable metrics-server</code> 可以安裝，others 請參考官方頁面。</li>
+</ul>
+<br>
+<p><img src="metrics_server_0.jpg" alt="metrics_server_0"></p>
+<p>▲ metrics server 只能 監控/顯示 比它晚出生的 <code>pod</code></p>
+<br>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2021-10-27
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/ckad/">CKAD</a>
+          <a href="/tags/kubernetes/">Kubernetes</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/20211102-ckad-note-section-6-pod-design/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">CKAD Note Section 6 Pod Design</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/20210730-ckad-note-section-3-configuration/">
+            <span class="next-text nav-default">CKAD Note Section 3 Configuration</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.64437849d125a2d603b3e71d6de5225d641a32d17168a58106e0b61852079683.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

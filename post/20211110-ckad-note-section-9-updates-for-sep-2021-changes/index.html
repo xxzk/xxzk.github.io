@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>CKAD Note Section 9 Updates for Sep 2021 Changes - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="▲ CKAD 新舊版差異 119. Define, build and modify container images 非常基礎的 Docker Image (container image) 介紹，我之前就打過一篇在公司 Bookstack 了~ 《Docker Image 介紹》 使用 docker 與 podman 大部分情況 docker 與 podman syntax 很接近~ 1" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.98.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20211110-ckad-note-section-9-updates-for-sep-2021-changes/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="CKAD Note Section 9 Updates for Sep 2021 Changes" />
+<meta property="og:description" content="▲ CKAD 新舊版差異 119. Define, build and modify container images 非常基礎的 Docker Image (container image) 介紹，我之前就打過一篇在公司 Bookstack 了~ 《Docker Image 介紹》 使用 docker 與 podman 大部分情況 docker 與 podman syntax 很接近~ 1" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.xxzk.me/post/20211110-ckad-note-section-9-updates-for-sep-2021-changes/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-11-10T11:05:08+00:00" />
+<meta property="article:modified_time" content="2021-11-10T11:05:08+00:00" />
+
+<meta itemprop="name" content="CKAD Note Section 9 Updates for Sep 2021 Changes">
+<meta itemprop="description" content="▲ CKAD 新舊版差異 119. Define, build and modify container images 非常基礎的 Docker Image (container image) 介紹，我之前就打過一篇在公司 Bookstack 了~ 《Docker Image 介紹》 使用 docker 與 podman 大部分情況 docker 與 podman syntax 很接近~ 1"><meta itemprop="datePublished" content="2021-11-10T11:05:08+00:00" />
+<meta itemprop="dateModified" content="2021-11-10T11:05:08+00:00" />
+<meta itemprop="wordCount" content="3599">
+<meta itemprop="keywords" content="CKAD,Kubernetes," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="CKAD Note Section 9 Updates for Sep 2021 Changes"/>
+<meta name="twitter:description" content="▲ CKAD 新舊版差異 119. Define, build and modify container images 非常基礎的 Docker Image (container image) 介紹，我之前就打過一篇在公司 Bookstack 了~ 《Docker Image 介紹》 使用 docker 與 podman 大部分情況 docker 與 podman syntax 很接近~ 1"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">CKAD Note Section 9 Updates for Sep 2021 Changes</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-11-10 </span>
+        <div class="post-category">
+            <a href="/categories/ckad-note/"> CKAD-Note </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#119-define-build-and-modify-container-images">119. Define, build and modify container images</a>
+          <ul>
+            <li><a href="#使用-docker-與-podman">使用 <code>docker</code> 與 <code>podman</code></a></li>
+          </ul>
+        </li>
+        <li><a href="#121-authentication-authorization-and-admission-control">121. Authentication, Authorization and Admission Control</a>
+          <ul>
+            <li><a href="#who-can-access">Who can access?</a></li>
+            <li><a href="#what-can-they-do">What can they do?</a></li>
+          </ul>
+        </li>
+        <li><a href="#122-authentication">122. Authentication</a>
+          <ul>
+            <li><a href="#file">File</a></li>
+          </ul>
+        </li>
+        <li><a href="#123-kubeconfig">123. KubeConfig</a></li>
+        <li><a href="#125-api-groups">125. API Groups</a></li>
+        <li><a href="#126-authorization">126. Authorization</a>
+          <ul>
+            <li><a href="#authorization-mode-列表如下">Authorization Mode 列表如下:</a></li>
+          </ul>
+        </li>
+        <li><a href="#127-role-based-access-controls">127. Role Based Access Controls</a>
+          <ul>
+            <li><a href="#測試權限">測試權限</a></li>
+          </ul>
+        </li>
+        <li><a href="#128-cluster-roles">128. Cluster Roles</a></li>
+        <li><a href="#130-admission-controllers">130. Admission Controllers</a></li>
+        <li><a href="#132-validating-and-mutating-admission-controllers">132. Validating and Mutating Admission Controllers</a></li>
+        <li><a href="#134-api-versions">134. API Versions</a></li>
+        <li><a href="#135-api-deprecations">135. API Deprecations</a></li>
+        <li><a href="#137-custom-resource-definition">137. Custom Resource Definition</a></li>
+        <li><a href="#138-custom-controllers">138. Custom Controllers</a></li>
+        <li><a href="#139-operator-framework">139. Operator Framework</a></li>
+        <li><a href="#140-deployment-strategy---blue-green">140. Deployment Strategy - Blue Green</a></li>
+        <li><a href="#141-deployment-strategy---canary">141. Deployment Strategy - Canary</a></li>
+        <li><a href="#143-helm-introduction">143. Helm Introduction</a>
+          <ul>
+            <li><a href="#install-helm">Install Helm</a></li>
+          </ul>
+        </li>
+        <li><a href="#146-helm-concepts">146. Helm Concepts</a>
+          <ul>
+            <li><a href="#helm-repo">Helm repo</a></li>
+            <li><a href="#how-to-install-package">How to install package</a></li>
+            <li><a href="#helm-常用指令">Helm 常用指令</a></li>
+          </ul>
+        </li>
+        <li><a href="#killsh-筆記">Kill.sh 筆記</a>
+          <ul>
+            <li><a href="#利用-pod-裡面的-command-執行指令">利用 <code>pod</code> 裡面的 command 執行指令</a></li>
+          </ul>
+        </li>
+        <li><a href="#restart-deployment">Restart Deployment</a></li>
+        <li><a href="#service-除錯"><code>service</code> 除錯</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <br>
+<p><img src="CKAD_20210928_change.jpg" alt="CKAD_20210928_change"></p>
+<p>▲ CKAD 新舊版差異</p>
+<br>
+<h2 id="119-define-build-and-modify-container-images">119. Define, build and modify container images</h2>
+<br>
+<p>非常基礎的 Docker Image (container image) 介紹，我之前就打過一篇在公司 Bookstack 了~<br>
+《Docker Image 介紹》</p>
+<h3 id="使用-docker-與-podman">使用 <code>docker</code> 與 <code>podman</code></h3>
+<p>大部分情況 <code>docker</code> 與 <code>podman</code> syntax 很接近~</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## docker multi tags</span>
+</span></span><span class="line"><span class="cl">sudo docker build -t registry.killer.sh:5000/sun-cipher:latest -t registry.killer.sh:5000/sun-cipher:v1-docker .
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## pod man build image</span>
+</span></span><span class="line"><span class="cl">podman build -t registry.killer.sh:5000/sun-cipher:v1-podman .
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## podman run container</span>
+</span></span><span class="line"><span class="cl">podman run -d --name sun-cipher registry.killer.sh:5000/sun-cipher:v1-podman
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## podman show process</span>
+</span></span><span class="line"><span class="cl">podman ps
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## podman logs</span>
+</span></span><span class="line"><span class="cl">podman logs sun-cipher
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<br>
+<h2 id="121-authentication-authorization-and-admission-control">121. Authentication, Authorization and Admission Control</h2>
+<br>
+<p>除了 master,worker node 本身的安全機制 (例如: SSH public key ONLY) 以外<br>
+<code>kube-apiserver</code> 在 K8s cluster 當中扮演非常關鍵的角色必須要被嚴格控管，接下來的章節會介紹 How to<br>
+一開始我們先來探討一下 <strong>Who can access?</strong> 與 <strong>What can they do?</strong></p>
+<br>
+<h3 id="who-can-access">Who can access?</h3>
+<br>
+<p><img src="who_can_access.jpg" alt="who_can_access"></p>
+<ul>
+<li>Files - username and passwds</li>
+<li>Files - username and tokens</li>
+<li>Certification</li>
+<li>外部授權平台 (例如: LDAP)</li>
+<li>Service Account</li>
+</ul>
+<br>
+<h3 id="what-can-they-do">What can they do?</h3>
+<p><del>其實我不知道中文怎麼翻.. What can they do ??</del>  總之看起來像 K8s 的授權 (Authorization) 控管方式:</p>
+<ul>
+<li>RBAC Authorization. (Role Base Access Control)</li>
+<li>ABAC Authorization. (Attribute Base Access Control)</li>
+<li>Webhook Mode</li>
+</ul>
+<br>
+<p><img src="tls_certs.jpg" alt="tls_certs"></p>
+<p>▲ K8s cluster 內各個元件在溝通時都透過 TLS 加密</p>
+<br>
+<h2 id="122-authentication">122. Authentication</h2>
+<br>
+<p>本章節的重點會放在三種不同 user 如何透過 Authentication 機制安全的訪問 K8s cluster</p>
+<ul>
+<li>K8s cluster admin</li>
+<li>Developer</li>
+<li><del>End User</del> (在這邊被移除，講師認為 sercurity 責任應該在 app 本身)</li>
+<li>Bots (service account)</li>
+</ul>
+<br>
+<p><img src="k8s_account_0.jpg" alt="k8s_account_0"></p>
+<p>▲ Kubernetes cluster 原始狀態並沒有提供使用者的功能</p>
+<br>
+<p><img src="k8s_account_1.jpg" alt="k8s_account_1"></p>
+<p>▲ 不管是透過 <code>kubectl</code> 或者 <code>curl</code> (不知道是不是就是在說 Dashboard) 都要找 <code>kube-apiserver</code>。首先會 (1) Authenticate Users (2) Process request。</p>
+<br>
+<p><img src="k8s_account_2.jpg" alt="k8s_account_2"></p>
+<p>驗證 (authentication) 的方式有這些:</p>
+<ul>
+<li>Static Password File</li>
+<li>Static Token File</li>
+<li>Certificates</li>
+<li>External service (EX: LDAP)</li>
+</ul>
+<br>
+<h3 id="file">File</h3>
+<p>前兩項都是以 file 的形式去給定使用者帳號跟密碼。 <strong><span style='color:red'>兩種都不建議使用</span></strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">## &lt;passwd&gt;,&lt;username&gt;,&lt;user_id&gt;,&lt;group_name&gt;
+</span></span><span class="line"><span class="cl">password123,user1,u0001
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p><img src="k8s_account_3.jpg" alt="k8s_account_3"></p>
+<p>▲ 然後在啟動 <code>kube-apiserver</code> 的時候傳進去</p>
+<br>
+<p><img src="k8s_account_4.jpg" alt="k8s_account_4"></p>
+<p>▲ <code>curl</code> 搭配 user/passwd 的認證方式</p>
+<br>
+<p><img src="k8s_account_5.jpg" alt="k8s_account_5"></p>
+<p>▲ <code>token</code> 的部分</p>
+<br>
+<h2 id="123-kubeconfig">123. KubeConfig</h2>
+<br>
+<p><img src="kube_config_0.jpg" alt="kube_config_0"></p>
+<p>▲ 正常來說，透過 <code>kubectl</code> 或者 <code>curl</code> 來取得 <code>pod</code> 的資訊，指令應該長這樣。<br>
+<strong><span style='color:blue'>因為使用起來太麻煩了，我們會把這些資訊放在 KubeConfig file  (<code>$HOME/.kube/config</code>) 裡面</span></strong></p>
+<br>
+<p><img src="kube_config_1.jpg" alt="kube_config_1"></p>
+<p>▲ config file 裡面包含三個東西: <code>Cluster</code>, <code>Context</code>, <code>Users</code>。而 <code>Context</code> 就是串連 <code>Cluster</code> 與 <code>User</code> 的東西。<br>
+其實這東西在前面章節的 LAB 就應該要接觸到了 (我記得我的筆記也有打) <code>kubectl config set-context --current --namespace=</code> 有印象了吧!</p>
+<br>
+<p><img src="kube_config_2.jpg" alt="kube_config_2"></p>
+<p>▲ config file 內容是 <code>YAML</code> 檔</p>
+<br>
+<p><img src="kube_config_3.jpg" alt="kube_config_3"></p>
+<p>▲ 使用 <code>kubectl config use-context &lt;context_name&gt;</code> 來切換。</p>
+<br>
+<h2 id="125-api-groups">125. API Groups</h2>
+<br>
+<p>一直以來 <code>kubectl</code> 都是在跟 <code>api-server</code> 互動，這個章節要講的是 API Groups。<br>
+接下來的動作會需要使用 <code>curl</code> 跟 <code>api-server</code> 互動，達成這個需求最簡單的方式就是使用 <code>kubectl proxy</code> 在 localhost 幫我們扮演一個 reverse proxy 的角色，這樣一來就能很簡單的使用 <code>curl</code> 不會複雜!</p>
+<p><a href="https://kubernetes.io/docs/tasks/administer-cluster/access-cluster-api/">Access Clusters Using the Kubernetes API</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## run proxy in bg</span>
+</span></span><span class="line"><span class="cl">kubectl proxy --port<span class="o">=</span><span class="m">8080</span> <span class="p">&amp;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## bg -&gt; fg</span>
+</span></span><span class="line"><span class="cl"><span class="nb">fg</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## show bg jobs</span>
+</span></span><span class="line"><span class="cl"><span class="nb">jobs</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl http://localhost:8080/api/
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p><img src="api_groups_0.jpg" alt="api_groups_0"></p>
+<p>▲ 列出 <code>api-server</code> 的 IP address</p>
+<br>
+<p><img src="api_groups_1.jpg" alt="api_groups_1"></p>
+<p>▲ 列出所有選項</p>
+<br>
+<p><img src="api_one_page.jpg" alt="api_one_page"></p>
+<p>▲ 一頁式 <code>api</code> page 能夠很清楚的知道各個 K8s Object 屬於哪個 API Group</p>
+<br>
+<p><img src="api_groups_2.jpg" alt="api_groups_2"></p>
+<p>▲ 每個 <code>Resources</code> 底下的都有 <code>Verbs</code> (動作)</p>
+<br>
+<h2 id="126-authorization">126. Authorization</h2>
+<br>
+<p><img src="authorization_0.jpg" alt="authorization_0"></p>
+<p>▲ 本章節目的很簡單，<strong>權限區分</strong>。根據不同使用者給予不同權限</p>
+<br>
+<h3 id="authorization-mode-列表如下">Authorization Mode 列表如下:</h3>
+<ul>
+<li>AlwaysAllow</li>
+<li>Node</li>
+<li>ABAC</li>
+<li>RBAC</li>
+<li>WebHook</li>
+<li>AlwaysDeny</li>
+</ul>
+<br>
+<h4 id="node-authorizer">Node Authorizer</h4>
+<p>Node Authorizer 是專門給 worker node 與 <code>api-server</code> 之間溝通使用。</p>
+<br>
+<p><img src="node_mode_0.jpg" alt="node_mode_0"></p>
+<p>▲ <code>kubelet</code> 必須在 <code>SYSTEM:NODES</code> group 裡面 (使用 certification)。</p>
+<br>
+<h4 id="abac-authorizer">ABAC Authorizer</h4>
+<p>全名: Attribute Base Access Control<br>
+針對每個 user 設定權限 (1:1 關係)</p>
+<br>
+<p><img src="abac.jpg" alt="abac"></p>
+<p>▲ 每一次 新增/刪除 都需要重啟 <code>api-server</code>。很麻煩，所以有了 RBAC</p>
+<br>
+<h4 id="rbac-authorizer">RBAC Authorizer</h4>
+<p>全名: Role Base Access Control</p>
+<br>
+<p><img src="rbac.jpg" alt="rbac"></p>
+<br>
+<h4 id="webhook-authorizer">WebHook Authorizer</h4>
+<br>
+<p><img src="webhook.jpg" alt="webhook"></p>
+<p>▲ 其實不難懂，就是透過 webhook 去請外部 server 授權</p>
+<br>
+<p><img src="node_mode_1.jpg" alt="node_mode_1"></p>
+<p>▲ <code>api-server</code> 預設使用 <code>AlwaysAllow</code></p>
+<br>
+<p><img src="node_mode_2.jpg" alt="node_mode_2"></p>
+<p>▲ 講師建議的配置，會依序授權。授權失敗往下一個，授權成功返回。</p>
+<br>
+<h2 id="127-role-based-access-controls">127. Role Based Access Controls</h2>
+<br>
+<p>建立 <code>Role</code> 的方式很簡單，只需要記住 <strong><span style='color:red'><code>--resources=</code> 與 <code>--verb=</code></span></strong> 即可。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl create role role-test --resource<span class="o">=</span>pod --verb<span class="o">=</span>get --verb<span class="o">=</span>list --verb<span class="o">=</span>watch --dry-run<span class="o">=</span>client -o yaml
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>可以看到 <code>pod</code> 自動變成 <code>pods</code> 了! 由於 <code>resource pod</code> 屬於 <code>core api</code> 所以 <code>.rules.apiGroups[]</code> 可以是空白。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">rbac.authorization.k8s.io/v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Role</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">creationTimestamp</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">role-test</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">rules</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span>- <span class="nt">apiGroups</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="s2">&#34;&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">resources</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="l">pods</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">verbs</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="l">get</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="l">list</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="l">watch</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p><img src="rbac_0.jpg" alt="rbac_0"></p>
+<p>▲ 透過指定 <code>--resource-name</code> 可以指定對象。</p>
+<br>
+<p>接著我們要把 <code>Role</code> 綁到 user 身上 =&gt; rolebinding</p>
+<p>只需要記住 <strong><span style='color:red'><code>--role=</code> 與 <code>--user=</code></span></strong> 即可。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl create rolebinding rb-test --role<span class="o">=</span>role-test --user<span class="o">=</span>beta --dry-run<span class="o">=</span>client -o yaml
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">rbac.authorization.k8s.io/v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">RoleBinding</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">creationTimestamp</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">rb-test</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">roleRef</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">apiGroup</span><span class="p">:</span><span class="w"> </span><span class="l">rbac.authorization.k8s.io</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Role</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">role-test</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">subjects</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span>- <span class="nt">apiGroup</span><span class="p">:</span><span class="w"> </span><span class="l">rbac.authorization.k8s.io</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">User</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">beta</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<h3 id="測試權限">測試權限</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl auth can-i create pod
+</span></span><span class="line"><span class="cl">kubectl auth can-i delete deployment
+</span></span><span class="line"><span class="cl">kubectl auth can-i get service
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## as user</span>
+</span></span><span class="line"><span class="cl">kubectl auth can-i create pod --as<span class="o">=</span>beta
+</span></span><span class="line"><span class="cl">kubectl auth can-i delete deployment --as<span class="o">=</span>beta
+</span></span><span class="line"><span class="cl">kubectl auth can-i get service --as<span class="o">=</span>beta
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## particular namespace</span>
+</span></span><span class="line"><span class="cl">kubectl auth can-i create pod --as<span class="o">=</span>beta --namespace<span class="o">=</span>say-my
+</span></span><span class="line"><span class="cl">kubectl auth can-i delete deployment --as<span class="o">=</span>beta --namespace<span class="o">=</span>say-my
+</span></span><span class="line"><span class="cl">kubectl auth can-i get service --as<span class="o">=</span>beta --namespace<span class="o">=</span>say-my
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<h2 id="128-cluster-roles">128. Cluster Roles</h2>
+<br>
+<p><img src="diff_between_namespace_and_cluster_scope.jpg" alt="diff_between_namespace_and_cluster_scope"></p>
+<p>▲ 首先要先介紹 namespace <strong><span style='color:red'>ed</span></strong> 與 Cluster scope 旗下物件的差異。</p>
+<br>
+<p><img src="namespaced_true.jpg" alt="namespaced_true"></p>
+<p>▲ <code>kubectl api-resources --namespaced</code> 可以列出需要 <code>namespace</code> 的 K8s resource。<br>
+反之 <code>kubectl api-resources --namespaced=false</code></p>
+<br>
+<p><img src="cluster_role_0.jpg" alt="cluster_role_0"></p>
+<p>▲ 舉例: 使用 <code>clusterrole</code> 讓 cluster-admin 可以管理 worker-node。<strong><span style='color:red'>不過 clusterrole 並沒有限定 <code>resource</code> 只能是 <code>namespaced == false</code> 的物件! 當使用者使用 <code>clusterrole</code> 建立 <code>resource == pod</code> 的 RBAC 時，等於 <code>namespace == 所有 K8s cluster 內的 namespace</code></span>。</strong></p>
+<br>
+<p><img src="cluster_role_1.jpg" alt="cluster_role_1"></p>
+<p>▲ K8s cluster 已經內建許多 <code>clusterrole</code></p>
+<br>
+<h2 id="130-admission-controllers">130. Admission Controllers</h2>
+<br>
+<p>前面兩個 A (Authentication, Authorization) 有點像是控制 <code>api-server</code> 的「大門」，Admission controllers 是針對進入大門之後的操作做控制。</p>
+<br>
+<p><img src="admission_controller_0.jpg" alt="admission_controller_0"></p>
+<p>▲ 講師舉了一個預設開啟的 <code>NamespaceExists</code> 當作例子。當我們要在不存在的 <code>namespace == blue</code> 建立 <code>pod</code> 時會出現錯誤就是因為 Admission controller 當中的 <code>NamespaceExists == Enabled</code> 造成的。</p>
+<br>
+<p>使用 Minikube (docker) 的話，可以透過 <code>minikube ssh</code> 登入 control plane。接著 <code>docker exec -it f099fdd513e0 kube-apiserver --help | grep 'enable-admission-plugins'</code><br>
+或者使用</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## PLEASE NOTICE, the pod name won&#39;t the same</span>
+</span></span><span class="line"><span class="cl">kubectl <span class="nb">exec</span> kube-apiserver-mini-k8s -n kube-system -- kube-apiserver --help <span class="p">|</span> grep <span class="s1">&#39;enable-admission-plugins&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p>K8s cluster 預設開啟以下 plugin:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-man" data-lang="man"><span class="line"><span class="cl">--enable-admission-plugins strings       admission plugins that should be enabled in addition to default enabled ones (NamespaceLifecycle, LimitRanger, ServiceAccount, TaintNodesByCondition, Priority, DefaultTolerationSeconds, DefaultStorageClass, StorageObjectInUseProtection, PersistentVolumeClaimResize, RuntimeClass, CertificateApproval, CertificateSigning, CertificateSubjectRestriction, DefaultIngressClass, MutatingAdmissionWebhook, ValidatingAdmissionWebhook, ResourceQuota).
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p><img src="admission_controller_1.jpg" alt="admission_controller_1"></p>
+<p>▲ 講師示範開啟 <code>NamespaceAutoProvision</code>，當 <code>namespace</code> 不存在時會自動建立。</p>
+<br>
+<h2 id="132-validating-and-mutating-admission-controllers">132. Validating and Mutating Admission Controllers</h2>
+<br>
+<p>Admission Controllers 分為兩種形式:</p>
+<ul>
+<li>Validation: 驗證</li>
+<li>Mutating: 自動補齊</li>
+</ul>
+<br>
+<p><img src="mutation_admission_controller.jpg" alt="mutation_admission_controller"></p>
+<p>▲ Mutating (變種、變異) Admission controller 能夠自動幫我們補齊 YAML file 當中遺漏的 key-value。上圖是以漏寫 <code>storageClassName</code> 為例子。</p>
+<p><strong><span style='color:red'>一般來說 Mutating 的順序會在 Validation 前面。</strong></p>
+<br>
+<p>內建的用不夠 ? 沒關係，可以使用 Webhook 外包:</p>
+<ul>
+<li>MutatingAdmission Webhook</li>
+<li>ValidationAdmission Webhook</li>
+</ul>
+<br>
+<p><img src="admission_webhook_0.jpg" alt="admission_webhook_0"></p>
+<p>▲ 以 <code>JSON</code> format 傳送請求，外包 server 也會以 <code>JSON</code> 回應回來。</p>
+<br>
+<p><img src="admission_webhook_1.jpg" alt="admission_webhook_1"></p>
+<p>▲ webhook server 當然可以被建在 K8s cluster 裡面 (如左圖)，接著我們必須建立 <code>ValidatingWebhookConfiguration</code> 或者 <code>MutatingWebhookConfiguration</code> (如右圖)</p>
+<p><del>乾~ 考試的時候不知道會不會這麼硬</del></p>
+<br>
+<p><strong>LAB Tips: 建立 TLS secret <code>kubectl create secret tls webhook-server-tls --cert /root/keys/webhook-server-tls.crt --key /root/keys/webhook-server-tls.key --dry-run=client -o yaml</code>，<span style='color:red'>記住 <code>--cert</code>, <code>--key</code></span></strong></p>
+<br>
+<h2 id="134-api-versions">134. API Versions</h2>
+<br>
+<p><img src="api_version_0.jpg" alt="api_version_0"></p>
+<p>▲ 只有 <strong><span style='color:red'>Alpha 預設是 Disabled</span></strong> 的</p>
+<br>
+<p>同一個 api group 可以有很多版本，但只會有一個版本被設定成 <strong><span style='color:blue'>preferred</span></strong> 和 <strong><span style='color:green'>storage</span></strong></p>
+<br>
+<p><img src="api_version_1.jpg" alt="api_version_1"></p>
+<p>▲ 當下達 <code>kubectl get deployment</code> 或者 <code>kubectl explain deployment</code> 使用的 api version 即為 <strong><span style='color:blue'>preferred version。</span></strong><br>
+<strong><span style='color:green'>storage version</span></strong> 是以哪個版本儲存在 <code>etcd</code> 裡 (即使你的 YAML file 使用其他版本，都會被轉換)。</p>
+<br>
+<p><img src="api_version_2.jpg" alt="api_version_2"></p>
+<p>▲ 使用 <code>curl</code> 查詢 <strong><span style='color:blue'>preferred</span></strong> api version。<br>
+<strong><span style='color:green'>storage version</span></strong> 現階段只能透過 query etcd 查詢。</p>
+<br>
+<p><img src="api_version_3.jpg" alt="api_version_3"></p>
+<p>▲ 開啟 alpha version。</p>
+<br>
+<h2 id="135-api-deprecations">135. API Deprecations</h2>
+<br>
+<p><a href="https://kubernetes.io/docs/reference/using-api/deprecation-policy/">Kubernetes Deprecation Policy</a> 這個章節在講發布 api version 的規則，有興趣的自己去翻官網吧!<br>
+<strong><span style='color:blue'>本章的重點只有一個: <code>kubectl convert</code> 轉換 YAML file 使用的 api version。</span></strong></p>
+<br>
+<p><img src="api_deprecation_0.jpg" alt="api_deprecation_0"></p>
+<p>▲ 如果沒辦法使用 <code>kubectl convert</code> 的話需要安裝 plug-in。 <a href="https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/#install-kubectl-convert-plugin">Install kubectl convert plugin</a></p>
+<br>
+<h2 id="137-custom-resource-definition">137. Custom Resource Definition</h2>
+<br>
+<p>這個章節介紹的 <code>CRD</code> 用途是讓我們自定 Kubernetes resources (前面筆記有時候可能被我稱為 K8s 元件)。<br>
+<strong><span style='color:red'><code>CRD</code> 只是可以讓 custom resources 資訊可以被放入 <code>etcd</code> 這個 key-value database 當中</span></strong> 實際上要「動作」必須還要有 Controller。</p>
+<br>
+<p><img src="crd_0.jpg" alt="crd_0"></p>
+<p>▲ controller 負責 monitorion <code>etcd</code> <strong>然後依據變化執行動作。</strong></p>
+<br>
+<p><img src="crd_1.jpg" alt="crd_1"></p>
+<p>▲ 眾多 resources 與 controllers</p>
+<br>
+<p>假設今天我們想創建一個 <code>FlightTicket</code> 物件來幫我們訂機票</p>
+<br>
+<p><img src="crd_2.jpg" alt="crd_2"></p>
+<p>▲ <del>好久沒看到台灣廉航福利社發機票文喔</del></p>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">flights.com/v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">FlightTicket</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">my-flight-ticket</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">from</span><span class="p">:</span><span class="w"> </span><span class="l">TPE</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">to</span><span class="p">:</span><span class="w"> </span><span class="l">KIX</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="m">2</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p><img src="crd_3.jpg" alt="crd_3"></p>
+<p>▲ 因為沒有 <code>CRD</code> 的關係，所以這個 resource 被拒絕惹</p>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">apiextensions.k8s.io/v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">CustomResourceDefinition</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># name must match the spec fields below, and be in the form: &lt;plural&gt;.&lt;group&gt;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">flighttickets.flights.com</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># group name to use for REST API: /apis/&lt;group&gt;/&lt;version&gt;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="l">flights.com</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># list of versions supported by this CustomResourceDefinition</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">versions</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="c"># Each version can be enabled/disabled by Served flag.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">served</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="c"># One and only one version must be marked as the storage version.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">schema</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">openAPIV3Schema</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">object</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">properties</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">object</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">properties</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="nt">from</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">string</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="nt">to</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">string</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="nt">number</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">integer</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># either Namespaced or Cluster</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">scope</span><span class="p">:</span><span class="w"> </span><span class="l">Namespaced</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">names</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># plural name to be used in the URL: /apis/&lt;group&gt;/&lt;version&gt;/&lt;plural&gt;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">plural</span><span class="p">:</span><span class="w"> </span><span class="l">flighttickets</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># singular name to be used as an alias on the CLI and for display</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">singular</span><span class="p">:</span><span class="w"> </span><span class="l">flightticket</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># kind is normally the CamelCased singular type. Your resource manifests use this.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">FlightTicket</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># shortNames allow shorter string to match your resource on the CLI</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">shortNames</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="l">ft</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p><del>各項上面都有註解，我就不多做解釋了</del></p>
+<br>
+<p><img src="crd_4.jpg" alt="crd_4"></p>
+<p>▲ 有了 <code>CRD</code> resource 就可以成功被建立!</p>
+<br>
+<h2 id="138-custom-controllers">138. Custom Controllers</h2>
+<br>
+<p><a href="https://github.com/kubernetes/sample-controller">kubernetes/sample-controller</a> 官方提供以 Golang 撰寫的 controller 範本。</p>
+<br>
+<h2 id="139-operator-framework">139. Operator Framework</h2>
+<br>
+<blockquote>
+<p>Operators are software extensions to Kubernetes that make use of custom resources to manage applications and their components. Operators follow Kubernetes principles, notably the control loop.</p>
+</blockquote>
+<p><strong><span style='color:blue'>總之 Operator Framwork 就是一個 Operator 框架 (<del>在講廢話逆</del>) 方便讓使用者 擴充/管理 客製化的 resources。</span></strong></p>
+<ul>
+<li><a href="https://www.hwchiu.com/k8s-operator-pattern.html">[HWChiu] Kubernetes - Operator Pattern 介紹</a></li>
+<li><a href="https://operatorhub.io/">[講師推薦] Operatorhub.io</a></li>
+</ul>
+<br>
+<p>講師感覺就很簡單的帶過這個章節~ 單純介紹而已吧!</p>
+<br>
+<h2 id="140-deployment-strategy---blue-green">140. Deployment Strategy - Blue Green</h2>
+<br>
+<p>在之前的章節有介紹過 rolling upgrade，這種部屬策略不會像 re-create 一樣把舊的 <code>pod</code> 一次全部刪除，而是 one by one 的替換，使服務不中斷。<br>
+<strong>Blue Green</strong> 部屬策略則是先將新版本 部屬、測試 後，<strong><span style='color:red'>透過 edit <code>service</code> <code>selector</code> 的方式將流量導過去</span></strong><br>
+講完，沒了!</p>
+<br>
+<p><img src="blue_green.jpg" alt="blue_green"></p>
+<p>▲ Blue Green 部屬策略</p>
+<br>
+<h2 id="141-deployment-strategy---canary">141. Deployment Strategy - Canary</h2>
+<br>
+<p>canary deployment - 金絲雀部屬，做法是將新版 app 部屬一小部分。什麼意思呢? 看圖~</p>
+<br>
+<p><img src="canary_deployment.jpg" alt="canary_deployment"></p>
+<p>▲ canary deployemt</p>
+<br>
+<p>要解決的兩件事:</p>
+<ul>
+<li><code>service</code> 將流量同時導到兩個 <code>deployment</code>。所以我們需要 <strong><span style='color:red'>在兩個 <code>deployment</code> 擁有一個相同的 label，而且 <code>service</code> <code>selector</code> 也只能有相同的部分</span></strong></li>
+<li>只將小部分流量導到新版。這個部分透過控制新版 <code>replicas</code> 達成 (若要精準控制百分比，需要 <a href="https://istio.io/latest/about/service-mesh/">Istio</a> 或類似服務幫忙)</li>
+</ul>
+<br>
+<h2 id="143-helm-introduction">143. Helm Introduction</h2>
+<br>
+<p>假設今天要透過 Kubernetes 架設 WordPress 我們需要&hellip;.</p>
+<ul>
+<li>WordPress pod/deployment</li>
+<li>secret (儲存設定時的機敏資訊)</li>
+<li>Persistant Volume (PV)</li>
+<li>Persistant Volume Cliam (PVC)</li>
+<li>service (對外服務)</li>
+</ul>
+<br>
+<p>所需的 resources 很碎片化，可是又牽一髮動全身的感覺，各個 resoruce 環環相扣&hellip;<br>
+部屬麻煩、客製化修改麻煩、更新麻煩，什麼都很麻煩! 所以有了 Helm 這個 <strong><span style='color:blue'>package manager</span></strong> (登楞!</p>
+<br>
+<p>Helm 一樣保有 K8s deployment 的特性，可以</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">helm install wordpress
+</span></span><span class="line"><span class="cl">helm upgrade wordpress
+</span></span><span class="line"><span class="cl">helm delete wordpress
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p><img src="helm_values.jpg" alt="helm_values"></p>
+<p>▲ Helm 設定值都在 <code>values.yml</code> 裡面了</p>
+<br>
+<h3 id="install-helm">Install Helm</h3>
+<p><a href="https://helm.sh/docs/intro/install/">Installing Helm</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## bash completion</span>
+</span></span><span class="line"><span class="cl">helm completion bash &gt; /etc/bash_completion.d/helm
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## sourced it right now.</span>
+</span></span><span class="line"><span class="cl"><span class="nb">source</span> &lt;<span class="o">(</span>helm completion bash<span class="o">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<h2 id="146-helm-concepts">146. Helm Concepts</h2>
+<br>
+<p>要使用 Helm 之前，必須把 Kubernetes resources YAML file 裡面的值變成變數 =&gt; <strong><span style='color:blue'>這個 YAML file 被稱為 Template</span></strong><br>
+使用者只須要在 <code>values.yaml</code> 設定參數即可~<br>
+串聯打包這些東西的東西叫做 <strong><span style='color:red'><code>Chart.yaml</code></span></strong></p>
+<blockquote>
+<p>Helm uses a packaging format called charts. A chart is a collection of files that describe a related set of Kubernetes resources.</p>
+</blockquote>
+<br>
+<p><img src="helm_template.jpg" alt="helm_template"></p>
+<p>▲ 由 bitnami 出產的 WordPress Helm template。 <a href="https://github.com/bitnami/charts/blob/master/bitnami/wordpress/templates/deployment.yaml">source</a></p>
+<br>
+<p><img src="helm_value_wordpress.jpg" alt="helm_value_wordpress"></p>
+<p>▲ 由 bitnami 出產的 WordPress Helm <code>values.yaml</code>。 <a href="https://github.com/bitnami/charts/blob/master/bitnami/wordpress/values.yaml">soruce</a></p>
+<br>
+<p><img src="helm_chart.jpg" alt="helm_chart"></p>
+<p>▲ 由 bitnami 出產的 WordPress Helm <code>Chart.yaml</code>。 <a href="https://github.com/bitnami/charts/blob/master/bitnami/wordpress/Chart.yaml">source</a></p>
+<br>
+<h3 id="helm-repo">Helm repo</h3>
+<p>安裝完 <code>helm</code> 預設是沒有任何 repositry 的~ 就來新增吧! bitnami 是 VMware 創立的，另外一個是開源 for CNCF 的 <a href="https://artifacthub.io/">ArtifactHub.io</a> (給我的感覺是比交偏包山包海、路人甲乙都能上傳自己的 chart)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">helm repo add bitnami https://charts.bitnami.com/bitnami
+</span></span><span class="line"><span class="cl">helm repo list
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p><img src="helm_repo_add.jpg" alt="helm_repo_add"></p>
+<p>▲ 新增 <code>helm</code> repo</p>
+<br>
+<p><img src="helm_search.jpg" alt="helm_search"></p>
+<p>▲ 透過 <code>helm search repo</code> 使用剛剛加入的 bitnami 搜尋 package。</p>
+<br>
+<h3 id="how-to-install-package">How to install package</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## helm install &lt;release-name&gt; &lt;chart&gt;</span>
+</span></span><span class="line"><span class="cl">helm install my-release bitnami/wordpress
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p><img src="helm_install_release.jpg" alt="helm_install_release"></p>
+<p>▲ 各個 <code>release</code> 各自獨立</p>
+<br>
+<h3 id="helm-常用指令">Helm 常用指令</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## list all release</span>
+</span></span><span class="line"><span class="cl">helm list
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## uninstall</span>
+</span></span><span class="line"><span class="cl">helm uninstall &lt;release-name&gt;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## just download package NOT install</span>
+</span></span><span class="line"><span class="cl">helm pull --untar bitnami/nginx
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## rollback</span>
+</span></span><span class="line"><span class="cl">helm rollback &lt;release name&gt;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## show Chart variables</span>
+</span></span><span class="line"><span class="cl">helm show values bitnami/apache <span class="p">|</span> grep <span class="s1">&#39;replica&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## set replica (in namespace &#39;mercury&#39;)</span>
+</span></span><span class="line"><span class="cl">helm -n mercury install internal-issue-report-apache bitnami/apache --set <span class="nv">replicaCount</span><span class="o">=</span><span class="m">2</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<h2 id="killsh-筆記">Kill.sh 筆記</h2>
+<br>
+<p>這邊會記錄做完 kill.sh 的模擬考後 (<del>心虛</del>) 需要再加強的地方 or 小技巧。如果能找到相對應的章節 (例如: Helm) 就會在該章節補充；反之找不到適合的地方就會放在這邊。</p>
+<br>
+<h3 id="利用-pod-裡面的-command-執行指令">利用 <code>pod</code> 裡面的 command 執行指令</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl run tmp --image<span class="o">=</span>nginx:alpine --rm -i -- curl https://ipinfo.io/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## visit svc like this. http://&lt;svc name&gt;.&lt;namespace&gt;:&lt;port&gt;</span>
+</span></span><span class="line"><span class="cl">curl http://project-plt-6cc-svc.pluto:3333
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong><span style='color:red'><code>--rm</code> 與 Docker 一樣，使用後即拋棄。 <code>-i</code> 開啟 tty 互動介面。 <code>--</code> 不加的話會被當前 shell 解析。</span></strong></p>
+<br>
+<p><img src="tmp_pod_using_command.jpg" alt="tmp_pod_using_command"></p>
+<br>
+<h2 id="restart-deployment">Restart Deployment</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl rollout restart deployment my-nginx
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p><img src="restart_deployment.jpg" alt="restart_deployment"></p>
+<p>▲ <code>restart</code> 的方式是先產生一個新的 <code>pod</code> 再把舊的砍掉。</p>
+<br>
+<h2 id="service-除錯"><code>service</code> 除錯</h2>
+<br>
+<p><strong><span style='color:red'><code>svc.spec.selector</code> 是指向 <code>pod</code> 的 labels 而不是 <code>Deployment</code> 的!!</span></strong></p>
+<br>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2021-11-10
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/ckad/">CKAD</a>
+          <a href="/tags/kubernetes/">Kubernetes</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/20211105-ckad-note-section-8-state-persistence/">
+            <span class="next-text nav-default">CKAD Note Section 8 State Persistence</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.64437849d125a2d603b3e71d6de5225d641a32d17168a58106e0b61852079683.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

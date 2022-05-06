@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>CKAD Note Section 6 Pod Design - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="79. Labels, Selectors and Annotations 1 2 3 4 5 6 7 8 9 10 11 12 13 apiVersion:v1kind:Podmetadata:name:label-demolabels:environment:productionapp:nginxspec:containers:- name:nginximage:nginx:1.14.2ports:- containerPort:80 我們可以在 kubernetes object 上貼上標籤 (labels) 用於分類。使用 kubectl get pod --selector &amp;lt;key&amp;gt;=&amp;lt;value&amp;gt; 可以篩選。 最後 Annotation 就是有點像註解的東西，給人看的 例" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.98.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20211102-ckad-note-section-6-pod-design/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="CKAD Note Section 6 Pod Design" />
+<meta property="og:description" content="79. Labels, Selectors and Annotations 1 2 3 4 5 6 7 8 9 10 11 12 13 apiVersion:v1kind:Podmetadata:name:label-demolabels:environment:productionapp:nginxspec:containers:- name:nginximage:nginx:1.14.2ports:- containerPort:80 我們可以在 kubernetes object 上貼上標籤 (labels) 用於分類。使用 kubectl get pod --selector &lt;key&gt;=&lt;value&gt; 可以篩選。 最後 Annotation 就是有點像註解的東西，給人看的 例" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.xxzk.me/post/20211102-ckad-note-section-6-pod-design/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-11-02T13:56:46+00:00" />
+<meta property="article:modified_time" content="2021-11-02T13:56:46+00:00" />
+
+<meta itemprop="name" content="CKAD Note Section 6 Pod Design">
+<meta itemprop="description" content="79. Labels, Selectors and Annotations 1 2 3 4 5 6 7 8 9 10 11 12 13 apiVersion:v1kind:Podmetadata:name:label-demolabels:environment:productionapp:nginxspec:containers:- name:nginximage:nginx:1.14.2ports:- containerPort:80 我們可以在 kubernetes object 上貼上標籤 (labels) 用於分類。使用 kubectl get pod --selector &lt;key&gt;=&lt;value&gt; 可以篩選。 最後 Annotation 就是有點像註解的東西，給人看的 例"><meta itemprop="datePublished" content="2021-11-02T13:56:46+00:00" />
+<meta itemprop="dateModified" content="2021-11-02T13:56:46+00:00" />
+<meta itemprop="wordCount" content="993">
+<meta itemprop="keywords" content="CKAD,Kubernetes," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="CKAD Note Section 6 Pod Design"/>
+<meta name="twitter:description" content="79. Labels, Selectors and Annotations 1 2 3 4 5 6 7 8 9 10 11 12 13 apiVersion:v1kind:Podmetadata:name:label-demolabels:environment:productionapp:nginxspec:containers:- name:nginximage:nginx:1.14.2ports:- containerPort:80 我們可以在 kubernetes object 上貼上標籤 (labels) 用於分類。使用 kubectl get pod --selector &lt;key&gt;=&lt;value&gt; 可以篩選。 最後 Annotation 就是有點像註解的東西，給人看的 例"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">CKAD Note Section 6 Pod Design</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-11-02 </span>
+        <div class="post-category">
+            <a href="/categories/ckad-note/"> CKAD-Note </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#79-labels-selectors-and-annotations">79. Labels, Selectors and Annotations</a></li>
+        <li><a href="#82-rolling-updates--rollbacks-in-deployments">82. Rolling Updates &amp; Rollbacks in Deployments</a>
+          <ul>
+            <li><a href="#rolling-update">rolling update</a></li>
+            <li><a href="#rollback">rollback</a></li>
+          </ul>
+        </li>
+        <li><a href="#83-updating-a-deployment">83. Updating a Deployment</a></li>
+        <li><a href="#86-jobs">86. Jobs</a>
+          <ul>
+            <li><a href="#backofflimit">backoffLimit</a></li>
+          </ul>
+        </li>
+        <li><a href="#87-cronjob">87. CronJob</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="79-labels-selectors-and-annotations">79. Labels, Selectors and Annotations</h2>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Pod</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">label-demo</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">environment</span><span class="p">:</span><span class="w"> </span><span class="l">production</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">nginx</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">containers</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">nginx</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">nginx:1.14.2</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">containerPort</span><span class="p">:</span><span class="w"> </span><span class="m">80</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>我們可以在 kubernetes object 上貼上標籤 (labels) 用於分類。使用 <code>kubectl get pod --selector &lt;key&gt;=&lt;value&gt;</code> 可以篩選。</p>
+<p>最後 Annotation 就是有點像註解的東西，給人看的 例如: build version, <del>on call 電話號碼</del> 之類的。label 可以幫助我們 select object，annotation 則否。</p>
+<br>
+<h2 id="82-rolling-updates--rollbacks-in-deployments">82. Rolling Updates &amp; Rollbacks in Deployments</h2>
+<br>
+<p>這邊主要介紹 rolling update strategy 是怎麼樣的概念，當我們部屬一個 deployment 就會觸發 rollout，可以透過 <code>kubectl rollout status deployment &lt;name&gt;</code> 查看 rollout 狀態。</p>
+<br>
+<p><img src="rollout_status_0.jpg" alt="rollout_status_0"></p>
+<p>▲ log 由上至下。 <code>kubectl rollout history</code> 可以查看歷史。</p>
+<br>
+<p><img src="rolling_update_strategy.jpg" alt="rolling_update_strategy"></p>
+<br>
+<p>Kubernetes 預設使用 <strong>rolling update</strong> 策略 (strategy) 來更新 <code>pod</code>，比起 <strong>recreate</strong> 後者能夠確保服務不被中斷。<br>
+<code>kubectl describe deployments.apps rollout-test</code> 能夠找到 <code>RollingUpdateStrategy:  25% max unavailable, 25% max surge</code></p>
+<br>
+<p><img src="describe_deployment.jpg" alt="describe_deployment"></p>
+<br>
+<h3 id="rolling-update">rolling update</h3>
+<p>首先 <code>kubectl create deployment nginx-rollout --image=nginx:1.20.1 --replicas=5</code></p>
+<br>
+<p><img src="nginx_rollout_0.jpg" alt="nginx_rollout_0"></p>
+<p>▲ <code>kubectl rollout status</code> 顯示完成</p>
+<br>
+<p><img src="nginx_rollout_1.jpg" alt="nginx_rollout_1"></p>
+<p>▲ <code>Events</code> 顯示 scale up replica set <strong><span style='color:red'>75c585fb66</span></strong> to 5</p>
+<br>
+<p>接著我們升級 <code>nginx -&gt; 1.21</code></p>
+<br>
+<p><img src="nginx_rollout_2.jpg" alt="nginx_rollout_2"></p>
+<p>▲ 我們以 <span style='color:blue'>藍色</span>代表新的 replica set<br>
+scale up replica set <strong><span style='color:blue'>59b5b5c6bd</span></strong> to 2<br>
+scale down replica set <strong><span style='color:red'>75c585fb66</span></strong> to 4<br>
+scale up replica set <strong><span style='color:blue'>59b5b5c6bd</span></strong> to 3<br>
+scale down replica set <strong><span style='color:red'>75c585fb66</span></strong> to 3<br>
+scale up replica set <strong><span style='color:blue'>59b5b5c6bd</span></strong> to 4<br>
+scale down replica set <strong><span style='color:red'>75c585fb66</span></strong> to 2<br>
+scale up replica set <strong><span style='color:blue'>59b5b5c6bd</span></strong> to 5 (達標)<br>
+scale down replica set <strong><span style='color:red'>75c585fb66</span></strong> to 1<br>
+(combined from similar events): Scaled down replica set <span style='color:red'>75c585fb66</span> to 0</p>
+<br>
+<p><img src="nginx_rollout_3.jpg" alt="nginx_rollout_3"></p>
+<p>▲ 示意圖</p>
+<br>
+<h3 id="rollback">rollback</h3>
+<p>反悔了，來個 rollback 時光倒轉一下吧! <code>kubectl rollout undo deployment nginx-rollout</code></p>
+<br>
+<p><img src="rollback_0.jpg" alt="rollback_0"></p>
+<p>▲ 舊的 replicaset 又有東西囉~</p>
+<br>
+<p><img src="sum.jpg" alt="sum"></p>
+<p>▲ 總結</p>
+<br>
+<h2 id="83-updating-a-deployment">83. Updating a Deployment</h2>
+<br>
+<p><img src="rollout_revision_0.jpg" alt="rollout_revision_0"></p>
+<p>▲ 使用 <code>--revision=</code> 可以查看指定 revision</p>
+<br>
+<p><img src="rollout_record_0.jpg" alt="rollout_record_0"></p>
+<p>▲ 在 create/edit <code>deployment</code> 的時候使用 <code>--record</code>，可以把當次使用的命令紀錄到 <code>CAUSE</code> 欄位。</p>
+<br>
+<hr>
+<h2 id="86-jobs">86. Jobs</h2>
+<br>
+<p><strong><span style='color:red'>Tips:</span></strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## kubectl create job NAME --image=image [--from=cronjob/name] -- [COMMAND] [args...] [options]</span>
+</span></span><span class="line"><span class="cl">kubectl create job fast-job --image<span class="o">=</span>centos:7 <span class="nv">$dry</span> -- sh -c <span class="s2">&#34;echo Hi&#34;</span> &gt; fast-job.yml
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Pod way</span>
+</span></span><span class="line"><span class="cl"><span class="c1">## kubectl run nginx --image=nginx --command -- &lt;cmd&gt; &lt;arg1&gt; ... &lt;argN&gt;</span>
+</span></span><span class="line"><span class="cl">kubectl run pod6 --image<span class="o">=</span>busybox:1.31.0 <span class="nv">$dry</span> --command -- sh -c <span class="s2">&#34;touch /tmp/ready &amp;&amp; sleep 1d&#34;</span> &gt; 6.yaml
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p><code>Jobs</code> 就像 Linux 的 <code>at</code> 一樣，<strong>負責執行一次性工作</strong> (參考資料: <a href="https://godleon.github.io/blog/Kubernetes/k8s-Job-Overview/">小信豬 [Kubernetes] Job, CronJob &amp; TTL Controller Overview</a>)</p>
+<p>我們直接 hands-on ~ 建立一個 <code>pod</code> 使用 <code>perl</code> 計算圓周率小數點後一位 (???)</p>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Pod</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l">pi-pod</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">pi-pod</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">containers</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">perl</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">pi-pod</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;perl&#34;</span><span class="p">,</span><span class="w">  </span><span class="s2">&#34;-Mbignum=bpi&#34;</span><span class="p">,</span><span class="w"> </span><span class="s2">&#34;-wle&#34;</span><span class="p">,</span><span class="w"> </span><span class="s2">&#34;print bpi(2)&#34;</span><span class="p">]</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p>接著用 <code>kubectl get pod pi-pod</code> 觀察 <code>pod</code> 的變化</p>
+<br>
+<p><img src="pi_pod_0.jpg" alt="pi_pod_0"></p>
+<p>▲ 狀態從 ContainerCreating -&gt; Complete -&gt; CrashLoopBackOff (Restart:1)，好像哪裡怪怪的&hellip; 都 Complete 了怎麼會有 <code>restart</code> 呢?</p>
+<br>
+<p>其實這跟 Kubernetes 預設的 <code>restartPolicy</code> 有關。當 K8s 偵測到 <code>pod</code> 裡面的 container failed/exited 就會很熱心地去 <code>restart</code> 人家~</p>
+<br>
+<p><img src="pi_pod_1.jpg" alt="pi_pod_1"></p>
+<p>▲ 同場加映，昨天我用 <code>--image=hello-world</code> 建立的 <code>pod</code> 已經 <code>restart</code> 356 次了 XD 因為 hello-world 這個 image 只做一件事情: 顯示 Hello World 後 Exited (0)<br>
+然後就被 Kubernetes 一直 <code>restart</code> 惹 QQ</p>
+<br>
+<p><strong><span style='color:red'>上面的例子讓我們知道一件事: Pod 不適合跑一次性的工作</span></strong><br>
+可是你可能會想說: 那把 <code>restartPolicy: Never</code> 就好了呀~ No no no! <code>Job</code> 能夠幫我們做更多事 :)</p>
+<p>我們在來把剛剛的 <code>pod</code> 改成 <code>job</code>:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">batch/v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Job</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">pi-job</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">template</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">creationTimestamp</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">containers</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">perl</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">pi-job</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;perl&#34;</span><span class="p">,</span><span class="w">  </span><span class="s2">&#34;-Mbignum=bpi&#34;</span><span class="p">,</span><span class="w"> </span><span class="s2">&#34;-wle&#34;</span><span class="p">,</span><span class="w"> </span><span class="s2">&#34;print bpi(2)&#34;</span><span class="p">]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">restartPolicy</span><span class="p">:</span><span class="w"> </span><span class="l">Never</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p><img src="pi_job_0.jpg" alt="pi_job_0"></p>
+<p>▲ 當 job 執行完成後 <code>STATUS</code> 會變成 <code>Complete</code> 不會被 K8s 一直雞婆 <code>restart</code>。</p>
+<br>
+<p><code>job</code> 同時可以執行多次、同時執行 (parallelism)</p>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">batch/v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Job</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">pi-job</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">completions</span><span class="p">:</span><span class="w"> </span><span class="m">50</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">parallelism</span><span class="p">:</span><span class="w"> </span><span class="m">2</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">template</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">creationTimestamp</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">containers</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">perl</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">pi-job</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;perl&#34;</span><span class="p">,</span><span class="w">  </span><span class="s2">&#34;-Mbignum=bpi&#34;</span><span class="p">,</span><span class="w"> </span><span class="s2">&#34;-wle&#34;</span><span class="p">,</span><span class="w"> </span><span class="s2">&#34;print bpi(2)&#34;</span><span class="p">]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">restartPolicy</span><span class="p">:</span><span class="w"> </span><span class="l">Never</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p><img src="pi_job_1.jpg" alt="pi_job_1"></p>
+<p>▲ 目標完成: 50，同時執行: 3</p>
+<br>
+<h3 id="backofflimit">backoffLimit</h3>
+<p><code>Job</code> 在 <code>.spec.backoffLimit</code> <strong><span style='color:red'>預設值是 <code>6</code></span></strong>，這個設定值定義當 <code>pod</code> failed 幾次之後就終止此 <code>Job</code>。</p>
+<hr>
+<h2 id="87-cronjob">87. CronJob</h2>
+<p>就跟 Linux 的 cronjob 一樣，定時執行。比較特別的是 <code>CronJob</code> 有三個 <code>spec</code>:</p>
+<ol>
+<li><code>CronJob</code> 的</li>
+<li><code>Job</code> 的</li>
+<li><code>Pod</code> 的</li>
+</ol>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yml" data-lang="yml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">batch/v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">CronJob</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">hello</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">schedule</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;*/1 * * * *&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">jobTemplate</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">template</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">containers</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">hello</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">busybox</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">imagePullPolicy</span><span class="p">:</span><span class="w"> </span><span class="l">IfNotPresent</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">command</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="l">/bin/sh</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- -<span class="l">c</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="l">date; echo Hello from the Kubernetes cluster</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">restartPolicy</span><span class="p">:</span><span class="w"> </span><span class="l">OnFailure</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2021-11-02
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/ckad/">CKAD</a>
+          <a href="/tags/kubernetes/">Kubernetes</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/20211104-ckad-note-section-7-service-and-networking/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">CKAD Note Section 7 Service and Networking</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/20211027-ckad-note-section-5-observability/">
+            <span class="next-text nav-default">CKAD Note Section 5 Observability</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.64437849d125a2d603b3e71d6de5225d641a32d17168a58106e0b61852079683.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>CKAD Note Section 7 Service and Networking - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="90. Service ▲ NodePort type 的 service ▲ service 的種類: NodePort, Cluster IP, LoadBlance ▲ NodePort 總共有三個 port number 分別是: node-port, port, target-port NodePort range: 30000~32767 (option)。 如果沒有給定 targetPort，預設 port == targ" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.98.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20211104-ckad-note-section-7-service-and-networking/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="CKAD Note Section 7 Service and Networking" />
+<meta property="og:description" content="90. Service ▲ NodePort type 的 service ▲ service 的種類: NodePort, Cluster IP, LoadBlance ▲ NodePort 總共有三個 port number 分別是: node-port, port, target-port NodePort range: 30000~32767 (option)。 如果沒有給定 targetPort，預設 port == targ" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.xxzk.me/post/20211104-ckad-note-section-7-service-and-networking/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-11-04T11:32:23+00:00" />
+<meta property="article:modified_time" content="2021-11-04T11:32:23+00:00" />
+
+<meta itemprop="name" content="CKAD Note Section 7 Service and Networking">
+<meta itemprop="description" content="90. Service ▲ NodePort type 的 service ▲ service 的種類: NodePort, Cluster IP, LoadBlance ▲ NodePort 總共有三個 port number 分別是: node-port, port, target-port NodePort range: 30000~32767 (option)。 如果沒有給定 targetPort，預設 port == targ"><meta itemprop="datePublished" content="2021-11-04T11:32:23+00:00" />
+<meta itemprop="dateModified" content="2021-11-04T11:32:23+00:00" />
+<meta itemprop="wordCount" content="1959">
+<meta itemprop="keywords" content="CKAD,Kubernetes," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="CKAD Note Section 7 Service and Networking"/>
+<meta name="twitter:description" content="90. Service ▲ NodePort type 的 service ▲ service 的種類: NodePort, Cluster IP, LoadBlance ▲ NodePort 總共有三個 port number 分別是: node-port, port, target-port NodePort range: 30000~32767 (option)。 如果沒有給定 targetPort，預設 port == targ"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">CKAD Note Section 7 Service and Networking</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-11-04 </span>
+        <div class="post-category">
+            <a href="/categories/ckad-note/"> CKAD-Note </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#90-service">90. Service</a></li>
+        <li><a href="#91-services---cluster-ip">91. Services - Cluster IP</a></li>
+        <li><a href="#94-ingress-networking">94. Ingress Networking</a>
+          <ul>
+            <li><a href="#ingress-controller-介紹">Ingress Controller 介紹</a></li>
+            <li><a href="#ingress-controller-部屬">Ingress Controller 部屬</a></li>
+            <li><a href="#ingress-resources">Ingress Resources</a></li>
+          </ul>
+        </li>
+        <li><a href="#101-network-policies">101. Network Policies</a>
+          <ul>
+            <li><a href="#20211208-更新-networkpolicy-條件差異">2021.12.08 更新 <code>NetworkPolicy</code> 條件差異</a></li>
+            <li><a href="#支援-network-policy-的專案">支援 Network Policy 的專案</a></li>
+          </ul>
+        </li>
+        <li><a href="#102-developing-network-policies">102. Developing network policies</a>
+          <ul>
+            <li><a href="#multi-fromto">Multi from/to</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="90-service">90. Service</h2>
+<br>
+<p><img src="serivce_0.jpg" alt="serivce_0"></p>
+<p>▲ NodePort type 的 <code>service</code></p>
+<br>
+<p><img src="service_type.jpg" alt="service_type"></p>
+<p>▲ <code>service</code> 的種類: NodePort, Cluster IP, LoadBlance</p>
+<br>
+<p><img src="nodeport_0.jpg" alt="nodeport_0"></p>
+<p>▲ NodePort 總共有三個 port number 分別是: node-port, port, target-port</p>
+<br>
+<ul>
+<li>NodePort range: 30000~32767 (option)。</li>
+<li>如果沒有給定 targetPort，預設 <code>port == targetPort</code>。</li>
+</ul>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Service</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">my-service</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">NodePort</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">selector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">MyApp</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">80</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">nodePort</span><span class="p">:</span><span class="w"> </span><span class="m">30007</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">targetPort</span><span class="p">:</span><span class="w"> </span><span class="m">9376</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p>NodePort <code>service</code> 使用 <code>selector</code> 來決定要將流量導向到哪些 <code>pod</code> 身上。<br>
+P.S 這邊先偷吃步給一個簡單的方法:<br>
+<code>kubectl expose deployment nginx-rollout --port=80 --target-port=80</code></p>
+<br>
+<p><img src="kubectl_expose.jpg" alt="kubectl_expose"></p>
+<p>▲ 這樣就不用自己寫 YAML file 了，而且還可以自動幫我們設定 <code>selector</code></p>
+<br>
+<p><img src="kubectl_expose_1.jpg" alt="kubectl_expose_1"></p>
+<p>▲ 實際用 <code>curl</code> 訪問 (<code>kubectl get pod -o wide</code> 可以看每個 <code>pod</code> 實際被放在哪個 worker-node 身上)</p>
+<br>
+<p><img src="multi_pods_multi_nodes.jpg" alt="multi_pods_multi_nodes"></p>
+<p>▲ 當 <code>service</code> 被建立，<code>pod</code> 所在的 worker-node 就會被建立 <code>service</code></p>
+<br>
+<h2 id="91-services---cluster-ip">91. Services - Cluster IP</h2>
+<br>
+<p>ClusterIP 是一種 <code>service</code> type，主要用於 K8s Cluster 內互連</p>
+<br>
+<p><img src="cluster_ip.jpg" alt="cluster_ip"></p>
+<br>
+<h2 id="94-ingress-networking">94. Ingress Networking</h2>
+<br>
+<p>首先講師要從 <code>Ingress</code> 與 <code>service</code> 的差別來講解 Ingress</p>
+<br>
+<p><img src="ingress_0.jpg" alt="ingress_0"></p>
+<p>▲ 範例場景 1</p>
+<ul>
+<li>能夠使用 IP address / domain 訪問，<strong><span style='color:red'>但必須帶 port number</span></strong></li>
+</ul>
+<br>
+<p><img src="ingress_1.jpg" alt="ingress_1"></p>
+<p>▲ 那好呀~ 我自己弄個 Nginx reverse proxy 把 <code>80</code> 轉 <code>nodePort 38080</code>，這樣就可以讓 client 訪問時不用帶 port 好了 (灑花</p>
+<br>
+<p><img src="ingress_2.jpg" alt="ingress_2"></p>
+<p>▲ 如果使用 GCP 的話還可以把 <code>service</code> type 改成 LoadBlancer 然後去跟 Google 要一個 GCP Load Blancer (相當於 Google 幫你架設 reverse proxy)</p>
+<br>
+<p><img src="ingress_3.jpg" alt="ingress_3"></p>
+<p>▲ 這個時候公司業務增加啦! 多一個影音平台 (video)，依照上面使用 GCP Load Blancer 會產生出一個 <strong><span style='color:red'>不同 IP</span></strong> 的 Load Blancer (價格當然 ++)</p>
+<ul>
+<li><strong><span style='color:red'>出現一個問題: 如果以相同 FQDN 的情況下，DNS 一次只能指到一個 IP address 呀!</span></strong></li>
+</ul>
+<br>
+<p><img src="ingress_4.jpg" alt="ingress_4"></p>
+<p>▲ 那我在 GCP LB 前面在加一個 LB (&hellip;&hellip;) 一看就知道不是好架構</p>
+<br>
+<p><img src="ingress_5.jpg" alt="ingress_5"></p>
+<p>▲ Ingress 就是整合這些東西的地方! 一個<strong>在 K8s cluster 內的 L7  Load Blancer</strong></p>
+<br>
+<p><img src="ingress_6.jpg" alt="ingress_6"></p>
+<p>▲ 既然是在 K8s cluster 內，那麼一樣需要一個 nodePort/LoadBlancer <code>service</code>。</p>
+<ul>
+<li>阿如果沒上公有雲不就還續要 <strong>再</strong> 一個 Nginx reverse proxy 擺在 Ingress service 前面嗎?</li>
+</ul>
+<br>
+<p><img src="ingress_7.jpg" alt="ingress_7"></p>
+<p>▲ Ingress 分成 <code>(1) Deployment</code> <code>(2) Configure</code>，兩個部分。<br>
+前者到底是要部屬什麼呢? <strong><span style='color:blue'>Ans: Ingress Controller</span></strong><br>
+<span style='color:blue'>後者會被定義在 YAML 裡面</span>，就跟其它 K8s object 一樣</p>
+<br>
+<p><strong><span style='color:red'>注意!! Kubernetes 預設並沒有自帶 Ingress Controller !!</span></strong></p>
+<h3 id="ingress-controller-介紹">Ingress Controller 介紹</h3>
+<br>
+<p><img src="ingress_controller_0.jpg" alt="ingress_controller_0"></p>
+<p>▲ Ingress Controller 候選人有這些，不過目前只有 GCP HTTPs LB 與 Nginx 被 Kubernetes 官方維護，以下講師會使用 Nginx。<br>
+Ingress Controller 不僅只是有 Load Blancer 的功能，<strong><span style='color:blue'>它還能使用 service account 與 K8s cluster 連接</span></strong></p>
+<br>
+<h3 id="ingress-controller-部屬">Ingress Controller 部屬</h3>
+<br>
+<p><img src="ingress_controller_1.jpg" alt="ingress_controller_1"></p>
+<p>▲ 就像其它 App 一樣被部屬，只不過有一些特殊設定需要透過 <code>args</code> 傳入。<br>
+Nginx 剩餘的設定 (例如: SSL, error log path, keep-alive &hellip;) 則是額外用一個 <code>ConfigMap</code> 去儲存。<br>
+在講師的範例中 <code>ConfigMap</code> 目前是空的，不過還是建議建立一個~ 這樣在未來要修改設定值會比較方便!</p>
+<br>
+<p><img src="ingress_controller_2.jpg" alt="ingress_controller_2"></p>
+<p>▲ 另外還需要提供兩個環境變數 (<code>env</code>): <code>POD_NAME</code>, <code>POD_NAMESPACE</code>，Nginx 需要這兩個變數去讀取 config。最後開啟 <code>80</code>, <code>443</code> port</p>
+<br>
+<p><img src="ingress_controller_3.jpg" alt="ingress_controller_3"></p>
+<p>▲ 既然有 port 要被訪問，就一定要設定一個 nodePort <code>service</code> 囉!</p>
+<br>
+<p><img src="ingress_controller_4.jpg" alt="ingress_controller_4"></p>
+<p>▲ 最後最後，上面提到的 service account 需要這些權限</p>
+<br>
+<p><img src="ingress_controller_5.jpg" alt="ingress_controller_5"></p>
+<p><strong>▲ 總結所需</strong></p>
+<br>
+<h3 id="ingress-resources">Ingress Resources</h3>
+<br>
+<p><img src="ingress_resources_0.jpg" alt="ingress_resources_0"></p>
+<p>▲ 我們可以根據不同的 <code>path</code> 或者 FQDN 來制定規則</p>
+<br>
+<p><img src="ingress_resources_1.jpg" alt="ingress_resources_1"></p>
+<p>▲ 我們先從最簡單的單一服務開始。如同前面提到的 <span style='color:blue'>Ingress resources 是被定義在 YAML 裡面，而且透過 <code>kubectl</code> 建立。</span></p>
+<br>
+<p><img src="ingress_resources_2.jpg" alt="ingress_resources_2"></p>
+<p>▲ 基於不同 FQDN，Nginx 可以設定特定 <code>path</code> 該去找誰拿服務。整個列表可能會長這樣，<strong><span style='color:red'>下面每一個紅框對映不同服務類型的 <code>pod</code> (通常應該是 <code>deployment</code> 啦)</span></strong></p>
+<br>
+<p><img src="ingress_resources_3.jpg" alt="ingress_resources_3"></p>
+<p>基於相同 FQDN，<strong><span style='color:red'>不同 <code>path</code></span></strong> 的 Ingress resource 就會像上圖右邊的 YAML 這樣。<br>
+我們從 <code>.spec</code> 看起，首先 <code>.spec.rules[].http</code> 就好像 Nginx http code block 一樣 (這樣形容應該會比較有感覺)<br>
+<code>.spec.rules[].http.paths</code> 鹿西派: 可以有很多條 path，所以要加 <code>s</code> (合理!)<br>
+<code>.spec.rules[].http.paths[].path</code> 開始 key-value 了~ 定義 <code>path</code> 並且帶入 <code>backend</code>。</p>
+<br>
+<p><img src="ingress_resources_4.jpg" alt="ingress_resources_4"></p>
+<p>可以看到兩個 <code>path</code> 分別給定不同 <code>backend</code>。有趣的是 <code>Default backend</code> 這個欄位，<strong><span style='color:blue'>預設建立完 Ingress 後 K8s 會自動幫你產生這個 <code>backend</code>，當 <code>path</code> 沒有被 match 時就會走這個 <code>backend</code>，所以請記得再建立一個 <code>service</code> 給它!! (<code>service</code> name 就是 <code>default-http-backend</code> 醬~)</span></strong></p>
+<br>
+<p><img src="ingress_resources_5.jpg" alt="ingress_resources_5"></p>
+<p>▲ <strong><span style='color:red'>基於不同 FQDN，不同 <code>path</code></span></strong> 的 Ingress YAML file 就會長這樣，多了 <code>.spec.rules[].host</code> 定義 FQDN。</p>
+<br>
+<h4 id="kubernetes-v120x-update">Kubernetes v1.20.x Update</h4>
+<br>
+<p><img src="ingress_resources_6.jpg" alt="ingress_resources_6"></p>
+<p>▲ 首先是 YAML syntax 上的差異</p>
+<br>
+<p><strong><span style='color:blue'>在來是可以以 imperative way 建立 ingress 了 (灑花</span></strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#kubectl create ingress &lt;ingress-name&gt; --rule=&#34;host/path=service:port&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">kubectl create ingress ingress-test --rule<span class="o">=</span><span class="s2">&#34;wear.my-online-store.com/wear*=wear-service:80&#34;</span>
+</span></span><span class="line"><span class="cl">kubectl create ingress ingress-test --rule<span class="o">=</span><span class="s2">&#34;/pay*=pay-service:8282&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<h4 id="rewrite-target">Rewrite-target</h4>
+<p>假設我們有兩個 <code>service</code>:</p>
+<ul>
+<li><code>http://&lt;watch-service&gt;:&lt;port&gt;/</code></li>
+<li><code>http://&lt;wear-service&gt;:&lt;port&gt;/</code></li>
+</ul>
+<p>接著使用 Ingress 做銜接:</p>
+<ul>
+<li><code>http://&lt;ingress-service&gt;:&lt;ingress-port&gt;/watch</code> -&gt; <code>http://&lt;watch-service&gt;:&lt;port&gt;/</code></li>
+<li><code>http://&lt;ingress-service&gt;:&lt;ingress-port&gt;/wear</code> -&gt; <code>http://&lt;wear-service&gt;:&lt;port&gt;/</code></li>
+</ul>
+<p><strong>事與願違</strong> 因為當你實際訪問會變這樣:</p>
+<ul>
+<li><code>http://&lt;ingress-service&gt;:&lt;ingress-port&gt;/watch</code> -&gt; <code>http://&lt;watch-service&gt;:&lt;port&gt;/watch</code></li>
+<li><code>http://&lt;ingress-service&gt;:&lt;ingress-port&gt;/wear</code> -&gt; <code>http://&lt;wear-service&gt;:&lt;port&gt;/wear</code></li>
+</ul>
+<p>不管是 <code>app-watch</code> 或者 <code>app-waer</code> 都沒有這個 <code>path</code>，<strong><span style='color:blue'>所以我們需要請 Ingress 做 URL rewrite</span></strong></p>
+<p><a href="https://kubernetes.github.io/ingress-nginx/examples/rewrite/">Ingress-Nginx rewrite docs</a></p>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">networking.k8s.io/v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Ingress</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">annotations</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">nginx.ingress.kubernetes.io/rewrite-target</span><span class="p">:</span><span class="w"> </span><span class="l">/$2</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">rewrite</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">default</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">rules</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l">rewrite.bar.com</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">http</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">paths</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l">/something(/|$)(.*)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">pathType</span><span class="p">:</span><span class="w"> </span><span class="l">Prefix</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">backend</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">service</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">http-svc</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">port</span><span class="p">:</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="m">80</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p>透過設定 <code>annotation</code> <code>nginx.ingress.kubernetes.io/rewrite-target: $2</code> 達成。<br>
+依照官方 docs 後面應該是接 <code>string</code> 舉例: <code>nginx.ingress.kubernetes.io/rewrite-target: /app</code><br>
+被換成 <code>$2</code> 是什麼呢 ? 原來是正規表示法 (Regexp) 的 <a href="https://www.regular-expressions.info/refcapture.html">Captured groups</a> 啦~<br>
+也就是說當 client 端請求 <code>http://rewrite.bar.com/something/robot.txt</code>， Ingress 會把這個 request 改成<br>
+<code>http://&lt;service_name&gt;:&lt;service_port&gt;/robot.txt</code> (把 <code>something</code> 變不見，或者說 rewrite)</p>
+<hr>
+<h2 id="101-network-policies">101. Network Policies</h2>
+<br>
+<p><img src="network_policy_0.jpg" alt="network_policy_0"></p>
+<p>▲ 我們的場景長這樣</p>
+<br>
+<ul>
+<li>ingress traffic: 進入</li>
+<li>egress traffic: 流出</li>
+<li>Kubernetes Default Netowrk Plicy: All Allow</li>
+</ul>
+<br>
+<p><img src="network_policy_1.jpg" alt="network_policy_1"></p>
+<p>▲ 統整如上</p>
+<br>
+<p><img src="network_policy_2.jpg" alt="network_policy_2"></p>
+<p>▲ Multi node 網路會是這樣</p>
+<br>
+<p><img src="network_policy_3.jpg" alt="network_policy_3"></p>
+<p>▲ demo</p>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">networking.k8s.io/v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">NetworkPolicy</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">db-policy</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">podSelector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">matchLabels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l">db</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">ingress</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">from</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">podSelector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">matchLabels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">api-pod</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l">TCP</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">3306</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<h3 id="20211208-更新-networkpolicy-條件差異">2021.12.08 更新 <code>NetworkPolicy</code> 條件差異</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nn">...</span><span class="l">.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">podSelector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">matchLabels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">frontend         </span><span class="w"> </span><span class="c"># label of the pods this policy should be applied on</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">policyTypes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="l">Egress                 </span><span class="w"> </span><span class="c"># we only want to control egress</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">egress</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">to</span><span class="p">:</span><span class="w">                     </span><span class="c"># 1st egress rule</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">podSelector</span><span class="p">:</span><span class="w">            </span><span class="c"># allow egress only to pods with api label</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">matchLabels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">api</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">ports</span><span class="p">:</span><span class="w">                  </span><span class="c"># 2nd egress rule</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">53</span><span class="w">                </span><span class="c"># allow DNS UDP</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l">UDP</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">53</span><span class="w">                </span><span class="c"># allow DNS TCP</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l">TCP</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>▲ <strong><span style='color:red'>上面的 <code>-ports</code> 是隸屬 <code>.spec.egress[]</code> 所以邏輯閘是 <code>OR</code>。</span></strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">allow outgoing traffic if
+</span></span><span class="line"><span class="cl">  (destination pod has label id:api) OR ((port is 53 UDP) OR (port is 53 TCP))
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c"># this example does not work in our case</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nn">...</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">egress</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">to</span><span class="p">:</span><span class="w">                     </span><span class="c"># 1st AND ONLY egress rule</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">podSelector</span><span class="p">:</span><span class="w">            </span><span class="c"># allow egress only to pods with api label</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">matchLabels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">api</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">ports</span><span class="p">:</span><span class="w">                  </span><span class="c"># STILL THE SAME RULE but just an additional selector</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">53</span><span class="w">                </span><span class="c"># allow DNS UDP</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l">UDP</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">53</span><span class="w">                </span><span class="c"># allow DNS TCP</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l">TCP</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>▲ <strong><span style='color:blue'>上面的 <code>ports</code> 是隸屬 <code>.spec.egress[].to[]</code> 所以邏輯閘是 <code>AND</code>。</span></strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">allow outgoing traffic if
+</span></span><span class="line"><span class="cl">  (destination pod has label id:api) AND ((port is 53 UDP) OR (port is 53 TCP))
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<h3 id="支援-network-policy-的專案">支援 Network Policy 的專案</h3>
+<ul>
+<li>太多了 請看官網</li>
+</ul>
+<p><a href="https://kubernetes.io/docs/tasks/administer-cluster/declare-network-policy/">declare-network-policy</a></p>
+<ul>
+<li>不支援的: Flannel</li>
+</ul>
+<br>
+<h2 id="102-developing-network-policies">102. Developing network policies</h2>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yml" data-lang="yml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">networking.k8s.io/v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">NetworkPolicy</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">test-network-policy</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">default</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">podSelector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">matchLabels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l">db</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">policyTypes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="l">Ingress</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">ingress</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">from</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">namespaceSelector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">matchLabels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">project</span><span class="p">:</span><span class="w"> </span><span class="l">myproject</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">podSelector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">matchLabels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l">frontend</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l">TCP</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">6379</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>符合 Label <code>OR</code> Namespace</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">networking.k8s.io/v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">NetworkPolicy</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">test-network-policy</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">default</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">podSelector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">matchLabels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l">db</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">policyTypes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="l">Ingress</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">ingress</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">from</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">namespaceSelector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">matchLabels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">project</span><span class="p">:</span><span class="w"> </span><span class="l">myproject</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">podSelector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">matchLabels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l">frontend</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l">TCP</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">6379</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>符合 Label <span style='color:red'><code>AND</code></span> Namespace</li>
+</ul>
+<br>
+<p><strong>另外也支援 IP，有需要的話去看 docs 吧~~</strong></p>
+<br>
+<h3 id="multi-fromto">Multi from/to</h3>
+<p>當然可以允許多個來源/目的 囉~</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">networking.k8s.io/v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">NetworkPolicy</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">multi-network-policy</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">podSelector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">matchLabels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">nginx-rollout</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">policyTypes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="l">Ingress</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">ingress</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">from</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">podSelector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">matchLabels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l">r2b</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l">TCP</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">80</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">from</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">podSelector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">matchLabels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l">not-exited</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l">TCP</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">80</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2021-11-04
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/ckad/">CKAD</a>
+          <a href="/tags/kubernetes/">Kubernetes</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/20211105-ckad-note-section-8-state-persistence/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">CKAD Note Section 8 State Persistence</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/20211102-ckad-note-section-6-pod-design/">
+            <span class="next-text nav-default">CKAD Note Section 6 Pod Design</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.64437849d125a2d603b3e71d6de5225d641a32d17168a58106e0b61852079683.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

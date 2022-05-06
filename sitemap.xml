@@ -1,0 +1,102 @@
+<?xml-stylesheet type="text/xsl" href="https://blog.xxzk.me/sitemap.xsl"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <url>
+    <loc>https://blog.xxzk.me/categories/</loc>
+    <lastmod>2021-11-10T11:05:08+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/tags/ckad/</loc>
+    <lastmod>2021-11-10T11:05:08+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/post/20211110-ckad-note-section-9-updates-for-sep-2021-changes/</loc>
+    <lastmod>2021-11-10T11:05:08+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/categories/ckad-note/</loc>
+    <lastmod>2021-11-10T11:05:08+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/tags/kubernetes/</loc>
+    <lastmod>2021-11-10T11:05:08+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/post/</loc>
+    <lastmod>2021-11-10T11:05:08+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/tags/</loc>
+    <lastmod>2021-11-10T11:05:08+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/</loc>
+    <lastmod>2021-11-10T11:05:08+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/post/20211105-ckad-note-section-8-state-persistence/</loc>
+    <lastmod>2021-11-05T20:54:44+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/post/20211104-ckad-note-section-7-service-and-networking/</loc>
+    <lastmod>2021-11-04T11:32:23+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/post/20211102-ckad-note-section-6-pod-design/</loc>
+    <lastmod>2021-11-02T13:56:46+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/post/20211027-ckad-note-section-5-observability/</loc>
+    <lastmod>2021-10-27T16:52:37+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/post/20210730-ckad-note-section-3-configuration/</loc>
+    <lastmod>2021-07-30T11:29:19+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/post/20210727-ckad-note-section-1-introduction/</loc>
+    <lastmod>2021-07-27T09:33:08+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+</urlset>

@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>CKAD Note Section 3 Configuration - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="37. [Pre-Request] Commands and Arguments in Docker 課程一開始就先來複習 Docker File 當中的 CMD 與 ENTRYPOINT，雖然講師說不在 CKAD 的考試範圍，不過 CKAD-2021 (即將在 2021 Q3 改版) 看起來是有被納入的" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.98.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20210730-ckad-note-section-3-configuration/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="CKAD Note Section 3 Configuration" />
+<meta property="og:description" content="37. [Pre-Request] Commands and Arguments in Docker 課程一開始就先來複習 Docker File 當中的 CMD 與 ENTRYPOINT，雖然講師說不在 CKAD 的考試範圍，不過 CKAD-2021 (即將在 2021 Q3 改版) 看起來是有被納入的" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.xxzk.me/post/20210730-ckad-note-section-3-configuration/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-07-30T11:29:19+00:00" />
+<meta property="article:modified_time" content="2021-07-30T11:29:19+00:00" />
+
+<meta itemprop="name" content="CKAD Note Section 3 Configuration">
+<meta itemprop="description" content="37. [Pre-Request] Commands and Arguments in Docker 課程一開始就先來複習 Docker File 當中的 CMD 與 ENTRYPOINT，雖然講師說不在 CKAD 的考試範圍，不過 CKAD-2021 (即將在 2021 Q3 改版) 看起來是有被納入的"><meta itemprop="datePublished" content="2021-07-30T11:29:19+00:00" />
+<meta itemprop="dateModified" content="2021-07-30T11:29:19+00:00" />
+<meta itemprop="wordCount" content="3210">
+<meta itemprop="keywords" content="CKAD,Kubernetes," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="CKAD Note Section 3 Configuration"/>
+<meta name="twitter:description" content="37. [Pre-Request] Commands and Arguments in Docker 課程一開始就先來複習 Docker File 當中的 CMD 與 ENTRYPOINT，雖然講師說不在 CKAD 的考試範圍，不過 CKAD-2021 (即將在 2021 Q3 改版) 看起來是有被納入的"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">CKAD Note Section 3 Configuration</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-07-30 </span>
+        <div class="post-category">
+            <a href="/categories/ckad-note/"> CKAD-Note </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#37-pre-request-commands-and-arguments-in-docker">37. [Pre-Request] Commands and Arguments in Docker</a>
+          <ul>
+            <li><a href="#42-enviroment-variables">42. Enviroment Variables</a></li>
+            <li><a href="#47-a-quick-note-about-secrests">47. A quick note about Secrests</a></li>
+            <li><a href="#50-docker-security">50. Docker Security</a></li>
+            <li><a href="#51-security-contexts">51. Security Contexts</a></li>
+          </ul>
+        </li>
+        <li><a href="#53-service-account">53. Service Account</a></li>
+        <li><a href="#56-resource-requirements">56. Resource Requirements</a></li>
+        <li><a href="#57-note-on-default-resource-requirements-and-limits">57. Note on default resource requirements and limits</a></li>
+        <li><a href="#58-practice-test---resource-requirements">58. Practice Test - Resource Requirements</a></li>
+        <li><a href="#59-taints-and-toleration-汙點-與-容忍度">59. Taints and Toleration (汙點 與 容忍度)</a>
+          <ul>
+            <li><a href="#taint-to-a-worker-node">Taint to a worker node</a></li>
+            <li><a href="#tolerate-a-pod">Tolerate a pod</a></li>
+          </ul>
+        </li>
+        <li><a href="#62-node-selector">62. Node Selector</a>
+          <ul>
+            <li><a href="#label-a-node">Label a node</a></li>
+            <li><a href="#add-nodeselector-to-yaml">add &rsquo;nodeSelector&rsquo; to YAML</a></li>
+            <li><a href="#node-selector-的限制">Node selector 的限制</a></li>
+          </ul>
+        </li>
+        <li><a href="#node-affinity">Node Affinity</a></li>
+        <li><a href="#63-taint-and-toleration--node-affinity-比較">63. Taint and Toleration / Node Affinity 比較</a></li>
+        <li><a href="#65-certification-tips">65. Certification Tips</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <br>
+<hr>
+<h2 id="37-pre-request-commands-and-arguments-in-docker">37. [Pre-Request] Commands and Arguments in Docker</h2>
+<br>
+<p>課程一開始就先來複習 <code>Docker File</code> 當中的 <code>CMD</code> 與 <code>ENTRYPOINT</code>，雖然講師說不在 CKAD 的考試範圍，不過 <a href="https://training.linuxfoundation.org/ckad-program-change-2021/">CKAD-2021 (即將在 2021 Q3 改版)</a> 看起來是有被納入的喔~</p>
+<p>Docker 官方文件有小實驗與列表可以參考<br>
+<a href="https://docs.docker.com/engine/reference/builder/#understand-how-cmd-and-entrypoint-interact">Docker official docs-Understand how CMD and ENTRYPOINT interact</a></p>
+<p>當我們執行</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker run ubuntu --name <span class="nb">test</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>隨即查看 docker running process (<code>docker ps</code>) 會發現 <code>test</code> 這個容器實例並不在 running 狀態。接著列出所有 container (包含 not running) <code>docker ps -a</code> 則會發現 <code>test</code> 處於 <code>Exited</code> 狀態。<br>
+container 不像 VM 一樣需要維持 OS 運作，當手上沒有需要「存活」的任務時就會退出 running status =&gt; Exit<br>
+<code>CMD</code> 和 <code>ENTRYPOINT</code> 的作用就是定義 container 裡面需要執行什麼任務。 (可以去找 <code>Docker file</code> 閱讀)</p>
+<p><img src="docker_file_cmd_format.jpg" alt="docker_file_cmd_format"></p>
+<p>▲ <code>CMD</code> 有兩種格式: shell format, JSON format。</p>
+<br>
+<p><img src="docker_file_entrypoint.jpg" alt="docker_file_entrypoint"></p>
+<p>▲ <code>ENTRYPOINT</code> 的作用。</p>
+<br>
+<p><img src="docker_file_both.jpg" alt="docker_file_both"></p>
+<p>▲ <code>CMD</code> <code>ENTRYPOINT</code> 同時使用</p>
+<br>
+<p><img src="k8s_docker_cmd_entry.jpg" alt="k8s_docker_cmd_entry"></p>
+<p>▲ 兩者應對關係</p>
+<br>
+<hr>
+<h3 id="42-enviroment-variables">42. Enviroment Variables</h3>
+<p><img src="pod_env_0.jpg" alt="pod_env_0"></p>
+<p>▲ <code>env</code> 被放在 <code>.spec.containers.env</code>。 <strong><span style='color:red'>而且是個 array。透過 <code>kubectl run -e &lt;key&gt;=&lt;value&gt;</code> 可以快速加上環境變數</span></strong></p>
+<br>
+<p><img src="pod_env_1.jpg" alt="pod_env_1"></p>
+<p>▲ <code>env</code> 總共有三種類型: <strong><span style='color:red'>plain key-value, configMap, secret</span></strong></p>
+<br>
+<p>如果把 <code>env</code> 散落在每一個 <code>YAML</code> 裡面會變得不好管理，<strong><code>configMap</code> 就是為了中央化管理而誕生。</strong></p>
+<p>BTW~ 在 <code>kubectl</code> CLI 的世界裡面有兩種創建元件的方式: <strong>1. Imperative (命令式)   2. Declarative (宣告式)</strong> (不確定考試是否會要求 2022.04.28 更新: 不會)<br>
+<a href="https://ithelp.ithome.com.tw/articles/10233761">[ithelp]Buzz Word 1 : Declarative vs. Imperative</a></p>
+<br>
+<p><img src="two_way_to_create.jpg" alt="two_way_to_create"></p>
+<br>
+<h4 id="imperative-way">Imperative way</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl create configmap NAME <span class="o">[</span>--from-file<span class="o">=[</span><span class="nv">key</span><span class="o">=]</span>source<span class="o">]</span> <span class="o">[</span>--from-literal<span class="o">=</span><span class="nv">key1</span><span class="o">=</span>value1<span class="o">]</span> <span class="o">[</span>--dry-run<span class="o">=</span>server<span class="p">|</span>client<span class="p">|</span>none<span class="o">]</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>configMap file 的內容可以參考 <a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/">[kubernetes.io]Configure a Pod to Use a ConfigMap</a> (其實就是每一行一個 key-value 啦)</p>
+<br>
+<p><img src="create_configmap_0.jpg" alt="create_configmap_0"></p>
+<br>
+<h4 id="declarative-way">Declarative way</h4>
+<p><strong><span style='color:red'>把 <code>spec:</code> 換成 <code>data:</code></span></strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">ConfigMap</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">my-config</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">data</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">xzk</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p><img src="create_configmap_1.jpg" alt="create_configmap_1"></p>
+<br>
+<p><img src="create_configmap_2.jpg" alt="create_configmap_2"></p>
+<p>▲ 將整個 <code>ENV</code> file inject 到 <code>pod</code>、將 <code>ENV</code> file 的 <strong>某個 key-value</strong> inject 到 <code>pod</code>、用 <code>volume</code> 的方式掛載 <code>configMap</code></p>
+<br>
+<h4 id="解題技巧">解題技巧</h4>
+<p><strong><span style='color:blue'>2022.04.28 考試時建議直接開 bookmark 看語法就好，這個方法會比較慢</span></strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl explain &lt;k8s_component&gt; --recursive <span class="p">|</span> grep <span class="s1">&#39;envFrom&#39;</span> -A3
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">         envFrom        &lt;[]Object&gt;
+</span></span><span class="line"><span class="cl">            configMapRef        &lt;Object&gt;
+</span></span><span class="line"><span class="cl">               name     &lt;string&gt;
+</span></span><span class="line"><span class="cl">               optional &lt;boolean&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>為什麼要 <code>--recursive</code> 呢? 因為 <strong>預設輸出並不會展開每一個欄位裡面的細項</strong>，因此會找不到我們要的 <code>envFrom</code><br>
+搞剛一點可以 <code>kubectl explain pod.spec.containers.envFrom</code> (JSON path) 去看</p>
+<br>
+<h4 id="secret">secret</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl create secret generic my-secret --from-literal<span class="o">=</span><span class="nv">DB_HOST</span><span class="o">=</span>mysql --from-literal<span class="o">=</span><span class="nv">DB_USER</span><span class="o">=</span>root --from-literal<span class="o">=</span><span class="nv">DB_PASSWD</span><span class="o">=</span>passwd --dry-run<span class="o">=</span>client -o yaml
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">data</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">APP_COLOR</span><span class="p">:</span><span class="w"> </span><span class="l">Ymx1ZQ==</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">DB_HOST</span><span class="p">:</span><span class="w"> </span><span class="l">bXlzcWw=</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">DB_PASSWD</span><span class="p">:</span><span class="w"> </span><span class="l">cGFzc3dk</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">DB_USER</span><span class="p">:</span><span class="w"> </span><span class="l">cm9vdA==</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Secret</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">creationTimestamp</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">my-secret</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>可以看到預設 <code>value</code> 都是以 Base 64 <strong><span style='color:red'>encode (編碼) 不是加密!!</span></strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## base 64 encode</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> -n <span class="s1">&#39;mysql&#39;</span> <span class="p">|</span> base64
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## base 64 decode</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> -n <span class="s1">&#39;bXlzcWw=&#39;</span> <span class="p">|</span> base64 --decode
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Pod</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">creationTimestamp</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">simple-webapp-color</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">secret-web-color</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">containers</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">mmumshad/simple-webapp-color</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">secret-web-color</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">envFrom</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">secretRef</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">my-secret</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<h3 id="47-a-quick-note-about-secrests">47. A quick note about Secrests</h3>
+<p>這邊主要介紹如何 encrypt &ldquo;secret&rdquo; in K8s &amp; K8s 本身運作 secret 的機制。</p>
+<ul>
+<li>secret 只會單向傳輸到 pod 所在的 node 身上</li>
+<li><code>kubelet</code> 儲存 secret 在 tmpfs，而不是 disk</li>
+<li>當 pods 不再需要某個 secret，<code>kubelet</code> 會刪除 local tmpfs 內的 secret</li>
+</ul>
+<br>
+<h3 id="50-docker-security">50. Docker Security</h3>
+<p><strong><span style='color:red'>Docker 預設在 container 內使用 root 來執行 process，這個 root 跟 host root 不一樣，是權限有被限縮的 root。</span></strong><br>
+下圖是 Linux root 所有 root 的超能力 (capabilities)，在 <code>/usr/include/linux/capability.h</code> 有定義。<br>
+<strong><span style='color:blue'>在 <code>docker run</code> 的時候可以 1. 更改使用者 PID (&ndash;user 1000)  2. 增減 root 超能力 <code>docker run --cap-add MAC_ADMI ubuntu</code></span></strong></p>
+<br>
+<p><img src="docker_security_0.jpg" alt="docker_security_0"></p>
+<br>
+<h3 id="51-security-contexts">51. Security Contexts</h3>
+<p>在 Kubernetes 裡面定義前面 docker 提到的 security。可以選擇定義在 <code>pod</code> 裡面 (<code>pod</code> 內所有 container 都會被套用) 或者單一 <code>container</code> 裡面</p>
+<br>
+<p><img src="security_context_0.jpg" alt="security_context_0"></p>
+<p>▲ 定義在 <code>pod</code> 內</p>
+<br>
+<p><img src="security_context_1.jpg" alt="security_context_1"></p>
+<p>▲ 定義在 <code>container</code> 內</p>
+<br>
+<p><img src="security_context_2.jpg" alt="security_context_2"></p>
+<p>▲ <strong><span style='color:red'>Capabilities 只能定義在 container 內</span></strong></p>
+<br>
+<hr>
+<h2 id="53-service-account">53. Service Account</h2>
+<p>在 Kubernetes 中有兩種帳號， <strong>User Account</strong> 與 <strong>Service Account</strong> 前者給人用，後者給 &ldquo;非人&rdquo; 使用 (<del>洗咧公鯊小</del>)<br>
+通常是給 Application 使用，例如: 負責監控 <code>Pod</code> 的 <strong>Prometheus</strong>。<br>
+Prometheus (普羅米修斯) 需要跟 Kubernetes API 互動來獲取 <code>pod</code> 資訊，所以需要一組 <strong>Service Account</strong></p>
+<p><strong><span style='color:blue'>每個 <code>namespace</code> 都會有一組名為 <code>default</code> 的 Service Account</span></strong></p>
+<br>
+<p><img src="default_service_account_0.jpg" alt="default_service_account_0"></p>
+<br>
+<p><code>curl</code> 範例:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl https://192.168.49.2:8443/api -insecure --header <span class="s2">&#34;Authorization: Bearer &lt;YOUR_TOKEN&gt;&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p><strong><span style='color:red'><code>default</code> Service Account 預設會 auto mount 進 <code>pod</code> 裡面</span></strong></p>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl describe pod xxxx
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p><img src="default_service_account_1.jpg" alt="default_service_account_1"></p>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl <span class="nb">exec</span> echoserver-c56759dd6-5c8h9 -- ls -al /var/run/secrets/kubernetes.io/serviceaccount
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">total <span class="m">4</span>
+</span></span><span class="line"><span class="cl">drwxrwxrwt <span class="m">3</span> root root  <span class="m">140</span> Aug  <span class="m">5</span> 01:13 .
+</span></span><span class="line"><span class="cl">drwxr-xr-x <span class="m">3</span> root root <span class="m">4096</span> Aug  <span class="m">5</span> 01:13 ..
+</span></span><span class="line"><span class="cl">drwxr-xr-x <span class="m">2</span> root root  <span class="m">100</span> Aug  <span class="m">5</span> 01:13 ..2021_08_05_01_13_39.467286527
+</span></span><span class="line"><span class="cl">lrwxrwxrwx <span class="m">1</span> root root   <span class="m">31</span> Aug  <span class="m">5</span> 01:13 ..data -&gt; ..2021_08_05_01_13_39.467286527
+</span></span><span class="line"><span class="cl">lrwxrwxrwx <span class="m">1</span> root root   <span class="m">13</span> Aug  <span class="m">5</span> 01:13 ca.crt -&gt; ..data/ca.crt
+</span></span><span class="line"><span class="cl">lrwxrwxrwx <span class="m">1</span> root root   <span class="m">16</span> Aug  <span class="m">5</span> 01:13 namespace -&gt; ..data/namespace
+</span></span><span class="line"><span class="cl">lrwxrwxrwx <span class="m">1</span> root root   <span class="m">12</span> Aug  <span class="m">5</span> 01:13 token -&gt; ..data/token
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>Deployment</strong> (練習 LAB 考題)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl explain deployment.spec.template.spec <span class="p">|</span> grep <span class="s1">&#39;serviceAccount&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">   serviceAccount       &lt;string&gt;
+</span></span><span class="line"><span class="cl">     Deprecated: Use serviceAccountName instead.
+</span></span><span class="line"><span class="cl">   serviceAccountName   &lt;string&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<hr>
+<h2 id="56-resource-requirements">56. Resource Requirements</h2>
+<br>
+<p><a href="https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/">Managing Resources for Containers</a></p>
+<br>
+<p><code>scheduler</code> 會針對使用者給定的 request 去分配這個 <code>pod</code> 應該去哪個 node</p>
+<p><strong><span style='color:red'>YAML 路徑</span></strong></p>
+<blockquote>
+</blockquote>
+<pre><code>spec.containers[].resources.limits.cpu
+spec.containers[].resources.limits.memory
+spec.containers[].resources.limits.hugepages-&lt;size&gt;
+spec.containers[].resources.requests.cpu
+spec.containers[].resources.requests.memory
+spec.containers[].resources.requests.hugepages-&lt;size&gt;
+</code></pre>
+<p><strong>範例:</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Pod</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">frontend</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">containers</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">app</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">images.my-company.example/app:v4</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">resources</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">requests</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;64Mi&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;250m&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">limits</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;128Mi&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;500m&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">log-aggregator</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">images.my-company.example/log-aggregator:v6</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">resources</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">requests</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;64Mi&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;250m&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">limits</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;128Mi&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;500m&#34;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p><strong><span style='color:red'>只有設定 limit (上限) 而沒有設定 request (需求) 的情況下，<code>Kubernetes</code> 會自動 <code>request == limit</code></span></strong></p>
+<p><strong>&gt; (錯的! 請看 57.) Kubernetes 預設分配 <span style='color:blue'>0.5 CPU 與 256 Mi memory</span> 到每個 <code>pod</code></strong> (CPU 單位最低是 <code>1m == 0.001</code>， <strong>若設定成 1 代表 1 vCore</strong>)<br>
+<strong><span style='color:red'>&gt; Kubernetes 會自動調節 CPU usage 讓 CPU 使用率不超出我們設定的閥值，不過 memory 並不會! 當 memory 吃超過 <code>limits</code> 這個 <code>pod</code> 將會被消滅 (terminate)</span></strong></p>
+<br>
+<hr>
+<h2 id="57-note-on-default-resource-requirements-and-limits">57. Note on default resource requirements and limits</h2>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="line"><span class="cl">大家下午好，想請問一下如果不在 <span class="sb">`namespace`</span> 設定 <span class="sb">`LimitRange`</span> ， 預設 <span class="sb">`pod`</span> 是可以將整個 host 的硬體資源吃滿嗎? (runtime 是 Docker 的話)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong><span style='color:red'> Yes! 沒有設定的話就是用多少吃多少。</span></strong></p>
+<br>
+<hr>
+<h2 id="58-practice-test---resource-requirements">58. Practice Test - Resource Requirements</h2>
+<br>
+<p><img src="resource_oomkilled.jpg" alt="resource_oomkilled"></p>
+<p>▲ 如果 <code>kubectl get pod</code> 看到 <code>status</code> 是 <code>CrashLoopBackOff</code> 的話 <strong><span style='color:red'>原因 (reason) 不是這個!!</span></strong><br>
+請用 <code>kubectl describe pod &lt;pod_name&gt;</code> 下去看</p>
+<br>
+<p><img src="adjust_pod_resource.jpg" alt="adjust_pod_resource"></p>
+<p><strong><span style='color:red'>▲ 調整 <code>pod</code> resources 必須砍掉重練。</span></strong></p>
+<br>
+<hr>
+<h2 id="59-taints-and-toleration-汙點-與-容忍度">59. Taints and Toleration (汙點 與 容忍度)</h2>
+<br>
+<p><strong><span style='color:blue'>這兩個是影響 <code>scheduler</code> 調度/<del>指定</del> (下一章節要討論的 node affinity 才能夠指定 node) <code>pod</code> 的機制。</span></strong> 我們會將 <strong>worker node 設定 <code>taints</code>；對 <code>pod</code> 設定 <code>toleration</code>。</strong></p>
+<br>
+<h3 id="taint-to-a-worker-node">Taint to a worker node</h3>
+<p><a href="https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/">Taints and Tolerations</a></p>
+<br>
+<p><img src="taint_to_a_node_0.jpg" alt="taint_to_a_node_0"></p>
+<p>透過 <code>kubectl taint &lt;NODE&gt; &lt;NAME&gt; key=value:&lt;taint_effect&gt;</code> 可以將 worker node 「汙點」。<br>
+<code>&lt;taint_effect&gt;</code> 定義了當 <code>pod</code> 不能忍受 (not tolerate) 時 <strong>觸發 scheduler 的策略</strong><br>
+其中 <code>&lt;taint_effect&gt;</code> 的部分有三種: <strong>1. NoSchedule</strong> <strong>2. PreferNoSchedule</strong> <strong>3. NoExecute</strong></p>
+<ol>
+<li><code>NoSchedule</code>: 從此以後不符合資格的 <code>pod</code> 將不會被 <code>scheduler</code> 調度過來。 <strong>不朔及既往</strong></li>
+<li><code>PreferNoSchedule</code>: 小橋流水人家&hellip;.不要! 但接受內地的 「word 很大，你忍耐一下」 「我叫你吹!」 (<del>兩個都是內地沒毛病</del>)</li>
+<li><code>NoExecute</code>: 不符合資格的 <code>pod</code> 將不會被 <code>scheduler</code> 調度過來。 <strong><span style='color:red'>會朔及既往</span></strong></li>
+</ol>
+<br>
+<p>範例:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl taint nodes node1 <span class="nv">key1</span><span class="o">=</span>value1:NoSchedule
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## remove</span>
+</span></span><span class="line"><span class="cl">kubectl taint nodes node1 <span class="nv">key1</span><span class="o">=</span>value1:NoSchedule-
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<h3 id="tolerate-a-pod">Tolerate a pod</h3>
+<p>假設我們對 <code>node1</code> 執行 <code>taint</code> 如下:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl taint nodes node1 <span class="nv">key1</span><span class="o">=</span>value1:NoScheduler
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p>那要讓某個 <code>pod</code> 適應 <code>node1</code> 的 YAML 會就長這樣 ↓ (<strong><span style='color:red'>註: 如果 <code>operator</code> 是 &ldquo;Exist&rdquo; 的話 <code>value</code> 不用被宣告。</span></strong>)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Pod</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">nginx</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">env</span><span class="p">:</span><span class="w"> </span><span class="l">test</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">containers</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">nginx</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">nginx</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">imagePullPolicy</span><span class="p">:</span><span class="w"> </span><span class="l">IfNotPresent</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">tolerations</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;key1&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Equal&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;value1&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">effect</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;NoSchedule&#34;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong><span style='color:red'>注意!! 每個 <code>tolerations</code> 底下的 value 都必須要加 <code>&quot;xxxx&quot;</code> 而且 <code>operator: &quot;xxx&quot;</code> 是必要的</span></strong></p>
+<br>
+<p><strong><span style='color:green'>★ 觀念澄清!!</span></strong> 在 Taint and Toleration 當中 <strong><span style='color:red'>我們只是讓 <code>node1</code> 可以接受 「大奶微微」(taint the node)，但絕對沒有保證 「大奶微微」一定會被 放置/調度 在 <code>node1</code> 喔!!</span></strong></p>
+<br>
+<p>另外 master-node 也是透過 taint 來達成排擠非系統 <code>pod</code> 的目的。</p>
+<br>
+<p><img src="taint_to_a_node_1.jpg" alt="taint_to_a_node_1"></p>
+<p>▲ minikube 貌似沒有加 XDD 不過正常應該會看到 <code>Taints: node-role.kubernetes.io/master:NoSchedule</code> 啦~</p>
+<br>
+<hr>
+<h2 id="62-node-selector">62. Node Selector</h2>
+<br>
+<p>Node Selectors 提供一個比較簡單的方式來讓使用者指定 <code>pod</code> 放到哪個 worker node。<br>
+兩個步驟: <strong>1. Label a node</strong>  <strong>2. add to YAML</strong></p>
+<br>
+<h3 id="label-a-node">Label a node</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl label nodes &lt;node-name&gt; &lt;key&gt;<span class="o">=</span>&lt;value&gt;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## show label on node</span>
+</span></span><span class="line"><span class="cl">kubectl describe nodes &lt;node-name&gt; <span class="p">|</span> grep -i <span class="s1">&#39;label&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Labels:             beta.kubernetes.io/arch<span class="o">=</span>amd64
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## remove label on node</span>
+</span></span><span class="line"><span class="cl">kubectl label nodes &lt;node-name&gt; &lt;key&gt;<span class="o">=</span>&lt;value&gt;-
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<h3 id="add-nodeselector-to-yaml">add &rsquo;nodeSelector&rsquo; to YAML</h3>
+<p>範例來源: <a href="https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/">[kubernetes.io] Assigning Pods to Nodes</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Pod</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">nginx</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">env</span><span class="p">:</span><span class="w"> </span><span class="l">test</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">containers</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">nginx</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">nginx</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">imagePullPolicy</span><span class="p">:</span><span class="w"> </span><span class="l">IfNotPresent</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">nodeSelector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">disktype</span><span class="p">:</span><span class="w"> </span><span class="l">ssd</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<h3 id="node-selector-的限制">Node selector 的限制</h3>
+<p>先假設我們有四個 node <code>node{1..4}</code>:</p>
+<p>node1: <code>size: large</code><br>
+node2: <code>size: small</code><br>
+node3: <code>size: small</code><br>
+node4: <code>size: medium</code></p>
+<p><strong><span style='color:red'>Node selector 沒辦法做到條件判斷!</span></strong> 例如:</p>
+<p><code>size: arge</code> OR <code>size: medium</code><br>
+NOT <code>size: small</code></p>
+<p>這個時候就需要 <strong>Node Affinity</strong> 了~</p>
+<br>
+<hr>
+<h2 id="node-affinity">Node Affinity</h2>
+<br>
+<p><img src="node_affinity_0.jpg" alt="node_affinity_0"></p>
+<p>▲ 因為多了 <code>operator</code> 可以做判斷式。</p>
+<p><code>operator</code> 可以是 <code>In</code>, <code>NotIn</code>, <code>Exists</code> (常用) 其中 <code>Exists</code> 只判斷是否有這個 <code>key</code> 而不用給定 <code>value</code>。</p>
+<p><img src="node_affinity_1.jpg" alt="node_affinity_1"></p>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl explain pod.spec.affinity
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">KIND:     PodVERSION:  v1
+</span></span><span class="line"><span class="cl">RESOURCE: affinity &lt;Object&gt;
+</span></span><span class="line"><span class="cl">DESCRIPTION:
+</span></span><span class="line"><span class="cl">     If specified, the pod&#39;s scheduling constraints
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">     Affinity is a group of affinity scheduling rules.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">FIELDS:
+</span></span><span class="line"><span class="cl">   nodeAffinity &lt;Object&gt;
+</span></span><span class="line"><span class="cl">     Describes node affinity scheduling rules for the pod.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">   podAffinity  &lt;Object&gt;
+</span></span><span class="line"><span class="cl">     Describes pod affinity scheduling rules (e.g. co-locate this pod in the
+</span></span><span class="line"><span class="cl">     same node, zone, etc. as some other pod(s)).
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">   podAntiAffinity      &lt;Object&gt;
+</span></span><span class="line"><span class="cl">     Describes pod anti-affinity scheduling rules (e.g. avoid putting this pod
+</span></span><span class="line"><span class="cl">     in the same node, zone, etc. as some other pod(s)).
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>本章節只會用到 <code>nodeAffinity</code> 的部分~</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl explain pod.spec.affinity.nodeAffinity
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">KIND:     Pod
+</span></span><span class="line"><span class="cl">VERSION:  v1
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">RESOURCE: nodeAffinity &lt;Object&gt;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">DESCRIPTION:
+</span></span><span class="line"><span class="cl">     Describes node affinity scheduling rules for the pod.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">     Node affinity is a group of node affinity scheduling rules.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">FIELDS:
+</span></span><span class="line"><span class="cl">   preferredDuringSchedulingIgnoredDuringExecution      &lt;[]Object&gt;
+</span></span><span class="line"><span class="cl">     The scheduler will prefer to schedule pods to nodes that satisfy the
+</span></span><span class="line"><span class="cl">     affinity expressions specified by this field, but it may choose a node that
+</span></span><span class="line"><span class="cl">     violates one or more of the expressions. The node that is most preferred is
+</span></span><span class="line"><span class="cl">     the one with the greatest sum of weights, i.e. for each node that meets all
+</span></span><span class="line"><span class="cl">     of the scheduling requirements (resource request, requiredDuringScheduling
+</span></span><span class="line"><span class="cl">     affinity expressions, etc.), compute a sum by iterating through the
+</span></span><span class="line"><span class="cl">     elements of this field and adding &#34;weight&#34; to the sum if the node matches
+</span></span><span class="line"><span class="cl">     the corresponding matchExpressions; the node(s) with the highest sum are
+</span></span><span class="line"><span class="cl">     the most preferred.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">   requiredDuringSchedulingIgnoredDuringExecution       &lt;Object&gt;
+</span></span><span class="line"><span class="cl">     If the affinity requirements specified by this field are not met at
+</span></span><span class="line"><span class="cl">     scheduling time, the pod will not be scheduled onto the node. If the
+</span></span><span class="line"><span class="cl">     affinity requirements specified by this field cease to be met at some point
+</span></span><span class="line"><span class="cl">     during pod execution (e.g. due to an update), the system may or may not try
+</span></span><span class="line"><span class="cl">     to eventually evict the pod from its node.
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong><code>nodeAffinity</code> 分為兩種 rule: <code>preferredDuringSchedulingIgnoredDuringExecution</code> 與 <code>requiredDuringSchedulingIgnoredDuringExecution</code></strong> <del>有夠長</del></p>
+<p><strong>看起來很長，不過<span style='color:red'>實際上只有前面不同</span>: <code>preferred</code> 和 <code>required</code></strong>，官方在未來有考慮增加 <code>required ... required...</code>。<br>
+來解釋一下差異~</p>
+<p>什麼時候會觸發 <code>DuringScheduling</code> 呢? <strong>Ans:</strong> 使用到 master node 的 scheduler 時。 例如: 新增 <code>pod</code><br>
+什麼時候會觸發 <code>DuringExecution</code> 呢? <strong>Ans:</strong> 破壞到現有條件時。 例如: un-label 某個 worker node，而這個 worker node 上面的 <code>pod</code> 有設定這個 label<br>
+不過目前 nodeAffinity 對於 <code>DuringExecution</code> 都是 <strong><span style='color:red'>Ignor</span></strong>。換句話說就是不會因為 K8s admin un-label 了某個 node 而觸發 <code>pod</code> 被調度到其它 node 身上，或者讓 <code>pod</code> 完全沒有容身之地造成崩潰。</p>
+<p><code>preferred</code> (偏好), <code>required</code> (要求) 應該非常好理解。<strong><span style='color:blue'>假設 worker-node 忘記 label 了，前者一樣可以被調度安置；後者就會讓 <code>pod</code> 處於 pending 狀態喔~</span></strong></p>
+<p><strong><span style='color:brown'>Tips: 查詢 worker-node 身上的 label -&gt; <code>kubectl get nodes &lt;node&gt; --show-labels</code></span></strong></p>
+<br>
+<hr>
+<h2 id="63-taint-and-toleration--node-affinity-比較">63. Taint and Toleration / Node Affinity 比較</h2>
+<br>
+<p><img src="compare_tt_and_nf_0.jpg" alt="compare_tt_and_nf_0"></p>
+<p>▲ 我們的目標是將同顏色的 <code>pod</code> 放到同顏色的 <code>node</code> 上 <strong><span style='color:red'>AND</span></strong> 灰色 <code>pod</code> 不會被安放到彩色世界。</p>
+<br>
+<ul>
+<li><strong><span style='color:purple'>Taint and Toleration:</span></strong> 可以保證 node 上只有正確的 <code>pod</code>，<strong><span style='color:red'>但不能保證彩色的 <code>pod</code> 不會被丟去灰色的 Other (worker-node)!</span></strong></li>
+</ul>
+<br>
+<p><img src="compare_tt_and_nf_1.jpg" alt="compare_tt_and_nf_1"></p>
+<p>▲ Red <code>pod</code> 有機會被放置到 Other worker-node 身上。</p>
+<br>
+<ul>
+<li><strong><span style='color:purple'>Node Affinity:</span></strong> 可以保證彩色的 <code>pod</code> 只能被放在彩色的 worker-node 身上， <strong>但不能保證灰色的 <code>pod</code> 不會被丟去彩色的 worker-node 身上!</strong></li>
+</ul>
+<br>
+<p><img src="compare_tt_and_nf_2.jpg" alt="compare_tt_and_nf_2"></p>
+<p>▲ Gray <code>pod</code> 有機會被放置到彩色 worker-node 身上。</p>
+<br>
+<p><strong><span style='color:red'>因此同時使用兩個政策即可達成目的!</span></strong></p>
+<br>
+<hr>
+<h2 id="65-certification-tips">65. Certification Tips</h2>
+<br>
+<p>這邊講師列了三篇考試心得與小技巧~</p>
+<ul>
+<li>
+<p><a href="https://www.linkedin.com/pulse/my-ckad-exam-experience-atharva-chauthaiwale/">My CKAD exam experience</a></p>
+<ol>
+<li>
+<p>千萬不要手刻整份 YAML!! <code>kubectl run</code>, <code>kubectl create ... --dry-run=client -o yaml &gt; def.yml</code></p>
+</li>
+<li>
+<p>善用 <code>alias</code> (我大概只會用兩個 <code>alias kk='kubectl'</code>, <code>alias kkr='kubectl -o yaml --dry-run=client'</code>)</p>
+</li>
+<li>
+<p><code>~/.vimrc</code> (本人不使用)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim ~/.vimrc
+</span></span><span class="line"><span class="cl"><span class="nb">set</span> nu
+</span></span><span class="line"><span class="cl"><span class="nb">set</span> expandtab
+</span></span><span class="line"><span class="cl"><span class="nb">set</span> <span class="nv">shiftwidth</span><span class="o">=</span><span class="m">2</span>
+</span></span><span class="line"><span class="cl"><span class="nb">set</span> <span class="nv">tabstop</span><span class="o">=</span><span class="m">2</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 2021/11/22 新增 (不用死記，進去 vim tab 的出來)</span>
+</span></span><span class="line"><span class="cl"><span class="c1">## 新增之後就不用拿尺對 YAML file 了!</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">set</span> cursorcolumn
+</span></span><span class="line"><span class="cl"><span class="nb">set</span> cursorline
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+</li>
+<li>
+<p>使用考場 (網頁) 提供的 note pad 記下題號與佔分，如果你要跳題的話</p>
+</li>
+</ol>
+</li>
+</ul>
+<br>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2021-07-30
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/ckad/">CKAD</a>
+          <a href="/tags/kubernetes/">Kubernetes</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/20211027-ckad-note-section-5-observability/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">CKAD Note Section 5 Observability</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/20210727-ckad-note-section-1-introduction/">
+            <span class="next-text nav-default">CKAD Note Section 1 Introduction</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.64437849d125a2d603b3e71d6de5225d641a32d17168a58106e0b61852079683.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

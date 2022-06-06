@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>閱讀 R730XD owner manual 淺析伺服器記憶體 - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="這篇筆記紀錄閱讀 Dell R730XD owners manual 記憶體 (memory) 學到的東西，藉此還債。 ▲ 主修資工腦袋空空 科普資源 在開始讀 owner manual 之前，有幾個關於 DIMM (Double In-line Memory Module) 的科普資源，建議先看。" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.98.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20220606-read-r730xd-owner-manual-learning-about-server-dimm/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="閱讀 R730XD owner manual 淺析伺服器記憶體" />
+<meta property="og:description" content="這篇筆記紀錄閱讀 Dell R730XD owners manual 記憶體 (memory) 學到的東西，藉此還債。 ▲ 主修資工腦袋空空 科普資源 在開始讀 owner manual 之前，有幾個關於 DIMM (Double In-line Memory Module) 的科普資源，建議先看。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.xxzk.me/post/20220606-read-r730xd-owner-manual-learning-about-server-dimm/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-06-06T09:19:33+00:00" />
+<meta property="article:modified_time" content="2022-06-06T09:19:33+00:00" />
+
+<meta itemprop="name" content="閱讀 R730XD owner manual 淺析伺服器記憶體">
+<meta itemprop="description" content="這篇筆記紀錄閱讀 Dell R730XD owners manual 記憶體 (memory) 學到的東西，藉此還債。 ▲ 主修資工腦袋空空 科普資源 在開始讀 owner manual 之前，有幾個關於 DIMM (Double In-line Memory Module) 的科普資源，建議先看。"><meta itemprop="datePublished" content="2022-06-06T09:19:33+00:00" />
+<meta itemprop="dateModified" content="2022-06-06T09:19:33+00:00" />
+<meta itemprop="wordCount" content="1871">
+<meta itemprop="keywords" content="server,dimm," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="閱讀 R730XD owner manual 淺析伺服器記憶體"/>
+<meta name="twitter:description" content="這篇筆記紀錄閱讀 Dell R730XD owners manual 記憶體 (memory) 學到的東西，藉此還債。 ▲ 主修資工腦袋空空 科普資源 在開始讀 owner manual 之前，有幾個關於 DIMM (Double In-line Memory Module) 的科普資源，建議先看。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">閱讀 R730XD owner manual 淺析伺服器記憶體</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-06-06 </span>
+        <div class="post-category">
+            <a href="/categories/infra/"> infra </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#科普資源">科普資源</a>
+          <ul>
+            <li><a href="#1-硬件茶談-为什么装机内存条推荐安装到第24槽而不是13槽为什么itx主板超频内存更容易">1) 硬件茶談-为什么装机内存条推荐安装到第24槽而不是13槽？为什么ITX主板超频内存更容易？</a></li>
+            <li><a href="#2-osslab-如何正確挑選伺服器記憶體達到最佳效能不同時脈容量廠牌可混插嗎">2) OSSLAB-如何正確挑選伺服器記憶體達到最佳效能，不同時脈、容量、廠牌可混插嗎?</a></li>
+            <li><a href="#3-電腦王-圖解ram結構與原理系統記憶體的channelchip與bank">3) 電腦王-圖解RAM結構與原理，系統記憶體的Channel、Chip與Bank</a></li>
+          </ul>
+        </li>
+        <li><a href="#開始閱讀-owners-manual-吧">開始閱讀 owners manual 吧!</a>
+          <ul>
+            <li><a href="#memory-sockets-location">Memory sockets location</a></li>
+            <li><a href="#memory-population-rule">Memory population rule</a></li>
+            <li><a href="#general-memory-module-installation-guidelines">General memory module installation guidelines</a></li>
+            <li><a href="#mode-specific-guidelines">Mode-specific guidelines</a></li>
+          </ul>
+        </li>
+        <li><a href="#為什麼插-lrdimm-可以有比較高的記憶體總容量-why-lrdimm-have-better-capacity-than-rdimm">為什麼插 LRDIMM 可以有比較高的記憶體總容量 Why LRDIMM have better capacity than RDIMM</a></li>
+        <li><a href="#其它參考資料">其它參考資料</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>這篇筆記紀錄閱讀 <a href="https://dl.dell.com/topicspdf/poweredge-r730xd_owners-manual_en-us.pdf">Dell R730XD owners manual</a> 記憶體 (memory) 學到的東西，藉此還債。</p>
+<p><img src="sorry_about_as_a_csie_student.jpg" alt="sorry_about_as_a_csie_student"></p>
+<p>▲ <del>主修資工腦袋空空</del></p>
+<h2 id="科普資源">科普資源</h2>
+<p>在開始讀 owner manual 之前，有幾個關於 DIMM (Double In-line Memory Module) 的科普資源，建議先看。</p>
+<h3 id="1-硬件茶談-为什么装机内存条推荐安装到第24槽而不是13槽为什么itx主板超频内存更容易">1) 硬件茶談-为什么装机内存条推荐安装到第24槽而不是13槽？为什么ITX主板超频内存更容易？</h3>
+<p><a href="https://www.youtube.com/watch?v=aRZcm4WvJEc">【硬件科普】为什么装机内存条推荐安装到第24槽而不是13槽？为什么ITX主板超频内存更容易？</a></p>
+<p>以精美動畫講解 motherboard 上 DIMM socket layout type 的差異。</p>
+<h3 id="2-osslab-如何正確挑選伺服器記憶體達到最佳效能不同時脈容量廠牌可混插嗎">2) OSSLAB-如何正確挑選伺服器記憶體達到最佳效能，不同時脈、容量、廠牌可混插嗎?</h3>
+<p><a href="https://www.osslab.com.tw/server-memory-mixed-cfg-test/">如何正確挑選伺服器記憶體達到最佳效能，不同時脈、容量、廠牌可混插嗎?</a></p>
+<p>熊大帶你了解 server 使用的 DIMM 有哪些種類，在效能上分別有哪些差異。</p>
+<h3 id="3-電腦王-圖解ram結構與原理系統記憶體的channelchip與bank">3) 電腦王-圖解RAM結構與原理，系統記憶體的Channel、Chip與Bank</h3>
+<p><a href="https://www.techbang.com/posts/18381-from-the-channel-to-address-computer-main-memory-structures-to-understand?page=1">圖解RAM結構與原理，系統記憶體的Channel、Chip與Bank</a></p>
+<p>介紹 DIMM 階層關係。</p>
+<h2 id="開始閱讀-owners-manual-吧">開始閱讀 owners manual 吧!</h2>
+<p><a href="https://dl.dell.com/topicspdf/poweredge-r730xd_owners-manual_en-us.pdf#_OPENTOPIC_TOC_PROCESSING_d112e35442">Dell R730XD owners manual - System memory</a>，或者手動展開: <strong>Installing and removing system componets &gt; System memory</strong></p>
+<p>系統記憶體運作頻率 <strong><span style='color:blue'>支援 1866 MT/s, 2133 MT/s, or 2400 MT/s</span></strong> 這取決於:</p>
+<ul>
+<li>DIMM type (RDIMM or LRDIMM)，不管是 RDIMM 或者 LRDIMM 都能跑到 2400 MT/s 才對，取決於 DIMM 本身的頻率。<strong><span style='color:red'>另外系統不接受 RDIMM/LRDIMM 混插</span></strong></li>
+<li>Number of DIMMs populated per channel，<strong><span style='color:red'>一個通道插了幾支 DIMM 會直接影響整個系統 memory 運作的最高時脈!</span></strong> 待會後面互有表，這也是為什麼通常我們的 server 記憶體不會插滿 (<del>其實是沒錢</del>) 不過要小心插錯/亂插 的情況</li>
+<li>System profile selected，系統效能選擇 (eg: Performance Optimized, Custom, or Dense Configuration Optimized)</li>
+<li>CPU 本身支援的 memory 最高時脈。 以 <a href="https://ark.intel.com/content/www/us/en/ark/products/91750/intel-xeon-processor-e52687w-v4-30m-cache-3-00-ghz.html">E5-2687WV4</a> 來說可以支援  <strong><span style='color:blue'>DDR4 1600/1866/2133/2400</span></strong></li>
+</ul>
+<h3 id="memory-sockets-location">Memory sockets location</h3>
+<p><img src="memory_socket_location.jpg" alt="memory_socket_location"></p>
+<p>▲ 這張主機板總共有 <strong><span style='color:blue'>12+12 sockets，每個 CPU 有 4 channels =&gt; 3 DIMMs per channel</span></strong></p>
+<p>每個 channel 插槽的順序分別以 <strong><span style='color:blue'>白色</span></strong>、<strong><span style='color:black'>黑色</span></strong>、<strong><span style='color:green'>綠色</span></strong> 標示，而且可以發現 <strong><span style='color:red'>白色插槽永遠是每個 channel 離 CPU 最遠的那一個，同時也是最優先安裝 (populated)、最推薦、干擾最小 的插槽</span></strong>  (合理推測 layout 是拉到中間後往左右延伸的 T-type)</p>
+<p><img src="memory_channel_table.jpg" alt="memory_channel_table"></p>
+<p>▲ Table 35. Memory channels</p>
+<h3 id="memory-population-rule">Memory population rule</h3>
+<p><img src="memory_population_rdimm.jpg" alt="memory_population_rdimm"></p>
+<p>▲ 我們先從 RDIMM population rule 看起，可以看到 <strong><span style='color:red'>當我們把每個 channel 插好插滿時，記憶體時脈只能以最低時脈運作</span></strong></p>
+<p>最後一個欄位的 <strong><span style='color:blue'>&ldquo;Maximum DIMM Rank per Channel&rdquo;</span></strong> 的 Rank 是什麼呢?</p>
+<blockquote>
+<p>A memory rank is a set of DRAM chips connected to the same chip select, which are therefore accessed simultaneously</p>
+</blockquote>
+<p>來源: <a href="https://www.digikey.com/Site/Global/Layouts/DownloadPdf.ashx?pdfUrl=EE33DF78203D4692B71894E732852EA4">digikey - Document #AN0033 – DRAM Memory Module Rank Calculation Whitepaper</a></p>
+<p><img src="pcadv_memory_rank.jpg" alt="pcadv_memory_rank"></p>
+<p>▲ rank 就是由好幾個 DRAM chip 組合而成~ 上圖是 single rank 的情況</p>
+<p><img src="sk_single_rank_rdimm.jpg" alt="sk_single_rank_rdimm"></p>
+<p>▲ 實際從倉庫抓一條 RDIMM 來看，<strong><span style='color:red'>1R 代表 one rank，x8 則代表每個 chip 內總共有 8 個 bank</span></strong> (硬件茶談、電腦王 都有介紹 bank 是什麼，可以想像成一個 DRAM chip 內總共有幾層樓)</p>
+<blockquote>
+<p>The x4 and x8 refer to the number of banks on the memory component or chip.</p>
+</blockquote>
+<p><strong><span style='color:red'>實際上 &ldquo;Maximum DIMM Rank per Channel&rdquo; 的意思不是 「每一個 channel 最多只能有幾個 rank 」而是只能插 1R/2R 規格的 DIMM (以 RDIMM 舉例)</span></strong></p>
+<p><img src="memory_population_lrdimm.jpg" alt="memory_population_lrdimm"></p>
+<p>▲ <strong><span style='color:red'>LRDIMM</span></strong> 插滿三條最高時脈就比 RDIMM 來的高，<strong><span style='color:red'>也能吃到 x8 的 DIMM (畢竟也是這樣才能有更高的單條容量)</span></strong></p>
+<h3 id="general-memory-module-installation-guidelines">General memory module installation guidelines</h3>
+<ul>
+<li>x4 and x8 規格的 DIMM 可以混插，更多詳細資訊請洽 <a href="https://dl.dell.com/topicspdf/poweredge-r730xd_owners-manual_en-us.pdf#_OPENTOPIC_TOC_PROCESSING_d112e35796">Mode-specific guidelines section</a></li>
+<li>安裝 DIMM 的優先順序: <strong><span style='color:blue'>白色</span></strong>、<strong><span style='color:black'>黑色</span></strong>、<strong><span style='color:green'>綠色</span></strong></li>
+<li>當混插不同容量的 DIMM 時，<strong><span style='color:red'>大的優先安裝</span></strong></li>
+</ul>
+<h3 id="mode-specific-guidelines">Mode-specific guidelines</h3>
+<p>Dell R730XD 總共有四個模式可以在 BIOS 內供使用者選擇。</p>
+<h4 id="advanced-error-correction-code-advanced-ecc-mode">Advanced Error Correction Code (Advanced ECC mode)</h4>
+<p>這個模式提升了 DIMM 的容錯，做法有點類似將兩個 channel 合併，開啟時必須符合以下規定</p>
+<ul>
+<li>DIMM 必須是相同容量、時脈、其它技術，且成對 (pair)</li>
+<li>每個 channel 的第三個 socket 沒辦法被使用 (開機時 POST 會報錯)，裝了 A1 就必須裝 A2，裝了 A3 就必須裝 A4 &hellip; 以此類推</li>
+</ul>
+<h4 id="memory-optimized-independent-channel-mode">Memory optimized independent channel mode</h4>
+<p>(用不太到，manual 上面的解釋也不多，Google 到的也&hellip;) 我暫時把它當作可以支援總容量為 3GB, 6GB,12GB 這種特殊 (不同容量混插?) 容量的特殊模式好了&hellip;</p>
+<blockquote>
+<p>This mode supports Single Device Data Correction (SDDC) only for memory modules that use x4 device width. It does not
+impose any specific slot population requirements.</p>
+</blockquote>
+<p>▲ R730XD owners manual 就只有寫這樣&hellip;</p>
+<blockquote>
+<p>In this mode, the MCHs run independently of each other; for example, one can be idle, one can be performing a write operation, and the other can be preparing for a read operation. Memory may be installed in one, two, or three channels. To fully realize the performance benefit of the memory optimized mode, all three channels per CPU should be populated. This implies that some ‘atypical’ memory configurations, such as 3GB, 6GB, or 12GB, will yield the best performance. This is the recommended mode unless specific RAS features are needed.</p>
+</blockquote>
+<p>▲ Google 到的</p>
+<p>ref: <a href="https://serverfault.com/questions/387736/should-i-use-bios-advanced-ecc-in-dell-poweredge-r710-bios-with-ecc-dimms">Should I use bios &ldquo;Advanced ECC&rdquo; in Dell PowerEdge R710 Bios with ECC DIMMs?</a></p>
+<h4 id="memory-sparing">Memory sparing</h4>
+<p>這個模式下，每個 channel 會保留一個 rank 當作備援，當其它運作中的 rank 被偵測到錯誤發生時 (ECC 做動)，該 rank 的 data 會被搬到這個 spare rank，發生錯誤的 rank 同時也會被 disable。</p>
+<p><strong><span style='color:red'>當開啟此模式，OS (或者 hypervisor) 看到的可用記憶體空間 (available memory) 將會減少 one rank per channel 的容量!</span></strong></p>
+<h4 id="memory-mirroring">Memory mirroring</h4>
+<p><strong><span style='color:red'>這個模式提供最強的可靠性，簡單講就是將 DIMM 做 RAID1 啦~ 相對的 memory capability 會直接減半</span></strong></p>
+<h2 id="為什麼插-lrdimm-可以有比較高的記憶體總容量-why-lrdimm-have-better-capacity-than-rdimm">為什麼插 LRDIMM 可以有比較高的記憶體總容量 Why LRDIMM have better capacity than RDIMM</h2>
+<p><img src="r730xd_memory_spec.jpg" alt="r730xd_memory_spec"></p>
+<p>▲ 當時我看到 <a href="https://dl.dell.com/topicspdf/poweredge-r730xd_owners-manual_en-us.pdf#_OPENTOPIC_TOC_PROCESSING_d112e21986">memory spec</a> 針對不同 type 的 DIMM 居然有不同的支援最高容量非常訝異! 經過爬文之後查得以下原因:</p>
+<p><strong><span style='color:red'>LRDIMM 在 rank 輸出 data 之前加了一個 DB (data buffer)，也因此可以乘載更高的 rank 數，成就單支 DIMM 高容量的場景。</span></strong></p>
+<p><img src="xfastest_rdimm_vs_lrdimm.jpg" alt="xfastest_rdimm_vs_lrdimm"></p>
+<p>▲ <a href="https://news.xfastest.com/interview/10575/rambus%E6%8E%A8%E5%87%BA%E9%A6%96%E6%AC%BE%E7%82%BAddr4-rdimmlrdimm%E6%A8%A1%E7%B5%84%E9%81%A9%E7%94%A8%E7%9A%84rcd%E8%88%87%E8%B3%87%E6%96%99%E7%B7%A9%E8%A1%9D%E6%99%B6%E7%89%87/">圖片來源 xfastest.com</a></p>
+<p><img src="eetaiwan_lrdimm_intro.jpg" alt="eetaiwan_lrdimm_intro"></p>
+<p>▲ <a href="https://www.eettaiwan.com/20190422ta31-is-rdimm-or-lrdimm-right-for-your-design/">圖片來源 EE|Times Taiwan</a></p>
+<blockquote>
+<p>LRDIMMs use memory buffers to consolidate the electrical loads of the ranks on the LRDIMM to a single electrical load, allowing them to have up to eight ranks on a single DIMM module.</p>
+</blockquote>
+<p>ref: <a href="https://www.dasher.com/server-memory-rdimm-vs-lrdimm-and-when-to-use-them/">dasher.com - Server Memory: RDIMM vs LRDIMM and When to Use Them</a></p>
+<h2 id="其它參考資料">其它參考資料</h2>
+<ul>
+<li>
+<p><a href="https://www.dell.com/community/PowerEdge-Hardware-General/What-is-the-difference-between-2Rx4-vs-2Rx8/td-p/4670646">Dell community - What is the difference between 2Rx4 vs 2Rx8?</a></p>
+</li>
+<li>
+<p><a href="https://blog.51cto.com/winnt/1050279">51CTO - Dell 服务器的内存模式：Optimized、advanced ECC与Mirror </a></p>
+</li>
+</ul>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2022-06-06
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/server/">server</a>
+          <a href="/tags/dimm/">dimm</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/20211110-ckad-note-section-9-updates-for-sep-2021-changes/">
+            <span class="next-text nav-default">CKAD Note Section 9 Updates for Sep 2021 Changes</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.64437849d125a2d603b3e71d6de5225d641a32d17168a58106e0b61852079683.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -3,7 +3,56 @@
   
   <url>
     <loc>https://blog.xxzk.me/categories/</loc>
-    <lastmod>2021-11-10T11:05:08+00:00</lastmod>
+    <lastmod>2022-06-06T09:19:33+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/tags/dimm/</loc>
+    <lastmod>2022-06-06T09:19:33+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/categories/infra/</loc>
+    <lastmod>2022-06-06T09:19:33+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/post/</loc>
+    <lastmod>2022-06-06T09:19:33+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/tags/server/</loc>
+    <lastmod>2022-06-06T09:19:33+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/tags/</loc>
+    <lastmod>2022-06-06T09:19:33+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/</loc>
+    <lastmod>2022-06-06T09:19:33+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/post/20220606-read-r730xd-owner-manual-learning-about-server-dimm/</loc>
+    <lastmod>2022-06-06T09:19:33+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -31,27 +80,6 @@
   
   <url>
     <loc>https://blog.xxzk.me/tags/kubernetes/</loc>
-    <lastmod>2021-11-10T11:05:08+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.xxzk.me/post/</loc>
-    <lastmod>2021-11-10T11:05:08+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.xxzk.me/tags/</loc>
-    <lastmod>2021-11-10T11:05:08+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.xxzk.me/</loc>
     <lastmod>2021-11-10T11:05:08+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>

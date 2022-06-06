@@ -6,7 +6,16 @@
     <description>Recent content in Categories on 老柯的學習筆記</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 10 Nov 2021 11:05:08 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/categories/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 06 Jun 2022 09:19:33 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>infra</title>
+      <link>https://blog.xxzk.me/categories/infra/</link>
+      <pubDate>Mon, 06 Jun 2022 09:19:33 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/categories/infra/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>CKAD-Note</title>
       <link>https://blog.xxzk.me/categories/ckad-note/</link>

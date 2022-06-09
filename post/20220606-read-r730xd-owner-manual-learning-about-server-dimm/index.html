@@ -186,7 +186,7 @@
 <p>系統記憶體運作頻率 <strong><span style='color:blue'>支援 1866 MT/s, 2133 MT/s, or 2400 MT/s</span></strong> 這取決於:</p>
 <ul>
 <li>DIMM type (RDIMM or LRDIMM)，不管是 RDIMM 或者 LRDIMM 都能跑到 2400 MT/s 才對，取決於 DIMM 本身的頻率。<strong><span style='color:red'>另外系統不接受 RDIMM/LRDIMM 混插</span></strong></li>
-<li>Number of DIMMs populated per channel，<strong><span style='color:red'>一個通道插了幾支 DIMM 會直接影響整個系統 memory 運作的最高時脈!</span></strong> 待會後面互有表，這也是為什麼通常我們的 server 記憶體不會插滿 (<del>其實是沒錢</del>) 不過要小心插錯/亂插 的情況</li>
+<li>Number of DIMMs populated per channel，<strong><span style='color:red'>一個通道插了幾支 DIMM 會直接影響整個系統 memory 運作的最高時脈!</span></strong> 待會後面會有表，這也是為什麼通常我們的 server 記憶體不會插滿 (<del>其實是沒錢</del>) 不過要小心插錯/亂插 的情況</li>
 <li>System profile selected，系統效能選擇 (eg: Performance Optimized, Custom, or Dense Configuration Optimized)</li>
 <li>CPU 本身支援的 memory 最高時脈。 以 <a href="https://ark.intel.com/content/www/us/en/ark/products/91750/intel-xeon-processor-e52687w-v4-30m-cache-3-00-ghz.html">E5-2687WV4</a> 來說可以支援  <strong><span style='color:blue'>DDR4 1600/1866/2133/2400</span></strong></li>
 </ul>

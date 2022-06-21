@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>vcsa on 老柯的學習筆記</title>
+    <link>https://blog.xxzk.me/tags/vcsa/</link>
+    <description>Recent content in vcsa on 老柯的學習筆記</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 21 Jun 2022 15:46:54 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/tags/vcsa/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>離線更新 VCSA (vCenter) 使用 iso</title>
+      <link>https://blog.xxzk.me/post/20220621-upgrade-vcsa-using-iso-file/</link>
+      <pubDate>Tue, 21 Jun 2022 15:46:54 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20220621-upgrade-vcsa-using-iso-file/</guid>
+      <description>前言 這篇簡單紀錄透過使用 patch iso 映像檔，在沒有外網的情況下去做 upgrade。更新的原因很簡單，原本的 VCSA 7.0U1 還沒有跨 vCenter vMotion (Advanced Cross vCenter Server vMotion, XVM) 移轉的功能，必</description>
+    </item>
+    
+  </channel>
+</rss>

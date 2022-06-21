@@ -3,7 +3,49 @@
   
   <url>
     <loc>https://blog.xxzk.me/categories/</loc>
-    <lastmod>2022-06-06T09:19:33+00:00</lastmod>
+    <lastmod>2022-06-21T15:46:54+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/post/</loc>
+    <lastmod>2022-06-21T15:46:54+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/tags/</loc>
+    <lastmod>2022-06-21T15:46:54+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/tags/vcsa/</loc>
+    <lastmod>2022-06-21T15:46:54+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/categories/vsphere/</loc>
+    <lastmod>2022-06-21T15:46:54+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/</loc>
+    <lastmod>2022-06-21T15:46:54+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/post/20220621-upgrade-vcsa-using-iso-file/</loc>
+    <lastmod>2022-06-21T15:46:54+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -23,28 +65,7 @@
   </url>
   
   <url>
-    <loc>https://blog.xxzk.me/post/</loc>
-    <lastmod>2022-06-06T09:19:33+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.xxzk.me/tags/server/</loc>
-    <lastmod>2022-06-06T09:19:33+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.xxzk.me/tags/</loc>
-    <lastmod>2022-06-06T09:19:33+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.xxzk.me/</loc>
     <lastmod>2022-06-06T09:19:33+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>

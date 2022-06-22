@@ -88,5 +88,14 @@
       <description>Kubernetes Series 作者的系列課程總共有三個，分別適合不同職位的三種人。 Absolute Beginners (零經驗初學者，帶你從 container 開始) sysAdmin (想要通過 CKAD) Application Developer (程式開發人員) Certification Details 這邊告知 CKAD 考</description>
     </item>
     
+    <item>
+      <title>數據機到機房 淺談 GPON 以 HiNet FTTH 為例</title>
+      <link>https://blog.xxzk.me/post/20200929-intro-hinet-gpon-modem-to-otl/</link>
+      <pubDate>Tue, 29 Sep 2020 11:37:08 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20200929-intro-hinet-gpon-modem-to-otl/</guid>
+      <description>圖片來源 Spectra TEch 在開始之前先大致介紹一下台灣目前光纖網路接取技術使採用 GPON (Gigabit Passive Optical Network) 千兆級無源光網路，簡單架構如上圖 不知道大家有沒有曾經好奇過從數據</description>
+    </item>
+    
   </channel>
 </rss>

@@ -148,4 +148,39 @@
     <priority>0.5</priority>
   </url>
   
+  <url>
+    <loc>https://blog.xxzk.me/tags/ftth/</loc>
+    <lastmod>2020-09-29T11:37:08+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/tags/gpon/</loc>
+    <lastmod>2020-09-29T11:37:08+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/categories/hinet/</loc>
+    <lastmod>2020-09-29T11:37:08+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/tags/hinet/</loc>
+    <lastmod>2020-09-29T11:37:08+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/post/20200929-intro-hinet-gpon-modem-to-otl/</loc>
+    <lastmod>2020-09-29T11:37:08+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
 </urlset>

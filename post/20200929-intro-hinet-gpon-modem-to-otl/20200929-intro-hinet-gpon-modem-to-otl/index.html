@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>數據機到機房 淺談 GPON 以 HiNet FTTH 為例 - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="圖片來源 Spectra TEch 在開始之前先大致介紹一下台灣目前光纖網路接取技術使採用 GPON (Gigabit Passive Optical Network) 千兆級無源光網路，簡單架構如上圖 不知道大家有沒有曾經好奇過從數據" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.98.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20200929-intro-hinet-gpon-modem-to-otl/20200929-intro-hinet-gpon-modem-to-otl/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="數據機到機房 淺談 GPON 以 HiNet FTTH 為例" />
+<meta property="og:description" content="圖片來源 Spectra TEch 在開始之前先大致介紹一下台灣目前光纖網路接取技術使採用 GPON (Gigabit Passive Optical Network) 千兆級無源光網路，簡單架構如上圖 不知道大家有沒有曾經好奇過從數據" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.xxzk.me/post/20200929-intro-hinet-gpon-modem-to-otl/20200929-intro-hinet-gpon-modem-to-otl/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2020-09-29T11:37:08+00:00" />
+<meta property="article:modified_time" content="2020-09-29T11:37:08+00:00" />
+
+<meta itemprop="name" content="數據機到機房 淺談 GPON 以 HiNet FTTH 為例">
+<meta itemprop="description" content="圖片來源 Spectra TEch 在開始之前先大致介紹一下台灣目前光纖網路接取技術使採用 GPON (Gigabit Passive Optical Network) 千兆級無源光網路，簡單架構如上圖 不知道大家有沒有曾經好奇過從數據"><meta itemprop="datePublished" content="2020-09-29T11:37:08+00:00" />
+<meta itemprop="dateModified" content="2020-09-29T11:37:08+00:00" />
+<meta itemprop="wordCount" content="826">
+<meta itemprop="keywords" content="HiNet,GPON,FTTH," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="數據機到機房 淺談 GPON 以 HiNet FTTH 為例"/>
+<meta name="twitter:description" content="圖片來源 Spectra TEch 在開始之前先大致介紹一下台灣目前光纖網路接取技術使採用 GPON (Gigabit Passive Optical Network) 千兆級無源光網路，簡單架構如上圖 不知道大家有沒有曾經好奇過從數據"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">數據機到機房 淺談 GPON 以 HiNet FTTH 為例</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-09-29 </span>
+        <div class="post-category">
+            <a href="/categories/hinet/"> hinet </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#局端設備">局端設備</a></li>
+        <li><a href="#公有區域-中華電信人行道上的機箱">公有區域 中華電信人行道上的機箱</a></li>
+        <li><a href="#住家內">住家內</a>
+          <ul>
+            <li><a href="#參考資料">參考資料</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p><img src="https://i.ytimg.com/vi/Oi0SNlMzMjQ/maxresdefault.jpg" alt="GPON_arch_Spectra TEch"><br>
+圖片來源 <a href="https://www.youtube.com/watch?v=Oi0SNlMzMjQ&amp;app=desktop">Spectra TEch</a></p>
+<hr>
+<p>在開始之前先大致介紹一下台灣目前光纖網路接取技術使採用 GPON (Gigabit Passive Optical Network) 千兆級無源光網路，簡單架構如上圖</p>
+<br>
+<blockquote>
+<p>不知道大家有沒有曾經好奇過從數據機到機房會經過哪些設備，這些設備分別又提供那些功能呢 ?</p>
+</blockquote>
+<br>
+<p>設備主要分散於三個地方:</p>
+<ol>
+<li>中華電信各地區機房，又稱為局端</li>
+<li>公有區域 包含: 路邊人行道上的機箱、大樓電信室</li>
+<li>住家內</li>
+</ol>
+<br>
+<h2 id="局端設備">局端設備</h2>
+<ol>
+<li>
+<p>BRAS (Broadband Remote Access Server) 寬頻遠程接入伺服器</p>
+<p>是連接 ISP 邊緣網路 (Edge Network) 與局端機房的設備，主要提供 PPPoE 驗證用戶 (PPPoE Server)、發配 IP 等功能<br>
+在 201x 年左右網路上有 power user　在論壇討論 BRAS 路由與出國頻寬的關係<br>
+<a href="https://www.mobile01.com/topicdetail.php?f=507&amp;t=3927787">Hinet用戶 如何查詢自己Bras路由+如何查詢自己在中華電信的電路號碼</a><br>
+<a href="https://ccs.hinet.net/month_status_cht_big5.htm">HiNet 寬頻上網用戶連線資訊查詢服務</a></p>
+<p>註: 光世代後目前鮮少看到用戶討論更換 BRAS 路由，很有可能是 CDN 技術普遍再加上兩大影視巨頭 Youtube Netflix 均有在台灣架設機房<br>
+Youtube: 彰濱 GCP 機房 + <a href="https://peering.google.com">Google Global Cache (GGC)</a><br>
+<a href="https://www.mobile01.com/topicdetail.php?f=421&amp;t=6049014">Netflix 攜手 HiNet 在台建置 CDN</a><br>
+不過用戶若有其他服務需要穩定出國，有更換 BRAS 路由這招 (假設目前的不夠穩定)</p>
+<p>補充: PPPoE Server 還有限速的功能，不然 OLT 整條頻寬都給你用怎麼可以
+<a href="https://www.mobile01.com/topicdetail.php?f=110&amp;t=3205444&amp;p=15#42040431">PPPoE Server 實作 - 宿網管理(自己當小小ISP)</a></p>
+</li>
+</ol>
+<br>
+<ol start="2">
+<li>
+<p>OLT (Optical Line Terminal) 光纖線路終端</p>
+<br>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/OLT_Alcatel_CityPlay_Amiens.jpg/640px-OLT_Alcatel_CityPlay_Amiens.jpg?1601347584350" alt="wiki_OLT"><br>
+<a href="https://www.wikiwand.com/zh/%E5%85%89%E7%BA%A4%E7%BA%BF%E8%B7%AF%E7%BB%88%E7%AB%AF">圖片來源 &amp; Wiki 介紹</a></p>
+<p>從 OLT 一條光纖線路拉出去就是負責幾百幾千戶的寬頻匯接，在把封包資料送到 BARS 進入 Edge Network。 OLT 除了匯集光纖線路外還有驗證 ONU (光纖數據機) S/N 的功能，提供初步用戶驗證</p>
+</li>
+</ol>
+<hr>
+<h2 id="公有區域-中華電信人行道上的機箱">公有區域 中華電信人行道上的機箱</h2>
+<p><a href="https://www.mobile01.com/topicdetail.php?f=507&amp;t=2675888">參考資料 + 圖片來源</a></p>
+<br>
+<p>機箱內部圖</p>
+<p><img src="https://attach.mobile01.com/attach/201204/mobile01-0b74a0ffd91b70f9501c7f0f39fba36c.jpg" alt="inside_the_box"></p>
+<p>左邊黑色外皮的是從骨幹拉出來的來源線，接到光分器 (optical splitter)，綠色插座即連接各戶 ONU (光纖數據機)</p>
+<hr>
+<h2 id="住家內">住家內</h2>
+<p>住家內設備就 ONU 光纖數據機一台啦! 早期中華電信給的機台是 i040gw，近期給的機台換成 H660WM/ H660W<br>
+數據機主要提供的功能就是光電轉換，將來源光訊號轉換成電子訊號 (RJ-45)</p>
+<p><img src="https://i1.achangpro.com/img.sofree.cc/--FTTH-_12F7D/ftth_6.jpg" alt="i040gw_sofreecc"></p>
+<p><img src="https://attach.mobile01.com/attach/201806/mobile01-99b6507542e07547136942324731826d.jpg" alt="h660WM_mobile01"></p>
+<hr>
+<h3 id="參考資料">參考資料</h3>
+<ol>
+<li>特別感謝 SITCON <a href="https://www.youtube.com/watch?v=5JDBdESUFR0&amp;t=1802s">Licson Lee</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/78393542">通信机房，到底长什么样？</a></li>
+<li><a href="https://www.mobile01.com/topicdetail.php?f=507&amp;t=2675888">你FTTH了嗎？社區FTTH主幹線佈線實錄（圖多）</a></li>
+<li><a href="https://www.sakamoto.blog/cht-hinet-300m/">供裝中華電信 FTTH 300M/100M 光纖到府全程紀錄</a></li>
+<li><a href="https://tel3c.tw/blog/post/28669">5G基地台與4G基地台有什麼差異? 淺談5G基地台</a></li>
+<li><a href="https://peering.google.com/#/infrastructure">Google Edge Network</a></li>
+<li><a href="https://www.mobile01.com/topicdetail.php?f=507&amp;t=5499711">【葉配】中華電信HiNet光世代300M/100M試用 超有感升速體驗</a></li>
+</ol>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2020-09-29
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/hinet/">HiNet</a>
+          <a href="/tags/gpon/">GPON</a>
+          <a href="/tags/ftth/">FTTH</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/20210727-ckad-note-section-1-introduction/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">CKAD Note Section 1 Introduction</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.64437849d125a2d603b3e71d6de5225d641a32d17168a58106e0b61852079683.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

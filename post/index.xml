@@ -98,6 +98,15 @@
     </item>
     
     <item>
+      <title>隱藏 Apache、PHP、OpenSSL、Nginx 版本號</title>
+      <link>https://blog.xxzk.me/post/20210223-hide-apache-php-openssl-nginx-version/</link>
+      <pubDate>Tue, 23 Feb 2021 14:33:37 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20210223-hide-apache-php-openssl-nginx-version/</guid>
+      <description>此篇筆記記錄如何隱藏客戶端看到 Web Server 使用的版本號 判斷標準是用最無腦的 Browser Plug-in 當作依據，推薦使用 Wappalyzer 如果透過 CloudFlare 訪問這些敏感資訊都會被過濾掉;直接使用 IP</description>
+    </item>
+    
+    <item>
       <title>數據機到機房 淺談 GPON 以 HiNet FTTH 為例</title>
       <link>https://blog.xxzk.me/post/20200929-intro-hinet-gpon-modem-to-otl/</link>
       <pubDate>Tue, 29 Sep 2020 11:37:08 +0000</pubDate>

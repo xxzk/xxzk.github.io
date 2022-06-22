@@ -26,6 +26,15 @@
     </item>
     
     <item>
+      <title>Dockerfile - Shell 與 Exec 的差異</title>
+      <link>https://blog.xxzk.me/post/20211220-diff-between-shell-and-exec-in-dockerfile/</link>
+      <pubDate>Mon, 20 Dec 2021 11:15:34 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20211220-diff-between-shell-and-exec-in-dockerfile/</guid>
+      <description>前陣子都在忙 CKAD 的好久沒有在公司 Bookstack 耕耘了 XD ~ 會看到這篇是因為 邱 sir 的導讀 懶惰沒有導讀完 所以我才產出這篇文 (竟敢斗膽說邱 sir 懶惰!!) Docker Shell vs. Exec Form - Christian</description>
+    </item>
+    
+    <item>
       <title>CKAD Note Section 9 Updates for Sep 2021 Changes</title>
       <link>https://blog.xxzk.me/post/20211110-ckad-note-section-9-updates-for-sep-2021-changes/</link>
       <pubDate>Wed, 10 Nov 2021 11:05:08 +0000</pubDate>
@@ -95,6 +104,15 @@
       
       <guid>https://blog.xxzk.me/post/20200929-intro-hinet-gpon-modem-to-otl/</guid>
       <description>圖片來源 Spectra TEch 在開始之前先大致介紹一下台灣目前光纖網路接取技術使採用 GPON (Gigabit Passive Optical Network) 千兆級無源光網路，簡單架構如上圖 不知道大家有沒有曾經好奇過從數據</description>
+    </item>
+    
+    <item>
+      <title>Gralylog 安裝紀錄 (使用 Default CentOS 7.7)</title>
+      <link>https://blog.xxzk.me/post/20200924-graylog-installation-use-centos77/</link>
+      <pubDate>Thu, 24 Sep 2020 15:09:16 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20200924-graylog-installation-use-centos77/</guid>
+      <description>本篇參考資料 How to install and configure Graylog on CentOS 7 執行系統更新 1 yum update -y 安裝 EPEL 1 yum install epel-release -y 安裝所需項目，其中 pwgen 套件是等等要用來產生 graylog server 設定檔的密鑰 1 yum install pwgen vim -y 安裝 java</description>
     </item>
     
   </channel>

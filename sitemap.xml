@@ -79,6 +79,27 @@
   </url>
   
   <url>
+    <loc>https://blog.xxzk.me/tags/docker/</loc>
+    <lastmod>2021-12-20T11:15:34+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/categories/dockerfile/</loc>
+    <lastmod>2021-12-20T11:15:34+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/post/20211220-diff-between-shell-and-exec-in-dockerfile/</loc>
+    <lastmod>2021-12-20T11:15:34+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.xxzk.me/tags/ckad/</loc>
     <lastmod>2021-11-10T11:05:08+00:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -179,6 +200,20 @@
   <url>
     <loc>https://blog.xxzk.me/post/20200929-intro-hinet-gpon-modem-to-otl/</loc>
     <lastmod>2020-09-29T11:37:08+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/post/20200924-graylog-installation-use-centos77/</loc>
+    <lastmod>2020-09-24T15:09:16+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/tags/graylog/</loc>
+    <lastmod>2020-09-24T15:09:16+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>

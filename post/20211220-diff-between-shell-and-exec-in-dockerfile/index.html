@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Dockerfile - Shell 與 Exec 的差異 - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="前陣子都在忙 CKAD 的好久沒有在公司 Bookstack 耕耘了 XD ~ 會看到這篇是因為 邱 sir 的導讀 懶惰沒有導讀完 所以我才產出這篇文 (竟敢斗膽說邱 sir 懶惰!!) Docker Shell vs. Exec Form - Christian" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.98.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20211220-diff-between-shell-and-exec-in-dockerfile/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Dockerfile - Shell 與 Exec 的差異" />
+<meta property="og:description" content="前陣子都在忙 CKAD 的好久沒有在公司 Bookstack 耕耘了 XD ~ 會看到這篇是因為 邱 sir 的導讀 懶惰沒有導讀完 所以我才產出這篇文 (竟敢斗膽說邱 sir 懶惰!!) Docker Shell vs. Exec Form - Christian" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.xxzk.me/post/20211220-diff-between-shell-and-exec-in-dockerfile/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-12-20T11:15:34+00:00" />
+<meta property="article:modified_time" content="2021-12-20T11:15:34+00:00" />
+
+<meta itemprop="name" content="Dockerfile - Shell 與 Exec 的差異">
+<meta itemprop="description" content="前陣子都在忙 CKAD 的好久沒有在公司 Bookstack 耕耘了 XD ~ 會看到這篇是因為 邱 sir 的導讀 懶惰沒有導讀完 所以我才產出這篇文 (竟敢斗膽說邱 sir 懶惰!!) Docker Shell vs. Exec Form - Christian"><meta itemprop="datePublished" content="2021-12-20T11:15:34+00:00" />
+<meta itemprop="dateModified" content="2021-12-20T11:15:34+00:00" />
+<meta itemprop="wordCount" content="723">
+<meta itemprop="keywords" content="docker," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Dockerfile - Shell 與 Exec 的差異"/>
+<meta name="twitter:description" content="前陣子都在忙 CKAD 的好久沒有在公司 Bookstack 耕耘了 XD ~ 會看到這篇是因為 邱 sir 的導讀 懶惰沒有導讀完 所以我才產出這篇文 (竟敢斗膽說邱 sir 懶惰!!) Docker Shell vs. Exec Form - Christian"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Dockerfile - Shell 與 Exec 的差異</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-12-20 </span>
+        <div class="post-category">
+            <a href="/categories/dockerfile/"> dockerfile </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#docker-shell-vs-exec-form">Docker Shell vs. Exec Form</a></li>
+        <li><a href="#案例分享-use-cases">案例分享 Use cases</a></li>
+        <li><a href="#shell-的功能">shell 的功能</a></li>
+        <li><a href="#signal-trapping--forwarding">Signal trapping &amp; forwarding</a></li>
+        <li><a href="#特殊情形-cmd-當作-entrypoint-的參數">[特殊情形] <code>CMD</code> 當作 <code>ENTRYPOINT</code> 的參數</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <br>
+<p><img src="docker-shell-vs-exec-form.jpg" alt="docker-shell-vs.-exec-form"></p>
+<br>
+<p>前陣子都在忙 <a href="https://www.cncf.io/certification/ckad/">CKAD</a> 的好久沒有在公司 Bookstack 耕耘了 XD ~<br>
+會看到這篇是因為 <a href="https://www.facebook.com/technologynoteniu/posts/432574848576653">邱 sir 的導讀</a> <del>懶惰沒有導讀完 所以我才產出這篇文 (竟敢斗膽說邱 sir 懶惰!!)</del></p>
+<p><a href="https://emmer.dev/blog/docker-shell-vs.-exec-form/">Docker Shell vs. Exec Form - Christian Emmer</a></p>
+<p><strong><del>余誓以至誠</del></strong></p>
+<blockquote>
+<p>I promise<br>
+To say container registries rather than docker registries<br>
+I promise<br>
+To say container images rather than docker images<br>
+I promise<br>
+To say containers or OCI containers rather than docker containers<br>
+&mdash;&mdash;&mdash;&mdash;-<br>
+宣示人: 台中彭于晏 中華民國 110 年 12 月 20 號，手放下!</p>
+</blockquote>
+<br>
+<h2 id="docker-shell-vs-exec-form">Docker Shell vs. Exec Form</h2>
+<p><code>shell 型式</code>: command 會以 「shell 的子進程」 (child processes) 的方式被執行。<br>
+<code>Exec 型式</code> (JSON format ?): 將不會透過 shell 執行。</p>
+<p>(作者的觀點) 一般來說，除非要使用到 shell 的功能，不然都推薦使用 exec 型式。如果在 <code>ENTRYPOINT</code>, <code>CMD</code> 也需要用到的話，建議寫進 shell script 並且以 exec 型式執行。</p>
+<ul>
+<li><code>RUN</code>: 推薦使用 shell form</li>
+<li><code>CMD</code>, <code>ENTRYPOINT</code>: exec form</li>
+</ul>
+<h2 id="案例分享-use-cases">案例分享 Use cases</h2>
+<ol>
+<li>變數置換 Variable substitution: 以 shell 來說 command 會繼承環境變數 (environment variables)，exec 則不會。</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="line"><span class="cl"><span class="k">FROM</span><span class="s"> alpine:latest</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># Shell: echoes &#34;/root&#34; as set by the shell</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> <span class="nb">echo</span> <span class="nv">$HOME</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># Exec: echoes &#34;$HOME&#34; because nothing is set</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> <span class="o">[</span><span class="s2">&#34;echo&#34;</span>, <span class="s2">&#34;</span><span class="nv">$HOME</span><span class="s2">&#34;</span><span class="o">]</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>如果在 Dockerfile 當中設定 <code>ENV</code> 的話，兩者結果會一樣</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="line"><span class="cl"><span class="k">FROM</span><span class="s"> alpine:latest</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">ENV</span> <span class="nv">VERSION</span><span class="o">=</span><span class="m">1</span>.0.0<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># Shell: echoes &#34;1.0.0&#34; because Docker does the substitution</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> <span class="nb">echo</span> <span class="nv">$VERSION</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># Exec: echoes &#34;1.0.0&#34; because Docker does the substitution</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> <span class="o">[</span><span class="s2">&#34;echo&#34;</span>, <span class="s2">&#34;</span><span class="nv">$VERSION</span><span class="s2">&#34;</span><span class="o">]</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<h2 id="shell-的功能">shell 的功能</h2>
+<br>
+<ul>
+<li>sub command. <code>ip a</code></li>
+<li>piping output. <code>ls -al /home | grep 'root'</code></li>
+<li>chaining commands. <code>my_var='Hello world.' &amp;&amp; echo $my_var</code></li>
+<li>I/O redirection. <code>cat /etc/fstab &gt; /tmp/fstab.bak</code></li>
+</ul>
+<p>以上這些常用的功能都只有使用 shell 型式時才能享有。</p>
+<br>
+<h2 id="signal-trapping--forwarding">Signal trapping &amp; forwarding</h2>
+<br>
+<p>大部分的 shell 並不會將 process signals 導向給 child processes，例如: 按下 <code>ctrl + c</code> 時並不會讓 child processes 停止。<br>
+<strong><span style='color:red'>這是大部分的 <code>ENTRYPOINT</code> 與 <code>CMD</code> 使用 exec form 的原因。</span></strong> 註: 原文這邊應該是打錯了，把 <code>CMD</code> 誤植為 <code>SHELL</code>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="line"><span class="cl"><span class="c"># Note: Alpine&#39;s `/bin/sh` is really BusyBox `ash`, and when</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">#   `/bin/sh -c` is run it replace itself with the command rather</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">#   than spawning a new process, unlike Ubuntu&#39;s `bash`, meaning</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">#   Alpine doesn&#39;t exhibit the forwarding problem</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">FROM</span><span class="s"> ubuntu:latest</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># Shell: `bash` doesn&#39;t forward CTRL-C SIGINT to `top`</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">ENTRYPOINT</span> top -b<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># Exec: `top` traps CTRL-C SIGINT and stops</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">ENTRYPOINT</span> <span class="p">[</span><span class="s2">&#34;top&#34;</span><span class="p">,</span> <span class="s2">&#34;-b&#34;</span><span class="p">]</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong><span style='color:blue'>最上方 Note 的部分有提到 Alpine Linux 的 <code>/bin/sh</code> 使用的是 busybox 裡面的 <code>ash</code>，當執行 <code>/bin/sh -c</code> 時會直接由 parent process (<code>ash</code> 本人執行)。</span></strong> <strong><span style='color:red'>換句話說 Alpine Linux 並不會有 <code>按下 ctrl + c 時並不會讓 child processes 停止</code> 的情形發生</span>。</strong></p>
+<br>
+<h2 id="特殊情形-cmd-當作-entrypoint-的參數">[特殊情形] <code>CMD</code> 當作 <code>ENTRYPOINT</code> 的參數</h2>
+<br>
+<p>這個我在 <a href="https://github.com/xxzk/CKAD_Note_Section_3_Configuration/blob/master/CKAD%20Note%20Section%203%20Configuration.md#37-pre-request-commands-and-arguments-in-docker">CKAD Note Section 3 Configuration - 37. [Pre-Request] Commands and Arguments in Docker</a> 有寫到</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="line"><span class="cl"><span class="k">FROM</span><span class="s"> alpine:latest</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># Exec: default container command</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">ENTRYPOINT</span> <span class="p">[</span><span class="s2">&#34;sleep&#34;</span><span class="p">]</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># Exec: not a command, so it becomes a parameter</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">CMD</span> <span class="p">[</span><span class="s2">&#34;1s&#34;</span><span class="p">]</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong><span style='color:red'>這種用法 shell form 沒辦法做到!</span></strong></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2021-12-20
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/docker/">docker</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/20220606-read-r730xd-owner-manual-learning-about-server-dimm/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">閱讀 R730XD owner manual 淺析伺服器記憶體</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/20211110-ckad-note-section-9-updates-for-sep-2021-changes/">
+            <span class="next-text nav-default">CKAD Note Section 9 Updates for Sep 2021 Changes</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.64437849d125a2d603b3e71d6de5225d641a32d17168a58106e0b61852079683.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

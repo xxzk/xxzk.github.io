@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>graylog on 老柯的學習筆記</title>
+    <link>https://blog.xxzk.me/tags/graylog/</link>
+    <description>Recent content in graylog on 老柯的學習筆記</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 24 Sep 2020 15:09:16 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/tags/graylog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Gralylog 安裝紀錄 (使用 Default CentOS 7.7)</title>
+      <link>https://blog.xxzk.me/post/20200924-graylog-installation-use-centos77/</link>
+      <pubDate>Thu, 24 Sep 2020 15:09:16 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20200924-graylog-installation-use-centos77/</guid>
+      <description>本篇參考資料 How to install and configure Graylog on CentOS 7 執行系統更新 1 yum update -y 安裝 EPEL 1 yum install epel-release -y 安裝所需項目，其中 pwgen 套件是等等要用來產生 graylog server 設定檔的密鑰 1 yum install pwgen vim -y 安裝 java</description>
+    </item>
+    
+  </channel>
+</rss>

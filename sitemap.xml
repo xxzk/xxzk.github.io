@@ -3,21 +3,56 @@
   
   <url>
     <loc>https://blog.xxzk.me/categories/</loc>
-    <lastmod>2022-06-21T15:46:54+00:00</lastmod>
+    <lastmod>2022-06-23T14:50:31+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/tags/docker/</loc>
+    <lastmod>2022-06-23T14:50:31+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/tags/librenms/</loc>
+    <lastmod>2022-06-23T14:50:31+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/categories/librenms/</loc>
+    <lastmod>2022-06-23T14:50:31+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://blog.xxzk.me/post/</loc>
-    <lastmod>2022-06-21T15:46:54+00:00</lastmod>
+    <lastmod>2022-06-23T14:50:31+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://blog.xxzk.me/tags/</loc>
-    <lastmod>2022-06-21T15:46:54+00:00</lastmod>
+    <lastmod>2022-06-23T14:50:31+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/post/20220623-install-librenms-with-docker-container/</loc>
+    <lastmod>2022-06-23T14:50:31+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/</loc>
+    <lastmod>2022-06-23T14:50:31+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -31,13 +66,6 @@
   
   <url>
     <loc>https://blog.xxzk.me/categories/vsphere/</loc>
-    <lastmod>2022-06-21T15:46:54+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.xxzk.me/</loc>
     <lastmod>2022-06-21T15:46:54+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -74,13 +102,6 @@
   <url>
     <loc>https://blog.xxzk.me/post/20220606-read-r730xd-owner-manual-learning-about-server-dimm/</loc>
     <lastmod>2022-06-06T09:19:33+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.xxzk.me/tags/docker/</loc>
-    <lastmod>2021-12-20T11:15:34+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>

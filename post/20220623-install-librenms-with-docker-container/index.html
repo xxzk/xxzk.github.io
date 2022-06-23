@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>使用 container 快速部屬 LibreNMS - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="前言 本篇文章紀錄如何透過 docker-compose 快速架一個 LibreNMS 起來。這篇會出現的原因是為了要監控/debug IDC 7F iDRAC/ESXi 電口對接 Cisco Switch 的問題~ 安裝 docker-compose 1 2 3 4 curl -SL https://github.com/docker/compose/releases/download/v2.6.0/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose ## if $PATH" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.98.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20220623-install-librenms-with-docker-container/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="使用 container 快速部屬 LibreNMS" />
+<meta property="og:description" content="前言 本篇文章紀錄如何透過 docker-compose 快速架一個 LibreNMS 起來。這篇會出現的原因是為了要監控/debug IDC 7F iDRAC/ESXi 電口對接 Cisco Switch 的問題~ 安裝 docker-compose 1 2 3 4 curl -SL https://github.com/docker/compose/releases/download/v2.6.0/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose ## if $PATH" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.xxzk.me/post/20220623-install-librenms-with-docker-container/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-06-23T14:50:31+00:00" />
+<meta property="article:modified_time" content="2022-06-23T14:50:31+00:00" />
+
+<meta itemprop="name" content="使用 container 快速部屬 LibreNMS">
+<meta itemprop="description" content="前言 本篇文章紀錄如何透過 docker-compose 快速架一個 LibreNMS 起來。這篇會出現的原因是為了要監控/debug IDC 7F iDRAC/ESXi 電口對接 Cisco Switch 的問題~ 安裝 docker-compose 1 2 3 4 curl -SL https://github.com/docker/compose/releases/download/v2.6.0/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose ## if $PATH"><meta itemprop="datePublished" content="2022-06-23T14:50:31+00:00" />
+<meta itemprop="dateModified" content="2022-06-23T14:50:31+00:00" />
+<meta itemprop="wordCount" content="698">
+<meta itemprop="keywords" content="LibreNMS,docker," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="使用 container 快速部屬 LibreNMS"/>
+<meta name="twitter:description" content="前言 本篇文章紀錄如何透過 docker-compose 快速架一個 LibreNMS 起來。這篇會出現的原因是為了要監控/debug IDC 7F iDRAC/ESXi 電口對接 Cisco Switch 的問題~ 安裝 docker-compose 1 2 3 4 curl -SL https://github.com/docker/compose/releases/download/v2.6.0/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose ## if $PATH"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">使用 container 快速部屬 LibreNMS</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-06-23 </span>
+        <div class="post-category">
+            <a href="/categories/librenms/"> LibreNMS </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#前言">前言</a></li>
+        <li><a href="#安裝-docker-compose">安裝 <code>docker-compose</code></a></li>
+        <li><a href="#安裝-librenms">安裝 LibreNMS</a>
+          <ul>
+            <li><a href="#docker-composeyml">docker-compose.yml</a></li>
+            <li><a href="#librenmsenv">librenms.env</a></li>
+            <li><a href="#env">.env</a></li>
+            <li><a href="#最後檢查">最後檢查</a></li>
+            <li><a href="#史大抖">史大抖!!</a></li>
+          </ul>
+        </li>
+        <li><a href="#librenms-fast-updown-checking">LibreNMS Fast up/down checking</a></li>
+        <li><a href="#debug">debug</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>本篇文章紀錄如何透過 <code>docker-compose</code> 快速架一個 LibreNMS 起來。這篇會出現的原因是為了要監控/debug IDC 7F iDRAC/ESXi 電口對接 Cisco Switch 的問題~</p>
+<h2 id="安裝-docker-compose">安裝 <code>docker-compose</code></h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl -SL https://github.com/docker/compose/releases/download/v2.6.0/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## if $PATH not include &#39;/usr/local/bin/&#39;</span>
+</span></span><span class="line"><span class="cl">sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="安裝-librenms">安裝 LibreNMS</h2>
+<p>官方針對 Docker 安裝的說明都放在 <a href="https://github.com/librenms/docker#documentation">GitHub - librenms/docker</a> 裡面了。</p>
+<h3 id="docker-composeyml">docker-compose.yml</h3>
+<p><a href="https://github.com/librenms/docker/blob/master/examples/compose/docker-compose.yml">docker/examples/compose/docker-compose.yml</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mkdir -p ~/yml/librenms/
+</span></span><span class="line"><span class="cl">curl -SL https://raw.githubusercontent.com/librenms/docker/master/examples/compose/docker-compose.yml -o ~/yml/librenms/docker-compose.yml
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong><span style='color:red'>由於我們沒有發 Email 的需求，所以選擇把 <code>msmtpd</code> 拿掉</span></strong></p>
+<h3 id="librenmsenv">librenms.env</h3>
+<p><a href="https://github.com/librenms/docker/blob/master/examples/compose/librenms.env">docker/examples/compose/librenms.env </a></p>
+<p>這個 env file 是要給 LibreNMS，從 <code>docker-compose.yml</code> 能夠得知。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="w">  </span><span class="nt">librenms</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">librenms/librenms:latest</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l">librenms</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="l">librenms</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="l">....</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">env_file</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s2">&#34;./librenms.env&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">environment</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s2">&#34;TZ=${TZ}&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s2">&#34;PUID=${PUID}&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s2">&#34;PGID=${PGID}&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s2">&#34;DB_HOST=db&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s2">&#34;DB_NAME=${MYSQL_DATABASE}&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s2">&#34;DB_USER=${MYSQL_USER}&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s2">&#34;DB_PASSWORD=${MYSQL_PASSWORD}&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s2">&#34;DB_TIMEOUT=60&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s2">&#34;REDIS_HOST=redis&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s2">&#34;REDIS_PORT=6379&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s2">&#34;REDIS_DB=0&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l">always</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>我自己則是增加了 <code>TZ=Taipei/Asia</code> 時區, <code>MEMORY_LIMIT=1024M</code> 增加 php 能夠使用的 RAM 上限。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="l">TZ=Taipei/Asia</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">MEMORY_LIMIT=1024M</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">LISTEN_IPV6=false</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">UPLOAD_MAX_SIZE=16M</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">OPCACHE_MEM_SIZE=128</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">REAL_IP_FROM=0.0.0.0/32</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">REAL_IP_HEADER=X-Forwarded-For</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">LOG_IP_VAR=remote_addr</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">LIBRENMS_SNMP_COMMUNITY=librenmsdocker</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">MEMCACHED_HOST=memcached</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">MEMCACHED_PORT=11211</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">LIBRENMS_WEATHERMAP=false</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">LIBRENMS_WEATHERMAP_SCHEDULE=*/5 * * * *</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>更多環境變數說明可以參考 <a href="https://github.com/librenms/docker/blob/master/doc/docker/environment-variables.md">docker/doc/docker/environment-variables.md </a></p>
+<h3 id="env">.env</h3>
+<p>這個檔案裡面必須放 MariaDB 的機敏資訊，如果有進版控記得把 <code>.env</code> 排除在外。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">TZ=Asia/Taipei
+</span></span><span class="line"><span class="cl">PUID=1000
+</span></span><span class="line"><span class="cl">PGID=1000
+</span></span><span class="line"><span class="cl">MYSQL_DATABASE=librenms
+</span></span><span class="line"><span class="cl">MYSQL_USER=librenms
+</span></span><span class="line"><span class="cl">MYSQL_PASSWORD=librenms
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="最後檢查">最後檢查</h3>
+<p><code>docker-compose</code> 預設會吃 <code>.env</code>，也可以使用 <code>--env-file</code> 來手動指定。<a href="https://docs.docker.com/compose/environment-variables/">Environment variables in Compose</a></p>
+<p>檢查所有環境變數是否有被抓到</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker-compose config <span class="p">|</span> less
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="史大抖">史大抖!!</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker-compose up -d
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## follow log</span>
+</span></span><span class="line"><span class="cl">docker-compose logs -f
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="librenms-fast-updown-checking">LibreNMS Fast up/down checking</h2>
+<p><a href="https://docs.librenms.org/Extensions/Fast-Ping-Check/">Fast up/down checking</a></p>
+<p>LibreNMS 預設是 SNMP polling 之前才會去 ping 目標確認存活，預設是 300s 五分鐘執行，如果想縮短偵測間隔的話可以調整 ping 就好，不必 <a href="https://docs.librenms.org/Support/1-Minute-Polling/">1-Miniute polling</a> 造成 SNMP 的負擔。</p>
+<ol>
+<li>如果有使用 RRDCached 的話必須停用該服務。</li>
+</ol>
+<blockquote>
+<ul>
+<li>This will flush all pending writes so that the rrdstep.php script can change the steps.</li>
+</ul>
+</blockquote>
+<ol start="2">
+<li>調整 <code>config.php</code></li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker <span class="nb">exec</span> -it librenms /bin/bash
+</span></span><span class="line"><span class="cl">bash-5.1# vi config.php
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">$config</span><span class="o">[</span><span class="s1">&#39;ping_rrd_step&#39;</span><span class="o">]</span> <span class="o">=</span> 60<span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="3">
+<li>更新 RRD 腳步大小 (step)</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">bash-5.1# ./scripts/rrdstep.php -h all
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="4">
+<li>編輯 cron</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">bash-5.1# vi /var/spool/cron/crontabs
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">*    *    * * *   librenms    /opt/librenms/ping.php &gt;&gt; /dev/null 2&gt;&amp;1
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>cron config 的路徑是 <code>crond --help</code> 查到的，如果要確認是否有成功可以</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## remember current pid</span>
+</span></span><span class="line"><span class="cl">bash-5.1# pidof crond
+</span></span><span class="line"><span class="cl"><span class="m">53798</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">bash-5.1# crond -L /path/to/log/file
+</span></span><span class="line"><span class="cl">bash-5.1# tail -f /path/to/log/file
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## kill the crond which will log to file</span>
+</span></span><span class="line"><span class="cl">bash-5.1# pidof crond
+</span></span><span class="line"><span class="cl"><span class="m">53798</span> <span class="m">53001</span>
+</span></span><span class="line"><span class="cl">bash-5.1# <span class="nb">kill</span> <span class="m">53001</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="5">
+<li>如果有關閉 RRDCache 記得開回來。</li>
+</ol>
+<h2 id="debug">debug</h2>
+<p>MariaDB 會 bind mount 到 <code>./db</code> ; LibreNMS 會 bind mount 到 <code>./librenms</code>。<strong><span style='color:red'>如果不是一次就設定成功，記得把這兩個目錄刪除!!</span></strong><br>
+這次我就發生沒有把這兩個目錄刪除，造成一直出現 <code>[Warning] Access denied for user 'librenms'@'&lt;private ip&gt;' (using password: YES)</code> 的智障情形 XD<br>
+查到這篇才恍然大悟 <a href="https://github.com/librenms/docker/issues/80">librenms and dispatcher won&rsquo;t connect to librenms_db #80</a></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2022-06-23
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/librenms/">LibreNMS</a>
+          <a href="/tags/docker/">docker</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/20220621-upgrade-vcsa-using-iso-file/">
+            <span class="next-text nav-default">離線更新 VCSA (vCenter) 使用 iso</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.64437849d125a2d603b3e71d6de5225d641a32d17168a58106e0b61852079683.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -6,7 +6,16 @@
     <description>Recent content in Categories on 老柯的學習筆記</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 21 Jun 2022 15:46:54 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/categories/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 23 Jun 2022 14:50:31 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>LibreNMS</title>
+      <link>https://blog.xxzk.me/categories/librenms/</link>
+      <pubDate>Thu, 23 Jun 2022 14:50:31 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/categories/librenms/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>vsphere</title>
       <link>https://blog.xxzk.me/categories/vsphere/</link>

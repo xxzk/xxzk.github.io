@@ -6,7 +6,16 @@
     <description>Recent content on 老柯的學習筆記</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 21 Jun 2022 15:46:54 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 23 Jun 2022 14:50:31 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用 container 快速部屬 LibreNMS</title>
+      <link>https://blog.xxzk.me/post/20220623-install-librenms-with-docker-container/</link>
+      <pubDate>Thu, 23 Jun 2022 14:50:31 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20220623-install-librenms-with-docker-container/</guid>
+      <description>前言 本篇文章紀錄如何透過 docker-compose 快速架一個 LibreNMS 起來。這篇會出現的原因是為了要監控/debug IDC 7F iDRAC/ESXi 電口對接 Cisco Switch 的問題~ 安裝 docker-compose 1 2 3 4 curl -SL https://github.com/docker/compose/releases/download/v2.6.0/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose ## if $PATH</description>
+    </item>
+    
     <item>
       <title>離線更新 VCSA (vCenter) 使用 iso</title>
       <link>https://blog.xxzk.me/post/20220621-upgrade-vcsa-using-iso-file/</link>

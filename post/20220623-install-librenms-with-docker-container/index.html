@@ -16,7 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="前言 本篇文章紀錄如何透過 docker-compose 快速架一個 LibreNMS 起來。這篇會出現的原因是為了要監控/debug IDC 7F iDRAC/ESXi 電口對接 Cisco Switch 的問題~ 安裝 docker-compose 1 2 3 4 curl -SL https://github.com/docker/compose/releases/download/v2.6.0/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose ## if $PATH" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="老柯" /><meta name="description" content="前言 本篇文章紀錄如何透過 docker-compose 快速架一個 LibreNMS 起來。這篇會出現的原因是為了要監控/debug IDC 7F iDRAC/ESXi 電口對接 Cisco Switch 的問題~ 安裝 docker-compose 【standalone】" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
@@ -40,19 +40,19 @@
 
 
 <meta property="og:title" content="使用 container 快速部屬 LibreNMS" />
-<meta property="og:description" content="前言 本篇文章紀錄如何透過 docker-compose 快速架一個 LibreNMS 起來。這篇會出現的原因是為了要監控/debug IDC 7F iDRAC/ESXi 電口對接 Cisco Switch 的問題~ 安裝 docker-compose 1 2 3 4 curl -SL https://github.com/docker/compose/releases/download/v2.6.0/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose ## if $PATH" />
+<meta property="og:description" content="前言 本篇文章紀錄如何透過 docker-compose 快速架一個 LibreNMS 起來。這篇會出現的原因是為了要監控/debug IDC 7F iDRAC/ESXi 電口對接 Cisco Switch 的問題~ 安裝 docker-compose 【standalone】" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.xxzk.me/post/20220623-install-librenms-with-docker-container/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2022-06-23T14:50:31+00:00" />
 <meta property="article:modified_time" content="2022-06-23T14:50:31+00:00" />
 
 <meta itemprop="name" content="使用 container 快速部屬 LibreNMS">
-<meta itemprop="description" content="前言 本篇文章紀錄如何透過 docker-compose 快速架一個 LibreNMS 起來。這篇會出現的原因是為了要監控/debug IDC 7F iDRAC/ESXi 電口對接 Cisco Switch 的問題~ 安裝 docker-compose 1 2 3 4 curl -SL https://github.com/docker/compose/releases/download/v2.6.0/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose ## if $PATH"><meta itemprop="datePublished" content="2022-06-23T14:50:31+00:00" />
+<meta itemprop="description" content="前言 本篇文章紀錄如何透過 docker-compose 快速架一個 LibreNMS 起來。這篇會出現的原因是為了要監控/debug IDC 7F iDRAC/ESXi 電口對接 Cisco Switch 的問題~ 安裝 docker-compose 【standalone】"><meta itemprop="datePublished" content="2022-06-23T14:50:31+00:00" />
 <meta itemprop="dateModified" content="2022-06-23T14:50:31+00:00" />
-<meta itemprop="wordCount" content="698">
+<meta itemprop="wordCount" content="724">
 <meta itemprop="keywords" content="LibreNMS,docker," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="使用 container 快速部屬 LibreNMS"/>
-<meta name="twitter:description" content="前言 本篇文章紀錄如何透過 docker-compose 快速架一個 LibreNMS 起來。這篇會出現的原因是為了要監控/debug IDC 7F iDRAC/ESXi 電口對接 Cisco Switch 的問題~ 安裝 docker-compose 1 2 3 4 curl -SL https://github.com/docker/compose/releases/download/v2.6.0/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose ## if $PATH"/>
+<meta name="twitter:description" content="前言 本篇文章紀錄如何透過 docker-compose 快速架一個 LibreNMS 起來。這篇會出現的原因是為了要監控/debug IDC 7F iDRAC/ESXi 電口對接 Cisco Switch 的問題~ 安裝 docker-compose 【standalone】"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -166,15 +166,18 @@
       <h2 id="前言">前言</h2>
 <p>本篇文章紀錄如何透過 <code>docker-compose</code> 快速架一個 LibreNMS 起來。這篇會出現的原因是為了要監控/debug IDC 7F iDRAC/ESXi 電口對接 Cisco Switch 的問題~</p>
 <h2 id="安裝-docker-compose">安裝 <code>docker-compose</code></h2>
+<p><a href="https://docs.docker.com/compose/install/compose-plugin/#install-the-plugin-manually">【standalone】Install the plugin manually</a></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
+</span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl -SL https://github.com/docker/compose/releases/download/v2.6.0/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
+</span></span><span class="line"><span class="cl">chmod a+x /usr/local/bin/docker-compose
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">## if $PATH not include &#39;/usr/local/bin/&#39;</span>
 </span></span><span class="line"><span class="cl">sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose

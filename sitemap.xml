@@ -122,27 +122,41 @@
   
   <url>
     <loc>https://blog.xxzk.me/tags/cka/</loc>
-    <lastmod>2021-11-23T14:00:06+00:00</lastmod>
+    <lastmod>2021-11-25T16:03:41+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://blog.xxzk.me/categories/cka/</loc>
-    <lastmod>2021-11-23T14:00:06+00:00</lastmod>
+    <lastmod>2021-11-25T16:03:41+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://blog.xxzk.me/post/20211123-cka_note_section_2_core_concepts/</loc>
-    <lastmod>2021-11-23T14:00:06+00:00</lastmod>
+    <loc>https://blog.xxzk.me/post/20211125-cka_note_section_4_logging_and_monitoring/</loc>
+    <lastmod>2021-11-25T16:03:41+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://blog.xxzk.me/tags/kubernetes/</loc>
+    <lastmod>2021-11-25T16:03:41+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/post/20211124-cka_note_section_3_scheduling/</loc>
+    <lastmod>2021-11-24T15:03:28+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/post/20211123-cka_note_section_2_core_concepts/</loc>
     <lastmod>2021-11-23T14:00:06+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>

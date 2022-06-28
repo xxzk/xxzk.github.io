@@ -6,7 +6,25 @@
     <description>Recent content in Kubernetes on 老柯的學習筆記</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 23 Nov 2021 14:00:06 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/tags/kubernetes/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 25 Nov 2021 16:03:41 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/tags/kubernetes/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CKA_Note_Section_4_Logging_and_Monitoring</title>
+      <link>https://blog.xxzk.me/post/20211125-cka_note_section_4_logging_and_monitoring/</link>
+      <pubDate>Thu, 25 Nov 2021 16:03:41 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20211125-cka_note_section_4_logging_and_monitoring/</guid>
+      <description>請參考 CKAD Note Section 5 Observability 76. Monitor and Debug Application 章節。</description>
+    </item>
+    
+    <item>
+      <title>CKA_Note_Section_3_Scheduling</title>
+      <link>https://blog.xxzk.me/post/20211124-cka_note_section_3_scheduling/</link>
+      <pubDate>Wed, 24 Nov 2021 15:03:28 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20211124-cka_note_section_3_scheduling/</guid>
+      <description>50. Manual Scheduling 在 有 kube-scheduler 的情況下，我們可以在 pod definition YAML 裡面定義 pod.spec.nodeName: &amp;lt;worker node name&amp;gt; 來把 pod 放在指定 worker node。 在 沒有 kube-scheduler 的情況下，必須要以 json 格式 POST 到 api-server。B</description>
+    </item>
+    
     <item>
       <title>CKA_Note_Section_2_Core_Concepts</title>
       <link>https://blog.xxzk.me/post/20211123-cka_note_section_2_core_concepts/</link>

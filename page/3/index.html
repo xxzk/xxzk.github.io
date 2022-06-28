@@ -122,6 +122,48 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/20211102-ckad-note-section-6-pod-design/">CKAD Note Section 6 Pod Design</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2021-11-02 </span>
+      <div class="post-category">
+          <a href="/categories/ckad-note/"> CKAD-Note </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      79. Labels, Selectors and Annotations 1 2 3 4 5 6 7 8 9 10 11 12 13 apiVersion:v1kind:Podmetadata:name:label-demolabels:environment:productionapp:nginxspec:containers:- name:nginximage:nginx:1.14.2ports:- containerPort:80 我們可以在 kubernetes object 上貼上標籤 (labels) 用於分類。使用 kubectl get pod --selector &lt;key&gt;=&lt;value&gt; 可以篩選。 最後 Annotation 就是有點像註解的東西，給人看的 例
+    </div>
+    <div class="read-more">
+      <a href="/post/20211102-ckad-note-section-6-pod-design/" class="read-more-link">Read more...</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/20211027-ckad-note-section-5-observability/">CKAD Note Section 5 Observability</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2021-10-27 </span>
+      <div class="post-category">
+          <a href="/categories/ckad-note/"> CKAD-Note </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      70. Readiness and Liveness Probes Readiness Probes 透過前面的章節我們可以得知 Pod 具有狀態 (status) 與 條件 (condition)，前者顯示 lifecycle 階段 (pending, containerCreating, running) pending: scheduler 正在安排 pod 到 worker-node 上，或者有問題 (kubectl describe 可
+    </div>
+    <div class="read-more">
+      <a href="/post/20211027-ckad-note-section-5-observability/" class="read-more-link">Read more...</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/20210730-ckad-note-section-3-configuration/">CKAD Note Section 3 Configuration</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2021-07-30 </span>
@@ -184,48 +226,6 @@
   </div>
 </article>
 
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/20200929-intro-hinet-gpon-modem-to-otl/">數據機到機房 淺談 GPON 以 HiNet FTTH 為例</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2020-09-29 </span>
-      <div class="post-category">
-          <a href="/categories/hinet/"> hinet </a>
-          </div>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      圖片來源 Spectra TEch 在開始之前先大致介紹一下台灣目前光纖網路接取技術使採用 GPON (Gigabit Passive Optical Network) 千兆級無源光網路，簡單架構如上圖 不知道大家有沒有曾經好奇過從數據
-    </div>
-    <div class="read-more">
-      <a href="/post/20200929-intro-hinet-gpon-modem-to-otl/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/20200924-graylog-installation-use-centos77/">Gralylog 安裝紀錄 (使用 Default CentOS 7.7)</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2020-09-24 </span>
-      <div class="post-category">
-          <a href="/categories//">  </a>
-          </div>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      本篇參考資料 How to install and configure Graylog on CentOS 7 執行系統更新 1 yum update -y 安裝 EPEL 1 yum install epel-release -y 安裝所需項目，其中 pwgen 套件是等等要用來產生 graylog server 設定檔的密鑰 1 yum install pwgen vim -y 安裝 java
-    </div>
-    <div class="read-more">
-      <a href="/post/20200924-graylog-installation-use-centos77/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
     </section>
   
   <nav class="pagination">
@@ -233,7 +233,10 @@
         <i class="iconfont icon-left"></i>
         <span class="prev-text">Prev</span>
       </a>
-    
+    <a class="next" href="/page/4/">
+        <span class="next-text">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
   </nav>
         </div>
         

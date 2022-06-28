@@ -122,105 +122,42 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/20211124-cka_note_section_3_scheduling/">CKA_Note_Section_3_Scheduling</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/20200929-intro-hinet-gpon-modem-to-otl/">數據機到機房 淺談 GPON 以 HiNet FTTH 為例</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2021-11-24 </span>
+      <span class="post-time"> 2020-09-29 </span>
       <div class="post-category">
-          <a href="/categories/cka/"> CKA </a>
+          <a href="/categories/hinet/"> hinet </a>
           </div>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      50. Manual Scheduling 在 有 kube-scheduler 的情況下，我們可以在 pod definition YAML 裡面定義 pod.spec.nodeName: &lt;worker node name&gt; 來把 pod 放在指定 worker node。 在 沒有 kube-scheduler 的情況下，必須要以 json 格式 POST 到 api-server。B
+      圖片來源 Spectra TEch 在開始之前先大致介紹一下台灣目前光纖網路接取技術使採用 GPON (Gigabit Passive Optical Network) 千兆級無源光網路，簡單架構如上圖 不知道大家有沒有曾經好奇過從數據
     </div>
     <div class="read-more">
-      <a href="/post/20211124-cka_note_section_3_scheduling/" class="read-more-link">Read more...</a>
+      <a href="/post/20200929-intro-hinet-gpon-modem-to-otl/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>
 
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/20211123-cka_note_section_2_core_concepts/">CKA_Note_Section_2_Core_Concepts</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/20200924-graylog-installation-use-centos77/">Gralylog 安裝紀錄 (使用 Default CentOS 7.7)</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2021-11-23 </span>
+      <span class="post-time"> 2020-09-24 </span>
       <div class="post-category">
-          <a href="/categories/cka/"> CKA </a>
+          <a href="/categories//">  </a>
           </div>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      10. Cluster Architecture ▲ Kubernetes controll plane / worker node 組件 12. ETCD in Kubernetes 透過 kubectl get 都是 (透過 api-server ) 向 etcd 查詢資料。 講師提供的練習環境是使用 kubeadm 搭建的，課程最後的章節會教導如何從 scratch 建立 Kubernetes cl
+      本篇參考資料 How to install and configure Graylog on CentOS 7 執行系統更新 1 yum update -y 安裝 EPEL 1 yum install epel-release -y 安裝所需項目，其中 pwgen 套件是等等要用來產生 graylog server 設定檔的密鑰 1 yum install pwgen vim -y 安裝 java
     </div>
     <div class="read-more">
-      <a href="/post/20211123-cka_note_section_2_core_concepts/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/20211110-ckad-note-section-9-updates-for-sep-2021-changes/">CKAD Note Section 9 Updates for Sep 2021 Changes</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2021-11-10 </span>
-      <div class="post-category">
-          <a href="/categories/ckad-note/"> CKAD-Note </a>
-          </div>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      ▲ CKAD 新舊版差異 119. Define, build and modify container images 非常基礎的 Docker Image (container image) 介紹，我之前就打過一篇在公司 Bookstack 了~ 《Docker Image 介紹》 使用 docker 與 podman 大部分情況 docker 與 podman syntax 很接近~ 1
-    </div>
-    <div class="read-more">
-      <a href="/post/20211110-ckad-note-section-9-updates-for-sep-2021-changes/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/20211105-ckad-note-section-8-state-persistence/">CKAD Note Section 8 State Persistence</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2021-11-05 </span>
-      <div class="post-category">
-          <a href="/categories/ckad-note/"> CKAD-Note </a>
-          </div>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      105. Volumes hostPath 這個範例 mount worker-node 的 /data 進 pod 裡面，並且 mapping 到 container 裡面的 /test-pd。 實際上我們並不會這樣做，因為 worker-node 之間的資料並沒辦法同步，一般來說會使用 shared storage 例
-    </div>
-    <div class="read-more">
-      <a href="/post/20211105-ckad-note-section-8-state-persistence/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/20211104-ckad-note-section-7-service-and-networking/">CKAD Note Section 7 Service and Networking</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2021-11-04 </span>
-      <div class="post-category">
-          <a href="/categories/ckad-note/"> CKAD-Note </a>
-          </div>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      90. Service ▲ NodePort type 的 service ▲ service 的種類: NodePort, Cluster IP, LoadBlance ▲ NodePort 總共有三個 port number 分別是: node-port, port, target-port NodePort range: 30000~32767 (option)。 如果沒有給定 targetPort，預設 port == targ
-    </div>
-    <div class="read-more">
-      <a href="/post/20211104-ckad-note-section-7-service-and-networking/" class="read-more-link">Read more...</a>
+      <a href="/post/20200924-graylog-installation-use-centos77/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>
@@ -228,14 +165,11 @@
     </section>
   
   <nav class="pagination">
-    <a class="prev" href="/">
+    <a class="prev" href="/page/3/">
         <i class="iconfont icon-left"></i>
         <span class="prev-text">Prev</span>
       </a>
-    <a class="next" href="/page/3/">
-        <span class="next-text">Next</span>
-        <i class="iconfont icon-right"></i>
-      </a>
+    
   </nav>
         </div>
         

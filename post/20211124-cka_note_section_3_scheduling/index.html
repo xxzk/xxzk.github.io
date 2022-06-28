@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>CKA_Note_Section_3_Scheduling - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="50. Manual Scheduling 在 有 kube-scheduler 的情況下，我們可以在 pod definition YAML 裡面定義 pod.spec.nodeName: &amp;lt;worker node name&amp;gt; 來把 pod 放在指定 worker node。 在 沒有 kube-scheduler 的情況下，必須要以 json 格式 POST 到 api-server。B" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.98.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20211124-cka_note_section_3_scheduling/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="CKA_Note_Section_3_Scheduling" />
+<meta property="og:description" content="50. Manual Scheduling 在 有 kube-scheduler 的情況下，我們可以在 pod definition YAML 裡面定義 pod.spec.nodeName: &lt;worker node name&gt; 來把 pod 放在指定 worker node。 在 沒有 kube-scheduler 的情況下，必須要以 json 格式 POST 到 api-server。B" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.xxzk.me/post/20211124-cka_note_section_3_scheduling/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-11-24T15:03:28+00:00" />
+<meta property="article:modified_time" content="2021-11-24T15:03:28+00:00" />
+
+<meta itemprop="name" content="CKA_Note_Section_3_Scheduling">
+<meta itemprop="description" content="50. Manual Scheduling 在 有 kube-scheduler 的情況下，我們可以在 pod definition YAML 裡面定義 pod.spec.nodeName: &lt;worker node name&gt; 來把 pod 放在指定 worker node。 在 沒有 kube-scheduler 的情況下，必須要以 json 格式 POST 到 api-server。B"><meta itemprop="datePublished" content="2021-11-24T15:03:28+00:00" />
+<meta itemprop="dateModified" content="2021-11-24T15:03:28+00:00" />
+<meta itemprop="wordCount" content="718">
+<meta itemprop="keywords" content="CKA,kubernetes," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="CKA_Note_Section_3_Scheduling"/>
+<meta name="twitter:description" content="50. Manual Scheduling 在 有 kube-scheduler 的情況下，我們可以在 pod definition YAML 裡面定義 pod.spec.nodeName: &lt;worker node name&gt; 來把 pod 放在指定 worker node。 在 沒有 kube-scheduler 的情況下，必須要以 json 格式 POST 到 api-server。B"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">CKA_Note_Section_3_Scheduling</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-11-24 </span>
+        <div class="post-category">
+            <a href="/categories/cka/"> CKA </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#50-manual-scheduling">50. Manual Scheduling</a></li>
+        <li><a href="#69-daemonsets">69. DaemonSets</a></li>
+        <li><a href="#72-static-pods">72. Static Pods</a></li>
+        <li><a href="#75-multiple-schedulers">75. Multiple Schedulers</a>
+          <ul>
+            <li><a href="#custom-scheduler">custom scheduler</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="50-manual-scheduling">50. Manual Scheduling</h2>
+<br>
+<p>在 <strong>有</strong> <code>kube-scheduler</code> 的情況下，我們可以在 <code>pod</code> definition YAML 裡面定義 <code>pod.spec.nodeName: &lt;worker node name&gt;</code> 來把 <code>pod</code> 放在指定 worker node。<br>
+在 <strong>沒有</strong> <code>kube-scheduler</code> 的情況下，必須要以 <code>json</code> 格式 POST 到 <code>api-server</code>。BTW，我找不到 docs 耶 = =</p>
+<br>
+<p><img src="pod_binding.jpg" alt="pod_binding"></p>
+<p>▲ 使用 <code>curl</code></p>
+<br>
+<h2 id="69-daemonsets">69. DaemonSets</h2>
+<br>
+<p><strong><span style='color:red'><code>daemondset</code> 能夠確保每一個 node 都有一個 <code>pod</code> 運作</span></strong>，當 node join cluster 的時候會被新增，反之亦然。<br>
+在 Kubernetes v1.12 之前， <code>daemondset</code> 的實作方式是透過 <code>nodeSelector</code>，之後是透過 <code>NodeAffinity</code> and default scheduler。</p>
+<br>
+<p><img src="daemondset_kube_proxy.jpg" alt="daemondset_kube_proxy"></p>
+<p>▲ <code>kube-proxy</code> 就是一個使用的例子。</p>
+<br>
+<h2 id="72-static-pods">72. Static Pods</h2>
+<br>
+<p>示範在沒有 control plane (包含 <code>api-server</code>) 的情況下，如何在 worker node 建立 <code>pod</code>。 (<strong><span style='color:blue'>只能建立 <code>pod</code></span></strong>)<br>
+只要把 <code>pod-definition.yml</code> 放在 <code>/etc/kubernetes/manifests/</code> (預設) 這個資料夾底下 <code>kubelet</code> 就會幫我們建立 <code>pod</code>，任何刪除及異動都會被執行。</p>
+<br>
+<p><img src="static_pod_0.jpg" alt="static_pod_0"></p>
+<p>▲ 預設路徑是可以被更改的。</p>
+<br>
+<p><img src="static_pod_1.jpg" alt="static_pod_1"></p>
+<p>▲ 或者傳送 config file 進去。</p>
+<br>
+<p><img src="static_pod_2.jpg" alt="static_pod_2"></p>
+<p>▲ <strong><span style='color:red'>static pod 也可以被 <code>kubectl get</code> 到，不過 <code>kubectl</code> 並沒辦法去 edit/delete static pod。</span></strong><br>
+原理是當 <code>kubelet</code> 建立 static pod 時會建立一個 <code>mirror pod</code> 在 <code>api-server</code> 上。 詳情 <a href="https://kubernetes.io/docs/tasks/configure-pod-container/static-pod/">Create static Pods</a></p>
+<br>
+<p><img src="static_pod_3.jpg" alt="static_pod_3"></p>
+<p>▲ <strong><span style='color:blue'>使用情形就是 control plane 上面的元件 (例如: <code>api-server</code>, <code>etcd</code>, <code>controller-manager</code>)</span></strong> (以 kubeadm 來說)</p>
+<br>
+<p><img src="static_pod_4.jpg" alt="static_pod_4"></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Static PODs</th>
+<th style="text-align:center">DaemonSets</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">由 <code>kubelet</code> 發起建立</td>
+<td style="text-align:center">由 <code>api-server</code> 發起建立 (DaemonSet controller)</td>
+</tr>
+<tr>
+<td style="text-align:center">用途: 部屬 control plane 所需元件</td>
+<td style="text-align:center">用途: 部屬 monitoring agent, logging agent</td>
+</tr>
+<tr>
+<td style="text-align:center"><strong><span style='color:red'>都被 <code>kube-scheduler</code> 忽略</span></strong></td>
+<td style="text-align:center"><strong><span style='color:red'>都被 <code>kube-scheduler</code> 忽略</span></strong></td>
+</tr>
+</tbody>
+</table>
+<p>▲ static pod 與 daemonset 的差異</p>
+<br>
+<h2 id="75-multiple-schedulers">75. Multiple Schedulers</h2>
+<br>
+<p>Kubernetes 允許多個 <code>kube-scheduler</code> 同時存在 (使用者可以自行設計不同邏輯的 scheduler)。<br>
+下面截取 <code>/etc/kubernetes/manifests/kube-scheduler.yaml</code> 重要片段解釋</p>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Pod</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">component</span><span class="p">:</span><span class="w"> </span><span class="l">kube-scheduler</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">tier</span><span class="p">:</span><span class="w"> </span><span class="l">control-plane</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">kube-scheduler</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">kube-system</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">containers</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">command</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="l">kube-scheduler</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- --<span class="l">authentication-kubeconfig=/etc/kubernetes/scheduler.conf</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- --<span class="l">authorization-kubeconfig=/etc/kubernetes/scheduler.conf</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- --<span class="l">bind-address=127.0.0.1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- --<span class="l">kubeconfig=/etc/kubernetes/scheduler.conf</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- --<span class="l">leader-elect=false</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- --<span class="l">port=0</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">k8s.gcr.io/kube-scheduler:v1.20.7</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>預設沒有給定 <code>--scheduler-name=</code> 的話就是叫 <code>default-scheduler</code>。 <strong><span style='color:red'>若要擁有第二個 <code>kube-scheduler</code> 的話就必須改名子</span></strong></li>
+<li><code>--leader-elect=true</code> 是當有 multi master 時 (意味者有 multi <code>kube-scheduler</code>) 只能選一台當作 master，其餘作為備援。</li>
+<li><strong><span style='color:blue'>指定 <code>pod</code> 使用某個 scheduler 的話可以在 <code>pod.spec.schedulerName</code> 給定 scheduler name。</span></strong></li>
+</ul>
+<h3 id="custom-scheduler">custom scheduler</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">- --leader-elect<span class="o">=</span><span class="nb">false</span>
+</span></span><span class="line"><span class="cl">- --port<span class="o">=</span><span class="m">58787</span>
+</span></span><span class="line"><span class="cl">- --scheduler-name<span class="o">=</span>my-scheduler
+</span></span><span class="line"><span class="cl">- --secure-port<span class="o">=</span><span class="m">0</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>從 <code>/etc/kubernetes/manifests/kube-scheduler.yaml</code> 複製出來，想要建立一個不同名子的 scheduler 需要改的東西如上。<strong><span style='color:red'>還有 <code>pod</code> name</span></strong></p>
+<ul>
+<li><code>--port</code> 改成一個沒有被使用的。</li>
+<li><code>--secure-port</code> 預設 scheduler 會使用 <code>10259</code> 來提供 HTTPS authentication and authorization，把它改成 <code>0</code> 來 disabled。</li>
+</ul>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## show event</span>
+</span></span><span class="line"><span class="cl">kubectl get events -n kube-system
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## show scheduler logs</span>
+</span></span><span class="line"><span class="cl">kubectl logs -n kube-system kube-scheduler-mini-k8s
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2021-11-24
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/cka/">CKA</a>
+          <a href="/tags/kubernetes/">kubernetes</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/20211125-cka_note_section_4_logging_and_monitoring/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">CKA_Note_Section_4_Logging_and_Monitoring</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/20211123-cka_note_section_2_core_concepts/">
+            <span class="next-text nav-default">CKA_Note_Section_2_Core_Concepts</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.64437849d125a2d603b3e71d6de5225d641a32d17168a58106e0b61852079683.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

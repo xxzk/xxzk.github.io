@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>CKA_Note_Section_2_Core_Concepts - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="10. Cluster Architecture ▲ Kubernetes controll plane / worker node 組件 12. ETCD in Kubernetes 透過 kubectl get 都是 (透過 api-server ) 向 etcd 查詢資料。 講師提供的練習環境是使用 kubeadm 搭建的，課程最後的章節會教導如何從 scratch 建立 Kubernetes cl" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.98.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20211123-cka_note_section_2_core_concepts/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="CKA_Note_Section_2_Core_Concepts" />
+<meta property="og:description" content="10. Cluster Architecture ▲ Kubernetes controll plane / worker node 組件 12. ETCD in Kubernetes 透過 kubectl get 都是 (透過 api-server ) 向 etcd 查詢資料。 講師提供的練習環境是使用 kubeadm 搭建的，課程最後的章節會教導如何從 scratch 建立 Kubernetes cl" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.xxzk.me/post/20211123-cka_note_section_2_core_concepts/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-11-23T14:00:06+00:00" />
+<meta property="article:modified_time" content="2021-11-23T14:00:06+00:00" />
+
+<meta itemprop="name" content="CKA_Note_Section_2_Core_Concepts">
+<meta itemprop="description" content="10. Cluster Architecture ▲ Kubernetes controll plane / worker node 組件 12. ETCD in Kubernetes 透過 kubectl get 都是 (透過 api-server ) 向 etcd 查詢資料。 講師提供的練習環境是使用 kubeadm 搭建的，課程最後的章節會教導如何從 scratch 建立 Kubernetes cl"><meta itemprop="datePublished" content="2021-11-23T14:00:06+00:00" />
+<meta itemprop="dateModified" content="2021-11-23T14:00:06+00:00" />
+<meta itemprop="wordCount" content="994">
+<meta itemprop="keywords" content="CKA,kubernetes," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="CKA_Note_Section_2_Core_Concepts"/>
+<meta name="twitter:description" content="10. Cluster Architecture ▲ Kubernetes controll plane / worker node 組件 12. ETCD in Kubernetes 透過 kubectl get 都是 (透過 api-server ) 向 etcd 查詢資料。 講師提供的練習環境是使用 kubeadm 搭建的，課程最後的章節會教導如何從 scratch 建立 Kubernetes cl"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">CKA_Note_Section_2_Core_Concepts</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-11-23 </span>
+        <div class="post-category">
+            <a href="/categories/cka/"> CKA </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#10-cluster-architecture">10. Cluster Architecture</a></li>
+        <li><a href="#12-etcd-in-kubernetes">12. ETCD in Kubernetes</a></li>
+        <li><a href="#14-kube-api-server">14. Kube-API Server</a></li>
+        <li><a href="#15-kube-controller-manager">15. Kube Controller Manager</a></li>
+        <li><a href="#16-kube-scheduler">16. Kube Scheduler</a></li>
+        <li><a href="#17-kubelet">17. Kubelet</a></li>
+        <li><a href="#18-kube-proxy">18. Kube Proxy</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="10-cluster-architecture">10. Cluster Architecture</h2>
+<br>
+<p><img src="k8s_arch.jpg" alt="k8s_arch"></p>
+<p>▲ Kubernetes controll plane / worker node 組件</p>
+<br>
+<h2 id="12-etcd-in-kubernetes">12. ETCD in Kubernetes</h2>
+<br>
+<ul>
+<li>透過 <code>kubectl get</code> 都是 (透過 <code>api-server</code> ) 向 etcd 查詢資料。</li>
+<li>講師提供的練習環境是使用 <code>kubeadm</code> 搭建的，課程最後的章節會教導如何從 scratch 建立 Kubernetes cluster。</li>
+</ul>
+<br>
+<p><img src="etcd_manual_install_0.jpg" alt="etcd_manual_install_0"></p>
+<p>▲ <code>--advertise-client-urls</code> etcd LISTEN 的 IP 以及 port，其中 port 必須是 2379。</p>
+<br>
+<p><img src="etcd_kubeadm_0.jpg" alt="etcd_kubeadm_0"></p>
+<p>▲ 使用 <code>kubeadm</code> 安裝的話 etcd 會被安裝在 <code>pod</code> 裡面。\</p>
+<ul>
+<li>透過 <code>kubectl exec etcd-mini-k8s -n kube-system  -- etcdctl get / --prefix --keys-only</code> 可以查詢 <code>key</code>。</li>
+<li>etcd 的根目錄是 <code>/registry</code>。</li>
+</ul>
+<br>
+<p><img src="get_etcd_keys_error.jpg" alt="get_etcd_keys_error"></p>
+<p>▲ <strong><span style='color:red'>不過因為沒有傳送給予 CA 憑證，所以不給查詢</span></strong> (後面章節應該會介紹)<br>
+有嘗試用過這篇給的方式，沒用 (沒有細查，應該是 cert 的位置不對吧~)  <a href="https://gist.github.com/lalyos/aef94a4c23973eaee4a17bb26b6972a2">etcd-list-keys</a></p>
+<br>
+<p><img src="etcd_ha_config.jpg" alt="etcd_ha_config"></p>
+<p>▲ 因為 etcd 極為重要，通常都會弄 HA! config 內就需要知道彼此在哪裡。</p>
+<br>
+<h2 id="14-kube-api-server">14. Kube-API Server</h2>
+<br>
+<ul>
+<li>除了透過 <code>kubectl</code> 也可以直接對 <code>api-server</code> 傳送 <code>POST</code> 操作。</li>
+<li><code>api-server</code></li>
+<li><strong><span style='color:red'><code>kube-scheduler</code> 會持續監測 <code>api-server</code>，所以它會知道有新的任務並且指派 which worker node should it placed，並且回傳 <code>api-server</code>。</span></strong> (假設我們要建立 <code>pod</code>)</li>
+<li>接著 <code>api-server</code> 會更新 etcd cluster 內的資料。</li>
+<li>再來 <code>api-server</code> 會傳送任務單到剛才 <code>kube-scheduler</code> 指派的 worker node 身上的 <code>kubelet</code>。</li>
+<li><code>kubelet</code> 使用 container runtime 建立 container，並且回傳狀態給 <code>api-server</code>。</li>
+<li><code>api-server</code> 會更新 etcd cluster 內的資料。</li>
+</ul>
+<br>
+<p><img src="quick_check_install_kube_api_server.jpg" alt="quick_check_install_kube_api_server"></p>
+<p>▲ 快速看過 scratch install <code>api-server</code> 有哪些參數需要被設定。</p>
+<br>
+<h2 id="15-kube-controller-manager">15. Kube Controller Manager</h2>
+<br>
+<p><strong><span style='color:blue'>Kube Controller Manager</span></strong> 其實是一個統稱，裡面包含了:</p>
+<ul>
+<li>Deployment-Controller</li>
+<li>Namespace-Controller</li>
+<li>Endpoint-Controller</li>
+<li>CronJob-Controller</li>
+<li>Job-Controller</li>
+<li>PV Protection-Controller</li>
+<li>Service Account-Controller</li>
+<li>Stateful-Controller</li>
+<li>Replicaset</li>
+<li>Node-Controller</li>
+<li>Replication-Controller</li>
+</ul>
+<p><del>為什麼我要打這麼多</del> <strong><span style='color:blue'>總之 resource controller 的功能就是滿足 desired state!</span></strong></p>
+<br>
+<p><img src="node_controller.jpg" alt="node_controller"></p>
+<p>▲ <code>Node-Controller</code> 運作機制。每 5 秒 ping 一次 (實際上應該不是 ping 啦)，在被標註成 Unreachable 之前會給 40 秒的 node monitor grace period，維持 Unreachable 狀態超過 5 分鐘才會觸發 pod eviction。<br>
+延伸閱讀: <a href="https://speakerdeck.com/pichuang/20211122-kubernetes-duo-cong-ji-ji-dan-cong-ji-jia-gou-xuan-ze-tan-tao?slide=19">20211122_ Kubernetes 多叢集及單叢集架構選擇探討</a></p>
+<br>
+<p><img src="quick_check_install_kube_controller_mng.jpg" alt="quick_check_install_kube_controller_mng"></p>
+<p>▲ 快速看過 scratch install Kube Controller Manager 所需參數。包含剛剛提到的秒數都是 option，<strong><span style='color:blue'>預設 Kube Controller Manager 開啟所有 controller，也是可以透過參數單獨關閉</span></strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 在 control plane 執行可以看到目前 running 的參數</span>
+</span></span><span class="line"><span class="cl">ps -aux <span class="p">|</span> grep <span class="s1">&#39;kube-controller-manager&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<h2 id="16-kube-scheduler">16. Kube Scheduler</h2>
+<br>
+<ul>
+<li><strong><span style='color:blue'>scheduler 只被用來挑選 worker node，實際上建立 container 的是 <code>kubelet</code></span></strong></li>
+<li><code>kube-scheduler</code> 在挑選時，首先會針對 worker node 做 filter 去除掉不符合資格的 node，接著 rank it (例如: 這個 resource 放置後剩餘資源多者獲勝)。當然，這是可以被客製化的，後面會有專門一個章節討論。</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 在 control plane 執行可以看到目前 running 的參數</span>
+</span></span><span class="line"><span class="cl">ps -aux <span class="p">|</span> grep <span class="s1">&#39;kube-scheduler&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<h2 id="17-kubelet">17. Kubelet</h2>
+<br>
+<ul>
+<li><strong><span style='color:red'>kubeadm 的安裝方式，預設並沒有安裝 <code>kubelet</code> 必須手動在 worker node 安裝</span></strong></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 在 control plane/worker node 執行可以看到目前 running 的參數</span>
+</span></span><span class="line"><span class="cl">ps -aux <span class="p">|</span> grep <span class="s1">&#39;kube-kubelet&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<h2 id="18-kube-proxy">18. Kube Proxy</h2>
+<br>
+<p>在 CKAD 課程當中我們知道 <code>pod</code> 可以跨 worker node 訪問 <code>pod</code>，最好的方式是透過 <code>service</code> (而非 <code>pod</code> IP)。<br>
+但 <code>service</code> 並不像 <code>pod</code> 一樣有個 container 實體存在 worker node，<code>service</code> 的資訊會被記錄在 <code>kube-proxy</code> 當中，並且產生出規則 (例如: iptable)。<br>
+後面會有很大一個章節在討論網路的部分~</p>
+<br>
+<p><img src="kube_proxy.jpg" alt="kube_proxy"></p>
+<p>▲ <code>kube-proxy</code></p>
+<br>
+<p><img src="kube_proxy_daemondset.jpg" alt="kube_proxy_daemondset"></p>
+<p>▲ <strong><span style='color:red'>kubeadm 部屬 <code>kube-proxy</code> 的方式是透過 <code>daemondset</code></span></strong></p>
+<br>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2021-11-23
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/cka/">CKA</a>
+          <a href="/tags/kubernetes/">kubernetes</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/20211220-diff-between-shell-and-exec-in-dockerfile/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Dockerfile - Shell 與 Exec 的差異</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/20211110-ckad-note-section-9-updates-for-sep-2021-changes/">
+            <span class="next-text nav-default">CKAD Note Section 9 Updates for Sep 2021 Changes</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.64437849d125a2d603b3e71d6de5225d641a32d17168a58106e0b61852079683.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

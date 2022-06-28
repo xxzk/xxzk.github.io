@@ -53,20 +53,29 @@
     </item>
     
     <item>
-      <title>CKAD</title>
-      <link>https://blog.xxzk.me/tags/ckad/</link>
-      <pubDate>Wed, 10 Nov 2021 11:05:08 +0000</pubDate>
+      <title>CKA</title>
+      <link>https://blog.xxzk.me/tags/cka/</link>
+      <pubDate>Tue, 23 Nov 2021 14:00:06 +0000</pubDate>
       
-      <guid>https://blog.xxzk.me/tags/ckad/</guid>
+      <guid>https://blog.xxzk.me/tags/cka/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Kubernetes</title>
       <link>https://blog.xxzk.me/tags/kubernetes/</link>
-      <pubDate>Wed, 10 Nov 2021 11:05:08 +0000</pubDate>
+      <pubDate>Tue, 23 Nov 2021 14:00:06 +0000</pubDate>
       
       <guid>https://blog.xxzk.me/tags/kubernetes/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>CKAD</title>
+      <link>https://blog.xxzk.me/tags/ckad/</link>
+      <pubDate>Wed, 10 Nov 2021 11:05:08 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/tags/ckad/</guid>
       <description></description>
     </item>
     

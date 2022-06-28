@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>CKA on 老柯的學習筆記</title>
+    <link>https://blog.xxzk.me/tags/cka/</link>
+    <description>Recent content in CKA on 老柯的學習筆記</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 23 Nov 2021 14:00:06 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/tags/cka/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CKA_Note_Section_2_Core_Concepts</title>
+      <link>https://blog.xxzk.me/post/20211123-cka_note_section_2_core_concepts/</link>
+      <pubDate>Tue, 23 Nov 2021 14:00:06 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20211123-cka_note_section_2_core_concepts/</guid>
+      <description>10. Cluster Architecture ▲ Kubernetes controll plane / worker node 組件 12. ETCD in Kubernetes 透過 kubectl get 都是 (透過 api-server ) 向 etcd 查詢資料。 講師提供的練習環境是使用 kubeadm 搭建的，課程最後的章節會教導如何從 scratch 建立 Kubernetes cl</description>
+    </item>
+    
+  </channel>
+</rss>

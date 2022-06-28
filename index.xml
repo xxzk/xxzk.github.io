@@ -44,6 +44,15 @@
     </item>
     
     <item>
+      <title>CKA_Note_Section_2_Core_Concepts</title>
+      <link>https://blog.xxzk.me/post/20211123-cka_note_section_2_core_concepts/</link>
+      <pubDate>Tue, 23 Nov 2021 14:00:06 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20211123-cka_note_section_2_core_concepts/</guid>
+      <description>10. Cluster Architecture ▲ Kubernetes controll plane / worker node 組件 12. ETCD in Kubernetes 透過 kubectl get 都是 (透過 api-server ) 向 etcd 查詢資料。 講師提供的練習環境是使用 kubeadm 搭建的，課程最後的章節會教導如何從 scratch 建立 Kubernetes cl</description>
+    </item>
+    
+    <item>
       <title>CKAD Note Section 9 Updates for Sep 2021 Changes</title>
       <link>https://blog.xxzk.me/post/20211110-ckad-note-section-9-updates-for-sep-2021-changes/</link>
       <pubDate>Wed, 10 Nov 2021 11:05:08 +0000</pubDate>

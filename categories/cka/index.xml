@@ -6,7 +6,16 @@
     <description>Recent content in CKA on 老柯的學習筆記</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 25 Nov 2021 16:55:33 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/categories/cka/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 26 Nov 2021 11:24:39 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/categories/cka/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CKA_Note_Section_6_Cluster_Maintence</title>
+      <link>https://blog.xxzk.me/post/20211126-cka_note_section_6_cluster_maintence/</link>
+      <pubDate>Fri, 26 Nov 2021 11:24:39 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20211126-cka_note_section_6_cluster_maintence/</guid>
+      <description>117. OS Upgrades 如果我們要將某個 worder node 下線，做一些例行維護 (例如: OS Upgrade) 可以使用 1 kubectl drain &amp;lt;node_name&amp;gt; 來達成，原本在目標 worker node 的 pod 會被 re-schedule 到其它 worker node 上面。當維護完成再使用 1</description>
+    </item>
+    
     <item>
       <title>CKA_Note_Section_5_App_Lifecycle_Management</title>
       <link>https://blog.xxzk.me/post/20211125-cka_note_section_5_app_lifecycle_management/</link>

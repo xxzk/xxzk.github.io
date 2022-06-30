@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>CKA_Note_Section_6_Cluster_Maintence - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="117. OS Upgrades 如果我們要將某個 worder node 下線，做一些例行維護 (例如: OS Upgrade) 可以使用 1 kubectl drain &amp;lt;node_name&amp;gt; 來達成，原本在目標 worker node 的 pod 會被 re-schedule 到其它 worker node 上面。當維護完成再使用 1" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.98.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20211126-cka_note_section_6_cluster_maintence/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="CKA_Note_Section_6_Cluster_Maintence" />
+<meta property="og:description" content="117. OS Upgrades 如果我們要將某個 worder node 下線，做一些例行維護 (例如: OS Upgrade) 可以使用 1 kubectl drain &lt;node_name&gt; 來達成，原本在目標 worker node 的 pod 會被 re-schedule 到其它 worker node 上面。當維護完成再使用 1" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.xxzk.me/post/20211126-cka_note_section_6_cluster_maintence/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-11-26T11:24:39+00:00" />
+<meta property="article:modified_time" content="2021-11-26T11:24:39+00:00" />
+
+<meta itemprop="name" content="CKA_Note_Section_6_Cluster_Maintence">
+<meta itemprop="description" content="117. OS Upgrades 如果我們要將某個 worder node 下線，做一些例行維護 (例如: OS Upgrade) 可以使用 1 kubectl drain &lt;node_name&gt; 來達成，原本在目標 worker node 的 pod 會被 re-schedule 到其它 worker node 上面。當維護完成再使用 1"><meta itemprop="datePublished" content="2021-11-26T11:24:39+00:00" />
+<meta itemprop="dateModified" content="2021-11-26T11:24:39+00:00" />
+<meta itemprop="wordCount" content="1655">
+<meta itemprop="keywords" content="CKA,kubernetes," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="CKA_Note_Section_6_Cluster_Maintence"/>
+<meta name="twitter:description" content="117. OS Upgrades 如果我們要將某個 worder node 下線，做一些例行維護 (例如: OS Upgrade) 可以使用 1 kubectl drain &lt;node_name&gt; 來達成，原本在目標 worker node 的 pod 會被 re-schedule 到其它 worker node 上面。當維護完成再使用 1"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">CKA_Note_Section_6_Cluster_Maintence</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-11-26 </span>
+        <div class="post-category">
+            <a href="/categories/cka/"> CKA </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#117-os-upgrades">117. OS Upgrades</a></li>
+        <li><a href="#120-kubernetes-software-versions">120. Kubernetes Software Versions</a></li>
+        <li><a href="#122-cluster-upgrade-process">122. Cluster Upgrade Process</a>
+          <ul>
+            <li><a href="#kubeadm-upgrade-1-更新-master-node">[kubeadm-upgrade] 1. 更新 Master Node</a></li>
+            <li><a href="#kubeadm-upgrade-11-更新-kubelet">[kubeadm-upgrade] 1.1 更新 <code>kubelet</code></a></li>
+            <li><a href="#kubeadm-upgrade-2-更新-worker-node">[kubeadm-upgrade] 2. 更新 Worker Node</a></li>
+          </ul>
+        </li>
+        <li><a href="#126-backup-and-restore-methods">126. Backup and Restore Methods</a>
+          <ul>
+            <li><a href="#resource-configuration">Resource Configuration</a></li>
+            <li><a href="#etcd-database">etcd database</a></li>
+            <li><a href="#working-with-etcdctl">Working with ETCDCTL</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="117-os-upgrades">117. OS Upgrades</h2>
+<br>
+<p>如果我們要將某個 worder node 下線，做一些例行維護 (例如: OS Upgrade) 可以使用</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl drain &lt;node_name&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>來達成，原本在目標 worker node 的 <code>pod</code> 會被 re-schedule 到其它 worker node 上面。當維護完成再使用</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl uncorden &lt;node_name&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>來告訴 master node 我好了，可以把 <code>pod</code> 繼續 schedule 到我身上囉! <strong><span style='color:red'>被調度出去的 <code>pod</code> 不會恢復回來。</span></strong><br>
+如果單純要讓 master node 不要把 <code>pod</code> 調度過來 (mark as unschedulable) 的話則可以使用。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl corden &lt;node_name&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong><span style='color:red'>與 <code>kubectl drain</code> 差別在於不會 evction <code>pod</code>。</span></strong></p>
+<br>
+<p><img src="drain_error_0.jpg" alt="drain_error_0"></p>
+<p>▲ 因為有 <code>DaemonSet</code> 的緣故造成 error。</p>
+<br>
+<p><img src="drain_error_1.jpg" alt="drain_error_1"></p>
+<p>▲ 使用 <code>--ignore-daemonsets</code> 即可忽略。<code>pod</code> 成功被 evction 到 <code>mini-k8s-m02</code>。</p>
+<br>
+<p><img src="drain_error_2.jpg" alt="drain_error_2"></p>
+<p>▲ 驗證 <code>uncordon</code> 之後原本的 <code>pod</code> 不會回來。 <del>回不去了瑞凡</del></p>
+<br>
+<p><img src="drain_error_3.jpg" alt="drain_error_3"></p>
+<p>▲ <code>kubectl drain mini-k8s-m02 --ignore-daemonsets --force</code> 之後查看 worker node status <strong><span style='color:blue'>顯示 Ready,SchedulingDisabled。</span></strong></p>
+<br>
+<h2 id="120-kubernetes-software-versions">120. Kubernetes Software Versions</h2>
+<br>
+<p><img src="k8s_version.jpg" alt="k8s_version"></p>
+<p>▲ <code>kube-apiserver</code>, <code>kubelet</code> 版本會跟 Kubernetes release version 一樣，<code>etcd</code>, <code>CodeDNS</code> 是外部的專案則不會。</p>
+<br>
+<h2 id="122-cluster-upgrade-process">122. Cluster Upgrade Process</h2>
+<br>
+<p>這個章節要說的是如何升級 Kubernetes cluster。</p>
+<ul>
+<li><strong><span style='color:red'><code>kube-apiserver</code> 是最重要的，各個元件都是與它溝通，所以以它為基準。 (我們設定成 <code>X</code>)</span></strong></li>
+<li><code>controller-manager</code> 能夠接受 <code>X-1</code>。</li>
+<li><code>kube-scheduler</code> 能夠接受 <code>X-1</code>。</li>
+<li><code>kubelet</code> 能夠接受 <code>X-2</code>。</li>
+<li><code>kube-proxy</code> 能夠接受 <code>X-2</code>。</li>
+<li><strong><span style='color:blue'><code>kubectl</code> 能夠接受 <code>X+1</code></span></strong> or <code>X-1</code>。</li>
+</ul>
+<br>
+<p><img src="cluster_upgrade_0.jpg" alt="cluster_upgrade_0"></p>
+<p>▲ 各個 K8s 元件能夠接受的版本差異度。</p>
+<br>
+<ul>
+<li>Kubernetes 只會維護 (support) <code>X</code> ~ <code>X-2</code> (總共三個版本)。</li>
+<li><strong><span style='color:red'>建議升級方式是逐次 <code>X+1</code>。</span></strong></li>
+</ul>
+<br>
+<p><img src="cluster_upgrade_1.jpg" alt="cluster_upgrade_1"></p>
+<p>▲ 將 Kubernetes cluster 架設在不同環境，升級的方式也不同。<del>看看人家公有雲</del></p>
+<br>
+<h3 id="kubeadm-upgrade-1-更新-master-node">[kubeadm-upgrade] 1. 更新 Master Node</h3>
+<br>
+<p><img src="cluster_upgrade_2.jpg" alt="cluster_upgrade_2"></p>
+<p>▲ 在 master node 上執行 <code>kubeadm upgrade plan</code> 可以列出更新計畫。 <strong><span style='color:red'>不過像 <code>kubelet</code> 就必須手動更新。</span></strong></p>
+<br>
+<p><img src="cluster_upgrade_3.jpg" alt="cluster_upgrade_3"></p>
+<p>▲ 在執行 <code>kubeadm upgrade apply v1.12.0</code> 之前呢，我們必須先更新 <code>kubeadm</code> 本身。執行之後 <code>kubeadm</code> 會幫我們置換 control plane 上面各個元件的 container <strong><span style='color:red'>但不包含 <code>kubelet</code> 這也是為什麼必須手動更新的原因</span></strong></p>
+<p><code>kubeadm upgrade apply v1.12.0</code> 完畢後，使用 <code>kubectl get nodes</code> 會發現 <code>VERSION</code> 怎麼還是在舊版。<strong><span style='color:blue'>原因是 <code>kubectl get node</code> 抓的是 <code>kubelet</code> 的版本，而不是 <code>kube-apiserver</code> 的版本。</span></strong></p>
+<br>
+<h3 id="kubeadm-upgrade-11-更新-kubelet">[kubeadm-upgrade] 1.1 更新 <code>kubelet</code></h3>
+<p><a href="https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/#upgrade-kubelet-and-kubectl-1">Upgrade kubelet and kubectl</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## Ubuntu, Debian</span>
+</span></span><span class="line"><span class="cl"><span class="c1">## replace x in 1.22.x-0 with the latest patch version</span>
+</span></span><span class="line"><span class="cl">sudo apt update <span class="o">&amp;&amp;</span> sudo apt update <span class="nv">kubelet</span><span class="o">=</span>1.22.x-00 -y
+</span></span><span class="line"><span class="cl">sudo systemctl restart kubelet
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## show available version</span>
+</span></span><span class="line"><span class="cl">apt-cache madison kubelet
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## CentOS</span>
+</span></span><span class="line"><span class="cl"><span class="c1">## replace x in 1.22.x-0 with the latest patch version</span>
+</span></span><span class="line"><span class="cl">yum install -y kubelet-1.22.x-0 --disableexcludes<span class="o">=</span>kubernetes
+</span></span><span class="line"><span class="cl">sudo systemctl restart kubelet
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## show available version</span>
+</span></span><span class="line"><span class="cl">yum --showduplicates list kubelet --disableexcludes<span class="o">=</span>kubernetes
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<h4 id="小知識-why---disableexcludeskubernetes">[小知識] Why <code>--disableexcludes=kubernetes</code></h4>
+<p>我們拿 Kubernetes 官方提供的 <a href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/">Installation Guide </a> 其中的 RHEL 來看。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat <span class="s">&lt;&lt;EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
+</span></span></span><span class="line"><span class="cl"><span class="s">[kubernetes]
+</span></span></span><span class="line"><span class="cl"><span class="s">name=Kubernetes
+</span></span></span><span class="line"><span class="cl"><span class="s">baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-\$basearch
+</span></span></span><span class="line"><span class="cl"><span class="s">enabled=1
+</span></span></span><span class="line"><span class="cl"><span class="s">gpgcheck=1
+</span></span></span><span class="line"><span class="cl"><span class="s">repo_gpgcheck=1
+</span></span></span><span class="line"><span class="cl"><span class="s">gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+</span></span></span><span class="line"><span class="cl"><span class="s">exclude=kubelet kubeadm kubectl
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Set SELinux in permissive mode (effectively disabling it)</span>
+</span></span><span class="line"><span class="cl">sudo setenforce <span class="m">0</span>
+</span></span><span class="line"><span class="cl">sudo sed -i <span class="s1">&#39;s/^SELINUX=enforcing$/SELINUX=permissive/&#39;</span> /etc/selinux/config
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">sudo yum install -y kubelet kubeadm kubectl --disableexcludes<span class="o">=</span>kubernetes
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">sudo systemctl <span class="nb">enable</span> --now kubelet
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong><span style='color:red'>Q: 為什麼在 <code>kubernetes.repo</code> 裡面要特別把 K8s 使用的三個 package <code>exclude</code> 呀?</span></strong> <br>
+(然後在安裝的時候才 <code>--disableexcludes=kubernetes</code> 這很奇怪呀)</p>
+<p><strong><span style='color:blue'>Ans: 避免 <code>yum upgrade -y</code> 執行後，K8s 的這三個 package 意外被更新到，導致版本差異過大造成 cluster 爆炸。</span></strong></p>
+<p>原本只是小弟本人的猜測，後來看到 <a href="https://github.com/kubernetes/kubeadm/issues/954">GitHub 上的這個 issue</a> 間接被證實了~ (<del>我真天才</del>)</p>
+<br>
+<p><img src="cluster_upgrade_4.jpg" alt="cluster_upgrade_4"></p>
+<p>▲ 這個時候再次查詢，就會顯示新版本囉!</p>
+<br>
+<h3 id="kubeadm-upgrade-2-更新-worker-node">[kubeadm-upgrade] 2. 更新 Worker Node</h3>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl drain &lt;node01&gt;
+</span></span><span class="line"><span class="cl">apt-get upgrade -y <span class="nv">kubeadm</span><span class="o">=</span>1.22.x-0
+</span></span><span class="line"><span class="cl">apt-get upgrade -y <span class="nv">kubelet</span><span class="o">=</span>1.22.x-0
+</span></span><span class="line"><span class="cl">kubeadm upgrade node config --1.22.x-0
+</span></span><span class="line"><span class="cl">systemctl restart kubelet
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## uncordon</span>
+</span></span><span class="line"><span class="cl">kubectl uncordon &lt;node01&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<h2 id="126-backup-and-restore-methods">126. Backup and Restore Methods</h2>
+<br>
+<p>需要備份的項目有:</p>
+<ul>
+<li>Resource Configuration (就是 YAML file 啦)</li>
+<li>etcd database</li>
+<li>Persistent Volumes</li>
+</ul>
+<p>本章節只會討論前兩項。</p>
+<br>
+<h3 id="resource-configuration">Resource Configuration</h3>
+<br>
+<p>我們在 CKAD 的時候知道建立 K8s resource 有兩種方式 1) Imperative 2) Declarative，<strong><span style='color:blue'>以備份的角度看當然是使用 Declarative 加上 Git 之類的版本控制會比較好。</span></strong><br>
+但我們沒辦法保證每個使用者在建立 K8s resource 的時候都乖乖使用 <code>kubectl create xxx --dry-run=client -o yaml &gt; xxx.yml &amp;&amp; kubectl apply -f xxx.yml</code><br>
+所以可以直接向 <code>api-server</code> 索取所有 K8s resource 並且匯出成 YAML file。</p>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl get all --all-namespaces -o yaml &gt; all-k8s-resources.yml
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p>講師有另外提到 Kubernetes cluster 的備份工具 <a href="https://velero.io/">VELORO</a></p>
+<blockquote>
+<p>Velero is an open source tool to safely backup and restore, perform disaster recovery, and migrate Kubernetes cluster resources and persistent volumes.</p>
+</blockquote>
+<br>
+<p><img src="is_not_all_of_resource.jpg" alt="is_not_all_of_resource"></p>
+<p>▲ 這是跟 Parin 大大聊天聊到的。<code>kubectl get all -A</code> 拿到的只是一些常用的 <code>Kind</code> 並沒有包含所有 resource，例如: <code>PV</code>, <code>PVC</code>, <code>CRD</code>, <code>Ingress</code>, <code>SotrageClass</code> &hellip;. <strong><span style='color:red'>所以不能拿來當成完全備份呀!</span></strong></p>
+<br>
+<h3 id="etcd-database">etcd database</h3>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## backup etcd database</span>
+</span></span><span class="line"><span class="cl"><span class="nv">ETCDCTL_API</span><span class="o">=</span><span class="m">3</span> etcdctl snapshot save /tmp/snapshot.db
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## view backup file status</span>
+</span></span><span class="line"><span class="cl"><span class="nv">ETCDCTL_API</span><span class="o">=</span><span class="m">3</span> etcdctl snapshot status /tmp/snapshot.db
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p><img src="restore_etcd_0.jpg" alt="restore_etcd_0"></p>
+<p>▲ 在 <code>restore</code> etcd database 之前，<strong><span style='color:red'>必須先停止 <code>api-server</code>。</span></strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">ETCDCTL_API</span><span class="o">=</span><span class="m">3</span> etcdctl snapshot restore /tmp/snapshot.db --data-dir /var/lib/etcd-from-backup
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong><span style='color:blue'>因為 <code>restore</code> 會產生新的 etcd cluster configuaration (一個保護機制，避免覆蓋掉原有 db 的 <code>--data-dir</code>)，因此必須給定另外一個新的 <code>dir</code>，若不存在則會自動產生。</span></strong> 接著修改 <code>systemd</code> 的 <code>conf</code>，並且重啟。</p>
+<br>
+<h3 id="working-with-etcdctl">Working with ETCDCTL</h3>
+<br>
+<ul>
+<li>在講師搭建的練習 LAB 當中，<code>etcd</code> 都是以 static pod 部屬。</li>
+<li>承上，<code>API version == 3</code>。</li>
+<li>上面提到的 <code>etcdctl</code> 其實都省略了 TLS cert (還記得之前有說過，K8s 的各個元件溝通加密都是用 TLS 嗎)，少了這些參數就沒辦法拿到 <code>etcd</code> 的操作權限。</li>
+<li><code>--cacert</code>: CA-bundle</li>
+<li><code>--cert</code>: TLS cert file (證書本人)</li>
+<li><code>--endpoint</code>: <code>etcd</code> 所在的 IP address。例如: <code>--endpoints=[127.0.0.1:2379]</code></li>
+<li><code>--key</code>: TLS key 密鑰</li>
+</ul>
+<p>大部分的日常使用 TLS cert 都是被 client side 拿來驗證 server side 身分，但其實 server side 也可以透過 TLS cert 對 client side 做認證。<br>
+除了 <code>etcd</code> 外，台灣有些證券商也是採用這種模式來保護下單安全 (金管會貌似沒有硬性規定使用 TLS cert)。</p>
+<p>對 TLS 相關機制有興趣的，我會推薦這篇 <a href="https://medium.com/@clu1022/%E9%82%A3%E4%BA%9B%E9%97%9C%E6%96%BCssl-tls%E7%9A%84%E4%BA%8C%E4%B8%89%E4%BA%8B-%E4%B8%80-why-ssl-tls-77ab5f4ba85">《那些關於SSL/TLS的二三事》</a></p>
+<br>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2021-11-26
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/cka/">CKA</a>
+          <a href="/tags/kubernetes/">kubernetes</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/20211220-diff-between-shell-and-exec-in-dockerfile/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Dockerfile - Shell 與 Exec 的差異</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/20211125-cka_note_section_5_app_lifecycle_management/">
+            <span class="next-text nav-default">CKA_Note_Section_5_App_Lifecycle_Management</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.64437849d125a2d603b3e71d6de5225d641a32d17168a58106e0b61852079683.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

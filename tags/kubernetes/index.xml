@@ -6,7 +6,16 @@
     <description>Recent content in Kubernetes on 老柯的學習筆記</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 26 Nov 2021 11:24:39 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/tags/kubernetes/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 22 Dec 2021 13:53:04 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/tags/kubernetes/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Section_7_Security</title>
+      <link>https://blog.xxzk.me/post/20211222-cka_note_section_section_7_security/</link>
+      <pubDate>Wed, 22 Dec 2021 13:53:04 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20211222-cka_note_section_section_7_security/</guid>
+      <description>135. Authentication 請參考 CKAD Note Section 9 Updates for Sep 2021 Changes - 121. Authentication, Authorization and Admission Control 139. TLS in Kubernetes ▲ 各個 K8s component 的 TLS community diagram。 因為現在大部分 kube-proxy 都不是單獨安裝，已經變成 daemondse</description>
+    </item>
+    
     <item>
       <title>CKA_Note_Section_6_Cluster_Maintence</title>
       <link>https://blog.xxzk.me/post/20211126-cka_note_section_6_cluster_maintence/</link>

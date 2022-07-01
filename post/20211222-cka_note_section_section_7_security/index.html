@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Section_7_Security - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="135. Authentication 請參考 CKAD Note Section 9 Updates for Sep 2021 Changes - 121. Authentication, Authorization and Admission Control 139. TLS in Kubernetes ▲ 各個 K8s component 的 TLS community diagram。 因為現在大部分 kube-proxy 都不是單獨安裝，已經變成 daemondse" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.98.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20211222-cka_note_section_section_7_security/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Section_7_Security" />
+<meta property="og:description" content="135. Authentication 請參考 CKAD Note Section 9 Updates for Sep 2021 Changes - 121. Authentication, Authorization and Admission Control 139. TLS in Kubernetes ▲ 各個 K8s component 的 TLS community diagram。 因為現在大部分 kube-proxy 都不是單獨安裝，已經變成 daemondse" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.xxzk.me/post/20211222-cka_note_section_section_7_security/" /><meta property="og:image" content="https://blog.xxzk.me/post/20211222-cka_note_section_section_7_security/feature_provide_by_control_manager.jpg"/><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-12-22T13:53:04+00:00" />
+<meta property="article:modified_time" content="2021-12-22T13:53:04+00:00" />
+
+<meta itemprop="name" content="Section_7_Security">
+<meta itemprop="description" content="135. Authentication 請參考 CKAD Note Section 9 Updates for Sep 2021 Changes - 121. Authentication, Authorization and Admission Control 139. TLS in Kubernetes ▲ 各個 K8s component 的 TLS community diagram。 因為現在大部分 kube-proxy 都不是單獨安裝，已經變成 daemondse"><meta itemprop="datePublished" content="2021-12-22T13:53:04+00:00" />
+<meta itemprop="dateModified" content="2021-12-22T13:53:04+00:00" />
+<meta itemprop="wordCount" content="2208"><meta itemprop="image" content="https://blog.xxzk.me/post/20211222-cka_note_section_section_7_security/feature_provide_by_control_manager.jpg">
+<meta itemprop="keywords" content="CKA,kubernetes," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://blog.xxzk.me/post/20211222-cka_note_section_section_7_security/feature_provide_by_control_manager.jpg"/>
+<meta name="twitter:title" content="Section_7_Security"/>
+<meta name="twitter:description" content="135. Authentication 請參考 CKAD Note Section 9 Updates for Sep 2021 Changes - 121. Authentication, Authorization and Admission Control 139. TLS in Kubernetes ▲ 各個 K8s component 的 TLS community diagram。 因為現在大部分 kube-proxy 都不是單獨安裝，已經變成 daemondse"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Section_7_Security</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-12-22 </span>
+        <div class="post-category">
+            <a href="/categories/cka/"> CKA </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#135-authentication">135. Authentication</a></li>
+        <li><a href="#139-tls-in-kubernetes">139. TLS in Kubernetes</a></li>
+        <li><a href="#140-tls-in-kubernetes---certificate-creation">140. TLS in Kubernetes - Certificate Creation</a>
+          <ul>
+            <li><a href="#tls-產生-certificate-authority-ca-所需">[TLS] 產生 Certificate Authority (CA) 所需</a></li>
+            <li><a href="#tls-產生-admin-user-所需">[TLS] 產生 Admin User 所需</a></li>
+            <li><a href="#tls-產生-scheduler-所需">[TLS] 產生 scheduler 所需</a></li>
+            <li><a href="#tls-產生-controller-manager-所需">[TLS] 產生 controller-manager 所需</a></li>
+            <li><a href="#tls-產生-kubelet-server-side--client-side-所需">[TLS] 產生 Kubelet (server side + client side) 所需</a></li>
+            <li><a href="#tls-產生-kube-api-server-所需">[TLS] 產生 Kube API server 所需</a></li>
+          </ul>
+        </li>
+        <li><a href="#tls-總結">[TLS] 總結</a></li>
+        <li><a href="#問問筆記">問問筆記</a>
+          <ul>
+            <li><a href="#hwchiucntug">Hwchiu@CNTUG</a></li>
+            <li><a href="#cntug">@CNTUG</a></li>
+          </ul>
+        </li>
+        <li><a href="#143-view-certificate-details">143. View Certificate Details</a></li>
+        <li><a href="#146-certificates-api">146. Certificates API</a></li>
+        <li><a href="#159-image-security">159. Image Security</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="135-authentication">135. Authentication</h2>
+<br>
+<p>請參考 <a href="https://github.com/xxzk/CKAD_Note_Section_9_Updates_for_Sep_2021_Changes/blob/master/CKAD%20Note%20Section%209%20Updates%20for%20Sep%202021.md#121-authentication-authorization-and-admission-control">CKAD Note Section 9 Updates for Sep 2021 Changes - 121. Authentication, Authorization and Admission Control</a></p>
+<br>
+<h2 id="139-tls-in-kubernetes">139. TLS in Kubernetes</h2>
+<br>
+<p><img src="tls_communication_diagram.jpg" alt="tls_communication_diagram"></p>
+<p>▲ 各個 K8s component 的 TLS community diagram。</p>
+<p><strong><span style='color:blue'>因為現在大部分 kube-proxy 都不是單獨安裝，已經變成 daemondset，所以官方 docs 才沒有找到關於它的 certificate。在這個情況下可以用 <code>serviceaccount</code> 與 <code>secret</code> 傳入 daemondset 來達成需求。(謝謝 hwchiu)</span></strong></p>
+<p><strong><span style='color:red'>記住一件事: 只要是 <code>apiserver</code> 的 client，取得授權 (Authorization) 方式就是在證書上加上 group 資訊 (例如: <code>/O=system:masters</code>)</span></strong></p>
+<br>
+<p><img src="tls_communication_diagram_grouped.jpg" alt="tls_communication_diagram_grouped"></p>
+<p>▲ 以 client side 與 server side 做分類。</p>
+<br>
+<p><img src="tls_communication_cas.jpg" alt="tls_communication_cas"></p>
+<p>▲ 這些證書 (certifications) 可以是單個 CA 簽署的，也可以是多個 (如果對 TLS 有一定程度理解的話，這句是廢話)。</p>
+<br>
+<h2 id="140-tls-in-kubernetes---certificate-creation">140. TLS in Kubernetes - Certificate Creation</h2>
+<br>
+<p>謝謝這個章節再次幫我複習有關 TLS certification 的一些知識~<br>
+<a href="https://www.digitalocean.com/community/tutorials/openssl-essentials-working-with-ssl-certificates-private-keys-and-csrs">[DigitalOcean 解釋 .csr] OpenSSL Essentials: Working with SSL Certificates, Private Keys and CSRs </a></p>
+<p>以 Linux 來說，最常被用來處理 TLS certification 的工具就是 <code>openssl</code>，預設並沒有 bash completion 很不方便!</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">yum install -y  bash-completion bash-completion-extras
+</span></span><span class="line"><span class="cl">wget -O /etc/bash_completion.d/openssl.bash https://raw.githubusercontent.com/scop/bash-completion/master/completions/openssl
+</span></span><span class="line"><span class="cl"><span class="nb">source</span> /etc/bash_completion.d/openssl.bash
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a href="https://github.com/scop/bash-completion/blob/master/completions/openssl">GitHub - scop/bash-completion</a></p>
+<br>
+<h3 id="tls-產生-certificate-authority-ca-所需">[TLS] 產生 Certificate Authority (CA) 所需</h3>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># if you want to do it in one line:</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># openssl req -newkey rsa:2048 -nodes -keyout ca.key -out ca.csr</span>
+</span></span><span class="line"><span class="cl">openssl genrsa -out ca.key <span class="m">2048</span>
+</span></span><span class="line"><span class="cl">openssl req -new -key ca.key -out ca.csr -subj <span class="s2">&#34;/CN=kubernetes-ca&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Generate a Self-Signed Certificate from an Existing Private Key and CSR</span>
+</span></span><span class="line"><span class="cl">openssl x509 -signkey ca.key -in ca.csr -req -days <span class="m">365</span> -out ca.crt
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## =============================</span>
+</span></span><span class="line"><span class="cl"><span class="c1">## view csr (Certificate Signing Requests)</span>
+</span></span><span class="line"><span class="cl">openssl req -text -noout -verify -in ca.csr
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<h3 id="tls-產生-admin-user-所需">[TLS] 產生 Admin User 所需</h3>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># if you want to do it in one line:</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># openssl req -newkey rsa:2048 -nodes -keyout admin.key -out admin.csr</span>
+</span></span><span class="line"><span class="cl">openssl genrsa -out admin.key <span class="m">2048</span>
+</span></span><span class="line"><span class="cl">openssl req -new -key admin.key -out admin.csr -subj <span class="s2">&#34;/CN=Kube-admin/O=system:masters&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Generate a Self-Signed Certificate from an Existing CA-Private Key and CA-CSR</span>
+</span></span><span class="line"><span class="cl">openssl x509 -req -in admin.csr -CA ca.crt -CAkey ca.key -out admin.crt -days <span class="m">365</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## =============================</span>
+</span></span><span class="line"><span class="cl"><span class="c1">## view csr (Certificate Signing Requests)</span>
+</span></span><span class="line"><span class="cl">openssl req -text -noout -verify -in admin.csr
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p><img src="kubernetes_admin_user_cert_detail.jpg" alt="kubernetes_admin_user_cert_detail"></p>
+<p><strong><span style='color:red'>▲ 在產生 admin user 時，必須在 <code>Organization</code> 填入 <code>system:masters</code>。K8s 抓取這個欄位作為 group (授權用)。</span></strong></p>
+<br>
+<h3 id="tls-產生-scheduler-所需">[TLS] 產生 scheduler 所需</h3>
+<br>
+<p>同樣是屬於 <code>apiserver</code> 的 client，可以比照 Admin user 產生。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">openssl genrsa -out scheduler.key <span class="m">2048</span>
+</span></span><span class="line"><span class="cl">openssl req -new -key scheduler.key -out admin.csr -subj <span class="s2">&#34;/CN=system:kube-scheduler&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">openssl x509 -req -in scheduler.csr -CA ca.crt -CAkey ca.key -out scheduler.crt -days <span class="m">365</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<h3 id="tls-產生-controller-manager-所需">[TLS] 產生 controller-manager 所需</h3>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">openssl genrsa -out controller-manager.key <span class="m">2048</span>
+</span></span><span class="line"><span class="cl">openssl req -new -key controller-manager.key -out controller-manager.csr -subj <span class="s2">&#34;/CN=system:kube-controller-manager&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">openssl x509 -req -in controller-manager.csr -CA ca.crt -CAkey ca.key -out controller-manager.crt -days <span class="m">365</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong><span style='color:red'>因為 controller-manager 屬於 system component 所以證書上面的 CN 必須加 <code>system:</code></span></strong></p>
+<br>
+<h3 id="tls-產生-kubelet-server-side--client-side-所需">[TLS] 產生 Kubelet (server side + client side) 所需</h3>
+<br>
+<p><img src="kubelet_server_cert.jpg" alt="kubelet_server_cert"></p>
+<p>▲ <code>kubelet</code> 是在各個 worker node 上，負責跟 <code>apiserver</code> 溝通的元件。<br>
+<strong><span style='color:red'>每個 worker node 都有屬於自己的證書 (certificate)，上面都有寫名子。<code>kubelet-config.yaml</code> 會需要這些資訊~</span></strong></p>
+<br>
+<p><img src="kubelet_apiserver_client_cert.jpg" alt="kubelet_apiserver_client_cert"></p>
+<p><strong><span style='color:green'>▲ 上面有講到 <code>kubelet</code> 需要跟 <code>apiserver</code> 做溝通 (彙報目前 <code>pod</code> 的狀態&hellip; etc)，所以理所當然也需要一組 key pair。</span></strong><br>
+<strong><span style='color:red'>因為是 system component，所以必須在證書上加上 group 資訊  (<code>/O=system:node</code>) 用於(被)授權 (Authorization)</span></strong></p>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">openssl genrsa -out kubelet-client.key <span class="m">2048</span>
+</span></span><span class="line"><span class="cl">openssl req -new -key kubelet-client.key -out kubelet-client.csr -subj <span class="s2">&#34;/CN=system:node:&lt;nodeName&gt;/O=system:nodes&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">openssl x509 -req -in kubelet-client.csr -CA ca.crt -CAkey ca.key -out kubelet-client.crt -days <span class="m">365</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<h3 id="tls-產生-kube-api-server-所需">[TLS] 產生 Kube API server 所需</h3>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">openssl genrsa -out apiserver.key <span class="m">2048</span>
+</span></span><span class="line"><span class="cl">openssl req -new -key apiserver.key -out apiserver.csr -subj <span class="s2">&#34;/CN=Kube-apiserver&#34;</span> -config openssl.cnf
+</span></span><span class="line"><span class="cl">openssl x509 -req -in apiserver.csr -CA ca.crt -CAkey ca.key -out apiserver.crt -days <span class="m">365</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<h4 id="opensslcnf">openssl.cnf</h4>
+<p><strong><span style='color:red'>因為 <code>api-server</code> 是一座 Kubernetes cluster 的核心，什麼事情都會經過 <code>api-server</code></span></strong> 所以它的 TLS certification 內容包含的也更多，因此會習慣把這些內容打成 OpenSSL config 直接餵進去比較快。<br>
+<strong><span style='color:blue'>自行替換 <code>${K8S_SERVICE_IP}</code>, <code>${MASTER_HOST}</code> 的部分。</span></strong><br>
+參考資料: <a href="https://github.com/coreos/coreos-kubernetes/blob/master/Documentation/openssl.md">coreos-kubernetes/Documentation/openssl.md </a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">[req]
+</span></span><span class="line"><span class="cl">req_extensions = v3_req
+</span></span><span class="line"><span class="cl">distinguished_name = req_distinguished_name
+</span></span><span class="line"><span class="cl">[req_distinguished_name]
+</span></span><span class="line"><span class="cl">[ v3_req ]
+</span></span><span class="line"><span class="cl">basicConstraints = CA:FALSE
+</span></span><span class="line"><span class="cl">keyUsage = digital signature, key encipherment, server auth
+</span></span><span class="line"><span class="cl">subjectAltName = @alt_names
+</span></span><span class="line"><span class="cl">[alt_names]
+</span></span><span class="line"><span class="cl">DNS.1 = kubernetes
+</span></span><span class="line"><span class="cl">DNS.2 = kubernetes.default
+</span></span><span class="line"><span class="cl">DNS.3 = kubernetes.default.svc
+</span></span><span class="line"><span class="cl">DNS.4 = kubernetes.default.svc.cluster.local
+</span></span><span class="line"><span class="cl">IP.1 = ${K8S_SERVICE_IP}
+</span></span><span class="line"><span class="cl">IP.2 = ${MASTER_HOST}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p><img src="apiserver_ca_config.jpg" alt="apiserver_ca_config"></p>
+<p>▲ 當啟動 <code>apiserver</code> 必須帶這些參數。</p>
+<ul>
+<li>幫 <code>etcd</code> 簽署的 Root-CA public key。</li>
+<li><code>apiserver-etcd-client</code> key pair (包含 public key + private key)。註:<code>apiserver</code> 作為 client 端，去跟 <code>etcd server</code> 請求時的身分驗證。</li>
+<li>幫 <code>kubelet</code> 簽署的 Root-CA public key。</li>
+<li><code>apiserver-kubelet-client</code> key pair (包含 public key + private key)。註:<code>apiserver</code> 作為 client 端，去跟 <code>kubelet</code> 請求時的身分驗證。</li>
+<li>幫 <strong>client</strong> 簽署的 Root-CA public key。</li>
+<li><code>apiserver</code> <strong>自身</strong> key pair (包含 public key + private key)。</li>
+</ul>
+<br>
+<h2 id="tls-總結">[TLS] 總結</h2>
+<br>
+<ul>
+<li>所有證書類型所需，在 Kubernetes 官方 document 都有: <a href="https://kubernetes.io/docs/setup/best-practices/certificates/#all-certificates">PKI certificates and requirements#All certificates</a>。</li>
+<li>筆記沒有把所有證書一一列出，請參考本章節一開始的 diagram 並搭配官方 docs。</li>
+</ul>
+<br>
+<hr>
+<h2 id="問問筆記">問問筆記</h2>
+<br>
+<p>各位下午好，想請教一下為什麼這篇 docs 當中沒有提到 kube-proxy 要使用到的 TLS certificate 呢?
+<a href="https://kubernetes.io/docs/setup/best-practices/certificates/">https://kubernetes.io/docs/setup/best-practices/certificates/</a></p>
+<p>在 <code>#Configure certificates for user accounts</code> 也只有提到這四個:</p>
+<ul>
+<li><code>admin</code> (Administrator User)</li>
+<li><code>kubelet</code></li>
+<li><code>controller-manager</code></li>
+<li><code>scheduler</code></li>
+</ul>
+<p>我是參考這張圖</p>
+<p><img src="tls_communication_diagram.jpg" alt="tls_communication_diagram"></p>
+<h3 id="hwchiucntug">Hwchiu@CNTUG</h3>
+<p>因為現在大部分 kube-proxy 都不再是個單獨安裝的應用程式，不會像 kubelet 一樣要獨立安裝，更多是透過 daemonset 去部署 kube-proxy。<br>
+這種情況下，可以用 serviceaccount + secret 來管理這個 daemonset 裡面的權限以及要用到的ca.crt。</p>
+<p>me: 算是 kubeadm 的版本異動囉?</p>
+<p>我不確定哪個版本，不過應該非常早期的kubeadm就不需要獨立安裝kube-proxy<br>
+非常早期的k8s hard way 教你一步一步安裝的話，就會要你弄這些全部<br>
+現在kubeadm 你會發現基本上你只有本地用systemd 來管 kubelet<br>
+後面就k8s pod 起來了</p>
+<p>me: 我想先確定一下我對整個 flow 的觀念有沒有正確，src 當作通訊發起方； dst 當作接收方</p>
+<p>單向:</p>
+<ol>
+<li>src: <code>kube-scheduler</code>, dst: <code>api-server</code>。(kube-scheduler =&gt; api-server)</li>
+<li>src: <code>controller-manager</code>, dst: <code>api-server</code>。(controller-manager =&gt; api-server)</li>
+</ol>
+<p>雙向:</p>
+<ol>
+<li>src/dst: <code>kubelet</code>, src/dst: <code>api-server</code>。 (kubelet &lt;=&gt; api-server)</li>
+</ol>
+<h3 id="cntug">@CNTUG</h3>
+<p>對，方向沒錯。</p>
+<h2 id="143-view-certificate-details">143. View Certificate Details</h2>
+<p><img src="kubeadm_view_logs_bad_cert.jpg" alt="kubeadm_view_logs_bad_cert"></p>
+<p>▲ 如果是透過 <code>kubeadm</code> 安裝的話，各個 component 都是使用 static pod 建立的，<strong><span style='color:red'>使用 <code>kubectl logs &lt;component_pod_name&gt;</code></span></strong> 即可查看 logs。</p>
+<p><strong><span style='color:blue'>[推薦] 如果 <code>kubectl</code> 沒辦法使用的話也能透過 <code>docker logs &lt;component_pod_name&gt;</code> or <code>podman logs &lt;component_pod_name&gt;</code> 檢視。</span></strong></p>
+<h2 id="146-certificates-api">146. Certificates API</h2>
+<p>如果要新增一名新的 kubernetes cluster admin，就必須讓新人自行產生 RSA key pair 後產生 <code>.csr</code> (certificate signing request) 然後登入到 control plane 使用 <code>ca.key</code> 對 <code>.csr</code> 簽署後變成 <code>.crt</code> 交給新人。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">openssl genrsa -out peter.key <span class="m">2048</span>
+</span></span><span class="line"><span class="cl">openssl req -new -key peter.key -subj <span class="s2">&#34;/CN=peter&#34;</span> -out peter.csr
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## login to control plane to singing the request</span>
+</span></span><span class="line"><span class="cl">ssh root@control-plane
+</span></span><span class="line"><span class="cl">openssl x509 -req -in peter.csr -CA ca.crt -CAkey ca.key -out peter.crt -days <span class="m">365</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="gen_peter_csr.jpg" alt="gen_peter_csr"></p>
+<p>▲ 使用 <code>openssl</code> 產生 <code>peter.csr</code></p>
+<p><strong><span style='color:red'>這個手動的方法非常不方便，而且費時! 所以 Kubernetes control plan 有一項協助我們簽署證書的 API: <code>certificate API</code></span></strong></p>
+<p><strong><span style='color:blue'>透過 <code>CSR object</code> 原先的 cluster admin 就能很輕鬆地的 (1) View request (2) Approve Request (3)  Share certs to user</span></strong></p>
+<p>把剛才產生的 <code>peter.csr</code> 以 base64 encode 之後填入 <code>.spec.request</code> (註: <code>tr -d &quot;\n&quot;</code> 刪除換行符號)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat peter.csr <span class="p">|</span> base64 <span class="p">|</span> tr -d <span class="s2">&#34;\n&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">certificates.k8s.io/v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">CertificateSigningRequest</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">peter</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">groups</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="l">system:authenticated</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">signerName</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes.io/kube-apiserver-client</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">request</span><span class="p">:</span><span class="w"> </span><span class="l">LS0tLS1CRUdJTiBDRVJUSUZJQ0FURSBSRVFVRVNULS0tLS0KTUlJQ1ZUQ0NBVDBDQVFBd0VERU9NQXdHQTFVRUF3d0ZjR1YwWlhJd2dnRWlNQTBHQ1NxR1NJYjNEUUVCQVFVQQpBNElCRHdBd2dnRUtBb0lCQVFEdU9jOUFWbC9yelowOGx1SCtjOG1nS0dkOEdySks1cEJ5aU1GZnczbC9GdTdGCkk2ZVBnU3E3YkRsbEltOTZFQUZPdVI1Z0Z3alN3ZGpBbXpCSW1POGxUamZTRGw3MDBBSDZvMEFHZURTLysvc2kKMFhIMThtcVVjb2diRzZocUx1VGhuZWxaTk15Y21ZVVFicXNKSEI3Um5ma0c2RzJYellnTGQxbm16VHl6VTI1MwpWbm4xc2VESGtqRVlRWG5jMXJIQXk1TC9henlNTlNqcDkyTlFzSEZHbU1DTHQrY25keEtMcGMrUFJKWERwamJ6CjhzWnd2UUFNYkpFYWtNM2pzNmRwdEo4VTlCTlY1SnZsSkhxT1gwckFMRDVnbEZjOFlOS2t3ZGJ0Q0w0K04xOHUKNHlWeDdGZnZGbmJSOFJ6d2gvbHFYc1VvWFJEaHh3YjlxUU1kUVRXekFnTUJBQUdnQURBTkJna3Foa2lHOXcwQgpBUXNGQUFPQ0FRRUFacDYvSUszdjllelRUSm1IYUpmQXhrU2pFU2ZsZHVYRG9ScnZWNVJ5RlFSbHQvYWlUSlVMCjZkRTNwMXRXY1VlQUFmMk5iZ3NvcW8vdTV1b25sQkZlU3pSWm5QZzBQa2UzMG5LU3hTNlJDSWdiNjVRRUtTNTcKQWQrdC9sZWhvN0F3MU4yTTZjd0JXN0QveXA5bFY2SFYwVCtybk9rS2ZLN05nckxCVTR1aEZaWTVZYWdXVnN1VwowbkpCemhxejRqVjAzNzZsbXgwVDV4RjZCWnZZNXVBd0lMNmNHZ0swVnVBUVN5SGlpMEtteUJGdjJBZExrWVVwCkQrNmZGaFgxVkpyaktreExZTEpZMHptRHhFSmFndFIyaHdSaTYwS0R6T2laeHk4ZVJlWDdrOFRhT0w3TzhjajIKdk93TlZkRVh5NHp1am9EV3VoL1hndzJQNWNJUGMySVE4dz09Ci0tLS0tRU5EIENFUlRJRklDQVRFIFJFUVVFU1QtLS0tLQo=</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">usages</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="l">digital signature</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="l">key encipherment</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="l">client auth</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><a href="https://kubernetes.io/docs/reference/access-authn-authz/certificate-signing-requests/">[kubernetes.io] Certificate Signing Requests</a></p>
+<p><img src="create_peter_csro.jpg" alt="create_peter_csro"></p>
+<p>▲ 產生 <code>CSR</code> object，與產生其它 resource 一樣。<strong><span style='color:red'>只不過沒辦法使用 <code>kubectl create csr .... -o yaml</code> 來獲取 YAML teamplete。</span></strong></p>
+<p><img src="get_peter_certificate.jpg" alt="get_peter_certificate"></p>
+<p>▲ 使用 <code>kubectl get csr/peter -o yaml</code> 上圖這串即是 peter 的憑證。 <strong><span style='color:red'>不過一樣被經過 base64 encode 必須自行手動 decode</span></strong></p>
+<p><strong><span style='color:blue'>讓自己輕鬆一點 <code>kubectl get csr peter -o jsonpath='{.status.certificate}'| base64 -d &gt; peter.crt</code></span></strong></p>
+<p><img src="view_peter_crt.jpg" alt="view_peter_crt"></p>
+<p>▲ 以 <code>openssl x509 -in peter.crt -text -noout</code> 查看證書內容。</p>
+<p><img src="feature_provide_by_control_manager.jpg" alt="feature_provide_by_control_manager"></p>
+<p>▲ CSR 分別由 <code>control manager</code> 裡面的 <code>CSR-APPROVING</code> 與 <code>CSR-SIGNING</code> 負責。</p>
+<p><img src="control_manager_signing_ca.jpg" alt="control_manager_signing_ca"></p>
+<p>▲ <code>.csr</code> 由哪個 ca key 簽章在 <code>control manager</code> config 裡面設定。 <a href="https://kubernetes.io/docs/reference/command-line-tools-reference/kube-controller-manager/">[kubernetes.io] kube-controller-manager</a></p>
+<h2 id="159-image-security">159. Image Security</h2>
+<p><img src="pull_image_from_private_repository.jpg" alt="pull_image_from_private_repository"></p>
+<p>▲ 如果要使用 private image repository 就必須告訴 K8s 你的帳號密碼，這樣 worker node 才能拉到。<strong><span style='color:red'>並且在 <code>pod.spec.imagePullSecrets[]</code> 給定使用哪個 <code>secret</code></span></strong></p>
+<p><a href="https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod">[docker.io] Specifying imagePullSecrets on a Pod</a></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2021-12-22
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/cka/">CKA</a>
+          <a href="/tags/kubernetes/">kubernetes</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/20220606-read-r730xd-owner-manual-learning-about-server-dimm/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">閱讀 R730XD owner manual 淺析伺服器記憶體</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/20211220-diff-between-shell-and-exec-in-dockerfile/">
+            <span class="next-text nav-default">Dockerfile - Shell 與 Exec 的差異</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.64437849d125a2d603b3e71d6de5225d641a32d17168a58106e0b61852079683.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

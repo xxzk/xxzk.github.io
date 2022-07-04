@@ -8,11 +8,11 @@
     <language>en</language>
     <lastBuildDate>Mon, 04 Jul 2022 09:50:26 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/categories/cka/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>CKA_Note_Section_Section_8_Storage</title>
-      <link>https://blog.xxzk.me/post/20220704-cka_note_section_section_8_storage/</link>
+      <title>CKA_Note_Section_8_Storage</title>
+      <link>https://blog.xxzk.me/post/20220704-cka_note_section_8_storage/</link>
       <pubDate>Mon, 04 Jul 2022 09:50:26 +0000</pubDate>
       
-      <guid>https://blog.xxzk.me/post/20220704-cka_note_section_section_8_storage/</guid>
+      <guid>https://blog.xxzk.me/post/20220704-cka_note_section_8_storage/</guid>
       <description>169. Storage in Docker 這個章節主要在講 Docker container image/volume 的概念，可以參考我之前打的兩篇文章: Docker Image 介紹 Docker Volumes 介紹 171. Container Storage Interface (CSI) 關於 CRI 的介紹非常推薦 Hwchiu 鐵人賽系列: [Day5] Kubernetes &amp;amp; CRI (Container Runtime Interface)(I)</description>
     </item>
     

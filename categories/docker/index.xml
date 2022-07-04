@@ -16,5 +16,14 @@
       <description>圖片來源 此篇筆記主要參考 Docker 官方文件 About storage drivers 主要記錄自己找到的資料，所以不是很有系統性的教學。不過文內有附上邱宏瑋 (hwchiu) 鐵人賽系列文章，需要完整學習</description>
     </item>
     
+    <item>
+      <title>Docker Volumes 介紹</title>
+      <link>https://blog.xxzk.me/post/20210513-intro_docker_volume/</link>
+      <pubDate>Thu, 13 May 2021 13:37:47 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20210513-intro_docker_volume/</guid>
+      <description>Docker docs Use volumes 前言 Docker Volume 是一個比較好的機制將 Docker Container 產生的資料永久保存 有稍微摸索過 Docker 的人可能會有點疑惑: 不是可以透過 -v /home/xzk:/mydata 把 host OS 上面的目錄映射進去 container 裡面嗎</description>
+    </item>
+    
   </channel>
 </rss>

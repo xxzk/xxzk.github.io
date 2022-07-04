@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Docker Volumes 介紹 - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="Docker docs Use volumes 前言 Docker Volume 是一個比較好的機制將 Docker Container 產生的資料永久保存 有稍微摸索過 Docker 的人可能會有點疑惑: 不是可以透過 -v /home/xzk:/mydata 把 host OS 上面的目錄映射進去 container 裡面嗎" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.98.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20210513-intro_docker_volume/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Docker Volumes 介紹" />
+<meta property="og:description" content="Docker docs Use volumes 前言 Docker Volume 是一個比較好的機制將 Docker Container 產生的資料永久保存 有稍微摸索過 Docker 的人可能會有點疑惑: 不是可以透過 -v /home/xzk:/mydata 把 host OS 上面的目錄映射進去 container 裡面嗎" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.xxzk.me/post/20210513-intro_docker_volume/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-05-13T13:37:47+00:00" />
+<meta property="article:modified_time" content="2021-05-13T13:37:47+00:00" />
+
+<meta itemprop="name" content="Docker Volumes 介紹">
+<meta itemprop="description" content="Docker docs Use volumes 前言 Docker Volume 是一個比較好的機制將 Docker Container 產生的資料永久保存 有稍微摸索過 Docker 的人可能會有點疑惑: 不是可以透過 -v /home/xzk:/mydata 把 host OS 上面的目錄映射進去 container 裡面嗎"><meta itemprop="datePublished" content="2021-05-13T13:37:47+00:00" />
+<meta itemprop="dateModified" content="2021-05-13T13:37:47+00:00" />
+<meta itemprop="wordCount" content="2587">
+<meta itemprop="keywords" content="docker," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Docker Volumes 介紹"/>
+<meta name="twitter:description" content="Docker docs Use volumes 前言 Docker Volume 是一個比較好的機制將 Docker Container 產生的資料永久保存 有稍微摸索過 Docker 的人可能會有點疑惑: 不是可以透過 -v /home/xzk:/mydata 把 host OS 上面的目錄映射進去 container 裡面嗎"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Docker Volumes 介紹</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-05-13 </span>
+        <div class="post-category">
+            <a href="/categories/docker/"> docker </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#前言">前言</a>
+          <ul>
+            <li><a href="#docker-volume-的優勢-對比-bind-mount">Docker Volume 的優勢 (對比 bind mount)</a></li>
+          </ul>
+        </li>
+        <li><a href="#掛載儲存空間進入容器">掛載儲存空間進入容器</a>
+          <ul>
+            <li><a href="#bind-mount-掛載-host-os-自身-file-system-的路徑">bind-mount (掛載 Host OS 自身 File System 的路徑)</a></li>
+            <li><a href="#docker-volume">Docker Volume</a></li>
+          </ul>
+        </li>
+        <li><a href="#docker-volume-driver">Docker Volume Driver</a>
+          <ul>
+            <li><a href="#share-data-among-machines">share data among machines</a></li>
+            <li><a href="#透過-ssh-存取掛載-遠端主機目錄">透過 SSH 存取/掛載 遠端主機目錄</a></li>
+            <li><a href="#掛載-cifssamba">掛載 CIFS/SAMBA</a></li>
+          </ul>
+        </li>
+        <li><a href="#volume-備份及還原-backup-and-restore">Volume 備份及還原 Backup and restore</a>
+          <ul>
+            <li><a href="#備份-backup">備份 Backup</a></li>
+            <li><a href="#還原-restore">還原 Restore</a></li>
+            <li><a href="#只備份檔案就好-不包含路徑">只備份檔案就好 (不包含路徑)</a></li>
+          </ul>
+        </li>
+        <li><a href="#其他常用指令">其他常用指令</a>
+          <ul>
+            <li><a href="#查詢-container-使用的-volume">查詢 container 使用的 Volume</a></li>
+            <li><a href="#清除所有span-stylecolorred未使用span-docker-volume">清除所有<span style="color:red">未使用</span> Docker Volume</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p><a href="https://docs.docker.com/storage/volumes/">Docker docs Use volumes</a></p>
+<br>
+<p><img src="https://docs.docker.com/storage/images/types-of-mounts-volume.png" alt="types-of-mounts-volume"></p>
+<br>
+<hr>
+<h2 id="前言">前言</h2>
+<br>
+<p><strong>Docker Volume 是一個比較好的機制將 Docker Container 產生的資料永久保存</strong></p>
+<p><strong>有稍微摸索過 Docker 的人可能會有點疑惑: 不是可以透過 <code>-v /home/xzk:/mydata</code> 把 host OS 上面的目錄映射進去 container 裡面嗎? 為什麼我還需要 volumes ?</strong><br>
+<strong>的確，bind mount 某種程度上這樣很方便。不過 Docker 官方因為以下幾點原因，還是推薦使用 Docker Volume 作為永久資料保存的方式。</strong></p>
+<br>
+<h3 id="docker-volume-的優勢-對比-bind-mount">Docker Volume 的優勢 (對比 bind mount)</h3>
+<ul>
+<li>Volume 比較好備份或整合。</li>
+<li>您可以使用 Docker CLI 或者 Docker API 管理 Volume。</li>
+<li><strong><span style="red">Volume 可以同時運作在 Linux 與 Windows 上。</span></strong></li>
+<li>與多個 container 共享空間，Volume 會比較安全。</li>
+<li>Volume driver 能夠使用多種空間來源 例如: SSH remote host 或者 cloud provider service (公有雲儲存服務 例如: AWS S3) 並且提供額外功能 例如: 加密</li>
+<li>對於 Host OS 是 Windows 或者 Mac 而言，Volume 有更好的效能。</li>
+</ul>
+<br>
+<p><strong>再稍微深入一點 Docker 的人可能又會問: Container 內不是有什麼「可寫層」嗎 ? 我直接把檔案寫進去就好</strong></p>
+<p>直接把檔案寫入可寫層 (writable layer) 會增加 container 的大小，而且會跟 container 的生命週期 (lifecycle) 綁在一起。<br>
+另外關於可寫層 <del>關於這個我們以後會專門做視頻為大家講解</del> 應該是下一篇會寫的東西。 <a href="https://docs.docker.com/storage/storagedriver/">About storage drivers</a><br>
+另外官方有提到 <strong>如果想儲存不是要永久保存的資料</strong> 還有另外一個選項就是 <a href="https://docs.docker.com/storage/tmpfs/">tmpfs</a> (不常用，直接丟連結)</p>
+<br>
+<hr>
+<h2 id="掛載儲存空間進入容器">掛載儲存空間進入容器</h2>
+<br>
+<p>一般來說使用 <code>-v or --volume</code> 的機會會來的比 <code>--mount</code> 多，後者支援使用者設定更詳細、更冗長的語法。<br>
+<strong><span style="color:blue"> <code>-v</code> 最大的優勢就是能以 2~3 個以 <code>:</code> 分隔的語法設定好大部分常用的功能。</span></strong></p>
+<br>
+<h3 id="bind-mount-掛載-host-os-自身-file-system-的路徑">bind-mount (掛載 Host OS 自身 File System 的路徑)</h3>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker run -itd --name bind_mount -v /tmp/auto_gen:/data:rw centos:7
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p>上面這行指令就是映射 (mapping) Host OS 身上的 <code>tmp/auto_gen</code> 目錄進去一個名為 <code>bind_mount</code> 的 container 裡面，掛載點路徑: <code>/data</code>。<br>
+<strong><span style="color:blue">其中 <code>tmp/auto_gen</code> 若本來不存在，docker 會自動建立。</span><span style="color:red">路徑必定要是絕對路徑</span></strong><br>
+最後一個欄位 <code>:rw</code> 其實可以省略，預設即是 <code>rw</code>，如果要唯讀可以使用 <code>:ro</code>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@eric_nginx<span class="o">[</span>~<span class="o">]</span> ll -d /tmp/auto_gen/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">drwxr-xr-x <span class="m">2</span> root root <span class="m">4096</span> May <span class="m">14</span> 15:41 /tmp/auto_gen/
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>查看一下 container 裡面掛載狀況</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@eric_nginx<span class="o">[</span>~<span class="o">]</span> docker <span class="nb">exec</span> -it bind_mount  df -Th
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Filesystem     Type     Size  Used Avail Use% Mounted on
+</span></span><span class="line"><span class="cl">overlay        overlay   40G  3.9G   34G  11% /
+</span></span><span class="line"><span class="cl">tmpfs          tmpfs     64M     <span class="m">0</span>   64M   0% /dev
+</span></span><span class="line"><span class="cl">tmpfs          tmpfs    1.9G     <span class="m">0</span>  1.9G   0% /sys/fs/cgroup
+</span></span><span class="line"><span class="cl">shm            tmpfs     64M     <span class="m">0</span>   64M   0% /dev/shm
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">###</span>
+</span></span><span class="line"><span class="cl">/dev/sdc1      ext4      40G  3.9G   34G  11% /data
+</span></span><span class="line"><span class="cl"><span class="c1">###</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">tmpfs          tmpfs    1.9G     <span class="m">0</span>  1.9G   0% /proc/acpi
+</span></span><span class="line"><span class="cl">tmpfs          tmpfs    1.9G     <span class="m">0</span>  1.9G   0% /proc/scsi
+</span></span><span class="line"><span class="cl">tmpfs          tmpfs    1.9G     <span class="m">0</span>  1.9G   0% /sys/firmware
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<h3 id="docker-volume">Docker Volume</h3>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker run -itd --name docker_volume -v my_vol:/data centos:7
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p>上面這行指令會將名為 <code>my_vol</code> 的 Docker Volume 並將該空間映射 (mapping) 至 container。<br>
+<strong><span style="color:blue">若該 Docker Volume 原本不存在，則會自動建立。</span></strong></p>
+<br>
+<p>使用</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker volume inspect my_vol
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>可以查看 Docker Volume 詳細內容:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;CreatedAt&#34;</span><span class="p">:</span> <span class="s2">&#34;2021-05-14T15:57:45+08:00&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;Driver&#34;</span><span class="p">:</span> <span class="s2">&#34;local&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;Labels&#34;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;Mountpoint&#34;</span><span class="p">:</span> <span class="s2">&#34;/var/lib/docker/volumes/my_vol/_data&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;Name&#34;</span><span class="p">:</span> <span class="s2">&#34;my_vol&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;Options&#34;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;Scope&#34;</span><span class="p">:</span> <span class="s2">&#34;local&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">]</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p><strong><span style="color:red">上面有提到，Docker Volume 跟 Docker Container 的生命週期是完全分開的!</span></strong><br>
+<strong><span style="color:red">也就是說，當 container 被 <code>rm</code> 刪除，Docker Volume 還是會留下來</span></strong> <del>或者跟我走</del></p>
+<br>
+<hr>
+<h2 id="docker-volume-driver">Docker Volume Driver</h2>
+<br>
+<h3 id="share-data-among-machines">share data among machines</h3>
+<p>在開始之前先來個情境想像~ 您為了要打造 抗單點故障、高可用性、高容錯率 的應用程式，所以架構圖會長這樣。<br>
+<del>請大家不要踢館說這樣也在同一個 Datacenter 沒有異地備援! Docker 官方就給我這張圖 TAT</del></p>
+<br>
+<p><img src="https://docs.docker.com/storage/images/volumes-shared-storage.svg" alt="volumes-shared-storage.svg"></p>
+<p>▲ 每個 node 都是一台 VM，上面都是跑 Docker。你的 Application (container) 會需要掛載一個共享儲存空間 (shared file storage)。</p>
+<br>
+<p><strong><span style="color:blue">Docker Volume Driver 的目的就是讓使用者可以掛載除了來自 Host OS 以外的空間</span></strong></p>
+<br>
+<h3 id="透過-ssh-存取掛載-遠端主機目錄">透過 SSH 存取/掛載 遠端主機目錄</h3>
+<p>因為 Docker 預設的 driver 只有 <code>local</code> 如果要使用其他驅動必須額外安裝。<br>
+這次要使用到的是 <a href="https://github.com/vieux/docker-volume-sshfs">docker-volume-sshfs</a><br>
+更多 Volume 相關 Plug-in <a href="https://docs.docker.com/engine/extend/legacy_plugins/#volume-plugins">#volume-plugin</a></p>
+<br>
+<h4 id="安裝-sshfs-for-docker">安裝 sshfs for Docker</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker plugin install --grant-all-permissions vieux/sshfs
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">latest: Pulling from vieux/sshfs
+</span></span><span class="line"><span class="cl">Digest: sha256:1d3c3e42c12138da5ef7873b97f7f32cf99fb6edde75fa4f0bcf9ed277855811
+</span></span><span class="line"><span class="cl">52d435ada6a4: Complete 
+</span></span><span class="line"><span class="cl">Installed plugin vieux/sshfs
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>其中 <code>--grant-all-permissions</code> 選項代表開啟所有執行這個 plugin (插件、外掛) 所需的權限。</p>
+<blockquote>
+<p>&ndash;grant-all-permissions   Grant all permissions necessary to run the plugin</p>
+</blockquote>
+<br>
+<h4 id="建立-docker_sshfs-使用者">建立 <code>docker_sshfs</code> 使用者</h4>
+<p>為了測試用途，我在 <code>Eric_207_JMS_Nginx_1 192.168.207.75</code> 建立了一個帳號 <code>docker_sshfs</code> 密碼是 <code>123qwe</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">useradd docker_sshfs <span class="o">&amp;&amp;</span> passwd docker_sshfs
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Changing password <span class="k">for</span> user docker_sshfs.
+</span></span><span class="line"><span class="cl">New password: 
+</span></span><span class="line"><span class="cl">BAD PASSWORD: The password is shorter than <span class="m">7</span> characters
+</span></span><span class="line"><span class="cl">Retype new password: 
+</span></span><span class="line"><span class="cl">passwd: all authentication tokens updated successfully.
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="建立-sshfs-docker-volume">建立 sshfs Docker Volume</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker volume create --driver vieux/sshfs <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>-o <span class="nv">sshcmd</span><span class="o">=</span>docker_sshfs@192.168.207.75:/home/docker_sshfs <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>-o <span class="nv">password</span><span class="o">=</span>123qwe <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>myssh_vol
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>建立時會測試可連接性，從 <code>/var/log/secure</code> 可以看到</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">May 17 15:39:05 Eric_207_JMS_Nginx_1 sshd[59058]: Accepted password for docker_sshfs from 192.168.207.254 port 49169 ssh2
+</span></span><span class="line"><span class="cl">May 17 15:39:05 Eric_207_JMS_Nginx_1 sshd[59058]: pam_unix(sshd:session): session opened for user docker_sshfs by (uid=0)
+</span></span><span class="line"><span class="cl">May 17 15:39:08 Eric_207_JMS_Nginx_1 sshd[59062]: error: Received disconnect from 192.168.207.254 port 49169:0:
+</span></span><span class="line"><span class="cl">May 17 15:39:08 Eric_207_JMS_Nginx_1 sshd[59062]: Disconnected from 192.168.207.254 port 49169
+</span></span><span class="line"><span class="cl">May 17 15:39:08 Eric_207_JMS_Nginx_1 sshd[59058]: pam_unix(sshd:session): session closed for user docker_sshfs
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="sshfs-測試">sshfs 測試</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker run -itd --name sshfs_test -v myssh_vol:/data centos:7
+</span></span><span class="line"><span class="cl">docker <span class="nb">exec</span> -it sshfs_test bash
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## in container</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@9596659b0b64 /<span class="o">]</span> touch /data/rw_test
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>在 <code>Eric_207_JMS_Nginx_1</code> 可以看到剛剛寫入的檔案</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@Eric_207_JMS_Nginx_1<span class="o">[</span>~<span class="o">]</span> ll /home/docker_sshfs/
+</span></span><span class="line"><span class="cl">total <span class="m">0</span>
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> docker_sshfs docker_sshfs <span class="m">0</span> May <span class="m">17</span> 15:45 rw_test
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<hr>
+<h3 id="掛載-cifssamba">掛載 CIFS/SAMBA</h3>
+<p><code>local</code> driver 自帶可以掛載 CIFS/SAMBA 的選項。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker volume create <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>	--driver <span class="nb">local</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>	--opt <span class="nv">type</span><span class="o">=</span>cifs <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>	--opt <span class="nv">device</span><span class="o">=</span>//uxxxxx.your-server.de/backup <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>	--opt <span class="nv">o</span><span class="o">=</span><span class="nv">addr</span><span class="o">=</span>uxxxxx.your-server.de,username<span class="o">=</span>uxxxxxxx,password<span class="o">=</span>*****,file_mode<span class="o">=</span>0777,dir_mode<span class="o">=</span><span class="m">0777</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>	--name cif-volume
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<hr>
+<h2 id="volume-備份及還原-backup-and-restore">Volume 備份及還原 Backup and restore</h2>
+<p><a href="https://docs.docker.com/storage/volumes/#backup-restore-or-migrate-data-volumes">Backup, restore, or migrate data volumes</a></p>
+<br>
+<h3 id="備份-backup">備份 Backup</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># backup_0 will store our data</span>
+</span></span><span class="line"><span class="cl">docker run -itd --name backup_0 -v /data centos:7
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Create a{1..9}.txt in /data/</span>
+</span></span><span class="line"><span class="cl">docker <span class="nb">exec</span> -it backup_0 touch /data/a<span class="o">{</span>1..9<span class="o">}</span>.txt
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># show and check the txt in /data</span>
+</span></span><span class="line"><span class="cl">docker <span class="nb">exec</span> -it backup_0 ls -al /data
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>▲ 產生一個 <code>backup_0</code> container 並且隨機產生一個 Docker Volume 掛載到 <code>/data</code>，另外產生 <code>a1~a9.txt</code>。</p>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@eric_nginx<span class="o">[</span>~<span class="o">]</span> docker run --rm --volumes-from backup_0 -v <span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/backup centos:7 tar -zcvf /backup/a1_to_a9.tar.gz /data
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">/data/
+</span></span><span class="line"><span class="cl">/data/a9.txt
+</span></span><span class="line"><span class="cl">/data/a1.txt
+</span></span><span class="line"><span class="cl">/data/a2.txt
+</span></span><span class="line"><span class="cl">/data/a7.txt
+</span></span><span class="line"><span class="cl">/data/a6.txt
+</span></span><span class="line"><span class="cl">/data/a4.txt
+</span></span><span class="line"><span class="cl">/data/a3.txt
+</span></span><span class="line"><span class="cl">/data/a8.txt
+</span></span><span class="line"><span class="cl">/data/a5.txt
+</span></span><span class="line"><span class="cl">tar: Removing leading <span class="sb">`</span>/<span class="err">&#39;</span> from member names
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>▲ 建立一個使用後即刪除的 container (<code>--rm</code>) 用於備份 <code>backup_0</code> 當中的 <code>/data</code>。並映射 (mapping) 當前目錄 (<code>pwd</code>) 到 <code>/backup</code> 裡面 (存在於拋棄式 container)</p>
+<p>最後確認檔案是否有真正被備份出來</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@eric_nginx<span class="o">[</span>~<span class="o">]</span> ll a1_to_a9.tar.gz 
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root <span class="m">199</span> May <span class="m">17</span> 17:16 a1_to_a9.tar.gz
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">root@eric_nginx<span class="o">[</span>~<span class="o">]</span> tar -tvf a1_to_a9.tar.gz 
+</span></span><span class="line"><span class="cl">drwxr-xr-x root/root         <span class="m">0</span> 2021-05-17 17:08 data/
+</span></span><span class="line"><span class="cl">-rw-r--r-- root/root         <span class="m">0</span> 2021-05-17 17:08 data/a9.txt
+</span></span><span class="line"><span class="cl">-rw-r--r-- root/root         <span class="m">0</span> 2021-05-17 17:08 data/a1.txt
+</span></span><span class="line"><span class="cl">-rw-r--r-- root/root         <span class="m">0</span> 2021-05-17 17:08 data/a2.txt
+</span></span><span class="line"><span class="cl">-rw-r--r-- root/root         <span class="m">0</span> 2021-05-17 17:08 data/a7.txt
+</span></span><span class="line"><span class="cl">-rw-r--r-- root/root         <span class="m">0</span> 2021-05-17 17:08 data/a6.txt
+</span></span><span class="line"><span class="cl">-rw-r--r-- root/root         <span class="m">0</span> 2021-05-17 17:08 data/a4.txt
+</span></span><span class="line"><span class="cl">-rw-r--r-- root/root         <span class="m">0</span> 2021-05-17 17:08 data/a3.txt
+</span></span><span class="line"><span class="cl">-rw-r--r-- root/root         <span class="m">0</span> 2021-05-17 17:08 data/a8.txt
+</span></span><span class="line"><span class="cl">-rw-r--r-- root/root         <span class="m">0</span> 2021-05-17 17:08 data/a5.txt
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<h3 id="還原-restore">還原 Restore</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># before restore,delete the txt file</span>
+</span></span><span class="line"><span class="cl">docker <span class="nb">exec</span> -it backup_0 bash -c <span class="s1">&#39;rm -rf /data/*&#39;</span>
+</span></span><span class="line"><span class="cl">docker <span class="nb">exec</span> -it backup_0 ls -al /data
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>▲ 在還原之前先把本來在 <code>backup_0</code> <code>/data/a{1..9}.txt</code> 刪除。</p>
+<p>這邊發生了一個需要注意的地方，一開始我是這樣下命令想把 <code>/data</code> 下所有檔案刪除</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker <span class="nb">exec</span> -it backup_0 rm -rf /data/*
+</span></span><span class="line"><span class="cl">docker <span class="nb">exec</span> -it backup_0 ls -al /data
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">total <span class="m">8</span>
+</span></span><span class="line"><span class="cl">drwxr-xr-x <span class="m">2</span> root root <span class="m">4096</span> May <span class="m">17</span> 09:08 .
+</span></span><span class="line"><span class="cl">drwxr-xr-x <span class="m">1</span> root root <span class="m">4096</span> May <span class="m">17</span> 09:05 ..
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root    <span class="m">0</span> May <span class="m">17</span> 09:08 a1.txt
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root    <span class="m">0</span> May <span class="m">17</span> 09:08 a2.txt
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root    <span class="m">0</span> May <span class="m">17</span> 09:08 a3.txt
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root    <span class="m">0</span> May <span class="m">17</span> 09:08 a4.txt
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root    <span class="m">0</span> May <span class="m">17</span> 09:08 a5.txt
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root    <span class="m">0</span> May <span class="m">17</span> 09:08 a6.txt
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root    <span class="m">0</span> May <span class="m">17</span> 09:08 a7.txt
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root    <span class="m">0</span> May <span class="m">17</span> 09:08 a8.txt
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root    <span class="m">0</span> May <span class="m">17</span> 09:08 a9.txt
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p><strong><span style="color:red">恩&hellip;. 怎麼擋案還在!!</span></strong><br>
+簡單問狗一下 <a href="https://stackoverflow.com/questions/42767588/docker-exec-rm-not-working">Docker exec rm not working</a> 才知道原因<br>
+<strong><span style="color:blue"> <code>*</code> 預設會被當前 shell 解釋 (也就是 Host OS 的 bash)</span></strong></p>
+<br>
+<p><strong><span style="color:blue">在解釋下面指令之前，先再去看一眼 <code>tar -tvf a1_to_a9.tar.gz</code> 的結構! 因為在打包的時候有包含到整個資料路徑結構</span></strong><br>
+<strong>我們的目標: 把 a1~a9.txt 還原到本來 <code>/data</code> 底下</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker run --rm --volumes-from backup_0 -v <span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/restore:ro centos:7 tar -zxvf /restore/a1_to_a9.tar.gz data/*  -C /data
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>▲ 把當前工作目錄映射到 <code>/restore</code> (使用後即消失的 container) <strong><span style="color:red">而且 read only</span></strong> 因為不希望當前工作目錄被意外刪除之類的。<br>
+接著從 <code>a1_to_a9.tar.gz</code> <strong>指定</strong> 我們要解壓出來的檔案，也就是 <code>data/*</code> ；<strong>並且</strong> 切換到 <code>/data</code> 執行，也就是 <code>-C /data</code></p>
+<p>看一下執行結果~</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">data/a9.txt
+</span></span><span class="line"><span class="cl">data/a1.txt
+</span></span><span class="line"><span class="cl">data/a2.txt
+</span></span><span class="line"><span class="cl">data/a7.txt
+</span></span><span class="line"><span class="cl">data/a6.txt
+</span></span><span class="line"><span class="cl">data/a4.txt
+</span></span><span class="line"><span class="cl">data/a3.txt
+</span></span><span class="line"><span class="cl">data/a8.txt
+</span></span><span class="line"><span class="cl">data/a5.txt
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">## show data
+</span></span><span class="line"><span class="cl">root@eric_nginx[~] docker exec -it backup_0 ls -al /data
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">total 8
+</span></span><span class="line"><span class="cl">drwxr-xr-x 2 root root 4096 May 18 01:32 .
+</span></span><span class="line"><span class="cl">drwxr-xr-x 1 root root 4096 May 17 09:05 ..
+</span></span><span class="line"><span class="cl">-rw-r--r-- 1 root root    0 May 18 01:21 a1.txt
+</span></span><span class="line"><span class="cl">-rw-r--r-- 1 root root    0 May 18 01:21 a2.txt
+</span></span><span class="line"><span class="cl">-rw-r--r-- 1 root root    0 May 18 01:21 a3.txt
+</span></span><span class="line"><span class="cl">-rw-r--r-- 1 root root    0 May 18 01:21 a4.txt
+</span></span><span class="line"><span class="cl">-rw-r--r-- 1 root root    0 May 18 01:21 a5.txt
+</span></span><span class="line"><span class="cl">-rw-r--r-- 1 root root    0 May 18 01:21 a6.txt
+</span></span><span class="line"><span class="cl">-rw-r--r-- 1 root root    0 May 18 01:21 a7.txt
+</span></span><span class="line"><span class="cl">-rw-r--r-- 1 root root    0 May 18 01:21 a8.txt
+</span></span><span class="line"><span class="cl">-rw-r--r-- 1 root root    0 May 18 01:21 a9.txt
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<h3 id="只備份檔案就好-不包含路徑">只備份檔案就好 (不包含路徑)</h3>
+<p><a href="https://stackoverflow.com/questions/939982/how-do-i-tar-a-directory-of-files-and-folders-without-including-the-directory-it">How do I tar a directory of files and folders without including the directory itself?</a></p>
+<p>:阿我能不能備份檔案就好，不要有路徑的困擾?<br>
+答案是可以的喔~</p>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@eric_nginx<span class="o">[</span>~<span class="o">]</span> docker run --rm --volumes-from backup_0 -v <span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/backup centos:7 tar -zcvf /backup/only_file_a1_to_a9.tar.gz -C /data/ ./
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>▲ 只要在壓縮之前請 <code>tar</code> 切換工作目錄到指定資料夾就能不考慮資料路徑結構放心解壓。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@eric_nginx<span class="o">[</span>~<span class="o">]</span> tar -tvf only_file_a1_to_a9.tar.gz 
+</span></span><span class="line"><span class="cl">drwxr-xr-x root/root         <span class="m">0</span> 2021-05-18 10:14 ./
+</span></span><span class="line"><span class="cl">-rw-r--r-- root/root         <span class="m">0</span> 2021-05-18 10:14 ./a9.txt
+</span></span><span class="line"><span class="cl">-rw-r--r-- root/root         <span class="m">0</span> 2021-05-18 10:14 ./a1.txt
+</span></span><span class="line"><span class="cl">-rw-r--r-- root/root         <span class="m">0</span> 2021-05-18 10:14 ./a2.txt
+</span></span><span class="line"><span class="cl">-rw-r--r-- root/root         <span class="m">0</span> 2021-05-18 10:14 ./a7.txt
+</span></span><span class="line"><span class="cl">-rw-r--r-- root/root         <span class="m">0</span> 2021-05-18 10:14 ./a6.txt
+</span></span><span class="line"><span class="cl">-rw-r--r-- root/root         <span class="m">0</span> 2021-05-18 10:14 ./a4.txt
+</span></span><span class="line"><span class="cl">-rw-r--r-- root/root         <span class="m">0</span> 2021-05-18 10:14 ./a3.txt
+</span></span><span class="line"><span class="cl">-rw-r--r-- root/root         <span class="m">0</span> 2021-05-18 10:14 ./a8.txt
+</span></span><span class="line"><span class="cl">-rw-r--r-- root/root         <span class="m">0</span> 2021-05-18 10:14 ./a5.txt
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<hr>
+<h2 id="其他常用指令">其他常用指令</h2>
+<br>
+<h3 id="查詢-container-使用的-volume">查詢 container 使用的 Volume</h3>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker inspect minio <span class="p">|</span> jq .<span class="o">[]</span>.Mounts
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<h3 id="清除所有span-stylecolorred未使用span-docker-volume">清除所有<span style="color:red">未使用</span> Docker Volume</h3>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker volume prune
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2021-05-13
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/docker/">docker</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/20210608-intro_docker_image/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Docker Image 介紹</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/20210223-hide-apache-php-openssl-nginx-version/">
+            <span class="next-text nav-default">隱藏 Apache、PHP、OpenSSL、Nginx 版本號</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.64437849d125a2d603b3e71d6de5225d641a32d17168a58106e0b61852079683.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

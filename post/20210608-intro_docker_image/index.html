@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Docker Image 介紹 - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="圖片來源 此篇筆記主要參考 Docker 官方文件 About storage drivers 主要記錄自己找到的資料，所以不是很有系統性的教學。不過文內有附上邱宏瑋 (hwchiu) 鐵人賽系列文章，需要完整學習" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.98.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20210608-intro_docker_image/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Docker Image 介紹" />
+<meta property="og:description" content="圖片來源 此篇筆記主要參考 Docker 官方文件 About storage drivers 主要記錄自己找到的資料，所以不是很有系統性的教學。不過文內有附上邱宏瑋 (hwchiu) 鐵人賽系列文章，需要完整學習" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.xxzk.me/post/20210608-intro_docker_image/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-06-08T15:54:10+00:00" />
+<meta property="article:modified_time" content="2021-06-08T15:54:10+00:00" />
+
+<meta itemprop="name" content="Docker Image 介紹">
+<meta itemprop="description" content="圖片來源 此篇筆記主要參考 Docker 官方文件 About storage drivers 主要記錄自己找到的資料，所以不是很有系統性的教學。不過文內有附上邱宏瑋 (hwchiu) 鐵人賽系列文章，需要完整學習"><meta itemprop="datePublished" content="2021-06-08T15:54:10+00:00" />
+<meta itemprop="dateModified" content="2021-06-08T15:54:10+00:00" />
+<meta itemprop="wordCount" content="1562">
+<meta itemprop="keywords" content="docker,image," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Docker Image 介紹"/>
+<meta name="twitter:description" content="圖片來源 此篇筆記主要參考 Docker 官方文件 About storage drivers 主要記錄自己找到的資料，所以不是很有系統性的教學。不過文內有附上邱宏瑋 (hwchiu) 鐵人賽系列文章，需要完整學習"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Docker Image 介紹</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-06-08 </span>
+        <div class="post-category">
+            <a href="/categories/docker/"> docker </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#開始之前">開始之前</a></li>
+        <li><a href="#images-and-layers">Images and layers</a>
+          <ul>
+            <li><a href="#基本觀念">基本觀念</a></li>
+            <li><a href="#範例">範例</a></li>
+          </ul>
+        </li>
+        <li><a href="#container-layers-diagram">container layers diagram</a></li>
+        <li><a href="#多個-container-共用同一個-image">多個 container 共用同一個 image</a></li>
+        <li><a href="#docker-pull">docker pull</a>
+          <ul>
+            <li><a href="#為什麼-image-id-與-digest-不同">為什麼 Image ID 與 Digest 不同</a></li>
+          </ul>
+        </li>
+        <li><a href="#sfcentos_7-dockerfile">sf/centos_7 Dockerfile</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p><img src="storia-container-768x550.jpg" alt="storia-container-768x550"></p>
+<p><a href="https://www.criticalcase.com/blog/containers-from-the-origins-to-docker.html">圖片來源</a></p>
+<br>
+<p><strong>此篇筆記主要參考 Docker 官方文件 <a href="https://docs.docker.com/storage/storagedriver/">About storage drivers</a></strong><br>
+<strong>主要記錄自己找到的資料，所以不是很有系統性的教學。不過文內有附上邱宏瑋 (hwchiu) 鐵人賽系列文章，需要完整學習的可以去拜讀 &lt;(__)&gt;</strong></p>
+<br>
+<p><strong><span style='color:brown'>image 是運行 container 不可或缺的存在，它是容器的基底。</span></strong></p>
+<br>
+<hr>
+<h2 id="開始之前">開始之前</h2>
+<br>
+<p><strong>在開始之前我覺得有必要釐清一下名詞，避免大家誤以為&hellip;</strong><br>
+<strong>(1) 容器技術是 Docker 的專利。</strong><br>
+<strong>(2) Docker Image 是 Docker 制定的且特規。</strong></p>
+<br>
+<p>會有這些現象是因為 Docker 簡化了 containerization (容器化) 的繁雜步驟，讓容器化更加親民、易於使用。</p>
+<blockquote>
+<p>I promise<br>
+To say container registries rather than docker registries<br>
+I promise<br>
+To say container images rather than docker images<br>
+I promise<br>
+To say containers or OCI containers rather than docker containers</p>
+</blockquote>
+<p><a href="https://www.facebook.com/groups/cloudnative.tw/permalink/475806496256024/">誓詞取自 Cloud Native Taiwan User Group 小飛機大大 &lt;(__)&gt; </a></p>
+<br>
+<p><a href="https://ithelp.ithome.com.tw/articles/10216215">[Day2] 淺談 Container 實現原理, 以 Docker 為例(I) </a><br>
+<a href="https://segmentfault.com/a/1190000009309347">【簡體中文】走进docker(02)：image(镜像)是什么？</a></p>
+<br>
+<hr>
+<h2 id="images-and-layers">Images and layers</h2>
+<br>
+<h3 id="基本觀念">基本觀念</h3>
+<ul>
+<li>一個 Docker image 是由一系列的 &ldquo;層&rdquo; (layer) 堆疊而成</li>
+<li>Dockerfile 當中每一個指令都會生成一個 layer</li>
+<li>每個 layer 都是唯讀 (read-only) 的</li>
+<li>承上，image 是由 layer 堆疊而成，所以 image 也是唯讀 (read-only)</li>
+</ul>
+<h3 id="範例">範例</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="line"><span class="cl"><span class="k">FROM</span><span class="s"> ubuntu:18.04</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">COPY</span> . /app<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> make /app<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">CMD</span> python /app/app.py<span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p>這個範例包含了 <strong>4</strong> 個指令 (所以 image 會有 4 個 layers)。</p>
+<p><code>FROM</code> 選擇 base image，以這個 dockerfile 來說就是選擇使用 <code>ubuntu:18.04</code> 作為基底。<br>
+<code>COPY</code> 將當前工作目錄 (PWD) 所有檔案複製到 <code>/app</code> 路徑底下。<br>
+<code>RUN</code> 執行指令，以上面範例來說就是在 <code>/app</code> 下執行 <code>make</code> 這個指令 (make 是編譯相關指令)。<br>
+<code>CMD</code> 定義當這個 image 被執行 (變成 container) 後要執行什麼指令。</p>
+<br>
+<p><strong>Q: 我可以用多個 <code>FROM</code> 嗎?</strong></p>
+<p>Ans: 可以，請參考 <a href="https://docs.docker.com/develop/develop-images/multistage-build/">Use multi-stage builds</a></p>
+<br>
+<hr>
+<h2 id="container-layers-diagram">container layers diagram</h2>
+<br>
+<p><img src="container-layers.jpg" alt="container-layers.jpg"></p>
+<br>
+<p>當我們把一個 docker image run 起來變成一個 container 後，整個 container layer 會是這樣。</p>
+<p><strong><span style='color:red'>&gt; 可寫層 (writable layer) 會被加在最上層，這也是為什麼 docker container 是可以寫入資料的原因 (假設沒有外掛任何 volume)</span></strong><br>
+<strong><span style='color:red'>&gt; 所有你認為異動到系統 (例如 <code>vim /etc/yum.conf</code>) 實際上都是在可寫層刪減，原因: image 是 read only</span></strong><br>
+<strong>&gt; 也因為可寫層是在 container 內，生命週期 (life cycle) 也跟著容器。當下達 <code>docker rm &lt;container_name&gt;</code> 可寫層資料隨即消失</strong><br>
+<strong>&gt; 可寫層採用 copy-on-write (CoW) 策略，(跨 layer) 下達檔案刪除指令 (例如 <code>rm -f /etc/yum.conf</code>) 實際上會增加 container 實際占用硬碟的空間</strong></p>
+<p>關於 CoW 這篇有實驗: <a href="https://www.cnblogs.com/woshimrf/p/docker-container-lawyer.html">关于base镜像</a></p>
+<br>
+<hr>
+<h2 id="多個-container-共用同一個-image">多個 container 共用同一個 image</h2>
+<br>
+<p><img src="sharing-layers.jpg" alt="sharing-layers.jpg"></p>
+<br>
+<p><strong><span style='color:red'>這個是 container 技術比起傳統虛擬化 (virtualization) 技術省空間的原因之一，硬碟占用一份 image 的空間，就可以跑出好幾個彼此獨立的環境</span></strong></p>
+<p>沒感覺? 來下個指令吧!</p>
+<p>列出所有 running container 占用硬碟的空間 (P.S. 為了方便，省略中間不重要的欄位)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker ps -s
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">CONTAINER ID   IMAGE                NAMES         SIZE
+</span></span><span class="line"><span class="cl">851d6783751a   minio/minio          minio         0B (virtual 184MB)
+</span></span><span class="line"><span class="cl">6e203e21110b   sf/centos_7:1.0      sf_centos_7   1.27kB (virtual 496MB)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>size</code> 顯示可寫層 (wirtalbe) 實際占用硬碟空間<br>
+<code>virtual size</code> 唯讀且共用的 image 加上可寫層使用空間。(image size + writable size)</p>
+<br>
+<hr>
+<h2 id="docker-pull">docker pull</h2>
+<br>
+<p><code>docker pull &lt;some_image&gt;</code> 執行時其實不是將整個 image <strong>完全</strong> 抓下來，而是分層抓取。<br>
+(一個 layer 一個 layer 抓，假設 local 有就不向 docker hub 抓取，以節省空間)</p>
+<p>查看 <code>centos:7</code> 這個 image 裡面包含了多少 layer</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker image inspect centos:7 <span class="p">|</span> jq .<span class="o">[</span>0<span class="o">]</span>.RootFS
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## if no jq installed</span>
+</span></span><span class="line"><span class="cl">docker image inspect centos:7 -f <span class="s1">&#39;{{.RootFS}}&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;Type&#34;</span><span class="p">:</span> <span class="s2">&#34;layers&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;Layers&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;sha256:174f5685490326fc0a1c0f5570b8663732189b327007e47ff13d2ca59673db02&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>這些 layer 實際上是儲存在這些目錄裡面:
+<code>/var/lib/docker/image/overlay2/layerdb/sha256/</code><br>
+<code>/var/lib/docker/image/overlay2/distribution/v2metadata-by-diffid/sha256/</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ll /var/lib/docker/image/overlay2/layerdb/sha256/ <span class="p">|</span> grep <span class="s1">&#39;174f5&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">drwx------ <span class="m">2</span> root root <span class="m">4096</span> Apr <span class="m">23</span> 14:17 174f5685490326fc0a1c0f5570b8663732189b327007e47ff13d2ca59673db02
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="為什麼-image-id-與-digest-不同">為什麼 Image ID 與 Digest 不同</h3>
+<p>透過指令可以查看一個 image 的 <code>Image ID</code> 與 <code>DIGEST</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker images ls --digests
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">REPOSITORY   TAG       DIGEST                                                                    IMAGE ID       CREATED       SIZE
+</span></span><span class="line"><span class="cl">ubuntu       15.04     sha256:2fb27e433b3ecccea2a14e794875b086711f5d49953ef173d8a03e8707f1510f   d1b55fd07600   <span class="m">5</span> years ago   131MB
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>簡而言之:</strong></p>
+<p><strong>Digest 是對 <code>manifest</code> 做 hash，目前 docker registry v2 使用的 hash method 是 <code>sha256</code></strong><br>
+<strong>Image ID 是對 local image 的 <code>JSON configure file</code> 做 hash</strong></p>
+<p>有興趣的這篇有使用 python 抓取 manifest 的實驗，可以深入研究參考 <a href="https://www.jianshu.com/p/716096892100">YHWXQ简简单单的生活-Docker的Pull Digest和Image ID</a></p>
+<p><a href="https://stackoverflow.com/questions/56364643/whats-the-difference-between-a-docker-images-image-id-and-its-digest">What&rsquo;s the difference between a Docker image&rsquo;s Image ID and its Digest?</a></p>
+<br>
+<p>對於 docker image 想要更深入探索的，這邊有個用 Go 寫的工具，可以視覺化每一層的變化<br>
+<a href="https://github.com/wagoodman/dive">wagoodman/dive</a></p>
+<br>
+<p><img src="https://raw.githubusercontent.com/wagoodman/dive/master/.data/demo.gif" alt="demo.gif"></p>
+<br>
+<hr>
+<h2 id="sfcentos_7-dockerfile">sf/centos_7 Dockerfile</h2>
+<br>
+<p>這是針對公司環境打造的 Docker image 基於 <code>centos:7</code> 加入了一些常用 debug 查找工具~<br>
+也因為加入了這些工具，弄得比官方原生 <code>centos:7</code> 還大包&hellip;.<br>
+官方 <code>centos:7</code> 只有 204 MB，單純這些工具就有 292 MB   XD<br>
+單純嘗試寫 Dockerfile，所以就沒特別去找瘦身方式囉!</p>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker <span class="nb">history</span> sf/centos_7:1.0
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">IMAGE          CREATED        CREATED BY                                      SIZE      COMMENT
+</span></span><span class="line"><span class="cl">f0d584dd6c14   <span class="m">7</span> days ago     /bin/sh -c sed -i <span class="err">&#39;</span>s/^mirrorlist/#mirrorlist…   292MB     
+</span></span><span class="line"><span class="cl">8652b9f0cb4c   <span class="m">6</span> months ago   /bin/sh -c <span class="c1">#(nop)  CMD [&#34;/bin/bash&#34;]            0B        </span>
+</span></span><span class="line"><span class="cl">&lt;missing&gt;      <span class="m">6</span> months ago   /bin/sh -c <span class="c1">#(nop)  LABEL org.label-schema.sc…   0B        </span>
+</span></span><span class="line"><span class="cl">&lt;missing&gt;      <span class="m">6</span> months ago   /bin/sh -c <span class="c1">#(nop) ADD file:b3ebbe8bd304723d4…   204MB     </span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="line"><span class="cl"><span class="k">FROM</span><span class="s"> centos:7</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> sed -i <span class="s1">&#39;s/^mirrorlist/#mirrorlist/g&#39;</span> /etc/yum.repos.d/*.repo <span class="o">&amp;&amp;</span><span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    sed -i <span class="s1">&#39;s/^#baseurl/baseurl/g&#39;</span> /etc/yum.repos.d/*.repo <span class="o">&amp;&amp;</span><span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    <span class="c1">#sed -i -e &#39;s/http/https/g&#39; /etc/yum.repos.d/*.repo &amp;&amp;\</span>
+</span></span><span class="line"><span class="cl">    sed -i <span class="s1">&#39;s/mirror.centos.org/free.nchc.org.tw/g&#39;</span> /etc/yum.repos.d/*.repo <span class="o">&amp;&amp;</span><span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    sed -i <span class="s1">&#39;s/^enabled=1/enabled=0/g&#39;</span> /etc/yum/pluginconf.d/fastestmirror.conf <span class="o">&amp;&amp;</span><span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    yum install -y epel-release <span class="o">&amp;&amp;</span><span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    yum install -y jq tcpdump.x86_64  tree net-tools.x86_64 vim less whois bind-utils iproute <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    rsync scp wget git traceroute mtr htop python3<span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2021-06-08
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/docker/">docker</a>
+          <a href="/tags/image/">image</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/20210727-ckad-note-section-1-introduction/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">CKAD Note Section 1 Introduction</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/20210223-hide-apache-php-openssl-nginx-version/">
+            <span class="next-text nav-default">隱藏 Apache、PHP、OpenSSL、Nginx 版本號</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.64437849d125a2d603b3e71d6de5225d641a32d17168a58106e0b61852079683.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

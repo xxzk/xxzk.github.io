@@ -17,11 +17,11 @@
     </item>
     
     <item>
-      <title>CKA_Note_Section_Section_7_Security</title>
-      <link>https://blog.xxzk.me/post/20211222-cka_note_section_section_7_security/</link>
+      <title>CKA_Note_Section_7_Security</title>
+      <link>https://blog.xxzk.me/post/20211222-cka_note_section_7_security/</link>
       <pubDate>Wed, 22 Dec 2021 13:53:04 +0000</pubDate>
       
-      <guid>https://blog.xxzk.me/post/20211222-cka_note_section_section_7_security/</guid>
+      <guid>https://blog.xxzk.me/post/20211222-cka_note_section_7_security/</guid>
       <description>135. Authentication 請參考 CKAD Note Section 9 Updates for Sep 2021 Changes - 121. Authentication, Authorization and Admission Control 139. TLS in Kubernetes ▲ 各個 K8s component 的 TLS community diagram。 因為現在大部分 kube-proxy 都不是單獨安裝，已經變成 daemondse</description>
     </item>
     

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>CKA_Note_Section_9_Networking - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="前言 既然這個章節是介紹 Kubernetes Networking 那就先來複習一下之前看過的優質文章吧! [Hwchiu Docker Network - 網路模型 系列] Docker Network - 網路模型 [Day10] Container Network Interface 介紹 188. Prerequisite - Network Namespaces ▲ 使用 ip netns exec &amp;lt;NAMESPACE&amp;gt; ip link" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.98.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20220704-cka_note_section_9_networking/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="CKA_Note_Section_9_Networking" />
+<meta property="og:description" content="前言 既然這個章節是介紹 Kubernetes Networking 那就先來複習一下之前看過的優質文章吧! [Hwchiu Docker Network - 網路模型 系列] Docker Network - 網路模型 [Day10] Container Network Interface 介紹 188. Prerequisite - Network Namespaces ▲ 使用 ip netns exec &lt;NAMESPACE&gt; ip link" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.xxzk.me/post/20220704-cka_note_section_9_networking/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-07-04T13:58:19+00:00" />
+<meta property="article:modified_time" content="2022-07-04T13:58:19+00:00" />
+
+<meta itemprop="name" content="CKA_Note_Section_9_Networking">
+<meta itemprop="description" content="前言 既然這個章節是介紹 Kubernetes Networking 那就先來複習一下之前看過的優質文章吧! [Hwchiu Docker Network - 網路模型 系列] Docker Network - 網路模型 [Day10] Container Network Interface 介紹 188. Prerequisite - Network Namespaces ▲ 使用 ip netns exec &lt;NAMESPACE&gt; ip link"><meta itemprop="datePublished" content="2022-07-04T13:58:19+00:00" />
+<meta itemprop="dateModified" content="2022-07-04T13:58:19+00:00" />
+<meta itemprop="wordCount" content="672">
+<meta itemprop="keywords" content="CKA,kubernetes," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="CKA_Note_Section_9_Networking"/>
+<meta name="twitter:description" content="前言 既然這個章節是介紹 Kubernetes Networking 那就先來複習一下之前看過的優質文章吧! [Hwchiu Docker Network - 網路模型 系列] Docker Network - 網路模型 [Day10] Container Network Interface 介紹 188. Prerequisite - Network Namespaces ▲ 使用 ip netns exec &lt;NAMESPACE&gt; ip link"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">CKA_Note_Section_9_Networking</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-07-04 </span>
+        <div class="post-category">
+            <a href="/categories/cka/"> CKA </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#前言">前言</a></li>
+        <li><a href="#188-prerequisite---network-namespaces">188. Prerequisite - Network Namespaces</a></li>
+        <li><a href="#191-prerequisite---cni">191. Prerequisite - CNI</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>既然這個章節是介紹 Kubernetes Networking 那就先來複習一下之前看過的優質文章吧!</p>
+<ul>
+<li><a href="https://www.hwchiu.com/docker-network-model.html">[Hwchiu Docker Network - 網路模型 系列] Docker Network - 網路模型</a></li>
+<li><a href="https://ithelp.ithome.com.tw/articles/10220626">[Day10] Container Network Interface 介紹</a></li>
+</ul>
+<h2 id="188-prerequisite---network-namespaces">188. Prerequisite - Network Namespaces</h2>
+<p><img src="list_link_as_ns.jpg" alt="list_link_as_ns"></p>
+<p>▲ 使用 <code>ip netns exec &lt;NAMESPACE&gt; ip link</code> 能以 <code>&lt;NAMESPACE&gt;</code> 的視角查看，<strong><span style='color:blue'>或者更快的 <code>ip -n &lt;NAMESPACE&gt; link</code></span></strong>。</p>
+<p><img src="list_arp_table.jpg" alt="list_arp_table"></p>
+<p>▲ 使用 <code>ip netns exec &lt;NAMESPACE&gt; arp</code> 顯示 namespace 內的 arp table。</p>
+<p><img src="list_routuing_table.jpg" alt="list_routuing_table"></p>
+<p>▲ 使用 <code>ip netns exec &lt;NAMESPACE&gt; route</code> 顯示 namespace 內的 routing table。</p>
+<p><img src="add_veth_pair.jpg" alt="add_veth_pair"></p>
+<p>▲ (<strong><span style='color:red'>上面 <code>ip addr add</code> 漏掉 netmask 了</span></strong>) 這邊講師跟<a href="https://www.hwchiu.com/docker-network-model-lab.html">邱牛這篇 Docker 網路入門篇(二) - Bridge 網路模型</a> 做的事情差不多，都是打造 veth pair，<strong><span style='color:red'>只不過邱牛是在 <code>runtime == docker</code> 下解釋，講師則是將 red, blue 這兩個 namespace 從 host OS 透過 <code>ip link add</code> 的方式加在原始路徑裡面。</span></strong></p>
+<p>P.S. 若要刪除 veth pair 的話只需要下達一次 <code>ip -n &lt;NAMESPACE&gt; link del &lt;veth_name&gt;</code> 即可。</p>
+<p><img src="veth_connect_to_linux_bridge.jpg" alt="veth_connect_to_linux_bridge"></p>
+<p>▲ 透過 <code>ip link add v-net-0 type bridge &amp;&amp; ip link set dev v-net-o up</code> 產生的 <strong><span style='color:red'>bridge 可以把他想像成放在 host 的 virtual switch。</span></strong></p>
+<p><img src="set_ip_to_linux_bridge.jpg" alt="set_ip_to_linux_bridge"></p>
+<p>▲ 如果想從 host <code>ping</code> 到這四個 namespace 的話只需要將 linux bridge binding IP 即可 (讓 host 有 route table)。</p>
+<p><img src="add_gw_to_blue_ns.jpg" alt="add_gw_to_blue_ns"></p>
+<p>▲ 我們想從 <strong><span style='color:blue'>blue</span></strong> 碰到 <code>192.168.1.3</code> 就必須在 <strong><span style='color:blue'>blue</span></strong> namespace 裡面加給他 static route (建議直接用 default gateway) 不過還是沒辦法收到 ping reply (先暴雷，因為要請 host eth0 幫我們做 SNAT 「看到來自 <code>192.168.15.0/24</code> 的封包請幫我用 <code>192.168.1.2 host eth0</code> 的身分送出!」)</p>
+<p><img src="iptables_set_masquarade.jpg" alt="iptables_set_masquarade"></p>
+<p>▲ 如果謹慎一點應該要 <code>iptables -t nat -I POSTROUTING -s 192.168.15.0/24 -i v-net-0 -o eth0 -j MASQUARADE</code> 來限制 <code>--in-interface</code> 與 <code>--out-interface</code>。</p>
+<h2 id="191-prerequisite---cni">191. Prerequisite - CNI</h2>
+<p><img src="container_network_interface.jpg" alt="container_network_interface"></p>
+<p>▲ 既然各個 container runtime 都需要在 host 做這些必要事情，<a href="https://github.com/containernetworking/cni">CNI</a> 的誕生提供業界標準避免重複造輪。</p>
+<p><img src="who_using_cni.jpg" alt="who_using_cni"></p>
+<p>▲ <a href="https://github.com/containernetworking/cni#who-is-using-cni">Who is using CNI</a> 可以看到一些官方列出的 container runtime，以及第三方 plugins。<br>
+CNI 還有提供 library 可以自行開發屬於你自己的 CNI plugins~</p>
+<p><img src="cni_specific.jpg" alt="cni_specific"></p>
+<p>▲ CNI 切了兩個責任區，上方是 container runtime 必須要負責的；下方則是 plugin，<strong><span style='color:red'>達成 any runtime should be able to work with any plugins.</span></strong></p>
+<p><img src="cni_plugins.jpg" alt="cni_plugins"></p>
+<p>▲ CNI 自帶一些基本的 plugin，下方是第三方 plugin。延伸閱讀: <a href="https://www.hwchiu.com/cni-compare.html">[Hwchiu]常見 CNI (Container Network Interface) Plugin 介紹</a> <strong><span style='color:red'>而 docker 並不使用 CNI，而是自身的 CNM (container network model)</span></strong></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2022-07-04
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/cka/">CKA</a>
+          <a href="/tags/kubernetes/">kubernetes</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/20220704-cka_note_section_8_storage/">
+            <span class="next-text nav-default">CKA_Note_Section_8_Storage</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.64437849d125a2d603b3e71d6de5225d641a32d17168a58106e0b61852079683.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -16,5 +16,14 @@
       <description>這篇筆記紀錄閱讀 Dell R730XD owners manual 記憶體 (memory) 學到的東西，藉此還債。 ▲ 主修資工腦袋空空 科普資源 在開始讀 owner manual 之前，有幾個關於 DIMM (Double In-line Memory Module) 的科普資源，建議先看。</description>
     </item>
     
+    <item>
+      <title>清除 Dell Server BIOS,iDRAC 密碼與設定值 &#43; 更新 Driver &#43; 建立 RAID</title>
+      <link>https://blog.xxzk.me/post/20201119-clear_dell_bios_passwd_and_upgrade_driver/</link>
+      <pubDate>Thu, 19 Nov 2020 10:03:54 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20201119-clear_dell_bios_passwd_and_upgrade_driver/</guid>
+      <description>使用機型 Dell R330 BIOS,iDRAC 密碼/設定檔 清除 How to reset the BIOS of a Dell PowerEdge Server? 將所有電源移除 將 NVRAM_CLR 從本來的 pins 3-5 變成 pins 1-3 (如上圖)，PWD_EN 直接拔除 等待十秒鐘以上 重新接</description>
+    </item>
+    
   </channel>
 </rss>

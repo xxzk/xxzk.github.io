@@ -16,5 +16,14 @@
       <description>本次 192.168.200.x/24 LAB 使用到的 Dell PS6210 本人。 參考資料: EqualLogic PS6210XS 及 CentOS 6.5 MPIO 實作 使用 minicom 連接 serial port 如果作業系統是 Windows 的話可以使用 PuTTY 連接。設定的參數都通用 (baud rate/Data bits/Stop bits/Parity) 使用到的線材:</description>
     </item>
     
+    <item>
+      <title>清除 Dell Server BIOS,iDRAC 密碼與設定值 &#43; 更新 Driver &#43; 建立 RAID</title>
+      <link>https://blog.xxzk.me/post/20201119-clear_dell_bios_passwd_and_upgrade_driver/</link>
+      <pubDate>Thu, 19 Nov 2020 10:03:54 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20201119-clear_dell_bios_passwd_and_upgrade_driver/</guid>
+      <description>使用機型 Dell R330 BIOS,iDRAC 密碼/設定檔 清除 How to reset the BIOS of a Dell PowerEdge Server? 將所有電源移除 將 NVRAM_CLR 從本來的 pins 3-5 變成 pins 1-3 (如上圖)，PWD_EN 直接拔除 等待十秒鐘以上 重新接</description>
+    </item>
+    
   </channel>
 </rss>

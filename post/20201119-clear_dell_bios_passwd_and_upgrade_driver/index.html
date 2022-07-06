@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>清除 Dell Server BIOS,iDRAC 密碼與設定值 &#43; 更新 Driver &#43; 建立 RAID - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="使用機型 Dell R330 BIOS,iDRAC 密碼/設定檔 清除 How to reset the BIOS of a Dell PowerEdge Server? 將所有電源移除 將 NVRAM_CLR 從本來的 pins 3-5 變成 pins 1-3 (如上圖)，PWD_EN 直接拔除 等待十秒鐘以上 重新接" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.98.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20201119-clear_dell_bios_passwd_and_upgrade_driver/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="清除 Dell Server BIOS,iDRAC 密碼與設定值 &#43; 更新 Driver &#43; 建立 RAID" />
+<meta property="og:description" content="使用機型 Dell R330 BIOS,iDRAC 密碼/設定檔 清除 How to reset the BIOS of a Dell PowerEdge Server? 將所有電源移除 將 NVRAM_CLR 從本來的 pins 3-5 變成 pins 1-3 (如上圖)，PWD_EN 直接拔除 等待十秒鐘以上 重新接" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.xxzk.me/post/20201119-clear_dell_bios_passwd_and_upgrade_driver/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2020-11-19T10:03:54+00:00" />
+<meta property="article:modified_time" content="2020-11-19T10:03:54+00:00" />
+
+<meta itemprop="name" content="清除 Dell Server BIOS,iDRAC 密碼與設定值 &#43; 更新 Driver &#43; 建立 RAID">
+<meta itemprop="description" content="使用機型 Dell R330 BIOS,iDRAC 密碼/設定檔 清除 How to reset the BIOS of a Dell PowerEdge Server? 將所有電源移除 將 NVRAM_CLR 從本來的 pins 3-5 變成 pins 1-3 (如上圖)，PWD_EN 直接拔除 等待十秒鐘以上 重新接"><meta itemprop="datePublished" content="2020-11-19T10:03:54+00:00" />
+<meta itemprop="dateModified" content="2020-11-19T10:03:54+00:00" />
+<meta itemprop="wordCount" content="480">
+<meta itemprop="keywords" content="dell,server," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="清除 Dell Server BIOS,iDRAC 密碼與設定值 &#43; 更新 Driver &#43; 建立 RAID"/>
+<meta name="twitter:description" content="使用機型 Dell R330 BIOS,iDRAC 密碼/設定檔 清除 How to reset the BIOS of a Dell PowerEdge Server? 將所有電源移除 將 NVRAM_CLR 從本來的 pins 3-5 變成 pins 1-3 (如上圖)，PWD_EN 直接拔除 等待十秒鐘以上 重新接"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">清除 Dell Server BIOS,iDRAC 密碼與設定值 &#43; 更新 Driver &#43; 建立 RAID</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-11-19 </span>
+        <div class="post-category">
+            <a href="/categories/infra/"> infra </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#biosidrac-密碼設定檔-清除">BIOS,iDRAC 密碼/設定檔 清除</a></li>
+        <li><a href="#idrac-設定">iDRAC 設定</a></li>
+        <li><a href="#更新驅動程式-driver">更新驅動程式 Driver</a></li>
+        <li><a href="#raid-控制器">RAID 控制器</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p><strong>使用機型 Dell R330</strong></p>
+<hr>
+<h2 id="biosidrac-密碼設定檔-清除">BIOS,iDRAC 密碼/設定檔 清除</h2>
+<br>
+<p><a href="https://www.dell.com/support/article/zh-tw/sln302725/how-to-reset-the-bios-of-a-dell-poweredge-server?lang=en">How to reset the BIOS of a Dell PowerEdge Server?</a></p>
+<br>
+<p><img src="dell_official_doc_jumper.jpg" alt="dell_official_doc_jumper"></p>
+<br>
+<ol>
+<li>
+<p>將所有電源移除</p>
+</li>
+<li>
+<p>將 <strong>NVRAM_CLR 從本來的 pins 3-5 變成 pins 1-3 (如上圖)</strong>，<strong>PWD_EN 直接拔除</strong></p>
+</li>
+<li>
+<p><strong>等待十秒鐘以上</strong> 重新接上電源並開機 <strong>按 F2 進入 System Setting</strong></p>
+<br>
+<p><img src="dell_r330_enter_system_setup.jpg" alt="dell_r330_enter_system_setup"></p>
+<br>
+</li>
+<li>
+<p>進入 <strong>System BIOS</strong></p>
+</li>
+<li>
+<p>選擇 <strong>Default</strong></p>
+</li>
+<li>
+<p>選擇 <strong>iDRAC Setting</strong> 拉到最下面 <strong>Reset iDRAC configurations to defaults</strong></p>
+<br>
+<p><img src="dell_r330_idrac_reset.jpg" alt="dell_r330_idrac_reset"></p>
+<br>
+</li>
+<li>
+<p>將 <strong>NVRAM_CLR 復歸到 pings 3-5</strong>，<strong>PWD_EN 重新插上 pings 2-4</strong></p>
+</li>
+<li>
+<p>拔除電源後重新開機</p>
+</li>
+</ol>
+<hr>
+<h2 id="idrac-設定">iDRAC 設定</h2>
+<br>
+<p><strong>如果沒有 iDRAC License 可以從 Dell 官網抓取試用授權</strong><br>
+<strong><a href="https://www.dell.com/support/article/zh-tw/sln309292/idrac-cmc-openmanage-enterprise-openmanage-integration-with-microsoft-windows-admin-center-openmanage-integration-with-servicenow-and-dpat-trial-licenses?lang=en">Dell iDRAC Trial</a></strong></p>
+<p><img src="dell_r330_idrac_setting.jpg" alt="dell_r330_idrac_setting"></p>
+<p>▲ 進入 <strong>iDRAC Setting</strong></p>
+<p><img src="dell_r330_idrac_network.jpg" alt="dell_r330_idrac_network"></p>
+<p>▲ 選擇 <strong>Network</strong></p>
+<p><img src="dell_r330_idrac_network_1.jpg" alt="dell_r330_idrac_network_1"></p>
+<p><img src="dell_r330_idrac_network_2.jpg" alt="dell_r330_idrac_network_2"></p>
+<p>▲ <strong>設定 IP</strong></p>
+<p><img src="dell_r330_idrac_user_config.jpg" alt="dell_r330_idrac_user_config"></p>
+<p>▲ <strong>設定 root 密碼</strong></p>
+<p><img src="dell_r330_idrac_user_config_1.jpg" alt="dell_r330_idrac_user_config_1"></p>
+<hr>
+<h2 id="更新驅動程式-driver">更新驅動程式 Driver</h2>
+<br>
+<p><strong><span style="color:red">2021.01.29 更新: iDrac 務必先行更新! 不然有機率遇到 <a href="https://www.dell.com/community/PowerEdge-Hardware-General/dell-The-system-detected-an-exception-during-the-UEFI-pre-boot/td-p/5125342">UEFI pre-boot</a> 錯誤</strong></span><br>
+<strong><span style="color:red">請依照官方建議的更新順序，避免踩雷!!</span></strong><br>
+<strong><span style="color:red">請依照官方建議的更新順序，避免踩雷!!</span></strong></p>
+<p><strong>建議更新順序</strong></p>
+<blockquote>
+<ol>
+<li>iDRAC (現在都與 Lifecycle Controller 包在一起)</li>
+<li>BIOS</li>
+<li>Diagnostics。  診斷程式</li>
+<li>OS Driver Pack。 OS 驅動程式</li>
+<li>RAID 卡驅動</li>
+<li>NIC</li>
+</ol>
+</blockquote>
+<p><a href="https://downloads.dell.com/solutions/general-solution-resources/White%20Papers/Recommended%20Workflow%20for%20Performing%20Firmware%20Updates%20on%20PowerEdge%20Servers.pdf">iDRAC and Lifecycle Controller-A Recommended Workflow for Performing Firmware Updates on PowerEdge Servers</a></p>
+<p><strong><span style="color:red">請依照官方建議的更新順序，避免踩雷!!</span></strong><br>
+<strong><span style="color:red">請依照官方建議的更新順序，避免踩雷!!</span></strong></p>
+<p><img src="idrac_update_and_rollback_page.jpg" alt="idrac_update_and_rollback_page"></p>
+<p>▲ 登入 iDRAC，<strong>iDRAC Setting &gt; Update and Rollback</strong>，上傳更新檔案</p>
+<p><img src="idrac_select_file_and_update.jpg" alt="idrac_select_file_and_update"></p>
+<p><img src="idrac_after_update.jpg" alt="idrac_after_update"></p>
+<p><img src="idrac_driver_updating.jpg" alt="idrac_driver_updating"></p>
+<p>▲ 更新中</p>
+<hr>
+<h2 id="raid-控制器">RAID 控制器</h2>
+<p><img src="dell_r330_device_setting.jpg" alt="dell_r330_device_setting"></p>
+<p>▲ 進入 <strong>Device Settings</strong></p>
+<p><img src="dell_r330_raid_card_0.jpg" alt="dell_r330_raid_card_0"></p>
+<p>▲ 選擇 <strong>RAID Controller</strong> 也就是 RAID 控制器</p>
+<p><img src="dell_r330_raid_card_1.jpg" alt="dell_r330_raid_card_1"></p>
+<p>▲ <strong>Configuration Management</strong></p>
+<p><img src="dell_r330_raid_card_2.jpg" alt="dell_r330_raid_card_2"></p>
+<p>▲ <strong>Clear Configuration</strong> 清除硬碟上的 RAID 設定檔</p>
+<p><img src="dell_r330_raid_card_3.jpg" alt="dell_r330_raid_card_3"></p>
+<p><img src="dell_r330_raid_card_4.jpg" alt="dell_r330_raid_card_4"></p>
+<p>▲ <strong>轉換成 RAID 可用，會將存在硬碟上的 DATA 清除!!</strong></p>
+<p><img src="dell_r330_raid_card_5.jpg" alt="dell_r330_raid_card_5"></p>
+<p><img src="dell_r330_raid_card_6.jpg" alt="dell_r330_raid_card_6"></p>
+<p><img src="dell_r330_raid_card_7.jpg" alt="dell_r330_raid_card_7"></p>
+<p>▲ 完成之後重新進入會多出 <strong>Virtual Disk</strong> 的選項</p>
+<p><img src="dell_r330_raid_card_8.jpg" alt="dell_r330_raid_card_8"></p>
+<p><img src="dell_r330_raid_card_9.jpg" alt="dell_r330_raid_card_9"></p>
+<p>▲ <strong>設定 RAID</strong></p>
+<p><img src="dell_r330_raid_card_10.jpg" alt="dell_r330_raid_card_10"></p>
+<p>▲ <strong>Select Physical Disks</strong></p>
+<p><img src="dell_r330_raid_card_11.jpg" alt="dell_r330_raid_card_11"></p>
+<p>▲ 最後按下 Create Virtual Disk</p>
+<p><img src="dell_r330_raid_card_12.jpg" alt="dell_r330_raid_card_12"></p>
+<p><img src="dell_r330_raid_card_13.jpg" alt="dell_r330_raid_card_13"></p>
+<p>▲ 完成</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2020-11-19
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/dell/">dell</a>
+          <a href="/tags/server/">server</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/20210128-ansible-hello-world/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">我的第一支 Ansible。 Ansible Hello World</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/20201112-forti-split-tunneling/">
+            <span class="next-text nav-default">Forti Client SSL-VPN 運作機制原理</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.64437849d125a2d603b3e71d6de5225d641a32d17168a58106e0b61852079683.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

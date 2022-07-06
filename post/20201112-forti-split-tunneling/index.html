@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Forti Client SSL-VPN 運作機制原理 - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="到職以來一直有一個很大的困惑:大家上班都撥 VPN 到 CVT，CVT 流量不會爆炸嗎? 之後又得知 CVT 只拉了一條 30M 的線路&amp;hellip; 那豈不是 10 個人同時" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.98.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20201112-forti-split-tunneling/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Forti Client SSL-VPN 運作機制原理" />
+<meta property="og:description" content="到職以來一直有一個很大的困惑:大家上班都撥 VPN 到 CVT，CVT 流量不會爆炸嗎? 之後又得知 CVT 只拉了一條 30M 的線路&hellip; 那豈不是 10 個人同時" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.xxzk.me/post/20201112-forti-split-tunneling/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2020-11-12T17:34:41+00:00" />
+<meta property="article:modified_time" content="2020-11-12T17:34:41+00:00" />
+
+<meta itemprop="name" content="Forti Client SSL-VPN 運作機制原理">
+<meta itemprop="description" content="到職以來一直有一個很大的困惑:大家上班都撥 VPN 到 CVT，CVT 流量不會爆炸嗎? 之後又得知 CVT 只拉了一條 30M 的線路&hellip; 那豈不是 10 個人同時"><meta itemprop="datePublished" content="2020-11-12T17:34:41+00:00" />
+<meta itemprop="dateModified" content="2020-11-12T17:34:41+00:00" />
+<meta itemprop="wordCount" content="843">
+<meta itemprop="keywords" content="forti,vpn," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Forti Client SSL-VPN 運作機制原理"/>
+<meta name="twitter:description" content="到職以來一直有一個很大的困惑:大家上班都撥 VPN 到 CVT，CVT 流量不會爆炸嗎? 之後又得知 CVT 只拉了一條 30M 的線路&hellip; 那豈不是 10 個人同時"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Forti Client SSL-VPN 運作機制原理</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-11-12 </span>
+        <div class="post-category">
+            <a href="/categories/forti/"> forti </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#full-tunneling">Full Tunneling</a></li>
+        <li><a href="#split-tunneling">Split Tunneling</a></li>
+        <li><a href="#實際結果">實際結果</a></li>
+        <li><a href="#參考資料">參考資料</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p><img src="pexels-kehn-hermano-3881034.jpg" alt="pexels-kehn-hermano-3881034"></p>
+<br>
+<p><strong>到職以來一直有一個很大的困惑:大家上班都撥 VPN 到 CVT，CVT 流量不會爆炸嗎?</strong><br>
+<strong>之後又得知 CVT 只拉了一條 30M 的線路&hellip; 那豈不是 10 個人同時撥放 Youtube 影片頻寬就被吃滿了 OAO</strong></p>
+<br>
+<p><strong>剛好這次要將 DC2 的 vCenter 做升級，需要上傳 <code>.iso</code>。以往都撥 Fortinet 提供的 SSL-VPN 到 CVT</strong><br>
+<strong>整個封包轉送的過程 21208 Office &gt; = SSL VPN = &gt; CVT &gt; == IPsec VPN == &gt; DC2</strong><br>
+<strong>網路速度瓶頸就會受限於 CVT 的 30M 線路，於是跟網路組拿了一組直通 DC2 的 VPN 連線資訊</strong><br>
+<strong>在問題查找的過程中順便解答到職以來的困惑</strong></p>
+<hr>
+<p>一直以來都把 VPN (正確來說應該是 Tunneling Protocol) 視為 OSI 模組底層協議，例如: L2TP/IPsec<br>
+啟用後， host 上的所有的流量都會進入隧道並且從隧道的另一端，也就是 VPN Server 所在的地方出來<br>
+會有這種錯覺不外乎日常使用的 VPN 都是這種模式 (Full tunneling)，舉幾個例子:</p>
+<ol>
+<li>ADGuard License 在俄羅斯地區用盧比買便宜許多。 BTW，後來放棄 ADGuard 轉用 Open Source 的 Blokada</li>
+<li>Google Play , Netflix , AppleID 突破地區限制存取服務，當連上 VPN 後整隻手機的網路變得極慢。使用 <code>myip.com.tw</code> 查看 Public IP 也會是 VPN 選擇的那個國家</li>
+</ol>
+<br>
+<p><strong>直到這次發現原來 Tunneling 隧道有分為 (1) Full Tunneling   (2) Split Tunneling</strong></p>
+<h2 id="full-tunneling">Full Tunneling</h2>
+<br>
+<p><img src="full_tunneling_fortinet.png" alt="full_tunneling_fortinet"></p>
+<br>
+<p>如上網路拓譜圖，VPN server 接管所有來自 user side 的流量。當 VPN server 收到不是屬於自己 Network 的封包時會將封包丟到 Default Gateway (通常都是 ISP) 進入 Internet (<strong>註:也可能 VPN Server 上有設定政策路由丟棄該封包</strong>)</p>
+<br>
+<p>優點:</p>
+<ol>
+<li>能夠保護 user device 上所有的流量安全。市面上宣稱能夠保護資料安全的 VPN 都是 Full Tunneling。例如使用者連入咖啡廳提供的 Wi-Fi 辦公<br>
+如果流量又未經加密很容易讓在區網的其他使用者攔截封包，竊取封包當中的明文帳號密碼。但即使封包有加密 (例:HTTPS) 有心人士也能得知該使用者去了哪些網站 (IP Address)</li>
+</ol>
+<p>缺點:</p>
+<ol>
+<li>裝置上的<strong>所有</strong>流量都經過隧道，server side 面對網路頻寬吃緊的情況</li>
+</ol>
+<hr>
+<h2 id="split-tunneling">Split Tunneling</h2>
+<br>
+<p><img src="split_tunneling.png" alt="split_tunneling"></p>
+<br>
+<p>網路拓譜圖可以看到 user side 不再只有 VPN Tunnel 可以走，多了一條原本的路可以選擇。<br>
+<strong>這就是 Split Tunneling</strong> 在 Fortinet 中文翻譯是 「切分通道」<br>
+Server side 不再接收所有來自使用者裝置的流量，限制隧道只能通過 VPN Server 設定的 Destination IP</p>
+<p>優點:</p>
+<ol>
+<li>VPN Server 網路負荷小，使用者也不會因為連上 VPN 後造成其他服務連線速度龜速</li>
+</ol>
+<hr>
+<h2 id="實際結果">實際結果</h2>
+<br>
+<p>在 Windows 環境中執行 <code>route print</code> 可以看到多了一個 <code>95</code> 段的路由</p>
+<br>
+<p><img src="route_print_direct_dc2.jpg" alt="route_print_direct_dc2"></p>
+<br>
+<p>經由這張虛擬網卡出去</p>
+<br>
+<p><img src="route_print_direct_dc2_ipconfig.jpg" alt="route_print_direct_dc2_ipconfig"></p>
+<br>
+<p><img src="forti_split_tunnel_config.png" alt="forti_split_tunnel_config"></p>
+<p>▲ Fortinet 上的設定</p>
+<br>
+<hr>
+<h2 id="參考資料">參考資料</h2>
+<p><a href="https://docs.fortinet.com/document/fortigate/6.2.0/cookbook/954097/ssl-vpn-tunnel-mode">Fortinet Document Library- SSL VPN tunnel mode</a></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2020-11-12
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/forti/">forti</a>
+          <a href="/tags/vpn/">vpn</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/20210223-hide-apache-php-openssl-nginx-version/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">隱藏 Apache、PHP、OpenSSL、Nginx 版本號</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/20200929-intro-hinet-gpon-modem-to-otl/">
+            <span class="next-text nav-default">數據機到機房 淺談 GPON 以 HiNet FTTH 為例</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.64437849d125a2d603b3e71d6de5225d641a32d17168a58106e0b61852079683.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

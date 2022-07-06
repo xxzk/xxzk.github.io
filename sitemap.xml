@@ -415,6 +415,34 @@
   </url>
   
   <url>
+    <loc>https://blog.xxzk.me/tags/forti/</loc>
+    <lastmod>2020-11-12T17:34:41+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/categories/forti/</loc>
+    <lastmod>2020-11-12T17:34:41+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/post/20201112-forti-split-tunneling/</loc>
+    <lastmod>2020-11-12T17:34:41+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/tags/vpn/</loc>
+    <lastmod>2020-11-12T17:34:41+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.xxzk.me/tags/ftth/</loc>
     <lastmod>2020-09-29T11:37:08+00:00</lastmod>
     <changefreq>weekly</changefreq>

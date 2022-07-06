@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>我的第一支 Ansible。 Ansible Hello World - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="![ansible_hello_world_logo] 簡介 Ansible 是一種開源配置工具，Linux 系統管理員使用的自動化工具。 Ansible 能讓系統管理員從一個控制節點（即 Ansible 服務器）管理數百台服務器。 Ansible 不需要任何" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.98.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20210128-ansible-hello-world/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="我的第一支 Ansible。 Ansible Hello World" />
+<meta property="og:description" content="![ansible_hello_world_logo] 簡介 Ansible 是一種開源配置工具，Linux 系統管理員使用的自動化工具。 Ansible 能讓系統管理員從一個控制節點（即 Ansible 服務器）管理數百台服務器。 Ansible 不需要任何" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.xxzk.me/post/20210128-ansible-hello-world/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-01-28T16:44:50+00:00" />
+<meta property="article:modified_time" content="2021-01-28T16:44:50+00:00" />
+
+<meta itemprop="name" content="我的第一支 Ansible。 Ansible Hello World">
+<meta itemprop="description" content="![ansible_hello_world_logo] 簡介 Ansible 是一種開源配置工具，Linux 系統管理員使用的自動化工具。 Ansible 能讓系統管理員從一個控制節點（即 Ansible 服務器）管理數百台服務器。 Ansible 不需要任何"><meta itemprop="datePublished" content="2021-01-28T16:44:50+00:00" />
+<meta itemprop="dateModified" content="2021-01-28T16:44:50+00:00" />
+<meta itemprop="wordCount" content="846">
+<meta itemprop="keywords" content="ansible," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="我的第一支 Ansible。 Ansible Hello World"/>
+<meta name="twitter:description" content="![ansible_hello_world_logo] 簡介 Ansible 是一種開源配置工具，Linux 系統管理員使用的自動化工具。 Ansible 能讓系統管理員從一個控制節點（即 Ansible 服務器）管理數百台服務器。 Ansible 不需要任何"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">我的第一支 Ansible。 Ansible Hello World</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-01-28 </span>
+        <div class="post-category">
+            <a href="/categories/ansible/"> ansible </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#簡介">簡介</a></li>
+        <li><a href="#iventory-file-hostfile">Iventory File (hostfile)</a></li>
+        <li><a href="#我的-inventory">我的 Inventory</a>
+          <ul>
+            <li><a href="#查看-hosts-list">查看 hosts list</a></li>
+            <li><a href="#常用變數">常用變數</a></li>
+          </ul>
+        </li>
+        <li><a href="#我的-ansiblecfg">我的 ansible.cfg</a></li>
+        <li><a href="#demo">Demo</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>![ansible_hello_world_logo]</p>
+<br>
+<h2 id="簡介">簡介</h2>
+<br>
+<p><strong>Ansible 是一種開源配置工具，Linux 系統管理員使用的自動化工具。</strong><br>
+<strong>Ansible 能讓系統管理員從一個控制節點（即 Ansible 服務器）管理數百台服務器。</strong><br>
+<strong>Ansible 不需要任何代理，並且可以在 SSH 和 python 上工作。</strong></p>
+<p>註: 不需要代理的意思是目標主機並不需要安裝 Agent。<br>
+簡介出自<a href="https://dywang.csie.cyut.edu.tw/dywang/ansible/node17.html">朝陽資工系-王德譽老師#Ansible 前言</a><br>
+<del>朝陽資訊學院兩尊神都提供 「終生保固」 讚讚 XD</del></p>
+<p>此篇會記錄我的第一支 Ansible 腳本配置~</p>
+<br>
+<hr>
+<h2 id="iventory-file-hostfile">Iventory File (hostfile)</h2>
+<br>
+<p>這個檔案內主要記錄主機 列表/群組。範例可以參考:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">less /etc/ansible/hosts
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a href="https://dywang.csie.cyut.edu.tw/dywang/ansible/node24.html">Inventory 基本設定</a></p>
+<h2 id="我的-inventory">我的 Inventory</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">[netbox]
+</span></span><span class="line"><span class="cl">Eric_NetBox_207 ansible_ssh_host=192.168.207.77
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">[ALL_207]
+</span></span><span class="line"><span class="cl">192.168.207.[1:253]
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>其中 <span style="color:blue"><strong>netbox</strong></span> 與 <span style="color:blue"><strong>ALL_207</strong></span> 是 <span style="color:red"><strong>群組名稱 Group Name</strong></span></p>
+<p>在 netbox 群組用了一個<a href="https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html#inventory-aliases">主機別名 (Host alias)</a><br>
+ALL_207 群組用了 <strong>range of hosts</strong> <a href="https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html#adding-ranges-of-hosts">Adding ranges of hosts</a></p>
+<p>我使用的 <strong>inventory file format</strong> 屬於 INI。 Ansible 亦支援 <strong>YAML</strong> format<br>
+YAML format example:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">all</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">hosts</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">mail.example.com</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">children</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">webservers</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">hosts</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">foo.example.com</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">bar.example.com</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">dbservers</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">hosts</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">one.example.com</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">two.example.com</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">three.example.com</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">east</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">hosts</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">foo.example.com</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">one.example.com</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">two.example.com</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">west</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">hosts</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">bar.example.com</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">three.example.com</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">prod</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">hosts</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">foo.example.com</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">one.example.com</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">two.example.com</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">test</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">hosts</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">bar.example.com</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">three.example.com</span><span class="p">:</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="查看-hosts-list">查看 hosts list</h3>
+<p><strong>查看全部</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ansible all -i inventory  --list-hosts
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>以我的 iventory file 來說，輸出結果就會是:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">  hosts (254):
+</span></span><span class="line"><span class="cl">    Eric_NetBox_207
+</span></span><span class="line"><span class="cl">    192.168.207.1
+</span></span><span class="line"><span class="cl">    192.168.207.2
+</span></span><span class="line"><span class="cl">    192.168.207.3
+</span></span><span class="line"><span class="cl">    ...
+</span></span><span class="line"><span class="cl">    192.168.207.253
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="常用變數">常用變數</h3>
+<br>
+<p><a href="https://dywang.csie.cyut.edu.tw/dywang/ansible/node25.html">Inventory 變數說明</a></p>
+<blockquote>
+<p>ansible_ssh_host: 主機 IP / Domain name<br>
+ansible_ssh_port: 如果不是預設 SSH Port 22 的話，在這邊指定<br>
+ansible_ssh_user: 使用 SSH 登入使用者，預設 root<br>
+ansible_ssh_pass: SSH 明文密碼。 <span style="color:red"><strong>不推薦使用 註1</strong></span><br>
+ansible_sudo_pass: SSH sudo 明文密碼。 <span style="color:red"><strong>不推薦使用 註2</strong></span></p>
+</blockquote>
+<p><strong>註1.</strong> 推薦使用 <code>--ask-pass</code><br>
+<strong>註2.</strong> 推薦使用 <code>--ask-sudo-pass</code></p>
+<br>
+<hr>
+<h2 id="我的-ansiblecfg">我的 ansible.cfg</h2>
+<br>
+<p><a href="https://dywang.csie.cyut.edu.tw/dywang/ansible/node31.html">ansible.cfg 範例</a></p>
+<br>
+<blockquote>
+<p>Ansible 支援多種來源設定組態 (Configuration)，包含名為 ansible.cfg 的 ini 、環境變數、命令選項、playbook 關鍵字、變數等。<br>
+ansible.cfg 讓使用者看到所有可用的組態設定、其預設值、如何設定等。<br>
+因有多種組態設定來源，可能不一致，Ansible 以下列順序搜尋，先找到後其他就忽略。\</p>
+<ol>
+<li>環境變數 ANSIBLE_CONFIG</li>
+<li>現在工作目錄下的 ansible.cfg</li>
+<li>使用家目錄下的 ~/.ansible.cfg</li>
+<li>系統 /etc 目錄下的 /etc/ansible/ansible.cfg</li>
+</ol>
+</blockquote>
+<br>
+<p>ansible.cfg Example</p>
+<p><strong>類別</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat /etc/ansible/ansible.cfg <span class="p">|</span> egrep -v <span class="s1">&#39;^(#|$)&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Tips: <code>-v</code> 代表反轉</p>
+<p><strong>查看類別下細項</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat /etc/ansible/ansible.cfg <span class="p">|</span> grep <span class="s1">&#39;^\[defaults&#39;</span> -A60 <span class="p">|</span> egrep <span class="s1">&#39;^(\[|#[a-z])&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p><strong>我的 ansible.cfg</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">[defaults]
+</span></span><span class="line"><span class="cl">host_key_checking = false
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>加上 <span style="color:red">host_key_checking = false</span> 略過檢查 SSH fingerprint<br>
+<a href="https://stackoverflow.com/questions/42462435/ansible-provisioning-error-using-a-ssh-password-instead-of-a-key-is-not-possibl#comment115528938_42463375">Ansible provisioning ERROR! Using a SSH password instead of a key is not possible</a></p>
+<br>
+<hr>
+<h2 id="demo">Demo</h2>
+<br>
+<p>這次 Demo 示範的是屬於 Ansible &ldquo;Ad-hoc&rdquo; command.</p>
+<blockquote>
+<p>Ad hoc 是一個拉丁文常用短語。這個短語的意思是「特設的、特定目的的、即席的、臨時的、將就的、專案的」。</p>
+</blockquote>
+<p>整個 command 結構大概會長這樣:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ ansible <span class="o">[</span>pattern<span class="o">]</span> -m <span class="o">[</span>module<span class="o">]</span> -a <span class="s2">&#34;[module options]&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>【包含了許多範例】<a href="https://docs.ansible.com/ansible/latest/user_guide/intro_adhoc.html">Introduction to ad-hoc commands</a></p>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ansible ALL_207  -i inventory  -m shell -a <span class="s2">&#34;ls -al /root&#34;</span> --ask-pass
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>嫌太慢嗎 ?</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ansible ALL_207  -i inventory  -m shell -a <span class="s2">&#34;ls -al /root&#34;</span> --ask-pass -f <span class="m">100</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>-f --forks</code> 代表 Ansible 會同時使用 N 個 processes 去執行。預設 5 個</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2021-01-28
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/ansible/">ansible</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/20210223-hide-apache-php-openssl-nginx-version/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">隱藏 Apache、PHP、OpenSSL、Nginx 版本號</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/20201112-forti-split-tunneling/">
+            <span class="next-text nav-default">Forti Client SSL-VPN 運作機制原理</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.64437849d125a2d603b3e71d6de5225d641a32d17168a58106e0b61852079683.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ansible on 老柯的學習筆記</title>
+    <link>https://blog.xxzk.me/categories/ansible/</link>
+    <description>Recent content in ansible on 老柯的學習筆記</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 28 Jan 2021 16:44:50 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/categories/ansible/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>我的第一支 Ansible。 Ansible Hello World</title>
+      <link>https://blog.xxzk.me/post/20210128-ansible-hello-world/</link>
+      <pubDate>Thu, 28 Jan 2021 16:44:50 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20210128-ansible-hello-world/</guid>
+      <description>![ansible_hello_world_logo] 簡介 Ansible 是一種開源配置工具，Linux 系統管理員使用的自動化工具。 Ansible 能讓系統管理員從一個控制節點（即 Ansible 服務器）管理數百台服務器。 Ansible 不需要任何</description>
+    </item>
+    
+  </channel>
+</rss>

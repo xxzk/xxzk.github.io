@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Kubernetes on 老柯的學習筆記</title>
+    <title>kubernetes on 老柯的學習筆記</title>
     <link>https://blog.xxzk.me/tags/kubernetes/</link>
-    <description>Recent content in Kubernetes on 老柯的學習筆記</description>
+    <description>Recent content in kubernetes on 老柯的學習筆記</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Mon, 04 Jul 2022 13:58:19 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/tags/kubernetes/index.xml" rel="self" type="application/rss+xml" />
@@ -140,6 +140,15 @@
       
       <guid>https://blog.xxzk.me/post/20210727-ckad-note-section-1-introduction/</guid>
       <description>Kubernetes Series 作者的系列課程總共有三個，分別適合不同職位的三種人。 Absolute Beginners (零經驗初學者，帶你從 container 開始) sysAdmin (想要通過 CKAD) Application Developer (程式開發人員) Certification Details 這邊告知 CKAD 考</description>
+    </item>
+    
+    <item>
+      <title>minikube 安裝指南。 一個精簡、測試環境使用的 k8s 叢集</title>
+      <link>https://blog.xxzk.me/post/20210617-minikube-installation/</link>
+      <pubDate>Thu, 17 Jun 2021 09:29:55 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20210617-minikube-installation/</guid>
+      <description>minikube 能夠快速在本地 (local) 建立 kubernetes cluster (k8s 叢集)，支援 macOS, Linux, Windows 非常適合新手探索 kubernetes 安裝需求 pre-requirement minikube-Driver ▲ 官方有列出各類型 OS 建議搭建在何種虛擬環境上。本篇筆記選用 CentOS 7.9.2009 +</description>
     </item>
     
   </channel>

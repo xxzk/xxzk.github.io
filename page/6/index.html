@@ -122,106 +122,21 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/20210617-minikube-installation/">minikube 安裝指南。 一個精簡、測試環境使用的 k8s 叢集</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/20200924-graylog-installation-use-centos77/">Gralylog 安裝紀錄 (使用 Default CentOS 7.7)</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2021-06-17 </span>
+      <span class="post-time"> 2020-09-24 </span>
       <div class="post-category">
-          <a href="/categories/kubernetes/"> kubernetes </a>
+          <a href="/categories//">  </a>
           </div>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      minikube 能夠快速在本地 (local) 建立 kubernetes cluster (k8s 叢集)，支援 macOS, Linux, Windows 非常適合新手探索 kubernetes 安裝需求 pre-requirement minikube-Driver ▲ 官方有列出各類型 OS 建議搭建在何種虛擬環境上。本篇筆記選用 CentOS 7.9.2009 +
+      本篇參考資料 How to install and configure Graylog on CentOS 7 執行系統更新 1 yum update -y 安裝 EPEL 1 yum install epel-release -y 安裝所需項目，其中 pwgen 套件是等等要用來產生 graylog server 設定檔的密鑰 1 yum install pwgen vim -y 安裝 java
     </div>
     <div class="read-more">
-      <a href="/post/20210617-minikube-installation/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/20210608-intro_docker_image/">Docker Image 介紹</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2021-06-08 </span>
-      <div class="post-category">
-          <a href="/categories/docker/"> docker </a>
-          </div>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      圖片來源 此篇筆記主要參考 Docker 官方文件 About storage drivers 主要記錄自己找到的資料，所以不是很有系統性的教學。不過文內有附上邱宏瑋 (hwchiu) 鐵人賽系列文章，需要完整學習
-    </div>
-    <div class="read-more">
-      <a href="/post/20210608-intro_docker_image/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/20210513-intro_docker_volume/">Docker Volumes 介紹</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2021-05-13 </span>
-      <div class="post-category">
-          <a href="/categories/docker/"> docker </a>
-          </div>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      Docker docs Use volumes 前言 Docker Volume 是一個比較好的機制將 Docker Container 產生的資料永久保存 有稍微摸索過 Docker 的人可能會有點疑惑: 不是可以透過 -v /home/xzk:/mydata 把 host OS 上面的目錄映射進去 container 裡面嗎
-    </div>
-    <div class="read-more">
-      <a href="/post/20210513-intro_docker_volume/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/20210223-hide-apache-php-openssl-nginx-version/">隱藏 Apache、PHP、OpenSSL、Nginx 版本號</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2021-02-23 </span>
-      <div class="post-category">
-          <a href="/categories/apache/"> apache </a>
-          <a href="/categories/nginx/"> nginx </a>
-          </div>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      此篇筆記記錄如何隱藏客戶端看到 Web Server 使用的版本號 判斷標準是用最無腦的 Browser Plug-in 當作依據，推薦使用 Wappalyzer 如果透過 CloudFlare 訪問這些敏感資訊都會被過濾掉;直接使用 IP
-    </div>
-    <div class="read-more">
-      <a href="/post/20210223-hide-apache-php-openssl-nginx-version/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/20200929-intro-hinet-gpon-modem-to-otl/">數據機到機房 淺談 GPON 以 HiNet FTTH 為例</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2020-09-29 </span>
-      <div class="post-category">
-          <a href="/categories/hinet/"> hinet </a>
-          </div>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      圖片來源 Spectra TEch 在開始之前先大致介紹一下台灣目前光纖網路接取技術使採用 GPON (Gigabit Passive Optical Network) 千兆級無源光網路，簡單架構如上圖 不知道大家有沒有曾經好奇過從數據
-    </div>
-    <div class="read-more">
-      <a href="/post/20200929-intro-hinet-gpon-modem-to-otl/" class="read-more-link">Read more...</a>
+      <a href="/post/20200924-graylog-installation-use-centos77/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>
@@ -229,14 +144,11 @@
     </section>
   
   <nav class="pagination">
-    <a class="prev" href="/page/4/">
+    <a class="prev" href="/page/5/">
         <i class="iconfont icon-left"></i>
         <span class="prev-text">Prev</span>
       </a>
-    <a class="next" href="/page/6/">
-        <span class="next-text">Next</span>
-        <i class="iconfont icon-right"></i>
-      </a>
+    
   </nav>
         </div>
         

@@ -188,6 +188,15 @@
     </item>
     
     <item>
+      <title>minikube 安裝指南。 一個精簡、測試環境使用的 k8s 叢集</title>
+      <link>https://blog.xxzk.me/post/20210617-minikube-installation/</link>
+      <pubDate>Thu, 17 Jun 2021 09:29:55 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20210617-minikube-installation/</guid>
+      <description>minikube 能夠快速在本地 (local) 建立 kubernetes cluster (k8s 叢集)，支援 macOS, Linux, Windows 非常適合新手探索 kubernetes 安裝需求 pre-requirement minikube-Driver ▲ 官方有列出各類型 OS 建議搭建在何種虛擬環境上。本篇筆記選用 CentOS 7.9.2009 +</description>
+    </item>
+    
+    <item>
       <title>Docker Image 介紹</title>
       <link>https://blog.xxzk.me/post/20210608-intro_docker_image/</link>
       <pubDate>Tue, 08 Jun 2021 15:54:10 +0000</pubDate>

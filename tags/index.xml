@@ -17,7 +17,7 @@
     </item>
     
     <item>
-      <title>Kubernetes</title>
+      <title>kubernetes</title>
       <link>https://blog.xxzk.me/tags/kubernetes/</link>
       <pubDate>Mon, 04 Jul 2022 13:58:19 +0000</pubDate>
       
@@ -94,6 +94,15 @@
       <pubDate>Tue, 29 Jun 2021 17:33:04 +0000</pubDate>
       
       <guid>https://blog.xxzk.me/tags/prometheus/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>minikube</title>
+      <link>https://blog.xxzk.me/tags/minikube/</link>
+      <pubDate>Thu, 17 Jun 2021 09:29:55 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/tags/minikube/</guid>
       <description></description>
     </item>
     

@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Docker 容器與容器的連結。Grafana &#43; Prometheus &#43; Blackbox_expoter - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="此篇筆記紀錄如何使用 docker run --link ... 讓容器與容器之間連結。順便給 Upton 參考監控 LAB 要怎麼出~ Blackbox_expoter 1 docker run -itd --name blackbox_expoter -p 9115:9115 -v /root/yml/blackbox_expoter/:/config --restart always prom/blackbox-exporter:master --config.file=/config/blackbox.yml blackbox.yml 更多範例 可以從 blackbox_expoter/example.yml 尋找。 關於設定" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.98.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20210629-docker-container-link/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Docker 容器與容器的連結。Grafana &#43; Prometheus &#43; Blackbox_expoter" />
+<meta property="og:description" content="此篇筆記紀錄如何使用 docker run --link ... 讓容器與容器之間連結。順便給 Upton 參考監控 LAB 要怎麼出~ Blackbox_expoter 1 docker run -itd --name blackbox_expoter -p 9115:9115 -v /root/yml/blackbox_expoter/:/config --restart always prom/blackbox-exporter:master --config.file=/config/blackbox.yml blackbox.yml 更多範例 可以從 blackbox_expoter/example.yml 尋找。 關於設定" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.xxzk.me/post/20210629-docker-container-link/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-06-29T17:33:04+00:00" />
+<meta property="article:modified_time" content="2021-06-29T17:33:04+00:00" />
+
+<meta itemprop="name" content="Docker 容器與容器的連結。Grafana &#43; Prometheus &#43; Blackbox_expoter">
+<meta itemprop="description" content="此篇筆記紀錄如何使用 docker run --link ... 讓容器與容器之間連結。順便給 Upton 參考監控 LAB 要怎麼出~ Blackbox_expoter 1 docker run -itd --name blackbox_expoter -p 9115:9115 -v /root/yml/blackbox_expoter/:/config --restart always prom/blackbox-exporter:master --config.file=/config/blackbox.yml blackbox.yml 更多範例 可以從 blackbox_expoter/example.yml 尋找。 關於設定"><meta itemprop="datePublished" content="2021-06-29T17:33:04+00:00" />
+<meta itemprop="dateModified" content="2021-06-29T17:33:04+00:00" />
+<meta itemprop="wordCount" content="502">
+<meta itemprop="keywords" content="grafana,prometheus,docker," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Docker 容器與容器的連結。Grafana &#43; Prometheus &#43; Blackbox_expoter"/>
+<meta name="twitter:description" content="此篇筆記紀錄如何使用 docker run --link ... 讓容器與容器之間連結。順便給 Upton 參考監控 LAB 要怎麼出~ Blackbox_expoter 1 docker run -itd --name blackbox_expoter -p 9115:9115 -v /root/yml/blackbox_expoter/:/config --restart always prom/blackbox-exporter:master --config.file=/config/blackbox.yml blackbox.yml 更多範例 可以從 blackbox_expoter/example.yml 尋找。 關於設定"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Docker 容器與容器的連結。Grafana &#43; Prometheus &#43; Blackbox_expoter</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-06-29 </span>
+        <div class="post-category">
+            <a href="/categories/docker/"> docker </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#blackbox_expoter">Blackbox_expoter</a>
+          <ul>
+            <li><a href="#blackboxyml">blackbox.yml</a></li>
+            <li><a href="#reload-blackbox-config">reload blackbox config</a></li>
+          </ul>
+        </li>
+        <li><a href="#prometheus">Prometheus</a></li>
+        <li><a href="#grafana">Grafana</a>
+          <ul>
+            <li><a href="#grafana-dashboard">Grafana Dashboard</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p><strong>此篇筆記紀錄如何使用 <code>docker run --link ...</code> 讓容器與容器之間連結。順便給 Upton 參考監控 LAB 要怎麼出~</strong></p>
+<hr>
+<h2 id="blackbox_expoter">Blackbox_expoter</h2>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker run -itd --name blackbox_expoter -p 9115:9115 -v /root/yml/blackbox_expoter/:/config --restart always prom/blackbox-exporter:master --config.file<span class="o">=</span>/config/blackbox.yml
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<h3 id="blackboxyml">blackbox.yml</h3>
+<p><strong>更多範例</strong> 可以從 <a href="https://github.com/prometheus/blackbox_exporter/blob/master/example.yml">blackbox_expoter/example.yml</a> 尋找。<br>
+關於設定檔 <strong>Document</strong> 這邊請  <a href="https://github.com/prometheus/blackbox_exporter/blob/master/CONFIGURATION.md">blackbox_exporter/CONFIGURATION.md </a>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yml" data-lang="yml"><span class="line"><span class="cl"><span class="nt">modules</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">icmp</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">prober</span><span class="p">:</span><span class="w"> </span><span class="l">icmp</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l">5s</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">icmp</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">preferred_ip_protocol</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;ipv4&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">http_2xx</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">prober</span><span class="p">:</span><span class="w"> </span><span class="l">http</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l">5s</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">http</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">method</span><span class="p">:</span><span class="w"> </span><span class="l">GET</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">preferred_ip_protocol</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;ip4&#34;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong><span style='color:red'>因為公司環境並沒有使用 <code>IPv6</code> 因此要另外加上 <code>preferred_ip_protocol: &quot;ip4&quot;</code> 不然預設值都是使用 <code>IPv6</code></span></strong></p>
+<br>
+<h3 id="reload-blackbox-config">reload blackbox config</h3>
+<p>Blackbox 可以支援在運作時 <strong>reload</strong> 設定檔。 <strong><span style='color:red'>如果新的設定檔是不符合規範 (well-formed) 的，那將不會替換。</span></strong></p>
+<blockquote>
+<p>If the new configuration is not well-formed, the changes will not be applied</p>
+</blockquote>
+<p>除了傳送 <code>SIGHUP</code> 訊息能夠使 blackbox reload config 之外，另外一種方法就是 <span style='color:blue'>傳送 <code>HTTP POST</code> 給它。</span><br>
+使用 <code>curl -v</code> 能夠看到過程詳細資訊 (安心)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl -vX POST http://192.168.207.107:9115/-/reload
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">* About to connect<span class="o">()</span> to 192.168.207.107 port <span class="m">9115</span> <span class="o">(</span><span class="c1">#0)</span>
+</span></span><span class="line"><span class="cl">*   Trying 192.168.207.107...
+</span></span><span class="line"><span class="cl">* Connected to 192.168.207.107 <span class="o">(</span>192.168.207.107<span class="o">)</span> port <span class="m">9115</span> <span class="o">(</span><span class="c1">#0)</span>
+</span></span><span class="line"><span class="cl">&gt; POST /-/reload HTTP/1.1
+</span></span><span class="line"><span class="cl">&gt; User-Agent: curl/7.29.0
+</span></span><span class="line"><span class="cl">&gt; Host: 192.168.207.107:9115
+</span></span><span class="line"><span class="cl">&gt; Accept: */*
+</span></span><span class="line"><span class="cl">&gt; 
+</span></span><span class="line"><span class="cl">&lt; HTTP/1.1 <span class="m">200</span> OK
+</span></span><span class="line"><span class="cl">&lt; Date: Wed, <span class="m">30</span> Jun <span class="m">2021</span> 01:07:14 GMT
+</span></span><span class="line"><span class="cl">&lt; Content-Length: <span class="m">0</span>
+</span></span><span class="line"><span class="cl">&lt; 
+</span></span><span class="line"><span class="cl">* Connection <span class="c1">#0 to host 192.168.207.107 left intact</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<hr>
+<h2 id="prometheus">Prometheus</h2>
+<br>
+<p><a href="https://prometheus.io/docs/prometheus/latest/installation/">Prometheus Installation Document</a></p>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker run -itd --name prometheus -v /root/yml/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml -p 9090:9090 --link blackbox_expoter:blackbox --restart always  prom/prometheus
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>如果要命名 docker volume 的話，映射路徑: <code>-v &lt;named_volume&gt;:/prometheus</code><br>
+參考資料 <a href="https://github.com/prometheus/prometheus/blob/main/Dockerfile">prometheus Dockerfile</a> (從 <code>VOLUME</code> 判斷)</p>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yml" data-lang="yml"><span class="line"><span class="cl"><span class="nt">global</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">scrape_interval</span><span class="p">:</span><span class="w">     </span><span class="l">15s</span><span class="w"> </span><span class="c"># Set the scrape interval to every 15 seconds. Default is every 1 minute.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">evaluation_interval</span><span class="p">:</span><span class="w"> </span><span class="l">15s</span><span class="w"> </span><span class="c"># Evaluate rules every 15 seconds. The default is every 1 minute.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">scrape_configs</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">job_name</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;local_prometheus&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">static_configs</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">targets</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s1">&#39;localhost:9090&#39;</span><span class="p">]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">## local_BlackBox HTTP</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">job_name</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;local_Blackbox_HTTP&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">metrics_path</span><span class="p">:</span><span class="w"> </span><span class="l">/probe</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">params</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">module</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="l">http_2xx]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">static_configs</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">targets</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="l">https://github.com</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="l">http://admin2.cyut.edu.tw/person/rctinfo_qry.php</span><span class="w"> </span><span class="c">## school always a good place to find http without TLS. :)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">relabel_configs</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">source_labels</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="l">__address__]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">target_label</span><span class="p">:</span><span class="w"> </span><span class="l">__param_target</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">source_labels</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="l">__param_target]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">target_label</span><span class="p">:</span><span class="w"> </span><span class="l">instance</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">target_label</span><span class="p">:</span><span class="w"> </span><span class="l">__address__</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">replacement</span><span class="p">:</span><span class="w"> </span><span class="l">blackbox:9115 </span><span class="w"> </span><span class="c"># The blackbox exporter&#39;s real hostname:port.</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p><img src="sucessful_linked_containers.jpg" alt="sucessful_linked_containers"></p>
+<p>▲ 成功達成容器與容器的連結</p>
+<br>
+<hr>
+<h2 id="grafana">Grafana</h2>
+<br>
+<p><a href="https://grafana.com/docs/grafana/latest/installation/docker/">Run Grafana Docker image</a><br>
+<a href="https://grafana.com/docs/grafana/latest/administration/configure-docker/">(相關目錄在這邊) Configure a Grafana Docker image</a></p>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker run -itd --name grafana -v grafana-storage:/var/lib/grafana -p 3000:3000 --link prometheus:prometheus --restart always grafana/grafana
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p><img src="grafana_prometheus_linked.jpg" alt="grafana_prometheus_linked"></p>
+<p>▲ Grafana 成功與 prometheus 連接 (使用 <code>docker run --link ...</code> )</p>
+<br>
+<h3 id="grafana-dashboard">Grafana Dashboard</h3>
+<p><a href="https://grafana.com/grafana/dashboards/2">Prometheus Stats</a></p>
+<p><a href="https://grafana.com/grafana/dashboards/7587">Prometheus Blackbox Exporter by sparanoid</a></p>
+<br>
+<p><img src="blackbox_expoter_dashboard_7587.jpg" alt="blackbox_expoter_dashboard_7587"></p>
+<p>▲ Blackbox_expoter Dashboard</p>
+<br>
+<hr>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2021-06-29
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/grafana/">grafana</a>
+          <a href="/tags/prometheus/">prometheus</a>
+          <a href="/tags/docker/">docker</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/20210727-ckad-note-section-1-introduction/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">CKAD Note Section 1 Introduction</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/20210608-intro_docker_image/">
+            <span class="next-text nav-default">Docker Image 介紹</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.64437849d125a2d603b3e71d6de5225d641a32d17168a58106e0b61852079683.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

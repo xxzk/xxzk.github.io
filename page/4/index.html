@@ -206,9 +206,9 @@
 
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/20210608-intro_docker_image/">Docker Image 介紹</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/20210629-docker-container-link/">Docker 容器與容器的連結。Grafana &#43; Prometheus &#43; Blackbox_expoter</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2021-06-08 </span>
+      <span class="post-time"> 2021-06-29 </span>
       <div class="post-category">
           <a href="/categories/docker/"> docker </a>
           </div>
@@ -217,10 +217,10 @@
   
   <div class="post-content">
     <div class="post-summary">
-      圖片來源 此篇筆記主要參考 Docker 官方文件 About storage drivers 主要記錄自己找到的資料，所以不是很有系統性的教學。不過文內有附上邱宏瑋 (hwchiu) 鐵人賽系列文章，需要完整學習
+      此篇筆記紀錄如何使用 docker run --link ... 讓容器與容器之間連結。順便給 Upton 參考監控 LAB 要怎麼出~ Blackbox_expoter 1 docker run -itd --name blackbox_expoter -p 9115:9115 -v /root/yml/blackbox_expoter/:/config --restart always prom/blackbox-exporter:master --config.file=/config/blackbox.yml blackbox.yml 更多範例 可以從 blackbox_expoter/example.yml 尋找。 關於設定
     </div>
     <div class="read-more">
-      <a href="/post/20210608-intro_docker_image/" class="read-more-link">Read more...</a>
+      <a href="/post/20210629-docker-container-link/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>

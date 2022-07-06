@@ -6,7 +6,16 @@
     <description>Recent content in docker on 老柯的學習筆記</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 08 Jun 2021 15:54:10 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/categories/docker/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 29 Jun 2021 17:33:04 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/categories/docker/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Docker 容器與容器的連結。Grafana &#43; Prometheus &#43; Blackbox_expoter</title>
+      <link>https://blog.xxzk.me/post/20210629-docker-container-link/</link>
+      <pubDate>Tue, 29 Jun 2021 17:33:04 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20210629-docker-container-link/</guid>
+      <description>此篇筆記紀錄如何使用 docker run --link ... 讓容器與容器之間連結。順便給 Upton 參考監控 LAB 要怎麼出~ Blackbox_expoter 1 docker run -itd --name blackbox_expoter -p 9115:9115 -v /root/yml/blackbox_expoter/:/config --restart always prom/blackbox-exporter:master --config.file=/config/blackbox.yml blackbox.yml 更多範例 可以從 blackbox_expoter/example.yml 尋找。 關於設定</description>
+    </item>
+    
     <item>
       <title>Docker Image 介紹</title>
       <link>https://blog.xxzk.me/post/20210608-intro_docker_image/</link>

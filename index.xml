@@ -179,6 +179,15 @@
     </item>
     
     <item>
+      <title>使用 minicom 設定 Dell PS6210 Storage (iSCSI)</title>
+      <link>https://blog.xxzk.me/post/20210723-config-dell-ps6210-storage-using-minicom/</link>
+      <pubDate>Fri, 23 Jul 2021 13:59:15 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20210723-config-dell-ps6210-storage-using-minicom/</guid>
+      <description>本次 192.168.200.x/24 LAB 使用到的 Dell PS6210 本人。 參考資料: EqualLogic PS6210XS 及 CentOS 6.5 MPIO 實作 使用 minicom 連接 serial port 如果作業系統是 Windows 的話可以使用 PuTTY 連接。設定的參數都通用 (baud rate/Data bits/Stop bits/Parity) 使用到的線材:</description>
+    </item>
+    
+    <item>
       <title>Docker 容器與容器的連結。Grafana &#43; Prometheus &#43; Blackbox_expoter</title>
       <link>https://blog.xxzk.me/post/20210629-docker-container-link/</link>
       <pubDate>Tue, 29 Jun 2021 17:33:04 +0000</pubDate>

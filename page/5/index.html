@@ -122,6 +122,27 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/20210629-docker-container-link/">Docker 容器與容器的連結。Grafana &#43; Prometheus &#43; Blackbox_expoter</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2021-06-29 </span>
+      <div class="post-category">
+          <a href="/categories/docker/"> docker </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      此篇筆記紀錄如何使用 docker run --link ... 讓容器與容器之間連結。順便給 Upton 參考監控 LAB 要怎麼出~ Blackbox_expoter 1 docker run -itd --name blackbox_expoter -p 9115:9115 -v /root/yml/blackbox_expoter/:/config --restart always prom/blackbox-exporter:master --config.file=/config/blackbox.yml blackbox.yml 更多範例 可以從 blackbox_expoter/example.yml 尋找。 關於設定
+    </div>
+    <div class="read-more">
+      <a href="/post/20210629-docker-container-link/" class="read-more-link">Read more...</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/20210617-minikube-installation/">minikube 安裝指南。 一個精簡、測試環境使用的 k8s 叢集</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2021-06-17 </span>
@@ -201,27 +222,6 @@
     </div>
     <div class="read-more">
       <a href="/post/20210223-hide-apache-php-openssl-nginx-version/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/20200929-intro-hinet-gpon-modem-to-otl/">數據機到機房 淺談 GPON 以 HiNet FTTH 為例</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2020-09-29 </span>
-      <div class="post-category">
-          <a href="/categories/hinet/"> hinet </a>
-          </div>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      圖片來源 Spectra TEch 在開始之前先大致介紹一下台灣目前光纖網路接取技術使採用 GPON (Gigabit Passive Optical Network) 千兆級無源光網路，簡單架構如上圖 不知道大家有沒有曾經好奇過從數據
-    </div>
-    <div class="read-more">
-      <a href="/post/20200929-intro-hinet-gpon-modem-to-otl/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>

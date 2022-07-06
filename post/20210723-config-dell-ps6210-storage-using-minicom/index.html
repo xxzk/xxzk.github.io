@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>使用 minicom 設定 Dell PS6210 Storage (iSCSI) - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="本次 192.168.200.x/24 LAB 使用到的 Dell PS6210 本人。 參考資料: EqualLogic PS6210XS 及 CentOS 6.5 MPIO 實作 使用 minicom 連接 serial port 如果作業系統是 Windows 的話可以使用 PuTTY 連接。設定的參數都通用 (baud rate/Data bits/Stop bits/Parity) 使用到的線材:" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.98.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20210723-config-dell-ps6210-storage-using-minicom/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="使用 minicom 設定 Dell PS6210 Storage (iSCSI)" />
+<meta property="og:description" content="本次 192.168.200.x/24 LAB 使用到的 Dell PS6210 本人。 參考資料: EqualLogic PS6210XS 及 CentOS 6.5 MPIO 實作 使用 minicom 連接 serial port 如果作業系統是 Windows 的話可以使用 PuTTY 連接。設定的參數都通用 (baud rate/Data bits/Stop bits/Parity) 使用到的線材:" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.xxzk.me/post/20210723-config-dell-ps6210-storage-using-minicom/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-07-23T13:59:15+00:00" />
+<meta property="article:modified_time" content="2021-07-23T13:59:15+00:00" />
+
+<meta itemprop="name" content="使用 minicom 設定 Dell PS6210 Storage (iSCSI)">
+<meta itemprop="description" content="本次 192.168.200.x/24 LAB 使用到的 Dell PS6210 本人。 參考資料: EqualLogic PS6210XS 及 CentOS 6.5 MPIO 實作 使用 minicom 連接 serial port 如果作業系統是 Windows 的話可以使用 PuTTY 連接。設定的參數都通用 (baud rate/Data bits/Stop bits/Parity) 使用到的線材:"><meta itemprop="datePublished" content="2021-07-23T13:59:15+00:00" />
+<meta itemprop="dateModified" content="2021-07-23T13:59:15+00:00" />
+<meta itemprop="wordCount" content="1645">
+<meta itemprop="keywords" content="minicom,iscsi,dell," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="使用 minicom 設定 Dell PS6210 Storage (iSCSI)"/>
+<meta name="twitter:description" content="本次 192.168.200.x/24 LAB 使用到的 Dell PS6210 本人。 參考資料: EqualLogic PS6210XS 及 CentOS 6.5 MPIO 實作 使用 minicom 連接 serial port 如果作業系統是 Windows 的話可以使用 PuTTY 連接。設定的參數都通用 (baud rate/Data bits/Stop bits/Parity) 使用到的線材:"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">使用 minicom 設定 Dell PS6210 Storage (iSCSI)</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-07-23 </span>
+        <div class="post-category">
+            <a href="/categories/dell-ps6210/"> Dell-ps6210 </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#使用-minicom-連接-serial-port">使用 minicom 連接 serial port</a>
+          <ul>
+            <li><a href="#設定-vsphere-passthrough">設定 vSphere passthrough</a></li>
+            <li><a href="#安裝-minicom">安裝 minicom</a></li>
+            <li><a href="#設定-minicom">設定 minicom</a></li>
+          </ul>
+        </li>
+        <li><a href="#回復原廠設定-reset-to-factory">回復原廠設定 reset to factory</a></li>
+        <li><a href="#設定-dell-equallogic-ps6210">設定 Dell Equallogic PS6210</a>
+          <ul>
+            <li><a href="#equallogic-ps6210-back-panel">EqualLogic PS6210 back-panel</a></li>
+            <li><a href="#參數說明">參數說明</a></li>
+            <li><a href="#設定值">設定值</a></li>
+            <li><a href="#查看-member-nic-狀態">查看 Member NIC 狀態</a></li>
+            <li><a href="#設定-eth2-management-port-ip-address">設定 eth2 (Management port) IP address</a></li>
+            <li><a href="#dell-equallogic-manager">Dell EqualLogic Manager</a></li>
+            <li><a href="#本次已是最新-更新-dell-equallogic-韌體相關">(本次已是最新) 更新 Dell EqualLogic 韌體相關</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p><img src="dell_ps6210_in_207.jpg" alt="dell_ps6210_in_207.jpg"></p>
+<br>
+<p>本次 <code>192.168.200.x/24</code> LAB 使用到的 Dell PS6210 本人。<br>
+參考資料: <a href="https://www.weithenn.org/2015/03/equallogic-ps210xs-centos6-mpio.html">EqualLogic PS6210XS 及 CentOS 6.5 MPIO 實作</a></p>
+<br>
+<hr>
+<h2 id="使用-minicom-連接-serial-port">使用 minicom 連接 serial port</h2>
+<br>
+<p><strong><span style='color:blue'>如果作業系統是 Windows 的話可以使用 PuTTY 連接。設定的參數都通用 (baud rate/Data bits/Stop bits/Parity)</span></strong></p>
+<br>
+<p><strong>使用到的線材: RS 232</strong></p>
+<br>
+<p><img src="ugreen_db9_rs232.jpg" alt="ugreen_db9_rs232.jpg"></p>
+<p>圖片取自 <a href="https://www.ugreen.com/">綠聯</a></p>
+<br>
+<h3 id="設定-vsphere-passthrough">設定 vSphere passthrough</h3>
+<br>
+<p>(這段廢話可以跳過) 嗯&hellip; 這次又很幸運地踩到剛出爐的地雷了。 <strong>VCSA (vCenter) 沒辦法設定 serial passthrough!!</strong><br>
+解法在這邊 <a href="https://kb.vmware.com/s/article/83898">Cannot add or edit pipe, network or physical serial port on virtual machine (83898)</a><br>
+不過後來嫌太麻煩， <strong><span style='color:red'>直接進 ESXi (Web 控制台) 設定比較快</span></strong>。</p>
+<br>
+<p><img src="serial_port_passthrough.jpg" alt="serial_port_passthrough.jpg"></p>
+<br>
+<p>我們的 RS 232 線是插在 Dell R620 背板 (Back-Panel) 因此是 <code>uart1</code></p>
+<br>
+<p><img src="dell_r620_back_panel.jpg" alt="dell_r620_back_panel.jpg"></p>
+<p>▲ 4 號位即是 serial port。</p>
+<p>圖片取自 <a href="https://www.sos.state.co.us/pubs/elections/VotingSystems/DVS-DemocracySuite/documentation/Dell_Poweredge_R620_Owner_Manual.pdf">Dell PowerEdge R620 Owner&rsquo;s Manual</a></p>
+<br>
+<hr>
+<h3 id="安裝-minicom">安裝 minicom</h3>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">yum install minicom -y
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<h3 id="設定-minicom">設定 minicom</h3>
+<br>
+<p><a href="https://www.cyberciti.biz/faq/find-out-linux-serial-ports-with-setserial/">How To Check and Use Serial Ports Under Linux</a></p>
+<p><a href="https://blog.jangmt.com/2014/12/linux-switch-minicom.html">八克里-Linux 下使用終端機連接 switch (minicom) </a></p>
+<br>
+<p>查找 serial port (COM port) 在哪個裝置上面。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">dmesg <span class="p">|</span> grep <span class="s1">&#39;tty&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p><img src="whereis_the_serial_device.jpg" alt="whereis_the_serial_device.jpg"></p>
+<br>
+<p>得知 serial port 在 <code>/dev/ttyS0</code> 之後就可以設定 <code>minicom</code> 了。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">minicom -s
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p><img src="minicom_setting_serial_0.jpg" alt="minicom_setting_serial_0.jpg"></p>
+<p>▲ 選擇 &ldquo;Serial port setup&rdquo;</p>
+<br>
+<p><img src="minicom_setting_serial_1.jpg" alt="minicom_setting_serial_1.jpg"></p>
+<p>▲ Device、Speed、Hardware &hellip;、Software &hellip; 都要設定</p>
+<br>
+<p><img src="minicom_setting_serial_1_1.jpg" alt="minicom_setting_serial_1_1.jpg"></p>
+<p>▲ 關於 speed 的細項。 8N1 代表 8 data bits + None Parity + 1 stop bit</p>
+<br>
+<p><img src="minicom_setting_serial_2.jpg" alt="minicom_setting_serial_2.jpg"></p>
+<p>▲ 存成預設設定檔，按下 Exit 即可使用。</p>
+<br>
+<p><img src="minicom_press_enter_to_login_0.jpg" alt="minicom_press_enter_to_login_0.jpg"></p>
+<p>▲ 按下 Enter 開始操作。</p>
+<br>
+<p><img src="minicom_press_enter_to_login_1.jpg" alt="minicom_press_enter_to_login_1.jpg"></p>
+<p><strong><span style='color:red'>▲ 預設登入帳號密碼 grpadmin/grpadmin</span></strong></p>
+<br>
+<hr>
+<h2 id="回復原廠設定-reset-to-factory">回復原廠設定 reset to factory</h2>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">CLI&gt; reset
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p><img src="reset_equallogic_to_factory_0.jpg" alt="reset_equallogic_to_factory_0.jpg"></p>
+<p>▲ 輸入 (確認用) &ldquo;DeleteAllMyDataNow&rdquo; 後開始回歸原廠設定</p>
+<br>
+<p><img src="reset_equallogic_to_factory_1.jpg" alt="reset_equallogic_to_factory_1.jpg"></p>
+<p>▲ resetting</p>
+<br>
+<hr>
+<h2 id="設定-dell-equallogic-ps6210">設定 Dell Equallogic PS6210</h2>
+<br>
+<h3 id="equallogic-ps6210-back-panel">EqualLogic PS6210 back-panel</h3>
+<br>
+<p><img src="dell_eql_ps6210_back_panel.jpg" alt="dell_eql_ps6210_back_panel.jpg"></p>
+<br>
+<h3 id="參數說明">參數說明</h3>
+<br>
+<p>相同網段以相同顏色標記。<span style='color:blue'>藍色: 管理段 (非大流量)  </span> <span style='color:red'>紅色: 資料段</span><br>
+<span style='color:blue'>Management 管理 (eth2)</span> 必須與 <span style='color:red'>資料段 (eth0 eth1)</span> <strong>不同網段!</strong><br>
+否則設定上會出現錯誤: <code>% Error - Management interface must not be on SAN subnet.</code></p>
+<br>
+<ul>
+<li><strong>RAID Type:</strong> RAID-6 Accelerate，因為 Dell EqualLogic PS6210 有提供 7 bay 的 SSD + 14 bay 的 HDD。 SSD 的部分被拿來當 cache 加速。</li>
+<li><strong>Group Name:</strong> 多台 EqualLogic 設備能夠加入同一個 group，邏輯上形同一個大的儲存池 (storage pool)。</li>
+<li><strong><span style='color:blue'>Group Management IP:</span></strong> group 內有多台設備時可以統一用這個 IP 來管理所有 member。</li>
+<li><strong><span style='color:red'>Group IP:</span></strong> iSCSI Target 的 IP 位置。未來 ESXi host 就是使用這個 IP 掛載空間。</li>
+<li><strong>Group Join Password:</strong> 新的 EqualLogic 加入 group 所需要的密碼。</li>
+<li><strong>Member Name:</strong> 辨識每一台 memeber 用的。</li>
+<li><strong><span style='color:blue'>Member Management IP:</span></strong> 各台 member 設定在 Management (eth2) 管理用途。</li>
+<li><strong>DCB VLAN Identifier:</strong> Data Center Bridging，簡單來說就是將 DC 內的 Ethernet 封包做區分，進而產生優先順序。這個 VLAN tag 應該會用在 group member 互相傳輸資料的封包上。 <span style='color:red'>ESXi host 連線到 EQL 的 iSCSI 封包並不會帶此 VLAN!! (已與 CVT-EQL 對照過)</span></li>
+</ul>
+<h3 id="設定值">設定值</h3>
+<br>
+<ul>
+<li><strong>RAID Type:</strong> RAID-6 Accelerate</li>
+<li><strong>Group Name:</strong> LAB-200</li>
+<li><strong><span style='color:blue'>Group Management IP:</span></strong> 192.168.200.30/24</li>
+<li><strong><span style='color:red'>Group IP:</span></strong> 10.0.0.200/24</li>
+<li><strong>Group Join Password:</strong> lab200 (小寫 LAB)</li>
+<li><strong>Member Name:</strong> LAB-200-Member-1</li>
+<li><strong><span style='color:blue'>Member Management IP:</span></strong> 192.168.200.30</li>
+<li><strong>DCB VLAN Identifier:</strong> 0 (官方不建議使用 <code>0</code> 或者 <code>1</code>， <del>不過我們在測試環境.. 就 <code>0</code> 吧 XD )</del> Switch default <code>1</code></li>
+<li><strong><span style='color:red'>Controller Ethernet0 (eth0):</span></strong> 10.0.0.100</li>
+<li><strong><span style='color:red'>Controller Ethernet1 (eth1):</span></strong> 10.0.0.101</li>
+<li><strong><span style='color:red'>Default gateway:</span></strong> 10.0.0.254</li>
+<li><strong>Password for the default group administration(grpadmin):</strong></li>
+</ul>
+<br>
+<hr>
+<h3 id="查看-member-nic-狀態">查看 Member NIC 狀態</h3>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">member select LAB-200-Member-1 show eths
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<h3 id="設定-eth2-management-port-ip-address">設定 eth2 (Management port) IP address</h3>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">## member select LAB-200-Member-1 eth select 2 ipaddress &lt;Member Management IP&gt; netmask 255.255.255.0
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">member select LAB-200-Member-1 eth select 2 ipaddress 192.168.200.31 netmask 255.255.255.0
+</span></span><span class="line"><span class="cl">member select LAB-200-Member-1 eth select 2 up
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Do you want to enable the management interface? (y/n) [n]y
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p><img src="eql_eth2_done_0.jpg" alt="eql_eth2_done_0.jpg"></p>
+<br>
+<p>接著就可以在網頁上輸入 eth2 (Management) 的 IP，下載 Java 寫的管理程式，如果瀏覽器支援 Java 的話可以直接在網頁上執行，這次有嘗試使用舊版 Firefox 試圖不使用管理程式，可惜沒有成功~<br>
+<a href="https://www.greengeeks.com/tutorials/article/enable-java-in-firefox-3-methods/">How To Enable Java in Firefox: 3 Methods</a><br>
+<del>不過到是找到 Firefox 免安裝版本 (舊版)</del></p>
+<br>
+<p><img src="download_eql_mnger.jpg" alt="download_eql_mnger.jpg"></p>
+<br>
+<hr>
+<h3 id="dell-equallogic-manager">Dell EqualLogic Manager</h3>
+<br>
+<p>前置作業請參考: <a href="https://bookstack.shunfeng-tech.com/link/571">Dell EqualLogic 登入方式</a></p>
+<p><span style='color:red'> 之前打的這篇有無法使用 &ldquo;加密通訊&rdquo; 的問題</span> 這次有找到解法，實測之後可以使用。<br>
+<a href="https://www.dell.com/community/EqualLogic/PS6000-Encrypted-Connection-Could-Not-Be-Established/td-p/7189390">PS6000 Encrypted Connection Could Not Be Established</a></p>
+<br>
+<h4 id="java-使用-encrypted-connection-方式">Java 使用 Encrypted Connection 方式</h4>
+<br>
+<p>簡單來說就是 Java 8 build 201 的更動把 anon (anonymous) 和 NULL 的加密方式 (cipher suites) 拿掉了。我們必須重新將 anonymous 這個加密方式拿回來~</p>
+<ol>
+<li>編輯 <code>C:\Program Files (x86)\Java\你的版本\lib\security\Java.Security</code></li>
+<li>用搜尋定位 <code>jdk.tls.disabledAlgorithms</code></li>
+<li>將 <code>anon</code> 移除</li>
+<li>save and exit</li>
+</ol>
+<br>
+<p><img src="dell_eql_grp_manager_0.jpg" alt="dell_eql_grp_manager_0.jpg"></p>
+<p>▲ 同意喇哪次不同意的 EULA</p>
+<br>
+<p><img src="dell_eql_grp_manager_1.jpg" alt="dell_eql_grp_manager_1.jpg"></p>
+<p>▲ 設定 Timezone 與 NTP server</p>
+<br>
+<p><img src="dell_eql_grp_manager_2.jpg" alt="dell_eql_grp_manager_2.jpg"></p>
+<p>▲ 尚未建立 RAID，被詢問是否要馬上建立。<strong>是!</strong></p>
+<br>
+<p><img src="dell_eql_grp_manager_3.jpg" alt="dell_eql_grp_manager_3.jpg"></p>
+<p>▲ Description 選填，<strong>Storage Pool 選擇 &ldquo;default&rdquo;</strong></p>
+<br>
+<p><img src="dell_eql_grp_manager_4.jpg" alt="dell_eql_grp_manager_4.jpg"></p>
+<p>▲ RAID Policy 選擇 &ldquo;RAID 6 Accelerated&rdquo; + 馬上建立 RAID</p>
+<br>
+<p><img src="dell_eql_grp_manager_5.jpg" alt="dell_eql_grp_manager_5.jpg"></p>
+<p>▲ Member/RAID 初始化</p>
+<br>
+<p><img src="dell_eql_grp_manager_6.jpg" alt="dell_eql_grp_manager_6.jpg"></p>
+<p>▲ console 這邊可以看到 login 與 RAID 初始化 相關 log</p>
+<br>
+<p><img src="dell_eql_grp_manager_9.jpg" alt="dell_eql_grp_manager_9.jpg"></p>
+<p>▲ status 可以看到 RAID 正在建立的進度。</p>
+<br>
+<hr>
+<h3 id="本次已是最新-更新-dell-equallogic-韌體相關">(本次已是最新) 更新 Dell EqualLogic 韌體相關</h3>
+<br>
+<p><img src="dell_eql_grp_manager_7.jpg" alt="dell_eql_grp_manager_7.jpg"></p>
+<p>▲ 剛登入進來，左下角的更新提醒燈會一直閃爍。雖然上面顯示 &ldquo;Available updates&rdquo;，不過事後驗證應該只是公告&hellip;不是真的有可用更新</p>
+<br>
+<p><img src="dell_eql_grp_manager_8.jpg" alt="dell_eql_grp_manager_8.jpg"></p>
+<p>▲ 點選 Member -&gt; Maintenance -&gt; Update firmware。</p>
+<p><strong><span style='color:green'>Dell Storage Update Manager 會在 local 另外開一個 Java 視窗，可以自動從網路上下載更新</span></strong><br>
+<strong><span style='color:green'>Update using Group Manager 能夠直接選擇 local 的更新檔，不會另外開啟 Java 視窗</span></strong></p>
+<br>
+<p>就試試自動更新吧~</p>
+<br>
+<p>按下 OK 後即會透過預設瀏覽器下載 Java 程式。<span style='color:red'>注意!! 這是從 Dell 網站抓下來的 Java，並不是像 EqualLogic 自帶的。<code>IP</code> 與 <code>user</code> 請自行修改</span><br>
+手動下載的原因: 我的預設瀏覽器語系是 zh-tw，直接抓下來高機率是簡體中文。不如手動從語系是 us-en 的瀏覽器抓，看英文。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">psonlinehelp.dell.com/dell-storage-update-manager/?ip=192.168.200.31&amp;user=grpadmin
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p><img src="upgrade_eql_firmware_0.jpg" alt="upgrade_eql_firmware_0.jpg"></p>
+<p>▲ 一樣要先前置作業，將 <code>psonlinehelp.dell.com</code> 加到 Java 的安全清單內。</p>
+<br>
+<p><img src="upgrade_eql_firmware_1.jpg" alt="upgrade_eql_firmware_1.jpg"></p>
+<p>▲ 哪次不接受的我接受</p>
+<br>
+<p><img src="upgrade_eql_firmware_2.jpg" alt="upgrade_eql_firmware_2.jpg"></p>
+<p>▲ 登入 EqualLogic Member</p>
+<br>
+<p><img src="upgrade_eql_firmware_3.jpg" alt="upgrade_eql_firmware_3.jpg"></p>
+<p>▲ 最新沒東西</p>
+<br>
+<hr>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2021-07-23
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/minicom/">minicom</a>
+          <a href="/tags/iscsi/">iscsi</a>
+          <a href="/tags/dell/">dell</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/20210727-ckad-note-section-1-introduction/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">CKAD Note Section 1 Introduction</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/20210629-docker-container-link/">
+            <span class="next-text nav-default">Docker 容器與容器的連結。Grafana &#43; Prometheus &#43; Blackbox_expoter</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.64437849d125a2d603b3e71d6de5225d641a32d17168a58106e0b61852079683.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

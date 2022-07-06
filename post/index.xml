@@ -53,6 +53,15 @@
     </item>
     
     <item>
+      <title>使用 Hexo 搭配 GitHub Pages 架設靜態網站</title>
+      <link>https://blog.xxzk.me/post/20220503-use-hexo-and-github-pages-to-build-blog/</link>
+      <pubDate>Thu, 28 Apr 2022 15:47:12 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20220503-use-hexo-and-github-pages-to-build-blog/</guid>
+      <description>此篇記錄第一次使用 Hexo 搭配 GitHub Pages 來架設 blog。 使用 Git Bash (MINGW 64) 安裝 Hexo Hexo Documentation nvs Mac, Linux Install 以 administrator 打開 Git Bash 1 2 3 export NVS_HOME=&amp;#34;$HOME/.nvs&amp;#34; git clone https://github.com/jasongin/nvs &amp;#34;$NVS_HOME&amp;#34; . &amp;#34;$NVS_HOME/nvs.sh&amp;#34; install 1 2 3 nvs add latest nvs use latest nvs link latest ▲ 版本</description>
+    </item>
+    
+    <item>
       <title>CKA_Note_Section_7_Security</title>
       <link>https://blog.xxzk.me/post/20211222-cka_note_section_7_security/</link>
       <pubDate>Wed, 22 Dec 2021 13:53:04 +0000</pubDate>

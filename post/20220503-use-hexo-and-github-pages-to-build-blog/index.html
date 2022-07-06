@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>使用 Hexo 搭配 GitHub Pages 架設靜態網站 - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="此篇記錄第一次使用 Hexo 搭配 GitHub Pages 來架設 blog。 使用 Git Bash (MINGW 64) 安裝 Hexo Hexo Documentation nvs Mac, Linux Install 以 administrator 打開 Git Bash 1 2 3 export NVS_HOME=&amp;#34;$HOME/.nvs&amp;#34; git clone https://github.com/jasongin/nvs &amp;#34;$NVS_HOME&amp;#34; . &amp;#34;$NVS_HOME/nvs.sh&amp;#34; install 1 2 3 nvs add latest nvs use latest nvs link latest ▲ 版本" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.98.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20220503-use-hexo-and-github-pages-to-build-blog/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="使用 Hexo 搭配 GitHub Pages 架設靜態網站" />
+<meta property="og:description" content="此篇記錄第一次使用 Hexo 搭配 GitHub Pages 來架設 blog。 使用 Git Bash (MINGW 64) 安裝 Hexo Hexo Documentation nvs Mac, Linux Install 以 administrator 打開 Git Bash 1 2 3 export NVS_HOME=&#34;$HOME/.nvs&#34; git clone https://github.com/jasongin/nvs &#34;$NVS_HOME&#34; . &#34;$NVS_HOME/nvs.sh&#34; install 1 2 3 nvs add latest nvs use latest nvs link latest ▲ 版本" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.xxzk.me/post/20220503-use-hexo-and-github-pages-to-build-blog/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-04-28T15:47:12+00:00" />
+<meta property="article:modified_time" content="2022-04-28T15:47:12+00:00" />
+
+<meta itemprop="name" content="使用 Hexo 搭配 GitHub Pages 架設靜態網站">
+<meta itemprop="description" content="此篇記錄第一次使用 Hexo 搭配 GitHub Pages 來架設 blog。 使用 Git Bash (MINGW 64) 安裝 Hexo Hexo Documentation nvs Mac, Linux Install 以 administrator 打開 Git Bash 1 2 3 export NVS_HOME=&#34;$HOME/.nvs&#34; git clone https://github.com/jasongin/nvs &#34;$NVS_HOME&#34; . &#34;$NVS_HOME/nvs.sh&#34; install 1 2 3 nvs add latest nvs use latest nvs link latest ▲ 版本"><meta itemprop="datePublished" content="2022-04-28T15:47:12+00:00" />
+<meta itemprop="dateModified" content="2022-04-28T15:47:12+00:00" />
+<meta itemprop="wordCount" content="1936">
+<meta itemprop="keywords" content="GitHub,Hexo," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="使用 Hexo 搭配 GitHub Pages 架設靜態網站"/>
+<meta name="twitter:description" content="此篇記錄第一次使用 Hexo 搭配 GitHub Pages 來架設 blog。 使用 Git Bash (MINGW 64) 安裝 Hexo Hexo Documentation nvs Mac, Linux Install 以 administrator 打開 Git Bash 1 2 3 export NVS_HOME=&#34;$HOME/.nvs&#34; git clone https://github.com/jasongin/nvs &#34;$NVS_HOME&#34; . &#34;$NVS_HOME/nvs.sh&#34; install 1 2 3 nvs add latest nvs use latest nvs link latest ▲ 版本"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">使用 Hexo 搭配 GitHub Pages 架設靜態網站</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-04-28 </span>
+        <div class="post-category">
+            <a href="/categories/github/"> GitHub </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#使用-git-bash-mingw-64-安裝-hexo">使用 Git Bash (MINGW 64) 安裝 Hexo</a></li>
+        <li><a href="#init-hexo">init Hexo</a>
+          <ul>
+            <li><a href="#_configyml">_config.yml</a></li>
+            <li><a href="#packagejson">package.json</a></li>
+            <li><a href="#scaffolds">scaffolds</a></li>
+            <li><a href="#source">source</a></li>
+            <li><a href="#themes">themes</a></li>
+          </ul>
+        </li>
+        <li><a href="#安裝-icarus-主題">安裝 ICARUS 主題</a></li>
+        <li><a href="#錯誤排除-error-eperm-operation-not-permitted">[錯誤排除] Error: EPERM: operation not permitted</a></li>
+        <li><a href="#asset-folder">Asset folder</a></li>
+        <li><a href="#category_map-使用方式">category_map 使用方式</a></li>
+        <li><a href="#icarus-config">ICARUS config</a>
+          <ul>
+            <li><a href="#logo">logo</a></li>
+            <li><a href="#navigation-bar-導航列">Navigation Bar 導航列</a></li>
+            <li><a href="#footer-網頁註腳">Footer 網頁註腳</a></li>
+            <li><a href="#code-highlight">Code Highlight</a></li>
+            <li><a href="#read-time-預估閱讀時間">Read Time 預估閱讀時間</a></li>
+            <li><a href="#comment-plugin-評論插件">Comment Plugin 評論插件</a></li>
+            <li><a href="#sidebar">Sidebar</a></li>
+            <li><a href="#widget">Widget</a></li>
+          </ul>
+        </li>
+        <li><a href="#vs-code-snippets">VS Code Snippets</a>
+          <ul>
+            <li><a href="#常用-vs-code-snippet">常用 VS Code Snippet</a></li>
+          </ul>
+        </li>
+        <li><a href="#圖庫資源">圖庫資源</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>此篇記錄第一次使用 Hexo 搭配 GitHub Pages 來架設 blog。</p>
+<h2 id="使用-git-bash-mingw-64-安裝-hexo">使用 Git Bash (MINGW 64) 安裝 Hexo</h2>
+<br>
+<p><a href="https://hexo.io/docs/">Hexo Documentation</a><br>
+<a href="https://github.com/jasongin/nvs/#mac-linux">nvs Mac, Linux Install</a></p>
+<p>以 administrator 打開 Git Bash</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">NVS_HOME</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$HOME</span><span class="s2">/.nvs&#34;</span>
+</span></span><span class="line"><span class="cl">git clone https://github.com/jasongin/nvs <span class="s2">&#34;</span><span class="nv">$NVS_HOME</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">. <span class="s2">&#34;</span><span class="nv">$NVS_HOME</span><span class="s2">/nvs.sh&#34;</span> install
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">nvs add latest
+</span></span><span class="line"><span class="cl">nvs use latest
+</span></span><span class="line"><span class="cl">nvs link latest
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p><img src="install_nvs.jpg" alt="install_nvs"></p>
+<p>▲ 版本檢查。</p>
+<br>
+<p>使用 <code>npm</code> 安裝 hexo-cli</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">npm install -g hexo-cli
+</span></span><span class="line"><span class="cl">hexo --version
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p><img src="hexo_version_check.jpg" alt="hexo_version_check"></p>
+<p>▲ <code>hexo</code> 版本檢查。</p>
+<br>
+<h2 id="init-hexo">init Hexo</h2>
+<br>
+<p><img src="hexo_init.jpg" alt="hexo_init"></p>
+<p>▲ 初始化 Hexo 目錄</p>
+<br>
+<h3 id="_configyml">_config.yml</h3>
+<p><a href="https://hexo.io/docs/configuration">Hexo Configuration Document</a>，大部分的設定都能在這裡找到。</p>
+<br>
+<h3 id="packagejson">package.json</h3>
+<blockquote>
+<p>Application data. The EJS, Stylus and Markdown renderers are installed by default. If you want, you can uninstall them later. (<del>懶著翻</del>)</p>
+</blockquote>
+<br>
+<h3 id="scaffolds">scaffolds</h3>
+<p>scaffold (n.) 鷹架。</p>
+<blockquote>
+<p>When you create a new post, Hexo bases the new file on the scaffold.</p>
+</blockquote>
+<br>
+<h3 id="source">source</h3>
+<p>將網站的內容原始碼 (source code) 儲存在這裡，Hexo 會忽略開頭是 <code>_</code> (underscore) 的檔案與資料夾 (file and folder) <strong><span style='color:red'><code>_posts</code> 這個資料夾例外</span></strong><br>
+可被渲染 (renderable) 的檔案 (例如: Markdown, HTML) 將會被處理後放到 <code>public</code> 這個資料夾中。</p>
+<p><strong><span style='color:red'>白話一點講，執行 <code>hexo generation</code> 指令時 Hexo 會從這邊抓取 <code>.md</code> 產生 <code>.html</code> 到 <code>public</code> 這個 folder 當中~</span></strong></p>
+<br>
+<h3 id="themes">themes</h3>
+<p>很顯然的是主題~ Hexo 有很多主題可以做選擇!</p>
+<br>
+<h2 id="安裝-icarus-主題">安裝 ICARUS 主題</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">npm install hexo-theme-icarus
+</span></span><span class="line"><span class="cl">hexo config theme icarus
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="hexo_install_theme_error.jpg" alt="hexo_install_theme_error"></p>
+<p>▲ 這時候發生 <code>ERESOLVE unable to resolve dependency tree</code> 的問題，猜測可能是 Hexo 版本與 ICARUS 主題使用到的 module 有相依性的衝突。</p>
+<p>當時我就先加上 error 建議的 <code>--legacy-peer-deps</code> 來試圖繞路 (感覺就是拿舊的相依套件安裝?)，錯誤消失後接著 <code>hexo gen</code> 一下囉!<br>
+結果又出現 error，ICARUS 所需的相依套件沒有被安裝， error message 推薦執行這行來安裝</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">npm install --save bulma-stylus@0.8.0 hexo@^6.0.0 hexo-log@^3.0.0 hexo-pagination@^2.0.0 hexo-renderer-inferno@^0.1.3
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="after_install_icarus_theme_first_hexo_gen.jpg" alt="after_install_icarus_theme_first_hexo_gen"></p>
+<p>▲ 狀況排除後就繼續 <code>hexo gen</code> 囉~ 因為偵測不到 theme 的 config file 所以自動幫我們建立!</p>
+<h2 id="錯誤排除-error-eperm-operation-not-permitted">[錯誤排除] Error: EPERM: operation not permitted</h2>
+<p>如果遇到</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Error: EPERM: operation not permitted, rmdir ...
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>錯誤的話可以使用 <code>npm cache clean --force</code> 解決</p>
+<p><img src="npm_clean_up_error.jpg" alt="npm_clean_up_error"></p>
+<p>▲ 在試圖解決安裝 ICARUS 時缺少的 module 時發生的錯誤 (有時候下 <code>hexo clean</code> 也會發生，發生原因沒有深入追查)</p>
+<h2 id="asset-folder">Asset folder</h2>
+<p><a href="https://hexo.io/docs/asset-folders#Post-Asset-Folder">Asset Folders</a></p>
+<p>在預設的情況下 <code>.md</code> 會被放在 <code>/source/_post</code> 底下，而圖片的部分則是 <code>/source/images</code>。這對我而言會造成幾個問題:</p>
+<ol>
+<li>我的圖片太多，檔名可能衝突到</li>
+<li>當筆記數量一多，要尋找某篇 <code>.md</code> 使用的圖片就會很費工夫</li>
+</ol>
+<p><strong><span style='color:red'>Asset folder 功能開啟後即可將圖片放在個別的資料夾內，同時也能被 <code>.md</code> 引用到</span></strong></p>
+<p><img src="asset_folder_structure_0.jpg" alt="asset_folder_structure_0"></p>
+<p>▲ <code>&lt;title&gt;.md</code> 同名資料夾 <code>&lt;title&gt;</code> 內存放圖片。未來會將 <code>&lt;title&gt;</code> 改成英文達到 URL 上的美觀，中文標題的資料夾會放在最上層達成管理上的方便 (中文的不進 <code>source/_post</code>)</p>
+<p><strong>開啟方式: 編輯 <code>_config.yml</code></strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yml" data-lang="yml"><span class="line"><span class="cl"><span class="nt">post_asset_folder</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">marked</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">prependRoot</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">postAsset</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="category_map-使用方式">category_map 使用方式</h2>
+<p>在 <code>_config.yml</code> 裡面有個 <code>category_map</code> 選項，預設是 <code>null</code> 的，<a href="https://hexo.io/docs/configuration#Category-amp-Tag">官方 docs</a> 對它的說明是 <em>Category slugs</em> 什麼是 &ldquo;slug&rdquo; 呢?</p>
+<p><img src="https://yoast.com/cdn-cgi/image/width=800%2Cheight=420%2Cdpr=2%2Cfit=cover%2Cf=auto%2Conerror=redirect/app/uploads/2016/11/SEO-Basics-slug.jpg" alt="slug"></p>
+<p>▲ slug 其實就是接在 domain name 後面 path 啦! <code>https://blog.xxzk.me/slug1/slug2/a.md</code> <a href="https://yoast.com/slug/">圖片來源</a></p>
+<p>我們的 Markdown 筆記現在都有在開頭都有加上 front matter，其中就有個欄位是 <code>categories</code>，Hexo 會抓取這些並產生出 <code>https://&lt;YOUR-DOMAIN&gt;/categories/</code> 這個 page (頁面)~ 直接舉一個例子好了</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="line"><span class="cl">---
+</span></span><span class="line"><span class="cl">title: 我的第一支 Terraform
+</span></span><span class="line"><span class="cl">date: 2021-09-22 15:36:09
+</span></span><span class="line"><span class="cl">tags: [test-tag]
+</span></span><span class="line"><span class="cl">categories: [行政院,財政部,關務署]
+</span></span><span class="line"><span class="cl">---
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="hexo_categories.jpg" alt="hexo_categories"></p>
+<p>▲ 在 <code>https://&lt;YOUR-DOMAIN&gt;/categories/</code> 下就會呈現這樣</p>
+<p><strong><span style='color:red'>如果我們想把 URL 上的「行政院」變成英文，就需要使用到 <code>category_map</code> 這個功能了!</span></strong></p>
+<p><img src="hexo_categories_map_1.jpg" alt="hexo_categories_map_1"></p>
+<p>▲ 在 <code>_config.yml</code> 增加對應設定就完成囉!</p>
+<p><img src="hexo_categories_map_0.jpg" alt="hexo_categories_map_0"></p>
+<p>▲ 實際效果</p>
+<p>參考資料:</p>
+<p><a href="https://ijiaober.github.io/2014/08/05/hexo/hexo-04/">Hexo使用攻略：（四）Hexo的分类和标签设置</a></p>
+<h2 id="icarus-config">ICARUS config</h2>
+<p>這個章節將會參考官方文件 <a href="https://ppoffice.github.io/hexo-theme-icarus/Configuration/icarus-user-guide-configuring-the-theme/#General-Theme-Configurations">Icarus User Guide - Configuring the Theme</a> 來「裝潢」我們的 blog，不重要/我沒使用到 的部分就不一一介紹囉!</p>
+<h3 id="logo">logo</h3>
+<p>logo 的部分可以使用 <strong><span style='color:blue'>文字 or 圖片</span></strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yml" data-lang="yml"><span class="line"><span class="cl"><span class="c"># photo</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">logo</span><span class="p">:</span><span class="w"> </span><span class="l">/img/logo.svg</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># text</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">logo</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="l">老柯的學習筆記</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="navigation-bar-導航列">Navigation Bar 導航列</h3>
+<p>也就是最上面那排，menu 的部分可以自行增加 格式: <code>&lt;link_name&gt;: &lt;link_url&gt;</code>。 <br>
+<code>links</code> 則是右上角那排，icon 的部分可以使用 <a href="https://fontawesome.com/">fontawesome</a>，只不過語法要改一下 <code>fa-brands =&gt; fab</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yml" data-lang="yml"><span class="line"><span class="cl"><span class="w">    </span><span class="nt">links</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">GitHub</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">icon</span><span class="p">:</span><span class="w"> </span><span class="l">fab fa-github</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l">https://github.com/xxzk/</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="footer-網頁註腳">Footer 網頁註腳</h3>
+<p>顯示的地方在最底部右下角，預設是放授權種類。關於 CC 授權可以參考 <a href="https://tw.creativecommons.net/home-page/">tw.creativecommons.net</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yml" data-lang="yml"><span class="line"><span class="cl"><span class="nt">footer</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Links to be shown on the right of the footer section</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">links</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">Creative Commons</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">icon</span><span class="p">:</span><span class="w"> </span><span class="l">fab fa-creative-commons</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l">https://creativecommons.org/</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">Attribution 4.0 International</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">icon</span><span class="p">:</span><span class="w"> </span><span class="l">fab fa-creative-commons-by</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l">https://creativecommons.org/licenses/by/4.0/</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="code-highlight">Code Highlight</h3>
+<p>程式碼區塊高亮，樣式可以從 <a href="https://github.com/highlightjs/highlight.js">highlight.js/src/styles</a> 挑選，<a href="https://highlightjs.org/static/demo/">demo 這邊請</a></p>
+<h3 id="read-time-預估閱讀時間">Read Time 預估閱讀時間</h3>
+<p>預設是開的，本來想關 :)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yml" data-lang="yml"><span class="line"><span class="cl"><span class="nt">article</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">readtime</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="comment-plugin-評論插件">Comment Plugin 評論插件</h3>
+<p>已關，有需要設定的話請參考這篇 <a href="https://ppoffice.github.io/hexo-theme-icarus/Plugins/Comment/icarus-user-guide-comment-plugins/">Icarus User Guide - Comment Plugins</a></p>
+<h3 id="sidebar">Sidebar</h3>
+<p>控制文章左右兩側的 Widgets 是否隨著文章移動。</p>
+<h3 id="widget">Widget</h3>
+<p><a href="https://ppoffice.github.io/hexo-theme-icarus/Widgets/icarus-user-guide-widgets/">Icarus User Guide - Widgets</a><br>
+簡單講幾個就好:</p>
+<ul>
+<li>大頭貼可以直接 call GitHub 的來用</li>
+<li>Table of contents (ToC) 必須在 Markdown front matter 加上 <code>toc: true</code> 這篇文章才會有 ToC</li>
+<li>(承上) 要子標題常駐顯示 <code>collapsed: false</code> 關閉 sub-headings 坍塌功能</li>
+</ul>
+<p><img src="hexo_icarus_table_of_content.jpg" alt="hexo_icarus_table_of_content"></p>
+<p>▲ 右邊的就是 Table of Contents (ToC)，對我來說很好用! 可以快速跳轉</p>
+<br>
+<h2 id="vs-code-snippets">VS Code Snippets</h2>
+<p><a href="https://code.visualstudio.com/docs/editor/userdefinedsnippets">[官方說明] Snippets in Visual Studio Code</a><br>
+在 shell 的世界我們希望 <code>[tab] [tab]</code> 自動補齊，關鍵字是 <strong><span style='color:red'>auto completion</span></strong>，在 VS Code 的世界則稱作 <strong>snippet (n.) 片段</strong>。<br>
+以往我在使用 Markdown 打筆記時並沒有養成在開頭加上 <strong><span style='color:blue'>front matter</span></strong> 的習慣，因為沒有自動補齊，要手動打的東西就會特多，自然懶惰~</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="line"><span class="cl">---
+</span></span><span class="line"><span class="cl">title: 我的第一支 Terraform
+</span></span><span class="line"><span class="cl">date: 2021-09-22 15:36:09
+</span></span><span class="line"><span class="cl">tags:
+</span></span><span class="line"><span class="cl">---
+</span></span></code></pre></td></tr></table>
+</div>
+</div><iframe width="560" height="315" src="https://www.youtube.com/embed/l66s-Ju_QRk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<p>▲ 這部影片解釋如何使用 <a href="https://snippet-generator.app/">snippet generator</a> 產生 snippet 所需的設定檔。</p>
+<br>
+<p><img src="vscode_insert_snippet_1.jpg" alt="vscode_insert_snippet_1"></p>
+<p>▲ 左邊輸入想要的內容，右邊就能產生 Snippet 設定檔</p>
+<p><img src="vscode_insert_snippet_0.jpg" alt="vscode_insert_snippet_0"></p>
+<p>▲ 按下 <code>Ctrl + Shift + P</code> 輸入 <code>snippet</code> 選擇 <strong><span style='color:blue'>Preference: Configure User Snippetes</span></strong></p>
+<p><img src="vscode_insert_snippet_2.jpg" alt="vscode_insert_snippet_2"></p>
+<p>▲ 可以選擇 Global snippet (全域作用範圍) 或者僅限目前開啟的 Workspace，這邊的 <code>'Markdown'</code> 是我目前開啟的工作資料夾，不是 file type 喔~</p>
+<p><img src="vscode_insert_snippet_3.jpg" alt="vscode_insert_snippet_3"></p>
+<p>▲ 接著輸入 snippet 設定檔檔名</p>
+<p><img src="vscode_insert_snippet_4.jpg" alt="vscode_insert_snippet_4"></p>
+<p>▲ 會在該目錄下產生一個 <code>.vscode</code> 的 folder 存放 snippet 設定檔</p>
+<p><img src="vscode_insert_snippet_5.jpg" alt="vscode_insert_snippet_5"></p>
+<p>▲ 使用方式就是 按下 <code>Ctrl + Shift + P</code> 選擇 Insert Snippet (<strong><span style='color:red'>後來我直接把 <code>[tab] [tab]</code> 設定成快捷鍵，就不用這麼麻煩了</span></strong>)</p>
+<p><img src="vscode_insert_snippet_6.jpg" alt="vscode_insert_snippet_6"></p>
+<p>▲ 選擇剛剛建立的 <code>title</code> 就能夠使用囉!</p>
+<br>
+<h3 id="常用-vs-code-snippet">常用 VS Code Snippet</h3>
+<p>這邊純粹個人習慣~</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl">	<span class="s2">&#34;Markdown picture&#34;</span><span class="err">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nt">&#34;prefix&#34;</span><span class="p">:</span> <span class="s2">&#34;▲ picture&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="nt">&#34;body&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">		  <span class="s2">&#34;![$TM_SELECTED_TEXT]($TM_SELECTED_TEXT.jpg)&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		  <span class="s2">&#34;&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		  <span class="s2">&#34;${1:▲}&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="p">],</span>
+</span></span><span class="line"><span class="cl">		<span class="nt">&#34;description&#34;</span><span class="p">:</span> <span class="s2">&#34;Markdown picture&#34;</span>
+</span></span><span class="line"><span class="cl">	  <span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>▲ 圖片搭配 Delta</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="s2">&#34;Markdown blod with color&#34;</span><span class="err">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;prefix&#34;</span><span class="p">:</span> <span class="s2">&#34;color bold&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;body&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;**&lt;span style=&#39;color:${1:red}&#39;&gt;$TM_SELECTED_TEXT&lt;/span&gt;**&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">],</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;description&#34;</span><span class="p">:</span> <span class="s2">&#34;Markdown blod with color&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>▲ 也是我常用的功能，粗體可以色色 &gt;///&lt;</p>
+<hr>
+<h2 id="圖庫資源">圖庫資源</h2>
+<p><a href="https://favicon.io/emoji-favicons/books/">favicon 產生器 - favicon.io</a></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2022-04-28
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/github/">GitHub</a>
+          <a href="/tags/hexo/">Hexo</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/20220606-read-r730xd-owner-manual-learning-about-server-dimm/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">閱讀 R730XD owner manual 淺析伺服器記憶體</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/20211222-cka_note_section_7_security/">
+            <span class="next-text nav-default">CKA_Note_Section_7_Security</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.64437849d125a2d603b3e71d6de5225d641a32d17168a58106e0b61852079683.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

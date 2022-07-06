@@ -142,6 +142,34 @@
   </url>
   
   <url>
+    <loc>https://blog.xxzk.me/tags/github/</loc>
+    <lastmod>2022-04-28T15:47:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/categories/github/</loc>
+    <lastmod>2022-04-28T15:47:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/tags/hexo/</loc>
+    <lastmod>2022-04-28T15:47:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/post/20220503-use-hexo-and-github-pages-to-build-blog/</loc>
+    <lastmod>2022-04-28T15:47:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.xxzk.me/post/20211222-cka_note_section_7_security/</loc>
     <lastmod>2021-12-22T13:53:04+00:00</lastmod>
     <changefreq>weekly</changefreq>

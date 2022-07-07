@@ -49,7 +49,7 @@
 <meta itemprop="name" content="CKA_Note_Section_9_Networking">
 <meta itemprop="description" content="前言 既然這個章節是介紹 Kubernetes Networking 那就先來複習一下之前看過的優質文章吧! [Hwchiu Docker Network - 網路模型 系列] Docker Network - 網路模型 [Day10] Container Network Interface 介紹 188. Prerequisite - Network Namespaces ▲ 使用 ip netns exec &lt;NAMESPACE&gt; ip link"><meta itemprop="datePublished" content="2022-07-04T13:58:19+00:00" />
 <meta itemprop="dateModified" content="2022-07-04T13:58:19+00:00" />
-<meta itemprop="wordCount" content="672">
+<meta itemprop="wordCount" content="1270">
 <meta itemprop="keywords" content="CKA,kubernetes," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="CKA_Note_Section_9_Networking"/>
 <meta name="twitter:description" content="前言 既然這個章節是介紹 Kubernetes Networking 那就先來複習一下之前看過的優質文章吧! [Hwchiu Docker Network - 網路模型 系列] Docker Network - 網路模型 [Day10] Container Network Interface 介紹 188. Prerequisite - Network Namespaces ▲ 使用 ip netns exec &lt;NAMESPACE&gt; ip link"/>
@@ -146,6 +146,9 @@
         <li><a href="#前言">前言</a></li>
         <li><a href="#188-prerequisite---network-namespaces">188. Prerequisite - Network Namespaces</a></li>
         <li><a href="#191-prerequisite---cni">191. Prerequisite - CNI</a></li>
+        <li><a href="#193-important-note-about-cni-and-cka-exam">193. Important Note about CNI and CKA Exam</a></li>
+        <li><a href="#196-pod-networking">196. Pod Networking</a></li>
+        <li><a href="#197-cni-in-kubernetes">197. CNI in kubernetes</a></li>
       </ul>
     </li>
   </ul>
@@ -187,6 +190,38 @@ CNI 還有提供 library 可以自行開發屬於你自己的 CNI plugins~</p>
 <p>▲ CNI 切了兩個責任區，上方是 container runtime 必須要負責的；下方則是 plugin，<strong><span style='color:red'>達成 any runtime should be able to work with any plugins.</span></strong></p>
 <p><img src="cni_plugins.jpg" alt="cni_plugins"></p>
 <p>▲ CNI 自帶一些基本的 plugin，下方是第三方 plugin。延伸閱讀: <a href="https://www.hwchiu.com/cni-compare.html">[Hwchiu]常見 CNI (Container Network Interface) Plugin 介紹</a> <strong><span style='color:red'>而 docker 並不使用 CNI，而是自身的 CNM (container network model)</span></strong></p>
+<p><img src="k8s_components_port.jpg" alt="k8s_components_port"></p>
+<p>▲ K8s 各個元件需求的 port，<strong><span style='color:blue'>如果是 multi-master 架構的話 etcd 需要額外開啟 2380/tcp 來同步。</span></strong></p>
+<p>官方有提供檢查表 <a href="https://kubernetes.io/docs/reference/ports-and-protocols/">Ports and Protocols</a></p>
+<h2 id="193-important-note-about-cni-and-cka-exam">193. Important Note about CNI and CKA Exam</h2>
+<ul>
+<li>在 LAB 當中考生將被要求安裝 Network Addons (包含 plugin)</li>
+<li>plugin 將使用 weave-net 作為範例，當然考生可以<a href="https://kubernetes.io/docs/concepts/cluster-administration/addons/">自由選擇其他 solution</a></li>
+<li><strong><span style='color:red'>實際考試除非題目指定要求，不然也是自由選擇。</span></strong></li>
+<li>從上方提供的 <a href="https://kubernetes.io/docs/concepts/cluster-administration/addons/">自由選擇其他 solution</a> 可以發現所有選項點進去都是其官方網站/GitHub，<strong><span style='color:red'>正式考試時只能看官方文件!</span></strong> 好哩加在，<a href="https://gist.github.com/runlevl4/0921802e6c4e8f90bdc3a1434ee82af4">小飛機推薦的 CKA Bookmark</a> 有包含官方文件安裝 Weave-net 的方式。</li>
+</ul>
+<h2 id="196-pod-networking">196. Pod Networking</h2>
+<p><img src="pod_networking_model.jpg" alt="pod_networking_model"></p>
+<p>▲ 這個章節主要介紹 pod 在跨 worker node 要怎麼互相碰到。</p>
+<p><img src="pod_networking_example_0.jpg" alt="pod_networking_example_0"></p>
+<p>▲ 範例有三個 worker node，首先要先解決同 worker node 內互連的問題: (1) 建立一個 bridge (2) veth pair 接上 bridge &lt;=&gt; container (3) 為 bridge 與 container 設定 IP。</p>
+<p><img src="pod_networking_example_1.jpg" alt="pod_networking_example_1"></p>
+<p>▲ 想從 <strong><span style='color:blue'>bluepod</span></strong> 去找位在 node2 的 <strong><span style='color:purple'>purple pod 10.244.2.2</span></strong>，卻發現 <code>ping</code> 不到，原因是沒有路由。手動增加一筆靜態路由 (非永久) <code>ip route add 10.244.2.2/32 via 192.168.1.12</code> 請 node1 的 <code>eth0</code> 幫我們送件~</p>
+<p><strong><span style='color:green'><code>eth0</code> 收到之後會向 L2 domain 發送 broadcast 「誰有 <code>10.244.2.2</code> 呀，請給我他的 MAC address 謝謝」</span></strong></p>
+<p><img src="two_node_ping_bridge_arp.jpg" alt="two_node_ping_bridge_arp"></p>
+<p>▲ 實際做一次實驗 <strong><span style='color:blue'><code>Eric_minikube 192.168.199.62 eth0</code> 收到 arp broadcast 之後就單獨回覆 (unicast) <code>192.168.199.63</code> 說 「我有，挖來出力!」</span></strong><br>
+<strong><span style='color:red'>因為該 network 是本身就有的，無論是否開啟 <code>net.ipv4.ip_forward =1</code> 都能送達。</span></strong></p>
+<p><img src="pod_networking_example_2.jpg" alt="pod_networking_example_2"></p>
+<p>▲ 接著在每一個 worker node 都加上一筆 static route。</p>
+<p><img src="pod_networking_example_3.jpg" alt="pod_networking_example_3"></p>
+<p>▲ <strong><span style='color:red'>實際上不會這樣一筆一筆加，太麻煩了。直接給整個網段一個 gateway 就好!</span></strong></p>
+<p><img src="pod_networking_example_4.jpg" alt="pod_networking_example_4"></p>
+<p>▲ <code>kubelet</code> 會從 <code>--cni-conf-dir</code> 找到設定的 <code>.json</code> 然後 pass 給 <code>--cni-bin-dir</code> 執行，創造屬於該 container 的 network namespace。</p>
+<h2 id="197-cni-in-kubernetes">197. CNI in kubernetes</h2>
+<p><img src="kubelet_networking_0.jpg" alt="kubelet_networking_0"></p>
+<p>▲ <code>--cni-bin-dir</code> 下面有可供使用的 plugin binary file。</p>
+<p><img src="kubelet_networking_1.jpg" alt="kubelet_networking_1"></p>
+<p>▲ <code>isGateway</code> 代表是否要給 bridge binding 一個 IP address，好讓它變成 gateway 的角色；<code>ipMasq</code> 是否要在 host 針對這個 network 做 NAT。詳細 <a href="https://github.com/containernetworking/cni/blob/main/SPEC.md">Container Network Interface (CNI) Specification</a></p>
 
     </div>
 

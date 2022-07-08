@@ -242,6 +242,15 @@
     </item>
     
     <item>
+      <title>httpd.conf 研究筆記</title>
+      <link>https://blog.xxzk.me/post/20210220-apache-httpd-main-conf/</link>
+      <pubDate>Sat, 20 Feb 2021 10:54:58 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20210220-apache-httpd-main-conf/</guid>
+      <description>httpd 版本資訊 1 2 Server version: Apache/2.4.6 (CentOS) Server built: Nov 16 2020 16:18:20 敬啟者 開頭就一堆屁話，根本沒有人會看的 (愛開玩笑 自己的筆記也屁話一堆還敢說開發者 XD 節錄幾個重點好了 更多資訊</description>
+    </item>
+    
+    <item>
       <title>我的第一支 Ansible。 Ansible Hello World</title>
       <link>https://blog.xxzk.me/post/20210128-ansible-hello-world/</link>
       <pubDate>Thu, 28 Jan 2021 16:44:50 +0000</pubDate>

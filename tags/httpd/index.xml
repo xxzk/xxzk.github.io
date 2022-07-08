@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>httpd on 老柯的學習筆記</title>
+    <link>https://blog.xxzk.me/tags/httpd/</link>
+    <description>Recent content in httpd on 老柯的學習筆記</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sat, 20 Feb 2021 10:54:58 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/tags/httpd/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>httpd.conf 研究筆記</title>
+      <link>https://blog.xxzk.me/post/20210220-apache-httpd-main-conf/</link>
+      <pubDate>Sat, 20 Feb 2021 10:54:58 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20210220-apache-httpd-main-conf/</guid>
+      <description>httpd 版本資訊 1 2 Server version: Apache/2.4.6 (CentOS) Server built: Nov 16 2020 16:18:20 敬啟者 開頭就一堆屁話，根本沒有人會看的 (愛開玩笑 自己的筆記也屁話一堆還敢說開發者 XD 節錄幾個重點好了 更多資訊</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -16,5 +16,14 @@
       <description>此篇筆記記錄如何隱藏客戶端看到 Web Server 使用的版本號 判斷標準是用最無腦的 Browser Plug-in 當作依據，推薦使用 Wappalyzer 如果透過 CloudFlare 訪問這些敏感資訊都會被過濾掉;直接使用 IP</description>
     </item>
     
+    <item>
+      <title>httpd.conf 研究筆記</title>
+      <link>https://blog.xxzk.me/post/20210220-apache-httpd-main-conf/</link>
+      <pubDate>Sat, 20 Feb 2021 10:54:58 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20210220-apache-httpd-main-conf/</guid>
+      <description>httpd 版本資訊 1 2 Server version: Apache/2.4.6 (CentOS) Server built: Nov 16 2020 16:18:20 敬啟者 開頭就一堆屁話，根本沒有人會看的 (愛開玩笑 自己的筆記也屁話一堆還敢說開發者 XD 節錄幾個重點好了 更多資訊</description>
+    </item>
+    
   </channel>
 </rss>

@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>httpd.conf 研究筆記 - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="httpd 版本資訊 1 2 Server version: Apache/2.4.6 (CentOS) Server built: Nov 16 2020 16:18:20 敬啟者 開頭就一堆屁話，根本沒有人會看的 (愛開玩笑 自己的筆記也屁話一堆還敢說開發者 XD 節錄幾個重點好了 更多資訊" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.98.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20210220-apache-httpd-main-conf/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="httpd.conf 研究筆記" />
+<meta property="og:description" content="httpd 版本資訊 1 2 Server version: Apache/2.4.6 (CentOS) Server built: Nov 16 2020 16:18:20 敬啟者 開頭就一堆屁話，根本沒有人會看的 (愛開玩笑 自己的筆記也屁話一堆還敢說開發者 XD 節錄幾個重點好了 更多資訊" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.xxzk.me/post/20210220-apache-httpd-main-conf/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-02-20T10:54:58+00:00" />
+<meta property="article:modified_time" content="2021-02-20T10:54:58+00:00" />
+
+<meta itemprop="name" content="httpd.conf 研究筆記">
+<meta itemprop="description" content="httpd 版本資訊 1 2 Server version: Apache/2.4.6 (CentOS) Server built: Nov 16 2020 16:18:20 敬啟者 開頭就一堆屁話，根本沒有人會看的 (愛開玩笑 自己的筆記也屁話一堆還敢說開發者 XD 節錄幾個重點好了 更多資訊"><meta itemprop="datePublished" content="2021-02-20T10:54:58+00:00" />
+<meta itemprop="dateModified" content="2021-02-20T10:54:58+00:00" />
+<meta itemprop="wordCount" content="2890">
+<meta itemprop="keywords" content="httpd,apache," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="httpd.conf 研究筆記"/>
+<meta name="twitter:description" content="httpd 版本資訊 1 2 Server version: Apache/2.4.6 (CentOS) Server built: Nov 16 2020 16:18:20 敬啟者 開頭就一堆屁話，根本沒有人會看的 (愛開玩笑 自己的筆記也屁話一堆還敢說開發者 XD 節錄幾個重點好了 更多資訊"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">httpd.conf 研究筆記</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-02-20 </span>
+        <div class="post-category">
+            <a href="/categories/apache/"> apache </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#httpd-版本資訊">httpd 版本資訊</a></li>
+        <li><a href="#敬啟者">敬啟者</a></li>
+        <li><a href="#serverroot">ServerRoot</a></li>
+        <li><a href="#listen">Listen</a></li>
+        <li><a href="#module-模組">Module 模組</a></li>
+        <li><a href="#user-and-group">User and Group</a></li>
+        <li><a href="#main-server-config">Main server config</a></li>
+        <li><a href="#servername">ServerName</a></li>
+        <li><a href="#directory-">Directory <code>/</code></a>
+          <ul>
+            <li><a href="#實驗require-all-granted">【實驗】Require all granted</a></li>
+          </ul>
+        </li>
+        <li><a href="#常見-directory-內設定值">常見 <code>&lt;Directory&gt;</code> 內設定值</a>
+          <ul>
+            <li><a href="#options">Options</a></li>
+            <li><a href="#allowoverride">AllowOverride</a></li>
+            <li><a href="#require">Require</a></li>
+            <li><a href="#directoryindex">DirectoryIndex</a></li>
+          </ul>
+        </li>
+        <li><a href="#virtualhost">VirtualHost</a>
+          <ul>
+            <li><a href="#server-statusinfo">server-status/info</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="httpd-版本資訊">httpd 版本資訊</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">Server version: Apache/2.4.6 (CentOS)
+</span></span><span class="line"><span class="cl">Server built:   Nov 16 2020 16:18:20
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="敬啟者">敬啟者</h2>
+<br>
+<p><del>開頭就一堆屁話，根本沒有人會看的 (愛開玩笑 自己的筆記也屁話一堆還敢說開發者 XD</del><br>
+<strong>節錄幾個重點好了</strong></p>
+<ol>
+<li>更多資訊請到 <a href="http://httpd.apache.org/docs/2.4/">Apache 2.4 版官方文件</a> 參閱，或者更詳細的 <a href="http://httpd.apache.org/docs/2.4/mod/directives.html">指示 (Directives)</a></li>
+<li>配置 logfile 路徑規則。</li>
+</ol>
+<p>如果路徑是由 <code>/</code> 起始的，httpd 會使用<strong>絕對路徑</strong> (換句話說: 直接在 Linux 下 <code>ls -al &lt;path&gt;</code> 的地方)。<br>
+若不是，則使用<strong>相對路徑</strong>，以 <code>ServerRoot</code> 當作參考點，舉個例子:<br>
+當 <code>ServerRoot /www</code> 時 <code>log/access_log</code> 的路徑會是 <code>/www/log/access_log</code></p>
+<h2 id="serverroot">ServerRoot</h2>
+<br>
+<p>ServerRoot 是 httpd server 的根目錄 (The top of the directory tree)。存放 設定檔 (Configuration) 、 錯誤 (error)、 日誌檔 (log file)。<br>
+<span style="color:red"><strong>不能在最後加上斜線 (slash) 也就是 <code>/</code></strong></span><br>
+<span style="color:red"><strong>不能在最後加上斜線 (slash) 也就是 <code>/</code></strong></span><br>
+<span style="color:red"><strong>不能在最後加上斜線 (slash) 也就是 <code>/</code></strong></span></p>
+<h2 id="listen">Listen</h2>
+<br>
+<p>中文應該翻成監聽，設定讓 Apache 綁定 (bind) 在哪個 IP:Port。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Listen 80           ## 綁定 0.0.0.0:80
+</span></span><span class="line"><span class="cl">Listen 1.2.3.4:80   ## 綁定 1.2.3.4:80
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>使用</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">netstat -ltunp
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>個人覺得 <code>ss</code> 跑出來的畫面很醜、不易讀，即使經過 column 排版後依舊。還是一併附上<br>
+<a href="https://unix.stackexchange.com/questions/421838/ss-command-take-2-lines-for-each-result">ss command take 2 lines for each result</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ss -ltunp <span class="p">|</span> column -t -x
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>可以觀察 httpd 到底使用 (綁定) 了哪些 IP 和 Port。</p>
+<h2 id="module-模組">Module 模組</h2>
+<br>
+<p>其實在 <code>httpd.conf</code> 裡面寫的是 Dynamic Shared Object (DSO)，想說標題打模組會比接地氣。<br>
+載入模組可以透過</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">LoadModule foo_module modules/mod_foo.so
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>官方預設出廠 <code>httpd.conf</code> 會使用 Include 將 <code>ServerRoot</code> 下的 <code>conf.modules.d</code> 目錄內所有 <code>.conf</code> 加入</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Include conf.modules.d/*.conf
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然後官方有提到，已經被編譯的靜態模組 (Statically compiled modules) 並不用在這邊被宣告載入。列出已編譯的靜態模組可以使用:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">httpd -l
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="user-and-group">User and Group</h2>
+<br>
+<p>指定 httpd 這個 daemon 使用哪個 <code>user</code> , <code>group</code> 運作。可以透過 <code>ps</code> 指令觀察:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ps -aux <span class="p">|</span> grep <span class="s1">&#39;httpd&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<hr>
+<p>===========================================</p>
+<h2 id="main-server-config">Main server config</h2>
+<p>===========================================</p>
+<p>上面的設定值都是 daemon 會使用到的，接下來就要進入到真正的主 conf 檔<br>
+主 conf 內設定的內容是可以被其他在 <code>conf.d/*.conf</code> 裡面的 <code>&lt;VirtualHost&gt;</code> 覆蓋 (override)<br>
+簡單來說就是提供 <code>&lt;VirtualHost&gt;</code> 區塊預設值的概念。</p>
+<hr>
+<h2 id="servername">ServerName</h2>
+<br>
+<p>如果沒有加</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">ServerName localhost:80
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><span style="color:blue"><strong>註: localhost 要可以在 <code>/etc/hosts</code> 指向 <code>127.0.0.1</code></strong></span></p>
+<p>測試 conf 檔的 Syntax 是否正確則會出現這個警告。不過最終還是告訴我們語法正確啦~ 不用擔心</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">AH00558: httpd: Could not reliably determine the server&#39;s fully qualified domain name, using 192.168.162.211. Set the &#39;ServerName&#39; directive globally to suppress this message
+</span></span><span class="line"><span class="cl">Syntax OK
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="directory-">Directory <code>/</code></h2>
+<br>
+<p>這個由短短四行組成的預設值是要讓 &lt;Directory&gt; 變成白名單制。<strong>只有要放行的目錄才有訪問權限</strong></p>
+<p><strong>預設值</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;Directory /&gt;
+</span></span><span class="line"><span class="cl">    AllowOverride none
+</span></span><span class="line"><span class="cl">    Require all denied
+</span></span><span class="line"><span class="cl">&lt;/Directory&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<hr>
+<h3 id="實驗require-all-granted">【實驗】Require all granted</h3>
+<br>
+<p>花了一點時間做實驗，實際操作幫助理解。 <del>Witness me !!!</del></p>
+<p>在 <code>&lt;Directory /&gt;</code> 我們更改預設值，也就是 <code>Require all granted</code>。<br>
+接著更改 <code>DocumentRoot /eric_httpd_home</code> 並使用</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mkdir /eric_httpd_home
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>建立該目錄。這邊想稍微先提一下 <span style="color:blue"><strong>為什麼不要建在 <code>/var/www/html</code> 下面就好呢 (即 <code>/var/www/html/eric_httpd_home</code>)</strong></span><br>
+原因是在 <code>httpd.conf</code> 預設有針對 (1) <code>/var/www</code> (2) <code>/var/www/html</code> 做存取相關設定。那麼<strong>這些設定是會自動繼承到該目錄底下的所有子目錄</strong></p>
+<br>
+<p><span style="color:red"><strong>注意 welcome.conf !!</strong></span><br>
+<span style="color:red"><strong>注意 welcome.conf !!</strong></span><br>
+<span style="color:red"><strong>注意 welcome.conf !!</strong></span><br>
+<strong>這個檔案會在 RootDocument 沒有 index 的情況下顯示 Apache 歡迎/測試畫面</strong><br>
+<strong>這會影響實驗，因此先將這個檔案暫時拿掉</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mv /etc/httpd/conf.d/welcome.conf  /etc/httpd/conf.d/welcome.conf.bak
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p>將 <code>httpd.conf</code> 主設定檔存檔，並檢查語法是否錯誤後重啟 (因為實驗機，採取最嚴謹的做法)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">httpd -t
+</span></span><span class="line"><span class="cl">systemctl stop httpd.service <span class="o">&amp;&amp;</span> systemctl start httpd
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>註: 語法若沒有問題會顯示 <code>Syntax OK</code></p>
+<p>直接以 IP 訪問，會得到</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">Forbidden
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">You don&#39;t have permission to access / on this server.
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p><img src="get_403_forbidden.jpg" alt="get_403_forbidden"></p>
+<p>▲ &ldquo;403 Forbiden&rdquo;</p>
+<br>
+<p><strong>「嘿嘿~ 見鬼啦!」</strong> 我們剛剛不是將 <code>/</code> 的權限改成 <code>Require all granted</code> 嗎?<br>
+怎麼沒東西 ◢▆▅▄▃ 崩╰(〒皿〒)╯潰 ▃▄▅▆◣<br>
+會顯示 <strong>403 Forbiden</strong> 的原因有兩個:</p>
+<ol>
+<li><code>/</code> 目錄下沒有期待的 index page。預設是 <code>index.html</code></li>
+</ol>
+<p>我們可以在主 conf 也就是 <code>httpd.conf</code> 當中找到這個片段</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">IfModule</span> <span class="na">dir_module</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    DirectoryIndex index.html
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">IfModule</span><span class="p">&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>片段中定義了預設索引檔 (index file) 為 <code>index.html</code></p>
+<ol start="2">
+<li>沒有開啟目錄瀏覽功能 (directory browsing)</li>
+</ol>
+<p><a href="https://stackoverflow.com/questions/2530372/how-do-i-disable-directory-browsing">How do I disable directory browsing?</a></p>
+<p>也就是</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Options Indexes FollowSymLinks ## Add this line in &#34;Directory&#34; section
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>將這行暫時加入 <code>&lt;Directory /&gt;</code> 當中，並重啟 httpd 即可看到目錄下的所有檔案</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">Directory</span> <span class="err">&#34;/&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    AllowOverride none
+</span></span><span class="line"><span class="cl">    Require all granted
+</span></span><span class="line"><span class="cl">    Options Indexes FollowSymLinks
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">Directory</span><span class="p">&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>註: Directory 路徑有沒有使用 <code>&quot;&quot;</code> 包起來都可以。</p>
+<br>
+<p><img src="enable_file_browsing.jpg" alt="enable_file_browsing"></p>
+<p>▲ 檔案瀏覽功能</p>
+<br>
+<p>這個時候如果再將權限改回 <code>Require all denied</code> 並重啟 httpd 則會看到 &ldquo;403 Forbiden&rdquo;\</p>
+<br>
+<hr>
+<h2 id="常見-directory-內設定值">常見 <code>&lt;Directory&gt;</code> 內設定值</h2>
+<br>
+<h3 id="options">Options</h3>
+<p><a href="https://httpd.apache.org/docs/2.4/mod/core.html#options">Options Directive</a><br>
+官方對 <strong>Option</strong> 這個指示 (Diretive) 的描述: <strong>Configures what features are available in a particular directory</strong><br>
+讓管理員決定針對指定目錄開啟哪些功能</p>
+<p><strong>Syntax 語法</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Options  All   ## 功能全開
+</span></span><span class="line"><span class="cl">Options  None  ## 功能全關
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>或者自由組合 (開啟) 下列選項:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Indexes Includes FollowSymLinks SymLinksifOwnerMatch ExecCGI MultiViews
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>舉例:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Options Indexes FollowSymLinks
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>沒錯，就是上面實驗中開啟目錄瀏覽的關鍵語法~</p>
+<p>還記得實驗理面有提到 <code>&lt;Directory&gt;</code> 是有繼承關係的嗎?<br>
+因為這個關係 Options 支援 <code>+/-</code> 設定<br>
+舉例 【1】:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">Directory</span> <span class="err">&#34;/</span><span class="na">web</span><span class="err">/</span><span class="na">docs</span><span class="err">&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  Options Indexes FollowSymLinks
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">Directory</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">Directory</span> <span class="err">&#34;/</span><span class="na">web</span><span class="err">/</span><span class="na">docs</span><span class="err">/</span><span class="na">spec</span><span class="err">&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  Options Includes
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">Directory</span><span class="p">&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>子目錄<span style="color:red">沒有</span>使用 <code>+/-</code> 設定</strong>的結果就是:<br>
+<code>/web/docs/spec</code> 只獲得 <code>Includes</code> 的功能</p>
+<br>
+<p>舉例【2】:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">Directory</span> <span class="err">&#34;/</span><span class="na">web</span><span class="err">/</span><span class="na">docs</span><span class="err">&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  Options Indexes FollowSymLinks
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">Directory</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">Directory</span> <span class="err">&#34;/</span><span class="na">web</span><span class="err">/</span><span class="na">docs</span><span class="err">/</span><span class="na">spec</span><span class="err">&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  Options +Includes -Indexes
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">Directory</span><span class="p">&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>子目錄<span style="color:red">有</span>使用 <code>+/-</code> 設定</strong>的結果就是:<br>
+<code>/web/docs/spec</code> 除了獲得 <code>Includes</code> 的功能以外，也同樣獲得 <code>FollowSymLinks</code>。並且把 <code>Indexes</code> 關閉。</p>
+<br>
+<h3 id="allowoverride">AllowOverride</h3>
+<p><strong>一句話: 控制該目錄下 <code>.htaccess</code> override 的項目</strong><br>
+<span style="color:red">只要該目錄下沒有 <code>.htaccess</code> 一律設定成 <code>None</code></span>，這也適用大部分的情況<br>
+關於 <code>.htaccess</code> 有興趣的可以參考 <a href="https://httpd.apache.org/docs/current/howto/htaccess.html">Apache HTTP Server Tutorial: .htaccess files</a></p>
+<h3 id="require">Require</h3>
+<p><strong>一句話: 扮演大門警衛角色</strong> 決定誰可以訪問這個目錄<br>
+<a href="https://httpd.apache.org/docs/2.4/howto/access.html">Access Control</a></p>
+<p><strong>Syntax 語法</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Require  all    granted            ## 全部放行。一個警衛已死有事燒紙的狀態
+</span></span><span class="line"><span class="cl">Require  all    denied             ## 全境封鎖
+</span></span><span class="line"><span class="cl">Require  host   example.domain     ## hostname
+</span></span><span class="line"><span class="cl">Require  ip     192.168.207.254/32 ## IP range (CIDR)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p>舉例【黑名單】:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">RequireAll</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    Require all granted
+</span></span><span class="line"><span class="cl">    Require not ip 10.252.46.165
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">RequireAll</span><span class="p">&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl">Require not ip 192.168.205
+</span></span><span class="line"><span class="cl">Require not host phishers.example.com moreidiots.example
+</span></span><span class="line"><span class="cl">Require not host gov
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<h3 id="directoryindex">DirectoryIndex</h3>
+<p><strong>一句話: 索引檔名稱/順序</strong><br>
+<a href="https://httpd.apache.org/docs/2.4/mod/mod_dir.html#directoryindex">DirectoryIndex Directive</a><br>
+這項功能是屬於 <code>mod_dir</code> 內的，在主 conf 檔中區塊是長這樣:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;IfModule dir_module&gt;
+</span></span><span class="line"><span class="cl">    DirectoryIndex index.html
+</span></span><span class="line"><span class="cl">&lt;/IfModule&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>不過經過實測 <code>DirectoryIndex</code> 可以直接加在 <code>&lt;Directory&gt;</code> 區塊內沒問題 大丈夫~</p>
+<p>舉例:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">Directory</span> <span class="err">&#34;/</span><span class="na">foo</span><span class="err">&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    DirectoryIndex index.html
+</span></span><span class="line"><span class="cl">    DirectoryIndex index.php
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">Directory</span><span class="p">&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">Directory</span> <span class="err">&#34;/</span><span class="na">foo</span><span class="err">&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    DirectoryIndex index.html index.php
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">Directory</span><span class="p">&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><span style="color:blue">上面兩個效果都相同</span></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">Directory</span> <span class="err">&#34;/</span><span class="na">foo</span><span class="err">&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    DirectoryIndex index.html
+</span></span><span class="line"><span class="cl">    DirectoryIndex disabled
+</span></span><span class="line"><span class="cl">    DirectoryIndex index.php
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">Directory</span><span class="p">&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>上面這個呢&hellip;. 索引檔只會被設定成 <code>index.php</code> 不太清楚為什麼又有這種操作 XD</p>
+<br>
+<hr>
+<h2 id="virtualhost">VirtualHost</h2>
+<br>
+<p>VirtualHost 的功能，就是使用 HTTP Header 裡面的 <code>Hosts</code> 來判定 Client 端要求哪個站台 (site) 的內容<br>
+附上 HTTP Request Header</p>
+<p><strong>爆雷實驗結果</strong></p>
+<p>只要 <code>/etc/httpd/conf.d/</code> 內有<span style="color:red"><strong>任何一個設定檔使用 <code>VirtualHost</code></strong></span>，httpd 就必定會匹配 HTTP Request Header 內的 Hosts 資料，綁域名就是這個意思。<br>
+若匹配不到 AND <code>/etc/httpd/conf.d/</code> 內有多個成功配置的 VirtualHost，那就會以設定檔 Inode 小的為主 (猜測)。只有一個的話就非他莫屬。並不會有<a href="https://blog.xuite.net/tolarku/blog/485166953-Apache+Virtual+Host+%E5%A4%9A%E7%B6%B2%E5%9F%9F%E7%B6%B2%E7%AB%99%E6%94%BE%E7%BD%AE%E5%9C%A8%E5%90%8C%E4%B8%80%E5%8F%B0%E4%B8%BB%E6%A9%9F%E4%B8%8A">這篇</a>說的 <code>500 Internal Server Error</code> 出現</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">GET / HTTP/1.1
+</span></span><span class="line"><span class="cl">Host: 207.httpd.lab
+</span></span><span class="line"><span class="cl">User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0
+</span></span><span class="line"><span class="cl">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+</span></span><span class="line"><span class="cl">Accept-Language: zh-TW,zh;q=0.8,en-US;q=0.5,en;q=0.3
+</span></span><span class="line"><span class="cl">Accept-Encoding: gzip, deflate, br
+</span></span><span class="line"><span class="cl">Connection: keep-alive
+</span></span><span class="line"><span class="cl">Upgrade-Insecure-Requests: 1
+</span></span><span class="line"><span class="cl">Pragma: no-cache
+</span></span><span class="line"><span class="cl">Cache-Control: no-cache
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>查詢 Innode 方式:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">stat &lt;file1&gt; &lt;file2&gt; &lt;....&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@eric_nginx<span class="o">[</span>/etc/httpd/conf.d<span class="o">]</span><span class="c1"># stat primary_207_httpd_lab.conf  second_207_httpd_labi.conf </span>
+</span></span><span class="line"><span class="cl">  File: ‘primary_207_httpd_lab.conf’
+</span></span><span class="line"><span class="cl">  Size: <span class="m">241</span>       	Blocks: <span class="m">8</span>          IO Block: <span class="m">4096</span>   regular file
+</span></span><span class="line"><span class="cl">Device: 821h/2081d	Inode: <span class="m">393901</span>      Links: <span class="m">1</span>
+</span></span><span class="line"><span class="cl">Access: <span class="o">(</span>0644/-rw-r--r--<span class="o">)</span>  Uid: <span class="o">(</span>    0/    root<span class="o">)</span>   Gid: <span class="o">(</span>    0/    root<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Access: 2021-02-22 16:21:10.299668598 +0800
+</span></span><span class="line"><span class="cl">Modify: 2021-02-22 16:17:25.607929852 +0800
+</span></span><span class="line"><span class="cl">Change: 2021-02-22 16:21:06.485537243 +0800
+</span></span><span class="line"><span class="cl"> Birth: -
+</span></span><span class="line"><span class="cl">  File: ‘second_207_httpd_labi.conf’
+</span></span><span class="line"><span class="cl">  Size: <span class="m">242</span>       	Blocks: <span class="m">8</span>          IO Block: <span class="m">4096</span>   regular file
+</span></span><span class="line"><span class="cl">Device: 821h/2081d	Inode: <span class="m">393902</span>      Links: <span class="m">1</span>
+</span></span><span class="line"><span class="cl">Access: <span class="o">(</span>0644/-rw-r--r--<span class="o">)</span>  Uid: <span class="o">(</span>    0/    root<span class="o">)</span>   Gid: <span class="o">(</span>    0/    root<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Access: 2021-02-22 16:06:25.883206171 +0800
+</span></span><span class="line"><span class="cl">Modify: 2021-02-22 16:06:24.283151060 +0800
+</span></span><span class="line"><span class="cl">Change: 2021-02-22 16:06:24.284151094 +0800
+</span></span><span class="line"><span class="cl"> Birth: -
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="server-statusinfo">server-status/info</h3>
+<p>此篇筆記產出的原因與主要目的，就是某幾台 Web server 突然在監控抓不到。不管是以 IP 或者域名直接訪問 <code>/server-status</code> or <code>server-info</code> 都出現 &ldquo;假 404&rdquo; 的頁面 (畫面上顯示 404 但 F12 看到的是 200 OK 有成功 GET 到頁面)<br>
+本來以為是 RD 因為要防堵敏感資訊洩漏而將 <code>/server-status</code> 與 <code>/server-info</code> 導向 &ldquo;假 404&rdquo;，後來經過電聯後才釐清並不是刻意阻擋 <code>/server-status</code>，<span style="color:red"><strong>執行邏輯是當找不到此路徑 (真的會噴 404 Not Found 的情況) -&gt; 轉向 &ldquo;假 404&rdquo;</strong></span><br>
+驗證方式就是直接訪問 <code>/jahsdjugu</code> 黑白打、根本不存在的路徑，也成功訪問 &ldquo;假 404&rdquo;</p>
+<h4 id="我的方法">我的方法</h4>
+<p>不使用 <code>/etc/httpd/conf.d/httpd-info.conf</code> (改名 <code>.bak</code>) 就好<br>
+額外新增檔案 <code>/etc/httpd/conf.d/server_status.conf</code><br>
+檔案內容:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">VirtualHost</span> <span class="err">*</span><span class="na">:80</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        ServerName localhost
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">Location</span> <span class="err">&#34;/</span><span class="na">server-status</span><span class="err">&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">                SetHandler server-status
+</span></span><span class="line"><span class="cl">                Require all denied
+</span></span><span class="line"><span class="cl">                Require ip 192.168.162.0/23 127.0.0.1
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;/</span><span class="nt">Location</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">Location</span> <span class="err">&#34;/</span><span class="na">server-info</span><span class="err">&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">                SetHandler server-info
+</span></span><span class="line"><span class="cl">                Require all denied
+</span></span><span class="line"><span class="cl">                Require ip 192.168.162.0/23 127.0.0.1
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;/</span><span class="nt">Location</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">VirtualHost</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">ExtendedStatus On
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>ServerName</code> 的部分如果要讓辦公室本機可以訪問，就必須改成 <code>192.168.x.x</code>。原因很簡單，辦公室瀏覽器帶的 Request Header 裡面 Host 欄位是 <code>192.168.x.x</code><br>
+如果只是要讓 VM 本機內的 LibreNMS Apache Agent 抓到數值 <code>Require ip 127.0.0.1</code> 或者 <code>Require host localhost</code> 即可。<br>
+Rocket 討論串在 <strong>IT-System</strong> 關鍵字: <code>假 404 </code></p>
+<br>
+<h4 id="patrick-的方法">Patrick 的方法</h4>
+<p>更改 <code>/etc/httpd/conf.d/httpd-info.conf</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">VirtualHost</span> <span class="err">*</span><span class="na">:80</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">ServerName localhost
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">VirtualHost</span><span class="p">&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>補一行 <code>ServerName localhost</code> 上去就好</p>
+<h4 id="兩全其美">兩全其美</h4>
+<p>LibreNMS Apache Agent 預設是去抓取 <code>http://localhost/server-status</code>，如果照上面我的方法當中 <code>ServerName localhost</code> 這樣辦公室沒辦法透過 <code>http://&lt;server_ip&gt;/server-status</code> 看到 status 頁面。<br>
+透過使用 <strong>ServerAlias</strong> 就能在不複製變成兩段設定檔的情況下達成<br>
+<span style="color:green"><strong>localhost 訪問 (O)</strong></span><br>
+<span style="color:green"><strong>IP 訪問 (O)</strong></span></p>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">VirtualHost</span> <span class="err">*</span><span class="na">:80</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        ServerName localhost
+</span></span><span class="line"><span class="cl">        ServerAlias 192.168.x.x
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">Location</span> <span class="err">&#34;/</span><span class="na">server-status</span><span class="err">&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">                SetHandler server-status
+</span></span><span class="line"><span class="cl">                Require all denied
+</span></span><span class="line"><span class="cl">                Require ip 192.168.x.0/23 127.0.0.1
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;/</span><span class="nt">Location</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">Location</span> <span class="err">&#34;/</span><span class="na">server-info</span><span class="err">&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">                SetHandler server-info
+</span></span><span class="line"><span class="cl">                Require all denied
+</span></span><span class="line"><span class="cl">                Require ip 192.168.x.0/23 127.0.0.1
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;/</span><span class="nt">Location</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">VirtualHost</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">ExtendedStatus On
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>關於 <code>ServerAlias</code> 可以參考 <a href="https://httpd.apache.org/docs/current/mod/core.html#serveralias">httpd-ServerAlias Directive</a></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2021-02-20
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/httpd/">httpd</a>
+          <a href="/tags/apache/">apache</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/20210223-hide-apache-php-openssl-nginx-version/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">隱藏 Apache、PHP、OpenSSL、Nginx 版本號</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/20210128-ansible-hello-world/">
+            <span class="next-text nav-default">我的第一支 Ansible。 Ansible Hello World</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.64437849d125a2d603b3e71d6de5225d641a32d17168a58106e0b61852079683.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

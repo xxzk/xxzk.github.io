@@ -49,7 +49,7 @@
 <meta itemprop="name" content="CKA_Note_Section_9_Networking">
 <meta itemprop="description" content="前言 既然這個章節是介紹 Kubernetes Networking 那就先來複習一下之前看過的優質文章吧! [Hwchiu Docker Network - 網路模型 系列] Docker Network - 網路模型 [Day10] Container Network Interface 介紹 188. Prerequisite - Network Namespaces ▲ 使用 ip netns exec &lt;NAMESPACE&gt; ip link"><meta itemprop="datePublished" content="2022-07-04T13:58:19+00:00" />
 <meta itemprop="dateModified" content="2022-07-04T13:58:19+00:00" />
-<meta itemprop="wordCount" content="1270">
+<meta itemprop="wordCount" content="1939">
 <meta itemprop="keywords" content="CKA,kubernetes," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="CKA_Note_Section_9_Networking"/>
 <meta name="twitter:description" content="前言 既然這個章節是介紹 Kubernetes Networking 那就先來複習一下之前看過的優質文章吧! [Hwchiu Docker Network - 網路模型 系列] Docker Network - 網路模型 [Day10] Container Network Interface 介紹 188. Prerequisite - Network Namespaces ▲ 使用 ip netns exec &lt;NAMESPACE&gt; ip link"/>
@@ -149,6 +149,14 @@
         <li><a href="#193-important-note-about-cni-and-cka-exam">193. Important Note about CNI and CKA Exam</a></li>
         <li><a href="#196-pod-networking">196. Pod Networking</a></li>
         <li><a href="#197-cni-in-kubernetes">197. CNI in kubernetes</a></li>
+        <li><a href="#198-cni-weave">198. CNI weave</a>
+          <ul>
+            <li><a href="#understanding-weave-nethttpswwwweaveworksdocsnetlatestconceptshow-it-works"><a href="https://www.weave.works/docs/net/latest/concepts/how-it-works/">Understanding Weave Net</a></a></li>
+          </ul>
+        </li>
+        <li><a href="#199-practice-test---explore-cni-weave">199. Practice Test - Explore CNI Weave</a></li>
+        <li><a href="#可能要背喔-201-practice-test---deploy-network-solution">(可能要背喔!) 201. Practice Test - Deploy Network Solution</a></li>
+        <li><a href="#heading"></a></li>
       </ul>
     </li>
   </ul>
@@ -198,7 +206,8 @@ CNI 還有提供 library 可以自行開發屬於你自己的 CNI plugins~</p>
 <li>在 LAB 當中考生將被要求安裝 Network Addons (包含 plugin)</li>
 <li>plugin 將使用 weave-net 作為範例，當然考生可以<a href="https://kubernetes.io/docs/concepts/cluster-administration/addons/">自由選擇其他 solution</a></li>
 <li><strong><span style='color:red'>實際考試除非題目指定要求，不然也是自由選擇。</span></strong></li>
-<li>從上方提供的 <a href="https://kubernetes.io/docs/concepts/cluster-administration/addons/">自由選擇其他 solution</a> 可以發現所有選項點進去都是其官方網站/GitHub，<strong><span style='color:red'>正式考試時只能看官方文件!</span></strong> 好哩加在，<a href="https://gist.github.com/runlevl4/0921802e6c4e8f90bdc3a1434ee82af4">小飛機推薦的 CKA Bookmark</a> 有包含官方文件安裝 Weave-net 的方式。</li>
+<li>從上方提供的 <a href="https://kubernetes.io/docs/concepts/cluster-administration/addons/">自由選擇其他 solution</a> 可以發現所有選項點進去都是其官方網站/GitHub，<strong><span style='color:red'>正式考試時只能看官方文件!</span></strong> <del>好哩加在，<a href="https://gist.github.com/runlevl4/0921802e6c4e8f90bdc3a1434ee82af4">小飛機推薦的 CKA Bookmark</a> 有包含官方文件安裝 Weave-net 的方式。</del>
+(後來查看，並沒有! 請自行新增 <a href="https://v1-22.docs.kubernetes.io/docs/setup/production-environment/tools/kubeadm/high-availability/#steps-for-the-first-control-plane-node">link</a>，或者使用我的 Bookmark)</li>
 </ul>
 <h2 id="196-pod-networking">196. Pod Networking</h2>
 <p><img src="pod_networking_model.jpg" alt="pod_networking_model"></p>
@@ -222,6 +231,46 @@ CNI 還有提供 library 可以自行開發屬於你自己的 CNI plugins~</p>
 <p>▲ <code>--cni-bin-dir</code> 下面有可供使用的 plugin binary file。</p>
 <p><img src="kubelet_networking_1.jpg" alt="kubelet_networking_1"></p>
 <p>▲ <code>isGateway</code> 代表是否要給 bridge binding 一個 IP address，好讓它變成 gateway 的角色；<code>ipMasq</code> 是否要在 host 針對這個 network 做 NAT。詳細 <a href="https://github.com/containernetworking/cni/blob/main/SPEC.md">Container Network Interface (CNI) Specification</a></p>
+<h2 id="198-cni-weave">198. CNI weave</h2>
+<p><img src="waeve_cni_0.jpg" alt="waeve_cni_0"></p>
+<p>▲ Weave (CNI) 運作的方式就是在各個 worker node 部屬一個 agent，每個 agent 會告知彼此身上有哪些路由 (聽起來有點像 BGP)，<strong><span style='color:red'>並且重新封裝 (encapsulation) 把原始封包變成它的 payload</span></strong></p>
+<p><img src="waeve_cni_1.jpg" alt="waeve_cni_1"></p>
+<p>▲ <strong><span style='color:red'>不管 CNI 為何，container 內的 routing table 都必須存在。</span></strong></p>
+<h3 id="understanding-weave-nethttpswwwweaveworksdocsnetlatestconceptshow-it-works"><a href="https://www.weave.works/docs/net/latest/concepts/how-it-works/">Understanding Weave Net</a></h3>
+<p><img src="https://www.weave.works/docs/net/latest/concepts/top-diag1.png" alt="waeve_peer_network"></p>
+<ul>
+<li>Weave Network 各個節點稱做 peer。</li>
+<li>每個 peer 都會自己的名子 (預設是 MAC address) 方便人類辨識，<strong><span style='color:blue'>即使 restart 也會保留</span></strong>，<strong><span style='color:red'>唯一會改變的是 UID</span></strong>。</li>
+<li>Weave 透過 <strong><span style='color:green'>TCP</span></strong> 連線來執行交握 (perform a protocol handshake) 並且 <strong><span style='color:red'>交換<a href="https://www.weave.works/docs/net/latest/concepts/network-topology/">網路拓譜 (topology)</a></span></strong>，通訊過程是可以被設定加密的。</li>
+<li>Weave 透過 <strong><span style='color:brown'>UDP</span></strong> 「連線」來傳輸 payload (來自 container 的原始封包)，<strong><span style='color:red'>全雙工而且穿透防火牆</span></strong>。</li>
+<li>Weave 會建立 network bridge 在各個 worker node 身上，並且有 IPAM 功能。</li>
+<li>Weave 傳輸封包的方式有兩種:
+(1) <a href="https://www.weave.works/docs/net/latest/tasks/manage/fastdp/">fast data path</a> 完全在 kernel space 處理 packet。
+(2) sleeve mode，封包目的若是 non-local container 的話會被 kernel 捕捉，並且交由位於 user space 的 Weave Net router 處理。</li>
+</ul>
+<p><img src="waeve_cni_2.jpg" alt="waeve_cni_2"></p>
+<p>▲ Deploy Weave via kubectl</p>
+<p><img src="waeve_cni_3.jpg" alt="waeve_cni_3"></p>
+<p>▲ 如果安裝方式是 <code>kubeadm</code> 的話可以使用 <code>kubectl logs weave-net -n kube-system -c weave</code> 來查詢 log (通常用於 debug)</p>
+<h2 id="199-practice-test---explore-cni-weave">199. Practice Test - Explore CNI Weave</h2>
+<p><strong><span style='color:red'>Q:</span></strong> <code>kubelet</code> 使用何種 CNI Plugin ?<br>
+<strong><span style='color:blue'>A:</span></strong> <code>ps -aux | grep 'kubelet' | grep -i 'network'</code></p>
+<p><strong><span style='color:red'>Q:</span></strong> CNI plugin binary 在哪裡 ?<br>
+<strong><span style='color:blue'>A:</span></strong> <code>ps -aux | grep 'kubelet' | grep -i 'cni'</code> 沒有找到 <code>--cni-bin-dir</code> =&gt; 預設在 <code>/opt/cni/bin</code> 底下。</p>
+<p><strong><span style='color:red'>Q:</span></strong> 有哪些 CNI binary 可以使用 ?<br>
+<strong><span style='color:blue'>A:</span></strong> <code>ls -al /opt/cni/bin</code></p>
+<p><strong><span style='color:red'>Q:</span></strong> 哪一個 CNI plugin config 被使用 ?<br>
+<strong><span style='color:blue'>A:</span></strong> <code>ll /etc/cni/net.d/</code></p>
+<p><strong><span style='color:red'>Q:</span></strong> 該 config 預設使用哪個 bin file ?<br>
+<strong><span style='color:blue'>A:</span></strong> <code>less /etc/cni/net.d/10-flannel.conflist</code> 找 <code>type</code> 欄位。</p>
+<h2 id="可能要背喔-201-practice-test---deploy-network-solution">(可能要背喔!) 201. Practice Test - Deploy Network Solution</h2>
+<p>若要更改 Weave 預設使用的 IP 範圍必須使用 <code>kubectl apply -f &quot;https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')&amp;env.IPALLOC_RANGE=10.50.0.0/16&quot;</code></p>
+<p><strong><span style='color:red'>若考試沒有給 Weave Config 的選項的話 <code>&amp;env.IPALLOC_RANGE=</code> 必須背起來!!</span></strong><br>
+<strong><span style='color:red'>若考試沒有給 Weave Config 的選項的話 <code>&amp;env.IPALLOC_RANGE=</code> 必須背起來!!</span></strong><br>
+<strong><span style='color:red'>若考試沒有給 Weave Config 的選項的話 <code>&amp;env.IPALLOC_RANGE=</code> 必須背起來!!</span></strong></p>
+<h2 id="heading"></h2>
+<p><img src="cni_ipam.jpg" alt="cni_ipam"></p>
+<p>▲ CNI plugin 自帶 DHCP 與 host-local 兩種 IPAM type，host-local 就是將 IP 使用狀態存在一個 file@local。延伸閱讀: <a href="https://ithelp.ithome.com.tw/articles/10221970">[HWchiu Day13] 初探 CNI 的 IP 分配問題 (IPAM) </a></p>
 
     </div>
 

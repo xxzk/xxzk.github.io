@@ -49,7 +49,7 @@
 <meta itemprop="name" content="CKA_Note_Section_9_Networking">
 <meta itemprop="description" content="前言 既然這個章節是介紹 Kubernetes Networking 那就先來複習一下之前看過的優質文章吧! [Hwchiu Docker Network - 網路模型 系列] Docker Network - 網路模型 [Day10] Container Network Interface 介紹 188. Prerequisite - Network Namespaces ▲ 使用 ip netns exec &lt;NAMESPACE&gt; ip link"><meta itemprop="datePublished" content="2022-07-04T13:58:19+00:00" />
 <meta itemprop="dateModified" content="2022-07-04T13:58:19+00:00" />
-<meta itemprop="wordCount" content="1939">
+<meta itemprop="wordCount" content="2757">
 <meta itemprop="keywords" content="CKA,kubernetes," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="CKA_Note_Section_9_Networking"/>
 <meta name="twitter:description" content="前言 既然這個章節是介紹 Kubernetes Networking 那就先來複習一下之前看過的優質文章吧! [Hwchiu Docker Network - 網路模型 系列] Docker Network - 網路模型 [Day10] Container Network Interface 介紹 188. Prerequisite - Network Namespaces ▲ 使用 ip netns exec &lt;NAMESPACE&gt; ip link"/>
@@ -156,7 +156,10 @@
         </li>
         <li><a href="#199-practice-test---explore-cni-weave">199. Practice Test - Explore CNI Weave</a></li>
         <li><a href="#可能要背喔-201-practice-test---deploy-network-solution">(可能要背喔!) 201. Practice Test - Deploy Network Solution</a></li>
-        <li><a href="#heading"></a></li>
+        <li><a href="#203-ip-address-management---weave">203. IP Address Management - Weave</a></li>
+        <li><a href="#206-service-networking">206. Service Networking</a></li>
+        <li><a href="#209-dns-in-kubernetes">209. DNS in kubernetes</a></li>
+        <li><a href="#210-coredns-in-kubernetes">210. CoreDNS in Kubernetes</a></li>
       </ul>
     </li>
   </ul>
@@ -268,9 +271,56 @@ CNI 還有提供 library 可以自行開發屬於你自己的 CNI plugins~</p>
 <p><strong><span style='color:red'>若考試沒有給 Weave Config 的選項的話 <code>&amp;env.IPALLOC_RANGE=</code> 必須背起來!!</span></strong><br>
 <strong><span style='color:red'>若考試沒有給 Weave Config 的選項的話 <code>&amp;env.IPALLOC_RANGE=</code> 必須背起來!!</span></strong><br>
 <strong><span style='color:red'>若考試沒有給 Weave Config 的選項的話 <code>&amp;env.IPALLOC_RANGE=</code> 必須背起來!!</span></strong></p>
-<h2 id="heading"></h2>
+<h2 id="203-ip-address-management---weave">203. IP Address Management - Weave</h2>
 <p><img src="cni_ipam.jpg" alt="cni_ipam"></p>
 <p>▲ CNI plugin 自帶 DHCP 與 host-local 兩種 IPAM type，host-local 就是將 IP 使用狀態存在一個 file@local。延伸閱讀: <a href="https://ithelp.ithome.com.tw/articles/10221970">[HWchiu Day13] 初探 CNI 的 IP 分配問題 (IPAM) </a></p>
+<h2 id="206-service-networking">206. Service Networking</h2>
+<p><strong><span style='color:blue'>上面幾個章節都是在介紹 pod networking，這個章節要介紹的是 <code>service</code> networking。</span></strong></p>
+<p><img src="service_networking_0.jpg" alt="service_networking_0"></p>
+<p>▲ <code>kubelet</code> 會去詢問 api-server 有沒有新任務；<code>kube-proxy</code> 也一樣只不過他的任務是詢問是否有 <code>service</code> 被建立。</p>
+<p>先前我們在 <a href="https://blog.xxzk.me/post/20211123-cka_note_section_2_core_concepts/#18-kube-proxy">CKA_Note_Section_2_Core_Concepts#18. Kube Proxy</a> 就有提到 <strong><span style='color:red'><code>service</code> 並不實體存在 worker node 身上，他只是一個紀錄 <code>service</code> 資訊的地方。</span></strong><br>
+以 ClusterIP type 的 <code>service</code> 為例，當 <code>service</code> 被建立時會拿到一個 IP (含 port number)，其 IP address range 被設定在 <code>api-server</code> config。<strong><span style='color:red'>同時在 worker node 上面建立 routing rule。</span></strong></p>
+<p><img src="service_networking_1.jpg" alt="service_networking_1"></p>
+<p>▲ <code>kube-proxy</code> 可以透過 <code>userspace</code>, <strong><span style='color:blue'><code>iptables (預設)</code></span></strong>, <code>ipvs</code> 來建立 routing rules。</p>
+<p><img src="service_networking_2.jpg" alt="service_networking_2"></p>
+<p>▲ <code>service</code> IP address range 被設定在 <code>api-server</code>。</p>
+<p><img src="service_networking_3.jpg" alt="service_networking_3"></p>
+<p>▲ <strong><span style='color:blue'><code>iptables</code> 規則就會被 <code>kube-proxy</code> 增加一條 「所有要去 (dst) <code>10.103.132.104 3306/TCP</code> packet 全部 DNAT 去 <code>10.244.1.2 3306/TCP</code>，也就是 pod 的 IP address」</span></strong></p>
+<p><img src="service_networking_4.jpg" alt="service_networking_4"></p>
+<p>▲ <code>kube-proxy</code> 的變動可以在 <code>/var/log/kube-proxy.log</code> 底下查看。</p>
+<p><img src="service_networking_5.jpg" alt="service_networking_5"></p>
+<p>▲ 如果是 <code>kubeadm</code> 安裝的話可以 <strong><span style='color:blue'>透過 <code>kubectl logs -n kube-system kube-proxy</code> 查看</span></strong>。</p>
+<h2 id="209-dns-in-kubernetes">209. DNS in kubernetes</h2>
+<p>這個章節會講到:</p>
+<ul>
+<li>哪些元件會被分配到 DNS domain name</li>
+<li><code>service</code> DNS record</li>
+<li><code>pod</code> DNS record</li>
+</ul>
+<p><img src="dns_in_k8s.jpg" alt="dns_in_k8s"></p>
+<p>▲ FQDN 就是 Hostname + Namespace + Type + Root Domain 串在一起。 <strong><span style='color:red'>其中 <code>pod</code> create 時並不會自動被產生 DNS record 除非另外設定。</span></strong></p>
+<p>註: 同一個 Namespace 可以透過 Hostname 碰到彼此，不需要完整 FQDN。</p>
+<h2 id="210-coredns-in-kubernetes">210. CoreDNS in Kubernetes</h2>
+<p><img src="coredns_in_k8s_0.jpg" alt="coredns_in_k8s_0"></p>
+<p>▲ CoreDNS 被以 Deployment 的形式部屬。</p>
+<p><img src="coredns_configmap.jpg" alt="coredns_configmap"></p>
+<p>▲ CoreDNS (kube-dns) 需要一個 &ldquo;Corefile&rdquo; 的設定檔，通常會被弄成 <code>configMaps</code>。更多資訊: <a href="https://kubernetes.io/docs/tasks/administer-cluster/dns-custom-nameservers/#coredns-configmap-options">CoreDNS ConfigMap options</a></p>
+<p><img src="coredns_in_k8s_1.jpg" alt="coredns_in_k8s_1"></p>
+<p>▲ 橘字的部分被稱為 plugin，kubernetes 就是其中一個! <code>cluster.local</code> 設定前面提到的 Root domain 為何。</p>
+<p>我聽不懂講師講的 <code>pod insecure</code> 到底在幹嘛，所以就自己去翻書 (<a href="https://coredns.io/plugins/kubernetes/">CoreDNS-Kubernetes</a>) 了~</p>
+<p><code>pods</code> 主要設定該怎麼處裡 IP-based 的 A record，舉例: <code>1-2-3-4.ns.pod.cluster.local</code> =&gt; <code>A  1.2.3.4</code><br>
+這關係到使用 HTTPS (會用到 TLS cert) 直接與 pod 通訊的安全性</p>
+<ul>
+<li>disable: 預設選項，直接不處理、直接回 <code>NXDOMAIN</code> <strong><span style='color:blue'>「沒有這個人啦!」</span></strong>。這也是為什麼前面提到 「<code>pod</code> create 時並不會自動被產生 DNS record 除非另外設定」的原因，設定就在這裡。</li>
+<li>insecre: <strong><span style='color:red'>不向 K8s 檢查 pod 是否存在，直接回對應的 A record。</span></strong></li>
+<li>verified: 先向 K8s 詢問確認有這個 pod 存在後才回復對映 A record，不過這會使用更高的記憶體。</li>
+</ul>
+<p><img src="coredns_in_k8s_2.jpg" alt="coredns_in_k8s_2"></p>
+<p>▲ <code>kubelet</code> 負責設定 pod 使用的 DNS server 為何，使用者不必自己手動加入。</p>
+<p><img src="coredns_in_k8s_3.jpg" alt="coredns_in_k8s_3"></p>
+<p>▲ 在 <code>/etc/resolv.conf</code> 當中定義 <code>search</code>，使得我們直接打 <code>dig web-service</code> 可能找到正確的 FQDN。</p>
+<p><img src="coredns_in_k8s_4.jpg" alt="coredns_in_k8s_4"></p>
+<p>▲ <strong><span style='color:red'>不過僅限 <code>service</code></span></strong> (原因就是在 <code>/etc/resolv.conf</code> <code>search</code> 裡面沒有 <code>pod</code> 呀!)</p>
 
     </div>
 

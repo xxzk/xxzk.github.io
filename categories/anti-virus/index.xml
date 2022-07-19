@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>anti-virus on 老柯的學習筆記</title>
+    <link>https://blog.xxzk.me/categories/anti-virus/</link>
+    <description>Recent content in anti-virus on 老柯的學習筆記</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 18 Jul 2022 16:19:40 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/categories/anti-virus/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用 ClamAV 對 Linux 系統進行掃毒</title>
+      <link>https://blog.xxzk.me/post/20220718-linux-antivirus-tool-clamav-how-to-use/</link>
+      <pubDate>Mon, 18 Jul 2022 16:19:40 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20220718-linux-antivirus-tool-clamav-how-to-use/</guid>
+      <description>前言 這次主要是有放了一千年的老舊服務 VM 疑似被攻擊/入侵的疑慮，才找工具來掃看看~ 一開始是用 開源系統安全稽核工具：Lynis ，但使用後發現 Lynis 比</description>
+    </item>
+    
+  </channel>
+</rss>

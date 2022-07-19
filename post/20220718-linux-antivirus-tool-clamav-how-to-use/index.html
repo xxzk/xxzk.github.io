@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>使用 ClamAV 對 Linux 系統進行掃毒 - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="前言 這次主要是有放了一千年的老舊服務 VM 疑似被攻擊/入侵的疑慮，才找工具來掃看看~ 一開始是用 開源系統安全稽核工具：Lynis ，但使用後發現 Lynis 比" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.98.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20220718-linux-antivirus-tool-clamav-how-to-use/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="使用 ClamAV 對 Linux 系統進行掃毒" />
+<meta property="og:description" content="前言 這次主要是有放了一千年的老舊服務 VM 疑似被攻擊/入侵的疑慮，才找工具來掃看看~ 一開始是用 開源系統安全稽核工具：Lynis ，但使用後發現 Lynis 比" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.xxzk.me/post/20220718-linux-antivirus-tool-clamav-how-to-use/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-07-18T16:19:40+00:00" />
+<meta property="article:modified_time" content="2022-07-18T16:19:40+00:00" />
+
+<meta itemprop="name" content="使用 ClamAV 對 Linux 系統進行掃毒">
+<meta itemprop="description" content="前言 這次主要是有放了一千年的老舊服務 VM 疑似被攻擊/入侵的疑慮，才找工具來掃看看~ 一開始是用 開源系統安全稽核工具：Lynis ，但使用後發現 Lynis 比"><meta itemprop="datePublished" content="2022-07-18T16:19:40+00:00" />
+<meta itemprop="dateModified" content="2022-07-18T16:19:40+00:00" />
+<meta itemprop="wordCount" content="756">
+<meta itemprop="keywords" content="clamav," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="使用 ClamAV 對 Linux 系統進行掃毒"/>
+<meta name="twitter:description" content="前言 這次主要是有放了一千年的老舊服務 VM 疑似被攻擊/入侵的疑慮，才找工具來掃看看~ 一開始是用 開源系統安全稽核工具：Lynis ，但使用後發現 Lynis 比"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">使用 ClamAV 對 Linux 系統進行掃毒</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-07-18 </span>
+        <div class="post-category">
+            <a href="/categories/anti-virus/"> anti-virus </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#前言">前言</a></li>
+        <li><a href="#clamav-安裝">ClamAV 安裝</a></li>
+        <li><a href="#optional-clamav-user-建立">(Optional) ClamAV user 建立</a></li>
+        <li><a href="#optional-clamav-設定檔">(Optional) ClamAV 設定檔</a></li>
+        <li><a href="#更新-cvd-病毒碼資料庫">更新 CVD 病毒碼資料庫</a></li>
+        <li><a href="#掃描指定目錄">掃描指定目錄</a></li>
+        <li><a href="#參考資料">參考資料</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p><img src="clamav_official_site.jpg" alt="clamav_official_site"></p>
+<h2 id="前言">前言</h2>
+<p>這次主要是有放了一千年的老舊服務 VM 疑似被攻擊/入侵的疑慮，才找工具來掃看看~ 一開始是用 <a href="https://ithelp.ithome.com.tw/articles/10217009">開源系統安全稽核工具：Lynis </a>，但使用後發現 Lynis 比較像是安全稽核，沒有掃描惡意程式的功能。</p>
+<p><img src="lynis_audit_report_0.jpg" alt="lynis_audit_report_0"></p>
+<p>▲ Lynis 安全稽核會根據風險歸類 <code>Warning</code> 或者 <code>Suggestion</code>。</p>
+<p><img src="lynis_audit_report_1.jpg" alt="lynis_audit_report_1"></p>
+<p>▲ 會想說用 ClamAV 掃看看有沒有被植入惡意病毒，就是因為看到 Malware scanner 欄位本來是打 <strong><span style='color:red'>X</span></strong> 的狀態。根據官方 <a href="https://cisofy.com/lynis/controls/HRDN-7230/">HRDN-7230 - Presence malware scanner</a> 才發現 ClamAV。</p>
+<h2 id="clamav-安裝">ClamAV 安裝</h2>
+<p>ClamAV 安裝非常簡單，<a href="https://www.clamav.net/downloads">官方下載頁面</a>提供各式 Linux distro package，以我們 CentOS 7 來說直接下載對映 platform 的 <code>.rpm</code>，透過 <code>rpm -i &lt;PATH&gt;</code> 安裝即可。</p>
+<p><img src="clamav_download_page.jpg" alt="clamav_download_page"></p>
+<p>▲ ClamAV 官方下載頁面。</p>
+<p><img src="clamav_file_path.jpg" alt="clamav_file_path"></p>
+<p>▲ <a href="https://docs.clamav.net/manual/Installing/Packages.html">2.1 Packages</a> 有說明各個 file 預設在什麼地方。<del>Google 好久不知道該把 CVD 放哪 = =</del></p>
+<h2 id="optional-clamav-user-建立">(Optional) ClamAV user 建立</h2>
+<p><a href="https://docs.clamav.net/manual/Installing/Add-clamav-user.html">2.7 Add a service user account</a> 如果你想使用 <code>freshclam</code> 來更新 CVD (ClamAV Virus Database)，或者 <code>clamd</code> 來把 ClamAV 變成系統 <code>daemond</code> 的話就必須幫 ClamAV 建立專屬使用者/家目錄。但我們這次只想使用 CLI 來掃描一下系統目錄而已，因此不需要。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">groupadd clamav
+</span></span><span class="line"><span class="cl">useradd -g clamav -s /bin/false -c <span class="s2">&#34;Clam Antivirus&#34;</span> clamav
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo chown -R clamav:clamav /usr/local/share/clamav
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="optional-clamav-設定檔">(Optional) ClamAV 設定檔</h2>
+<p><a href="https://docs.clamav.net/manual/Usage/Configuration.html">3.1 Configuration</a> ClamAV 提供生成 config 的功能。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">clamconf -g freshclam.conf &gt; freshclam.conf
+</span></span><span class="line"><span class="cl">clamconf -g clamd.conf &gt; clamd.conf
+</span></span><span class="line"><span class="cl">clamconf -g clamav-milter.conf &gt; clamav-milter.conf
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>實際上如果用不到這些，可以不用生成。<strong><span style='color:red'>注意! 如果要使用 <code>freshclam</code> 來幫我們自動更新 CVD 病毒碼的話必須修改生成出來的預設 conf (防呆機制)</span></strong></p>
+<h2 id="更新-cvd-病毒碼資料庫">更新 CVD 病毒碼資料庫</h2>
+<p><a href="https://www.clamav.net/downloads#collapseCVD">Virus Databases</a> 官方並沒有提供手動安裝 CVD 的選項，即使在沒有外網環境的情況下還是推薦採用 <a href="https://docs.clamav.net/appendix/CvdPrivateMirror.html">private local mirror</a> 來處理，但我們只要跑這一次啊!! 這麼麻煩 duck 不必~</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">https://database.clamav.net/daily.cvd
+</span></span><span class="line"><span class="cl">https://database.clamav.net/main.cvd
+</span></span><span class="line"><span class="cl">https://database.clamav.net/bytecode.cvd
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>▲ 手動下載這三個 <code>.cvd</code> 放在 <code>/usr/local/share/clamav/</code> 底下即可。</p>
+<p><strong><span style='color:blue'>要確認是否有最新版本，可以使用 <code>dig +noall +answer current.cvd.clamav.net TXT </code> 來查詢 DNS TXT record 得知。</span></strong></p>
+<p>使用 <code>clamscan --version</code> 可以顯示 ClamAV 主程式 / CVD 病毒碼 / 病毒碼日期</p>
+<h2 id="掃描指定目錄">掃描指定目錄</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">clamscan -o -r /bin/ -r /home/ -r /sbin/ -r /etc/ -r /lib/ -r /lib64/ -r /usr/
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>▲ <code>-r</code> 代表遞迴，<code>-o</code> 代表顯示錯誤/被感染的檔案就好。</p>
+<p><img src="clamav_scan_result.jpg" alt="clamav_scan_result"></p>
+<p>▲ 掃描結果 (Summary)。</p>
+<h2 id="參考資料">參考資料</h2>
+<ol>
+<li><a href="https://kb.synology.com/zh-tw/DSM/tutorial/How_to_update_virus_definitions_without_external_network_connection">Synology - 如何在沒有網際網路連線的情況下手動更新病毒碼？</a></li>
+<li><a href="https://blog.clamav.net/2021/03/clamav-cvds-cdiffs-and-magic-behind.html">ClamAV, CVDs, CDIFFs and the magic behind the curtain </a></li>
+<li><a href="https://officeguide.cc/linux-clamav-antivirus-clamscan-installation-configuration-tutorial-examples/">Ubuntu Linux 安裝、使用 ClamAV 防毒軟體 clamscan 掃毒指令教學與範例</a></li>
+</ol>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2022-07-18
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/clamav/">clamav</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/20220704-cka_note_section_9_networking/">
+            <span class="next-text nav-default">CKA_Note_Section_9_Networking</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.64437849d125a2d603b3e71d6de5225d641a32d17168a58106e0b61852079683.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

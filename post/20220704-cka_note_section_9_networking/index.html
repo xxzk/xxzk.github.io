@@ -49,7 +49,7 @@
 <meta itemprop="name" content="CKA_Note_Section_9_Networking">
 <meta itemprop="description" content="前言 既然這個章節是介紹 Kubernetes Networking 那就先來複習一下之前看過的優質文章吧! [Hwchiu Docker Network - 網路模型 系列] Docker Network - 網路模型 [Day10] Container Network Interface 介紹 188. Prerequisite - Network Namespaces ▲ 使用 ip netns exec &lt;NAMESPACE&gt; ip link"><meta itemprop="datePublished" content="2022-07-04T13:58:19+00:00" />
 <meta itemprop="dateModified" content="2022-07-04T13:58:19+00:00" />
-<meta itemprop="wordCount" content="2757">
+<meta itemprop="wordCount" content="2771">
 <meta itemprop="keywords" content="CKA,kubernetes," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="CKA_Note_Section_9_Networking"/>
 <meta name="twitter:description" content="前言 既然這個章節是介紹 Kubernetes Networking 那就先來複習一下之前看過的優質文章吧! [Hwchiu Docker Network - 網路模型 系列] Docker Network - 網路模型 [Day10] Container Network Interface 介紹 188. Prerequisite - Network Namespaces ▲ 使用 ip netns exec &lt;NAMESPACE&gt; ip link"/>
@@ -160,6 +160,7 @@
         <li><a href="#206-service-networking">206. Service Networking</a></li>
         <li><a href="#209-dns-in-kubernetes">209. DNS in kubernetes</a></li>
         <li><a href="#210-coredns-in-kubernetes">210. CoreDNS in Kubernetes</a></li>
+        <li><a href="#213-ingress">213. Ingress</a></li>
       </ul>
     </li>
   </ul>
@@ -321,6 +322,8 @@ CNI 還有提供 library 可以自行開發屬於你自己的 CNI plugins~</p>
 <p>▲ 在 <code>/etc/resolv.conf</code> 當中定義 <code>search</code>，使得我們直接打 <code>dig web-service</code> 可能找到正確的 FQDN。</p>
 <p><img src="coredns_in_k8s_4.jpg" alt="coredns_in_k8s_4"></p>
 <p>▲ <strong><span style='color:red'>不過僅限 <code>service</code></span></strong> (原因就是在 <code>/etc/resolv.conf</code> <code>search</code> 裡面沒有 <code>pod</code> 呀!)</p>
+<h2 id="213-ingress">213. Ingress</h2>
+<p>請參考 <a href="https://blog.xxzk.me/post/20211104-ckad-note-section-7-service-and-networking/#94-ingress-networking">CKAD Note Section 7 Service and Networking#94. Ingress Networking</a></p>
 
     </div>
 

@@ -6,7 +6,16 @@
     <description>Recent content in CKA on 老柯的學習筆記</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 04 Jul 2022 13:58:19 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/categories/cka/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 19 Jul 2022 14:43:27 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/categories/cka/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Section 10 Design and Install a Kubernetes Cluster</title>
+      <link>https://blog.xxzk.me/post/20220719-section_10_design_and_install_a_kubernetes_cluster/</link>
+      <pubDate>Tue, 19 Jul 2022 14:43:27 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20220719-section_10_design_and_install_a_kubernetes_cluster/</guid>
+      <description>222. Choosing Kubernetes Infrastructure 這個章節在講如何選擇 K8s 建在哪裡，知道了一個蠻有趣的名詞 Kubernetes Turnkey Cloud Solutions 223. Configure High Availability ▲ api-server 可以是 Active-Active mode，不過 kubectl config 一次只能設定一個 URL，所以建議</description>
+    </item>
+    
     <item>
       <title>CKA_Note_Section_9_Networking</title>
       <link>https://blog.xxzk.me/post/20220704-cka_note_section_9_networking/</link>

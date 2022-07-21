@@ -49,7 +49,7 @@
 <meta itemprop="name" content="Section 10 Design and Install a Kubernetes Cluster">
 <meta itemprop="description" content="222. Choosing Kubernetes Infrastructure 這個章節在講如何選擇 K8s 建在哪裡，知道了一個蠻有趣的名詞 Kubernetes Turnkey Cloud Solutions 223. Configure High Availability ▲ api-server 可以是 Active-Active mode，不過 kubectl config 一次只能設定一個 URL，所以建議"><meta itemprop="datePublished" content="2022-07-19T14:43:27+00:00" />
 <meta itemprop="dateModified" content="2022-07-19T14:43:27+00:00" />
-<meta itemprop="wordCount" content="239">
+<meta itemprop="wordCount" content="664">
 <meta itemprop="keywords" content="CKA,kubernetes," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Section 10 Design and Install a Kubernetes Cluster"/>
 <meta name="twitter:description" content="222. Choosing Kubernetes Infrastructure 這個章節在講如何選擇 K8s 建在哪裡，知道了一個蠻有趣的名詞 Kubernetes Turnkey Cloud Solutions 223. Configure High Availability ▲ api-server 可以是 Active-Active mode，不過 kubectl config 一次只能設定一個 URL，所以建議"/>
@@ -145,6 +145,7 @@
       <ul>
         <li><a href="#222-choosing-kubernetes-infrastructure">222. Choosing Kubernetes Infrastructure</a></li>
         <li><a href="#223-configure-high-availability">223. Configure High Availability</a></li>
+        <li><a href="#224-etcd-in-ha">224. ETCD in HA</a></li>
       </ul>
     </li>
   </ul>
@@ -164,9 +165,36 @@
 <p><img src="controller_manager_election_resource.jpg" alt="controller_manager_election_resource"></p>
 <p>▲ 搶旗方式是看誰先去更新 K8s 內的 resource <code>kube-controller-manager</code>(由 <code>--leader-elect-resource-name string</code> 定義 <a href="https://kubernetes.io/docs/reference/command-line-tools-reference/kube-controller-manager/">docs</a>)</p>
 <p><img src="etcd_stacked_topology.jpg" alt="etcd_stacked_topology"></p>
-<p>▲ ETCD stacked topology 就是將 ETCD server 置於 master node 裡面。</p>
+<p>▲ etcd stacked topology 就是將 ETCD server 置於 master node 裡面。</p>
 <p><img src="etcd_external_topology.jpg" alt="etcd_external_topology"></p>
-<p>▲ ETCD 作為一個獨立的元件當然可以外掛，反正我們都要在 <code>api-server</code> config 內設定 ETCD server 在哪。</p>
+<p>▲ etcd 作為一個獨立的元件當然可以外掛，反正我們都要在 <code>api-server</code> config 內設定 etcd server 在哪。</p>
+<h2 id="224-etcd-in-ha">224. ETCD in HA</h2>
+<p>這個章節主要討論 etcd 如何做 HA。</p>
+<p><img src="etcd_official_site.jpg" alt="etcd_official_site"></p>
+<p>▲ etcd 官方網站的介紹說明 etcd 是一個 <strong><span style='color:red'>分散式且可靠的鍵值資料庫 (A distributed, reliable key-value store)</span></strong></p>
+<p><img src="etcd_read_write_both.jpg" alt="etcd_read_write_both"></p>
+<p>▲ etcd 每一個 node 都可以 R/W (這句話界於對與不對之間，後面會講到)</p>
+<p><img src="etcd_process_write_0.jpg" alt="etcd_process_write_0"></p>
+<p>▲ <strong><span style='color:red'>嚴格一點說起來 etcd 每個節點都能受理「寫入任務」，但只有 leader node 會執行寫入、派送的動作。</span></strong></p>
+<p><img src="etcd_process_write_1.jpg" alt="etcd_process_write_1"></p>
+<p>▲ 其它 follower 節點受理寫入任務後會把 transaction pass 到 leader node 身上。</p>
+<p><strong><span style='color:red'>OK，寫入沒問題了! 真的沒問題了嗎? leader node 要怎麼確保 transaction 合法、有效?</span></strong></p>
+<p><img src="leader_election_raft_arglorithm.jpg" alt="leader_election_raft_arglorithm"></p>
+<p>▲ 我們先來講講 leader 如何被選出的，etcd 使用 RAFT 的演算法來執行選舉，每個 node 身上都設有一個 random timer，時間一到就向其他節點發送類似「我可以當 leader 嗎」的請求來獲得選票取得 leader 資格。</p>
+<p><img src="etcd_process_write_2.jpg" alt="etcd_process_write_2"></p>
+<p>▲ 那.. <strong><span style='color:blue'>當其中一個節點死去沒有辦法執行 transaction，這則 transaction 還有效嗎?</span></strong> <strong><span style='color:red'>答案是: 只要超過 majority (quorum) 執行這則 transaction 就視為成功、合法。</span></strong></p>
+<p>官方 F&amp;Q <a href="https://etcd.io/docs/v3.3/faq/#why-an-odd-number-of-cluster-members">Why an odd number of cluster members?</a> 提到</p>
+<blockquote>
+<p>An etcd cluster needs a majority of nodes, a quorum, to agree on updates to the cluster state.</p>
+</blockquote>
+<p><img src="etcd_quorum.jpg" alt="etcd_quorum"></p>
+<p>▲ etcd quorum 計算方式以及容錯程度 (<strong><span style='color:blue'>無條件捨去</span></strong>)，通常我們會選擇 3, 5, 7 單數作為 etcd cluster node 的數量。</p>
+<p><img src="how_to_install_etcd_0.jpg" alt="how_to_install_etcd_0"></p>
+<p>▲ etcd 安裝的方式。</p>
+<p><img src="how_to_install_etcd_1.jpg" alt="how_to_install_etcd_1"></p>
+<p>▲ 在 systemd service conf 設定 peer 資訊。</p>
+<p><img src="etcdctl_useage.jpg" alt="etcdctl_useage"></p>
+<p>▲ <strong><span style='color:blue'>etcd API 有分 V2 與 V3</span></strong>。</p>
 
     </div>
 

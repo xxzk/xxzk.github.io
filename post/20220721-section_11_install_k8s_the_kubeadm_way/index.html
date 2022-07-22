@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>Section 11 Install K8s the kubeadm_way - 老柯的學習筆記</title>
+  <title>Section 11 Install K8s the kubeadm way - 老柯的學習筆記</title>
   <meta name="renderer" content="webkit" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
@@ -39,19 +39,19 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
-<meta property="og:title" content="Section 11 Install K8s the kubeadm_way" />
+<meta property="og:title" content="Section 11 Install K8s the kubeadm way" />
 <meta property="og:description" content="225. Important Update: Kubernetes the Hard Way 這個章節其實是 Section 10 的最後一個 lecture，不過我想擺在這裡應該會比較合適! 講師提供一系列 Youtube 影片來示範如何像個硬漢一樣 Install Kubernetes from Scratch" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.xxzk.me/post/20220721-section_11_install_k8s_the_kubeadm_way/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2022-07-21T13:53:58+00:00" />
 <meta property="article:modified_time" content="2022-07-21T13:53:58+00:00" />
 
-<meta itemprop="name" content="Section 11 Install K8s the kubeadm_way">
+<meta itemprop="name" content="Section 11 Install K8s the kubeadm way">
 <meta itemprop="description" content="225. Important Update: Kubernetes the Hard Way 這個章節其實是 Section 10 的最後一個 lecture，不過我想擺在這裡應該會比較合適! 講師提供一系列 Youtube 影片來示範如何像個硬漢一樣 Install Kubernetes from Scratch"><meta itemprop="datePublished" content="2022-07-21T13:53:58+00:00" />
 <meta itemprop="dateModified" content="2022-07-21T13:53:58+00:00" />
-<meta itemprop="wordCount" content="161">
+<meta itemprop="wordCount" content="459">
 <meta itemprop="keywords" content="CKA,kubernetes," /><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Section 11 Install K8s the kubeadm_way"/>
+<meta name="twitter:title" content="Section 11 Install K8s the kubeadm way"/>
 <meta name="twitter:description" content="225. Important Update: Kubernetes the Hard Way 這個章節其實是 Section 10 的最後一個 lecture，不過我想擺在這裡應該會比較合適! 講師提供一系列 Youtube 影片來示範如何像個硬漢一樣 Install Kubernetes from Scratch"/>
 
 <!--[if lte IE 9]>
@@ -125,7 +125,7 @@
           <article class="post">
     
     <header class="post-header">
-      <h1 class="post-title">Section 11 Install K8s the kubeadm_way</h1>
+      <h1 class="post-title">Section 11 Install K8s the kubeadm way</h1>
 
       <div class="post-meta">
         <span class="post-time"> 2022-07-21 </span>
@@ -145,6 +145,11 @@
       <ul>
         <li><a href="#225-important-update-kubernetes-the-hard-way">225. Important Update: Kubernetes the Hard Way</a></li>
         <li><a href="#226-introduction-to-deployment-with-kubeadm">226. Introduction to Deployment with Kubeadm</a></li>
+        <li><a href="#230-practice-test---deploy-a-kubernetes-cluster-using-kubeadm">230. Practice Test - Deploy a Kubernetes Cluster using Kubeadm</a>
+          <ul>
+            <li><a href="#creating-a-cluster-with-kubeadm">Creating a cluster with kubeadm</a></li>
+          </ul>
+        </li>
       </ul>
     </li>
   </ul>
@@ -161,6 +166,74 @@
 <p><a href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#installing-runtime">[kubernetes.io] Installing a container runtime</a></p>
 <center><img src="./kubeadm-stacked-color.png" alt="kubeadm-stacked-color" width="250" height="300"></center>
 <center>▲ kubeadm 的 LOGO。</center>
+<h2 id="230-practice-test---deploy-a-kubernetes-cluster-using-kubeadm">230. Practice Test - Deploy a Kubernetes Cluster using Kubeadm</h2>
+<p>安裝 <code>kubeadm</code> 的方式請參考書籤 <a href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#installing-kubeadm-kubelet-and-kubectl">Installing kubeadm, kubelet and kubectl</a>，下面會以 Debian-base distro 來當範例。 <del>反正就是一直無腦複製貼上啦</del></p>
+<ol>
+<li>更新 <code>apt</code> 必要條件</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo apt-get update
+</span></span><span class="line"><span class="cl">sudo apt-get install -y apt-transport-https ca-certificates curl
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>apt-transport-https</code> 這個套件是為了讓 <code>apt</code> 能夠以 <code>HTTPS</code> method 下載。</p>
+<blockquote>
+<p>apt-transport-https - APT transport for downloading via the HTTP Secure protocol (HTTPS)</p>
+</blockquote>
+<ol start="2">
+<li>下載 Google PGP key</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="3">
+<li>新增 <code>apt</code> repositry</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main&#34;</span> <span class="p">|</span> sudo tee /etc/apt/sources.list.d/kubernetes.list
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="4">
+<li>接著更新 <code>apt</code> repo index、下載 <code>kubeadm</code> 所需、 <strong><span style='color:red'>將這三個套件的版本固定，避免被 <code>sudo apt upgrade/update</code> 不小心升級</span></strong></li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo apt-get update
+</span></span><span class="line"><span class="cl">sudo apt-get install -y kubelet kubeadm kubectl
+</span></span><span class="line"><span class="cl">sudo apt-mark hold kubelet kubeadm kubectl
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## if specific version</span>
+</span></span><span class="line"><span class="cl">sudo apt-get install -y <span class="nv">kubelet</span><span class="o">=</span>1.24.0 <span class="nv">kubeadm</span><span class="o">=</span>1.24.0 <span class="nv">kubectl</span><span class="o">=</span>1.24.0
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="creating-a-cluster-with-kubeadm">Creating a cluster with kubeadm</h3>
+<p>這個子章節介紹如何使用 <code>kubeadm</code> 來把 cluster 跑起來~</p>
+<ul>
+<li>如果你想讓執行 <code>kubeadm init</code> or <code>kubeadm join</code> 這兩個指令時，就把一些常用的 image 抓到該 node 身上，可以參考 <a href="https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-init/#without-internet-connection">Running kubeadm without an Internet connection</a>， 如果 cluster 碰不到外網就自建 Harbor 吧!</li>
+</ul>
+
     </div>
 
     <div class="post-copyright">

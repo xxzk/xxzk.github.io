@@ -3,55 +3,62 @@
   
   <url>
     <loc>https://blog.xxzk.me/categories/</loc>
-    <lastmod>2022-07-19T14:43:27+00:00</lastmod>
+    <lastmod>2022-07-21T13:53:58+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://blog.xxzk.me/tags/cka/</loc>
-    <lastmod>2022-07-19T14:43:27+00:00</lastmod>
+    <lastmod>2022-07-21T13:53:58+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://blog.xxzk.me/categories/cka/</loc>
-    <lastmod>2022-07-19T14:43:27+00:00</lastmod>
+    <lastmod>2022-07-21T13:53:58+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://blog.xxzk.me/tags/kubernetes/</loc>
-    <lastmod>2022-07-19T14:43:27+00:00</lastmod>
+    <lastmod>2022-07-21T13:53:58+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://blog.xxzk.me/post/</loc>
-    <lastmod>2022-07-19T14:43:27+00:00</lastmod>
+    <lastmod>2022-07-21T13:53:58+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://blog.xxzk.me/post/20220719-section_10_design_and_install_a_kubernetes_cluster/</loc>
-    <lastmod>2022-07-19T14:43:27+00:00</lastmod>
+    <loc>https://blog.xxzk.me/post/20220721-section_11_install_k8s_the_kubeadm_way/</loc>
+    <lastmod>2022-07-21T13:53:58+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://blog.xxzk.me/tags/</loc>
-    <lastmod>2022-07-19T14:43:27+00:00</lastmod>
+    <lastmod>2022-07-21T13:53:58+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://blog.xxzk.me/</loc>
+    <lastmod>2022-07-21T13:53:58+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/post/20220719-section_10_design_and_install_a_kubernetes_cluster/</loc>
     <lastmod>2022-07-19T14:43:27+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>

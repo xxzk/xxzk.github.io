@@ -6,7 +6,16 @@
     <description>Recent content in Posts on 老柯的學習筆記</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 19 Jul 2022 14:43:27 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 21 Jul 2022 13:53:58 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Section 11 Install K8s the kubeadm_way</title>
+      <link>https://blog.xxzk.me/post/20220721-section_11_install_k8s_the_kubeadm_way/</link>
+      <pubDate>Thu, 21 Jul 2022 13:53:58 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20220721-section_11_install_k8s_the_kubeadm_way/</guid>
+      <description>225. Important Update: Kubernetes the Hard Way 這個章節其實是 Section 10 的最後一個 lecture，不過我想擺在這裡應該會比較合適! 講師提供一系列 Youtube 影片來示範如何像個硬漢一樣 Install Kubernetes from Scratch</description>
+    </item>
+    
     <item>
       <title>Section 10 Design and Install a Kubernetes Cluster</title>
       <link>https://blog.xxzk.me/post/20220719-section_10_design_and_install_a_kubernetes_cluster/</link>

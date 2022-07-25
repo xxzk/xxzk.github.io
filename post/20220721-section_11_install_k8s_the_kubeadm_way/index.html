@@ -49,7 +49,7 @@
 <meta itemprop="name" content="Section 11 Install K8s the kubeadm way">
 <meta itemprop="description" content="225. Important Update: Kubernetes the Hard Way 這個章節其實是 Section 10 的最後一個 lecture，不過我想擺在這裡應該會比較合適! 講師提供一系列 Youtube 影片來示範如何像個硬漢一樣 Install Kubernetes from Scratch"><meta itemprop="datePublished" content="2022-07-21T13:53:58+00:00" />
 <meta itemprop="dateModified" content="2022-07-21T13:53:58+00:00" />
-<meta itemprop="wordCount" content="459">
+<meta itemprop="wordCount" content="1190">
 <meta itemprop="keywords" content="CKA,kubernetes," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Section 11 Install K8s the kubeadm way"/>
 <meta name="twitter:description" content="225. Important Update: Kubernetes the Hard Way 這個章節其實是 Section 10 的最後一個 lecture，不過我想擺在這裡應該會比較合適! 講師提供一系列 Youtube 影片來示範如何像個硬漢一樣 Install Kubernetes from Scratch"/>
@@ -148,6 +148,7 @@
         <li><a href="#230-practice-test---deploy-a-kubernetes-cluster-using-kubeadm">230. Practice Test - Deploy a Kubernetes Cluster using Kubeadm</a>
           <ul>
             <li><a href="#creating-a-cluster-with-kubeadm">Creating a cluster with kubeadm</a></li>
+            <li><a href="#完成-kubeadm-init-之後">完成 <code>kubeadm init</code> 之後</a></li>
           </ul>
         </li>
       </ul>
@@ -233,6 +234,99 @@
 <ul>
 <li>如果你想讓執行 <code>kubeadm init</code> or <code>kubeadm join</code> 這兩個指令時，就把一些常用的 image 抓到該 node 身上，可以參考 <a href="https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-init/#without-internet-connection">Running kubeadm without an Internet connection</a>， 如果 cluster 碰不到外網就自建 Harbor 吧!</li>
 </ul>
+<h4 id="initializing-your-control-plane-node">Initializing your control-plane node</h4>
+<ol>
+<li>(官方建議) 如果未來 (或者現在) 有意要將這個 singal control-plane node 升級到多節點達到 HA 目的的話，<code>--control-plane-endpoint</code> 必須被指定。格式參考 <a href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/high-availability/#stacked-control-plane-and-etcd-nodes">Stacked control plane and etcd nodes</a></li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo kubeadm init --control-plane-endpoint <span class="s2">&#34;LOAD_BALANCER_DNS:LOAD_BALANCER_PORT&#34;</span> --upload-certs
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>--upload-certs</code> 代表這個 control-plane node 的 certification 之後會跟之後建立的 control-plane node 共享，詳情參考 <a href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/high-availability/#manual-certs">Manual certificate distribution</a></p>
+<blockquote>
+<p>Such an endpoint can be either a DNS name or an IP address of a load-balancer.</p>
+</blockquote>
+<p>是不一定要使用 Domain name 啦&hellip; 不過自建一個 <a href="https://github.com/AdguardTeam/AdGuardHome">ADGuard Home</a> 也沒多少時間嘛!</p>
+<ol start="2">
+<li>
+<p>安裝 CNI plugins，<code>--pod-network-cidr</code> 設定 <code>pod</code> 使用的網段 例如: <code>--pod-network-cidr=10.10.0.0/16</code>。參考書籤 <a href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/#pod-network">Installing a Pod network add-on</a></p>
+</li>
+<li>
+<p>(Optional) 預設 <code>kubeadm</code> 會自動去偵測 CRI，如果安裝多個 CRI 想要指定使用的話可以加上 <code>--cri-socket</code> 常見的 CRI 路徑 <a href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#installing-runtime">Installing a container runtime</a></p>
+</li>
+<li>
+<p>(Optional) 預設 <code>kube-apiserver</code> 會 LISTEN 在 default gateway via 的 NIC 上面，可以透過 <code>--apiserver-advertise-address=&lt;ip-address&gt;</code> <strong><span style='color:red'>指定 bind IP， 如果使用 IPv6 就必須手動給定 EX: <code>--apiserver-advertise-address=fd00::101</code>。</span></strong></p>
+</li>
+</ol>
+<h4 id="more-information">More information</h4>
+<ul>
+<li>將 config 變成 file 傳入 <code>kubeadm init --config</code> 參考:<a href="https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-init/#config-file">Using kubeadm init with a configuration file</a></li>
+<li>針對各個 control-plane components 做客制化細部設定 參考: <a href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/control-plane-flags/">Customizing components with the kubeadm API</a></li>
+<li>重新設定由 <code>kubeadm</code> 建立的 K8s cluster 參考: <a href="https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-reconfigure/">Reconfiguring a kubeadm cluster</a></li>
+</ul>
+<h3 id="完成-kubeadm-init-之後">完成 <code>kubeadm init</code> 之後</h3>
+<p><code>kubeadm init</code> 會執行一系列的檢查，確保系統可以跑 K8s，沒有問題才會開始 下載/安裝 control-plane 所需的元件，一切結束後會顯示下面的訊息。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">Your Kubernetes control-plane has initialized successfully!
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">To start using your cluster, you need to run the following as a regular user:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  mkdir -p $HOME/.kube
+</span></span><span class="line"><span class="cl">  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+</span></span><span class="line"><span class="cl">  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">You should now deploy a Pod network to the cluster.
+</span></span><span class="line"><span class="cl">Run &#34;kubectl apply -f [podnetwork].yaml&#34; with one of the options listed at:
+</span></span><span class="line"><span class="cl">  /docs/concepts/cluster-administration/addons/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">You can now join any number of machines by running the following on each node
+</span></span><span class="line"><span class="cl">as root:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  kubeadm join &lt;control-plane-host&gt;:&lt;control-plane-port&gt; --token &lt;token&gt; --discovery-token-ca-cert-hash sha256:&lt;hash&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong><span style='color:red'>如果沒有執行下面指令讓 <code>kubectl</code> 有 config (或者說 context)， <code>kubectl</code> 就會無法使用!!</span></strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mkdir -p <span class="nv">$HOME</span>/.kube
+</span></span><span class="line"><span class="cl">sudo cp -i /etc/kubernetes/admin.conf <span class="nv">$HOME</span>/.kube/config
+</span></span><span class="line"><span class="cl">sudo chown <span class="k">$(</span>id -u<span class="k">)</span>:<span class="k">$(</span>id -g<span class="k">)</span> <span class="nv">$HOME</span>/.kube/config
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="kubeadm_print_join_command.jpg" alt="kubeadm_print_join_command"></p>
+<p>▲ <strong><span style='color:red'><code>kubeadm init</code> 結束之後顯示的 join token 如果沒有記下來 (也不應該，雖然會過期)，可以使用 <code>kubeadm token create --print-join-command</code> 重新產生一個。</span></strong></p>
+<p><img src="kubeadm_completion.jpg" alt="kubeadm_completion"></p>
+<p>▲ 使用 <code>kubeadm completion &lt;shell&gt;</code> 產生 completion config。</p>
+<p><img src="kubeadm_delete_token.jpg" alt="kubeadm_delete_token"></p>
+<p>▲ 使用 <code>kubeadm token delete &quot;xxx&quot;</code> 可以刪除 join token</p>
 
     </div>
 

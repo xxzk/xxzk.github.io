@@ -49,7 +49,7 @@
 <meta itemprop="name" content="CKA_Note_Section_10_Design_and_Install_a_Kubernetes_Cluster">
 <meta itemprop="description" content="222. Choosing Kubernetes Infrastructure 這個章節在講如何選擇 K8s 建在哪裡，知道了一個蠻有趣的名詞 Kubernetes Turnkey Cloud Solutions 223. Configure High Availability ▲ api-server 可以是 Active-Active mode，不過 kubectl config 一次只能設定一個 URL，所以建議"><meta itemprop="datePublished" content="2022-07-19T14:43:27+00:00" />
 <meta itemprop="dateModified" content="2022-07-19T14:43:27+00:00" />
-<meta itemprop="wordCount" content="664">
+<meta itemprop="wordCount" content="1132">
 <meta itemprop="keywords" content="CKA,kubernetes," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="CKA_Note_Section_10_Design_and_Install_a_Kubernetes_Cluster"/>
 <meta name="twitter:description" content="222. Choosing Kubernetes Infrastructure 這個章節在講如何選擇 K8s 建在哪裡，知道了一個蠻有趣的名詞 Kubernetes Turnkey Cloud Solutions 223. Configure High Availability ▲ api-server 可以是 Active-Active mode，不過 kubectl config 一次只能設定一個 URL，所以建議"/>
@@ -146,6 +146,16 @@
         <li><a href="#222-choosing-kubernetes-infrastructure">222. Choosing Kubernetes Infrastructure</a></li>
         <li><a href="#223-configure-high-availability">223. Configure High Availability</a></li>
         <li><a href="#224-etcd-in-ha">224. ETCD in HA</a></li>
+        <li><a href="#我的-minikube">我的 Minikube</a>
+          <ul>
+            <li><a href="#minikube-dashboard">minikube dashboard</a></li>
+            <li><a href="#ssh-tunnel">ssh tunnel</a></li>
+            <li><a href="#使用-minikube-內建的-kubectl">使用 <code>minikube</code> 內建的 <code>kubectl</code></a></li>
+            <li><a href="#echoserver-部屬">echoserver 部屬</a></li>
+            <li><a href="#minikube-muti-node-cluster">Minikube muti node cluster</a></li>
+            <li><a href="#fixed-profile-not-found-issue">Fixed profile not found issue</a></li>
+          </ul>
+        </li>
       </ul>
     </li>
   </ul>
@@ -195,6 +205,116 @@
 <p>▲ 在 systemd service conf 設定 peer 資訊。</p>
 <p><img src="etcdctl_useage.jpg" alt="etcdctl_useage"></p>
 <p>▲ <strong><span style='color:blue'>etcd API 有分 V2 與 V3</span></strong>。</p>
+<h2 id="我的-minikube">我的 Minikube</h2>
+<p>一直以來我的練習環境都是使用 <code>minikube</code>，一款由官方維護能快速打造 kubernetes multi node 的工具。本來相關資訊都是放在另外的 MD 筆記裡面，剛好跟這一個章節有關，順便整合一下好了!</p>
+<h3 id="minikube-dashboard">minikube dashboard</h3>
+<p><a href="https://minikube.sigs.k8s.io/docs/handbook/dashboard/">Minikube 自帶 dashboard add-on 功能</a> 會自動幫你在 host OS 開一個 proxy server 橋接運作在 docker (我 driver 選 docker) 的 control-plane。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">minikube dashboard
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="ssh-tunnel">ssh tunnel</h3>
+<p>2022.07.25 註: 因為我的 <code>minikube</code> VM 本來是放在 remote 某個 office 裡面，沒有在 localhost 所以必須打 tunnel 開 dashboard (或者其他需求) 會比較方便。<br>
+office WSL used.  搭配 FireFox portable 使用 (設定 SOCKS 5 proxy)，即可直接以 <code>localhost</code> 方式連接 <code>minikube</code> dashboard 或者其他網頁。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## for kubectl cluster-info used</span>
+</span></span><span class="line"><span class="cl">sudo ssh -4fND <span class="m">7777</span> root@192.168.207.151
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## for dashboard use (minikube dashboard)</span>
+</span></span><span class="line"><span class="cl">sudo ssh -4fNL 37676:127.0.0.1:37676 root@192.168.207.151
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## check process</span>
+</span></span><span class="line"><span class="cl">ps -aux
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>這個部分我也超級久沒碰 (中間還隔了 4 個月 ROC Army = =ゞ) 所以附上科普文章 <a href="https://johnliu55.tw/ssh-tunnel.html">SSH Tunneling (Port Forwarding) 詳解</a></p>
+<h3 id="使用-minikube-內建的-kubectl">使用 <code>minikube</code> 內建的 <code>kubectl</code></h3>
+<p>灌好 <code>minikube</code> 後使用 <code>minikube</code> 自帶的 <code>kubectl</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">alias</span> <span class="nv">kubectl</span><span class="o">=</span><span class="s1">&#39;minikube kubectl -- &#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## check version</span>
+</span></span><span class="line"><span class="cl">kubectl version
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## autocompletion</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s1">&#39;source &lt;(kubectl completion bash)&#39;</span> &gt;&gt;~/.bashrc
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>kubectl</code> <a href="https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/#enable-kubectl-autocompletion">自動補齊</a></p>
+<h3 id="echoserver-部屬">echoserver 部屬</h3>
+<p>2022.07.25 註: 這邊應該是在練習 CKAD <code>service</code> 的時候弄的吧~</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl apply -f echoserver.yml
+</span></span><span class="line"><span class="cl">kubectl expose deployment echoserver --type<span class="o">=</span>NodePort --port<span class="o">=</span><span class="m">8080</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## check service list</span>
+</span></span><span class="line"><span class="cl">minikube service list
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## delete service</span>
+</span></span><span class="line"><span class="cl">kubectl delete service echoserver
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="minikube-muti-node-cluster">Minikube muti node cluster</h3>
+<p><a href="https://minikube.sigs.k8s.io/docs/tutorials/multi_node/">Using Multi-Node Clusters</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">minikube start --nodes <span class="m">2</span> -p minikube-node
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## check node with minikube</span>
+</span></span><span class="line"><span class="cl">minikube node list
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## check with kubectl</span>
+</span></span><span class="line"><span class="cl">kubectl get nodes
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="fixed-profile-not-found-issue">Fixed profile not found issue</h3>
+<p>將現有 minikube cluster 刪除後會遇到這種情況，只需要重新指定 profile 即可。</p>
+<p><img src="minikube_fix_profile_not_found_issue.jpg" alt="minikube_fix_profile_not_found_issue.jpg"></p>
 
     </div>
 

@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>CKA_Note_Section_11_Install_K8s_the_kubeadm_way - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="225. Important Update: Kubernetes the Hard Way 這個章節其實是 Section 10 的最後一個 lecture，不過我想擺在這裡應該會比較合適! 講師提供一系列 Youtube 影片來示範如何像個硬漢一樣 Install Kubernetes from Scratch" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.98.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20220721-cka_note_section_11_install_k8s_the_kubeadm_way/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="CKA_Note_Section_11_Install_K8s_the_kubeadm_way" />
+<meta property="og:description" content="225. Important Update: Kubernetes the Hard Way 這個章節其實是 Section 10 的最後一個 lecture，不過我想擺在這裡應該會比較合適! 講師提供一系列 Youtube 影片來示範如何像個硬漢一樣 Install Kubernetes from Scratch" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.xxzk.me/post/20220721-cka_note_section_11_install_k8s_the_kubeadm_way/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-07-21T13:53:58+00:00" />
+<meta property="article:modified_time" content="2022-07-21T13:53:58+00:00" />
+
+<meta itemprop="name" content="CKA_Note_Section_11_Install_K8s_the_kubeadm_way">
+<meta itemprop="description" content="225. Important Update: Kubernetes the Hard Way 這個章節其實是 Section 10 的最後一個 lecture，不過我想擺在這裡應該會比較合適! 講師提供一系列 Youtube 影片來示範如何像個硬漢一樣 Install Kubernetes from Scratch"><meta itemprop="datePublished" content="2022-07-21T13:53:58+00:00" />
+<meta itemprop="dateModified" content="2022-07-21T13:53:58+00:00" />
+<meta itemprop="wordCount" content="1190">
+<meta itemprop="keywords" content="CKA,kubernetes," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="CKA_Note_Section_11_Install_K8s_the_kubeadm_way"/>
+<meta name="twitter:description" content="225. Important Update: Kubernetes the Hard Way 這個章節其實是 Section 10 的最後一個 lecture，不過我想擺在這裡應該會比較合適! 講師提供一系列 Youtube 影片來示範如何像個硬漢一樣 Install Kubernetes from Scratch"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">CKA_Note_Section_11_Install_K8s_the_kubeadm_way</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-07-21 </span>
+        <div class="post-category">
+            <a href="/categories/cka/"> CKA </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#225-important-update-kubernetes-the-hard-way">225. Important Update: Kubernetes the Hard Way</a></li>
+        <li><a href="#226-introduction-to-deployment-with-kubeadm">226. Introduction to Deployment with Kubeadm</a></li>
+        <li><a href="#230-practice-test---deploy-a-kubernetes-cluster-using-kubeadm">230. Practice Test - Deploy a Kubernetes Cluster using Kubeadm</a>
+          <ul>
+            <li><a href="#creating-a-cluster-with-kubeadm">Creating a cluster with kubeadm</a></li>
+            <li><a href="#完成-kubeadm-init-之後">完成 <code>kubeadm init</code> 之後</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="225-important-update-kubernetes-the-hard-way">225. Important Update: Kubernetes the Hard Way</h2>
+<p>這個章節其實是 Section 10 的最後一個 lecture，不過我想擺在這裡應該會比較合適!<br>
+講師提供一系列 Youtube 影片來示範如何像個硬漢一樣 <a href="https://www.youtube.com/watch?v=uUupRagM7m0&amp;list=PL2We04F3Y_41jYdadX55fdJplDvgNGENo">Install Kubernetes from Scratch</a> 課程中所有範例可以在  <a href="https://github.com/mmumshad/kubernetes-the-hard-way">mmumshad / kubernetes-the-hard-way </a> 找到。</p>
+<h2 id="226-introduction-to-deployment-with-kubeadm">226. Introduction to Deployment with Kubeadm</h2>
+<p><img src="kubeadm_step_overview.jpg" alt="kubeadm_step_overview"></p>
+<p>▲ Kubernetes 官方提供 <code>kubeadm</code> 讓使用者搭建 multi node cluster，簡單的步驟如圖。不過自從 Kubernetes v1.24 deprecated 掉 docker 做為 container runtime 以後已經不建議使用 docker 囉!</p>
+<p><a href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#installing-runtime">[kubernetes.io] Installing a container runtime</a></p>
+<center><img src="./kubeadm-stacked-color.png" alt="kubeadm-stacked-color" width="250" height="300"></center>
+<center>▲ kubeadm 的 LOGO。</center>
+<h2 id="230-practice-test---deploy-a-kubernetes-cluster-using-kubeadm">230. Practice Test - Deploy a Kubernetes Cluster using Kubeadm</h2>
+<p>安裝 <code>kubeadm</code> 的方式請參考書籤 <a href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#installing-kubeadm-kubelet-and-kubectl">Installing kubeadm, kubelet and kubectl</a>，下面會以 Debian-base distro 來當範例。 <del>反正就是一直無腦複製貼上啦</del></p>
+<ol>
+<li>更新 <code>apt</code> 必要條件</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo apt-get update
+</span></span><span class="line"><span class="cl">sudo apt-get install -y apt-transport-https ca-certificates curl
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>apt-transport-https</code> 這個套件是為了讓 <code>apt</code> 能夠以 <code>HTTPS</code> method 下載。</p>
+<blockquote>
+<p>apt-transport-https - APT transport for downloading via the HTTP Secure protocol (HTTPS)</p>
+</blockquote>
+<ol start="2">
+<li>下載 Google PGP key</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="3">
+<li>新增 <code>apt</code> repositry</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main&#34;</span> <span class="p">|</span> sudo tee /etc/apt/sources.list.d/kubernetes.list
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="4">
+<li>接著更新 <code>apt</code> repo index、下載 <code>kubeadm</code> 所需、 <strong><span style='color:red'>將這三個套件的版本固定，避免被 <code>sudo apt upgrade/update</code> 不小心升級</span></strong></li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo apt-get update
+</span></span><span class="line"><span class="cl">sudo apt-get install -y kubelet kubeadm kubectl
+</span></span><span class="line"><span class="cl">sudo apt-mark hold kubelet kubeadm kubectl
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## if specific version</span>
+</span></span><span class="line"><span class="cl">sudo apt-get install -y <span class="nv">kubelet</span><span class="o">=</span>1.24.0 <span class="nv">kubeadm</span><span class="o">=</span>1.24.0 <span class="nv">kubectl</span><span class="o">=</span>1.24.0
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="creating-a-cluster-with-kubeadm">Creating a cluster with kubeadm</h3>
+<p>這個子章節介紹如何使用 <code>kubeadm</code> 來把 cluster 跑起來~</p>
+<ul>
+<li>如果你想讓執行 <code>kubeadm init</code> or <code>kubeadm join</code> 這兩個指令時，就把一些常用的 image 抓到該 node 身上，可以參考 <a href="https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-init/#without-internet-connection">Running kubeadm without an Internet connection</a>， 如果 cluster 碰不到外網就自建 Harbor 吧!</li>
+</ul>
+<h4 id="initializing-your-control-plane-node">Initializing your control-plane node</h4>
+<ol>
+<li>(官方建議) 如果未來 (或者現在) 有意要將這個 singal control-plane node 升級到多節點達到 HA 目的的話，<code>--control-plane-endpoint</code> 必須被指定。格式參考 <a href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/high-availability/#stacked-control-plane-and-etcd-nodes">Stacked control plane and etcd nodes</a></li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo kubeadm init --control-plane-endpoint <span class="s2">&#34;LOAD_BALANCER_DNS:LOAD_BALANCER_PORT&#34;</span> --upload-certs
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>--upload-certs</code> 代表這個 control-plane node 的 certification 之後會跟之後建立的 control-plane node 共享，詳情參考 <a href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/high-availability/#manual-certs">Manual certificate distribution</a></p>
+<blockquote>
+<p>Such an endpoint can be either a DNS name or an IP address of a load-balancer.</p>
+</blockquote>
+<p>是不一定要使用 Domain name 啦&hellip; 不過自建一個 <a href="https://github.com/AdguardTeam/AdGuardHome">ADGuard Home</a> 也沒多少時間嘛!</p>
+<ol start="2">
+<li>
+<p>安裝 CNI plugins，<code>--pod-network-cidr</code> 設定 <code>pod</code> 使用的網段 例如: <code>--pod-network-cidr=10.10.0.0/16</code>。參考書籤 <a href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/#pod-network">Installing a Pod network add-on</a></p>
+</li>
+<li>
+<p>(Optional) 預設 <code>kubeadm</code> 會自動去偵測 CRI，如果安裝多個 CRI 想要指定使用的話可以加上 <code>--cri-socket</code> 常見的 CRI 路徑 <a href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#installing-runtime">Installing a container runtime</a></p>
+</li>
+<li>
+<p>(Optional) 預設 <code>kube-apiserver</code> 會 LISTEN 在 default gateway via 的 NIC 上面，可以透過 <code>--apiserver-advertise-address=&lt;ip-address&gt;</code> <strong><span style='color:red'>指定 bind IP， 如果使用 IPv6 就必須手動給定 EX: <code>--apiserver-advertise-address=fd00::101</code>。</span></strong></p>
+</li>
+</ol>
+<h4 id="more-information">More information</h4>
+<ul>
+<li>將 config 變成 file 傳入 <code>kubeadm init --config</code> 參考:<a href="https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-init/#config-file">Using kubeadm init with a configuration file</a></li>
+<li>針對各個 control-plane components 做客制化細部設定 參考: <a href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/control-plane-flags/">Customizing components with the kubeadm API</a></li>
+<li>重新設定由 <code>kubeadm</code> 建立的 K8s cluster 參考: <a href="https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-reconfigure/">Reconfiguring a kubeadm cluster</a></li>
+</ul>
+<h3 id="完成-kubeadm-init-之後">完成 <code>kubeadm init</code> 之後</h3>
+<p><code>kubeadm init</code> 會執行一系列的檢查，確保系統可以跑 K8s，沒有問題才會開始 下載/安裝 control-plane 所需的元件，一切結束後會顯示下面的訊息。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">Your Kubernetes control-plane has initialized successfully!
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">To start using your cluster, you need to run the following as a regular user:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  mkdir -p $HOME/.kube
+</span></span><span class="line"><span class="cl">  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+</span></span><span class="line"><span class="cl">  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">You should now deploy a Pod network to the cluster.
+</span></span><span class="line"><span class="cl">Run &#34;kubectl apply -f [podnetwork].yaml&#34; with one of the options listed at:
+</span></span><span class="line"><span class="cl">  /docs/concepts/cluster-administration/addons/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">You can now join any number of machines by running the following on each node
+</span></span><span class="line"><span class="cl">as root:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  kubeadm join &lt;control-plane-host&gt;:&lt;control-plane-port&gt; --token &lt;token&gt; --discovery-token-ca-cert-hash sha256:&lt;hash&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong><span style='color:red'>如果沒有執行下面指令讓 <code>kubectl</code> 有 config (或者說 context)， <code>kubectl</code> 就會無法使用!!</span></strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mkdir -p <span class="nv">$HOME</span>/.kube
+</span></span><span class="line"><span class="cl">sudo cp -i /etc/kubernetes/admin.conf <span class="nv">$HOME</span>/.kube/config
+</span></span><span class="line"><span class="cl">sudo chown <span class="k">$(</span>id -u<span class="k">)</span>:<span class="k">$(</span>id -g<span class="k">)</span> <span class="nv">$HOME</span>/.kube/config
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="kubeadm_print_join_command.jpg" alt="kubeadm_print_join_command"></p>
+<p>▲ <strong><span style='color:red'><code>kubeadm init</code> 結束之後顯示的 join token 如果沒有記下來 (也不應該，雖然會過期)，可以使用 <code>kubeadm token create --print-join-command</code> 重新產生一個。</span></strong></p>
+<p><img src="kubeadm_completion.jpg" alt="kubeadm_completion"></p>
+<p>▲ 使用 <code>kubeadm completion &lt;shell&gt;</code> 產生 completion config。</p>
+<p><img src="kubeadm_delete_token.jpg" alt="kubeadm_delete_token"></p>
+<p>▲ 使用 <code>kubeadm token delete &quot;xxx&quot;</code> 可以刪除 join token</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2022-07-21
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/cka/">CKA</a>
+          <a href="/tags/kubernetes/">kubernetes</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/20220719-cka_note_section_10_design_and_install_a_kubernetes_cluster/">
+            <span class="next-text nav-default">CKA_Note_Section_10_Design_and_Install_a_Kubernetes_Cluster</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.64437849d125a2d603b3e71d6de5225d641a32d17168a58106e0b61852079683.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

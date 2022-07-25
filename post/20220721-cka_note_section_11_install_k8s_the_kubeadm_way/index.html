@@ -49,7 +49,7 @@
 <meta itemprop="name" content="CKA_Note_Section_11_Install_K8s_the_kubeadm_way">
 <meta itemprop="description" content="225. Important Update: Kubernetes the Hard Way 這個章節其實是 Section 10 的最後一個 lecture，不過我想擺在這裡應該會比較合適! 講師提供一系列 Youtube 影片來示範如何像個硬漢一樣 Install Kubernetes from Scratch"><meta itemprop="datePublished" content="2022-07-21T13:53:58+00:00" />
 <meta itemprop="dateModified" content="2022-07-21T13:53:58+00:00" />
-<meta itemprop="wordCount" content="1190">
+<meta itemprop="wordCount" content="1405">
 <meta itemprop="keywords" content="CKA,kubernetes," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="CKA_Note_Section_11_Install_K8s_the_kubeadm_way"/>
 <meta name="twitter:description" content="225. Important Update: Kubernetes the Hard Way 這個章節其實是 Section 10 的最後一個 lecture，不過我想擺在這裡應該會比較合適! 講師提供一系列 Youtube 影片來示範如何像個硬漢一樣 Install Kubernetes from Scratch"/>
@@ -149,6 +149,11 @@
           <ul>
             <li><a href="#creating-a-cluster-with-kubeadm">Creating a cluster with kubeadm</a></li>
             <li><a href="#完成-kubeadm-init-之後">完成 <code>kubeadm init</code> 之後</a></li>
+          </ul>
+        </li>
+        <li><a href="#section-12-end-to-end-test">Section 12 End to End Test</a>
+          <ul>
+            <li><a href="#我的問問筆記cntug">我的問問筆記@CNTUG</a></li>
           </ul>
         </li>
       </ul>
@@ -327,6 +332,33 @@
 <p>▲ 使用 <code>kubeadm completion &lt;shell&gt;</code> 產生 completion config。</p>
 <p><img src="kubeadm_delete_token.jpg" alt="kubeadm_delete_token"></p>
 <p>▲ 使用 <code>kubeadm token delete &quot;xxx&quot;</code> 可以刪除 join token</p>
+<h2 id="section-12-end-to-end-test">Section 12 End to End Test</h2>
+<p>講師說 CKA 考試在 2020.09 之後就拔掉這個項目了。</p>
+<h3 id="我的問問筆記cntug">我的問問筆記@CNTUG</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">大家午安，想問一下 &#34;K8s End to End test&#34; 是官方提供測試 K8s cluster 的 framwork (有點像 SDK ?)
+</span></span><span class="line"><span class="cl">實務上會用哪些方法來確保 cluster 建立後的完整性 ?
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">https://kubernetes.io/blog/2019/03/22/kubernetes-end-to-end-testing-for-everyone/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">因為我看 CKA 考試在 2020.09 之後就拔掉這個項目了，是因為這個方法已經過時了嗎? 謝謝~
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>小飛機、邱牛，在第一時間都推薦使用 <a href="https://sonobuoy.io/">SONOBUOY.io</a> 來檢測 K8s cluster 的完整性。<br>
+<strong><span style='color:blue'>這也是目前要被認證為 k8s 發行版本必須要使用的工具 by 邱牛</span></strong></p>
+<p><img src="sonobuoy_official_web.jpg" alt="sonobuoy_official_web"></p>
+<p>▲ sonobuoy 翻譯叫做「聲納浮標」，用來檢測 K8s 貨櫃船也很合理嘛 XD</p>
 
     </div>
 

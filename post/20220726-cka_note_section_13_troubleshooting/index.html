@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>CKA_Note_Section_13_Troubleshooting - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="235. Application Failure 厚，debug 到眼睛快脫窗 先開 App Web 頁面查看錯誤訊息 (不確定正式考試時網頁是不是也設計成顯示錯誤訊息)，判斷可能出問題的地方 第一題網頁能" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.98.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20220726-cka_note_section_13_troubleshooting/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="CKA_Note_Section_13_Troubleshooting" />
+<meta property="og:description" content="235. Application Failure 厚，debug 到眼睛快脫窗 先開 App Web 頁面查看錯誤訊息 (不確定正式考試時網頁是不是也設計成顯示錯誤訊息)，判斷可能出問題的地方 第一題網頁能" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.xxzk.me/post/20220726-cka_note_section_13_troubleshooting/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-07-26T13:55:27+00:00" />
+<meta property="article:modified_time" content="2022-07-26T13:55:27+00:00" />
+
+<meta itemprop="name" content="CKA_Note_Section_13_Troubleshooting">
+<meta itemprop="description" content="235. Application Failure 厚，debug 到眼睛快脫窗 先開 App Web 頁面查看錯誤訊息 (不確定正式考試時網頁是不是也設計成顯示錯誤訊息)，判斷可能出問題的地方 第一題網頁能"><meta itemprop="datePublished" content="2022-07-26T13:55:27+00:00" />
+<meta itemprop="dateModified" content="2022-07-26T13:55:27+00:00" />
+<meta itemprop="wordCount" content="999">
+<meta itemprop="keywords" content="CKA,kubernetes," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="CKA_Note_Section_13_Troubleshooting"/>
+<meta name="twitter:description" content="235. Application Failure 厚，debug 到眼睛快脫窗 先開 App Web 頁面查看錯誤訊息 (不確定正式考試時網頁是不是也設計成顯示錯誤訊息)，判斷可能出問題的地方 第一題網頁能"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">CKA_Note_Section_13_Troubleshooting</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-07-26 </span>
+        <div class="post-category">
+            <a href="/categories/cka/"> CKA </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#235-application-failure">235. Application Failure</a></li>
+        <li><a href="#239-practice-test---control-plane-failure">239. Practice Test - Control Plane Failure</a></li>
+        <li><a href="#241-worker-node-failure">241. Worker Node Failure</a>
+          <ul>
+            <li><a href="#問問筆記">問問筆記</a></li>
+          </ul>
+        </li>
+        <li><a href="#244-network-troubleshooting">244. Network Troubleshooting</a>
+          <ul>
+            <li><a href="#coredns">CoreDNS</a></li>
+          </ul>
+        </li>
+        <li><a href="#不考-248-advanced-kubectl-commands">(不考) 248. Advanced Kubectl Commands</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="235-application-failure">235. Application Failure</h2>
+<p><del>厚，debug 到眼睛快脫窗</del></p>
+<ul>
+<li>先開 App Web 頁面查看錯誤訊息 (不確定正式考試時網頁是不是也設計成顯示錯誤訊息)，判斷可能出問題的地方</li>
+<li>第一題網頁能開判斷 Web pod + service =&gt; 無問題，<strong><span style='color:red'>網頁顯示 <code>-2 Name does not resolve</code></span></strong> =&gt; 連不到 DB =&gt; 往 <code>mysql-service</code> <strong><span style='color:blue'>&ldquo;DNS name&rdquo;</span></strong> 查找</li>
+<li>第二題一樣，網頁顯示 <strong><span style='color:red'><code>111 Connection refused</code></span></strong> =&gt; <br>
+(1) 拒絕 =&gt; DB credential 有問題 =&gt; 要嘛在 Web pod env 不然就是 db pod env <br>
+(2) <code>svc</code> port 號 <code>OR</code> selector 錯誤 <code>OR</code> pod 身上 port 錯誤</li>
+<li>第三題 <strong><span style='color:red'>網頁直接打不開啊!</span></strong> =&gt; 等待時間先去查 web svc =&gt; <code>curl http://&lt;svc_IP&gt;:&lt;port&gt;</code>
+(1) 後來噴出 504 Gateway Error =&gt; 5xx 系列 server 內部問題 =&gt; 都要查! (<strong>包含 web svc</strong>) <del>槓</del>
+(2) <code>k get all -o wide</code> 先看一下能不能看出端倪，果然看到 <code>selector:name=sql00001</code> =&gt; <code>k get pod mysql --show-labels</code></li>
+<li>第四題 env <code>DB_User</code> 不符合題目要求。</li>
+<li>第五題 兩個 issue，第一個承上題。<strong><span style='color:blue'><code>Access denied for user 'root'@'10.42.0.20' (using password: YES)</code> =&gt; 這 error 是 DB 噴的代表 DB svc 沒問題</span></strong></li>
+<li>第六題 三個 issue <br>
+(1) <code>web-service</code> <code>NodePort</code> 錯誤 <br>
+(2) env <code>DB_User</code> 錯誤</li>
+</ul>
+<p><img src="kubectl_show_svc_ports.jpg" alt="kubectl_show_svc_ports"></p>
+<p>▲ <strong><span style='color:blue'>使用 <code>k get all -o wide</code> 顯示的 svc ports 欄位格式是 <code>&lt;svc_port&gt;:&lt;NodePort&gt;</code></span></strong>，<strong><span style='color:red'>後者並不是 <code>&lt;targetPort&gt;</code>!!</span></strong></p>
+<h2 id="239-practice-test---control-plane-failure">239. Practice Test - Control Plane Failure</h2>
+<ul>
+<li>基本上都能從 <code>/etc/kubernetes/manifest/</code> 底下的 static pod yaml conf 去做除錯</li>
+<li><code>k describe pod</code>、<code>k logs</code> 打天下</li>
+<li>最後一台比較有趣，卡了一下~ host OS path 身上有 <code>ca.crt</code> 但 logs 顯示 no such file =&gt; <strong><span style='color:red'>mount 出問題</span></strong></li>
+</ul>
+<h2 id="241-worker-node-failure">241. Worker Node Failure</h2>
+<p><img src="check_node_status.jpg" alt="check_node_status"></p>
+<p>▲ worker node 的茶包射手預備姿勢。<del>六發裝子彈 裝子彈送上槍機</del> LastHeartbeatTime 可以看最後狀態時間</p>
+<p><img src="check_kubelet_cert.jpg" alt="check_kubelet_cert"></p>
+<p>▲ 使用 <code>openssl x509 -in &lt;.crt&gt; -text</code> 查看 <code>kubelet</code> 的證書是否過期，或者 <code>journalctl -f -u kubelet.service</code> 查看 service 的 log。</p>
+<p><code>kubelet</code> 有兩個 config</p>
+<ul>
+<li><code>/var/lib/kubelet/config.yaml</code></li>
+<li><code>/etc/kubernetes/kubelet.conf</code></li>
+</ul>
+<p><img src="var_lib_kubelet_yaml.jpg" alt="var_lib_kubelet_yaml"></p>
+<p>▲ kubelet daemond 使用的 config file</p>
+<p><img src="etc_kubernetes_kubelet_conf.jpg" alt="etc_kubernetes_kubelet_conf"></p>
+<p>▲ kubelet 去跟 api-server 溝通用的 kubeconf</p>
+<p><img src="kubelet_journalctl_f.jpg" alt="kubelet_journalctl_f"></p>
+<p>▲ <code>journalctl -f -u kubelet.service</code> 可以查 daemond log (<code>-f</code>,fallow)</p>
+<h3 id="問問筆記">問問筆記</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="line"><span class="cl">大家早安，想問一下這兩個關於 kubelet config file 的差異在哪裡? 我知道內容不同 XD
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">-</span> <span class="sb">`/var/lib/kubelet/config.yaml`</span>
+</span></span><span class="line"><span class="cl"><span class="k">-</span> <span class="sb">`/etc/kubernetes/kubelet.conf`</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">按照官方這篇的說法，位於 etc 的那個是整座 cluster kubelet 使用的公版設定? (它內容看起來跟 <span class="sb">`~/.kube/config`</span> 很類似)
+</span></span><span class="line"><span class="cl">那麼位於 <span class="sb">`/var/lib`</span> 的是 kubelet system daemond 吃的 config 嗎?
+</span></span><span class="line"><span class="cl">https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/kubelet-integration/#workflow-when-using-kubeadm-init
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>自問自答</p>
+<ol>
+<li>位於 <code>/var/lib</code> 的是 kubelet system daemond 吃的 config。</li>
+<li><code>etc</code> 底下的是 kubeconfig，跟 api-server 溝通用的，所以跟 <code>~/.kube/config</code> 一樣很正常。</li>
+</ol>
+<p><strong><span style='color:red'>debug 方向就是</span></strong></p>
+<p><strong><span style='color:brown'>1. daemond running good 但 kubectl get node 看到節點是死的 =&gt; 找跟 api-server 溝通的 kubeconfig</span></strong> <br>
+<strong><span style='color:blue'>2. daemond not running =&gt; 找 <code>/var/lib</code> daemond 自身的 config</span></strong></p>
+<h2 id="244-network-troubleshooting">244. Network Troubleshooting</h2>
+<ul>
+<li>CKA 考試當中不會要你背如何安裝 CNI plugin (有考會給指示) <del>那我 Networking 那章在忙什麼 還專程去找/更新書籤</del></li>
+</ul>
+<h3 id="coredns">CoreDNS</h3>
+<ul>
+<li><code>pod</code> 與 <code>service</code> 越多，CoreDNS 的負擔就會越重，尤其 memory 是 QPS 效能指標。</li>
+<li>CoreDNS 會需要以下 K8s resources: <br>
+(1) a <code>service account</code> named coredns <br>
+(2) <code>cluster-roles</code> named coredns and kube-dns <br>
+(3) <code>clusterrolebindings</code> named coredns and kube-dns <br>
+(4) a <code>deployment</code> named coredns <br>
+(5) a <code>configmap</code> named coredns <br>
+(6) <code>service</code> named kube-dns</li>
+</ul>
+<p>如果你看到 CoreDNS pod 處於 <strong>pending</strong> =&gt; 檢查 CNI plugin 是否安裝， <strong>CrashLoopBackOff or Error state</strong> =&gt;</p>
+<p>(1) <strong><span style='color:red'>關閉 SELinux</span></strong>
+(2) Modify the coredns deployment to set allowPrivilegeEscalation to true</p>
+<h2 id="不考-248-advanced-kubectl-commands">(不考) 248. Advanced Kubectl Commands</h2>
+<p><img src="advanced_kubectl_json_path_usage_0.jpg" alt="advanced_kubectl_json_path_usage_0"></p>
+<p>▲ 透過 <code>-o=jsonpath '{PATH1}{&quot;\t&quot;}{PATH2}'</code> 來達到客製化 <code>kubectl</code> output。</p>
+<p><img src="advanced_kubectl_json_path_usage_1.jpg" alt="advanced_kubectl_json_path_usage_1"></p>
+<p>▲ 如果想顯示成右邊的格式，就需要用到 <code>range</code>，可以把它當成 Foreach 使用。</p>
+<p><img src="advanced_kubectl_json_path_usage_2.jpg" alt="advanced_kubectl_json_path_usage_2"></p>
+<p>▲ 或者使用 <code>-o=custom-columns</code> 來達成相同效果。</p>
+<p><img src="advanced_kubectl_json_path_usage_3.jpg" alt="advanced_kubectl_json_path_usage_3"></p>
+<p>▲ 想要排序的話可以使用 <code>--sort-by=&lt;JSON PATH&gt;</code>。</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2022-07-26
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/cka/">CKA</a>
+          <a href="/tags/kubernetes/">kubernetes</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/20220721-cka_note_section_11_install_k8s_the_kubeadm_way/">
+            <span class="next-text nav-default">CKA_Note_Section_11_Install_K8s_the_kubeadm_way</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.64437849d125a2d603b3e71d6de5225d641a32d17168a58106e0b61852079683.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

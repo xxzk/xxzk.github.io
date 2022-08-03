@@ -6,7 +6,34 @@
     <description>Recent content in CKA-Note on 老柯的學習筆記</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 04 Jul 2022 13:58:19 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/tags/cka-note/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 26 Jul 2022 13:55:27 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/tags/cka-note/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CKA Note Section 13 Troubleshooting</title>
+      <link>https://blog.xxzk.me/post/20220726-cka_note_section_13_troubleshooting/</link>
+      <pubDate>Tue, 26 Jul 2022 13:55:27 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20220726-cka_note_section_13_troubleshooting/</guid>
+      <description>235. Application Failure 厚，debug 到眼睛快脫窗 先開 App Web 頁面查看錯誤訊息 (不確定正式考試時網頁是不是也設計成顯示錯誤訊息)，判斷可能出問題的地方 第一題網頁能</description>
+    </item>
+    
+    <item>
+      <title>CKA Note Section 11 Install K8s the kubeadm way</title>
+      <link>https://blog.xxzk.me/post/20220721-cka_note_section_11_install_k8s_the_kubeadm_way/</link>
+      <pubDate>Thu, 21 Jul 2022 13:53:58 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20220721-cka_note_section_11_install_k8s_the_kubeadm_way/</guid>
+      <description>225. Important Update: Kubernetes the Hard Way 這個章節其實是 Section 10 的最後一個 lecture，不過我想擺在這裡應該會比較合適! 講師提供一系列 Youtube 影片來示範如何像個硬漢一樣 Install Kubernetes from Scratch</description>
+    </item>
+    
+    <item>
+      <title>CKA Note Section 10 Design and Install a Kubernetes Cluster</title>
+      <link>https://blog.xxzk.me/post/20220719-cka_note_section_10_design_and_install_a_kubernetes_cluster/</link>
+      <pubDate>Tue, 19 Jul 2022 14:43:27 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20220719-cka_note_section_10_design_and_install_a_kubernetes_cluster/</guid>
+      <description>222. Choosing Kubernetes Infrastructure 這個章節在講如何選擇 K8s 建在哪裡，知道了一個蠻有趣的名詞 Kubernetes Turnkey Cloud Solutions 223. Configure High Availability ▲ api-server 可以是 Active-Active mode，不過 kubectl config 一次只能設定一個 URL，所以建議</description>
+    </item>
+    
     <item>
       <title>CKA Note Section 9 Networking</title>
       <link>https://blog.xxzk.me/post/20220704-cka_note_section_9_networking/</link>
@@ -14,6 +41,69 @@
       
       <guid>https://blog.xxzk.me/post/20220704-cka_note_section_9_networking/</guid>
       <description>前言 既然這個章節是介紹 Kubernetes Networking 那就先來複習一下之前看過的優質文章吧! [Hwchiu Docker Network - 網路模型 系列] Docker Network - 網路模型 [Day10] Container Network Interface 介紹 188. Prerequisite - Network Namespaces ▲ 使用 ip netns exec &amp;lt;NAMESPACE&amp;gt; ip link</description>
+    </item>
+    
+    <item>
+      <title>CKA Note Section 8 Storage</title>
+      <link>https://blog.xxzk.me/post/20220704-cka_note_section_8_storage/</link>
+      <pubDate>Mon, 04 Jul 2022 09:50:26 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20220704-cka_note_section_8_storage/</guid>
+      <description>169. Storage in Docker 這個章節主要在講 Docker container image/volume 的概念，可以參考我之前打的兩篇文章: Docker Image 介紹 Docker Volumes 介紹 171. Container Storage Interface (CSI) 關於 CRI 的介紹非常推薦 Hwchiu 鐵人賽系列: [Day5] Kubernetes &amp;amp; CRI (Container Runtime Interface)(I)</description>
+    </item>
+    
+    <item>
+      <title>CKA Note Section 7 Security</title>
+      <link>https://blog.xxzk.me/post/20211222-cka_note_section_7_security/</link>
+      <pubDate>Wed, 22 Dec 2021 13:53:04 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20211222-cka_note_section_7_security/</guid>
+      <description>135. Authentication 請參考 CKAD Note Section 9 Updates for Sep 2021 Changes - 121. Authentication, Authorization and Admission Control 139. TLS in Kubernetes ▲ 各個 K8s component 的 TLS community diagram。 因為現在大部分 kube-proxy 都不是單獨安裝，已經變成 daemondse</description>
+    </item>
+    
+    <item>
+      <title>CKA Note Section 6 Cluster Maintence</title>
+      <link>https://blog.xxzk.me/post/20211126-cka_note_section_6_cluster_maintence/</link>
+      <pubDate>Fri, 26 Nov 2021 11:24:39 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20211126-cka_note_section_6_cluster_maintence/</guid>
+      <description>117. OS Upgrades 如果我們要將某個 worder node 下線，做一些例行維護 (例如: OS Upgrade) 可以使用 1 kubectl drain &amp;lt;node_name&amp;gt; 來達成，原本在目標 worker node 的 pod 會被 re-schedule 到其它 worker node 上面。當維護完成再使用 1</description>
+    </item>
+    
+    <item>
+      <title>CKA Note Section 5 App Lifecycle Management</title>
+      <link>https://blog.xxzk.me/post/20211125-cka_note_section_5_app_lifecycle_management/</link>
+      <pubDate>Thu, 25 Nov 2021 16:55:33 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20211125-cka_note_section_5_app_lifecycle_management/</guid>
+      <description>89. Rolling Updates and Rollbacks 請參考 CKAD Note Section 6 Pod Design 82. Rolling Updates &amp;amp; Rollbacks in Deployments。 93. Commands 請參考 CKAD Note Section 3 Configuration 37. [Pre-Request] Commands and Arguments in Docker。 97. Configure Environment Variables in Applications 請參考 CKAD Note Section 3 Configuration 42.</description>
+    </item>
+    
+    <item>
+      <title>CKA Note Section 4 Logging and Monitoring</title>
+      <link>https://blog.xxzk.me/post/20211125-cka_note_section_4_logging_and_monitoring/</link>
+      <pubDate>Thu, 25 Nov 2021 16:03:41 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20211125-cka_note_section_4_logging_and_monitoring/</guid>
+      <description>請參考 CKAD Note Section 5 Observability 76. Monitor and Debug Application 章節。</description>
+    </item>
+    
+    <item>
+      <title>CKA Note Section 3 Scheduling</title>
+      <link>https://blog.xxzk.me/post/20211124-cka_note_section_3_scheduling/</link>
+      <pubDate>Wed, 24 Nov 2021 15:03:28 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20211124-cka_note_section_3_scheduling/</guid>
+      <description>50. Manual Scheduling 在 有 kube-scheduler 的情況下，我們可以在 pod definition YAML 裡面定義 pod.spec.nodeName: &amp;lt;worker node name&amp;gt; 來把 pod 放在指定 worker node。 在 沒有 kube-scheduler 的情況下，必須要以 json 格式 POST 到 api-server。B</description>
+    </item>
+    
+    <item>
+      <title>CKA Note Section 2 Core Concepts</title>
+      <link>https://blog.xxzk.me/post/20211123-cka_note_section_2_core_concepts/</link>
+      <pubDate>Tue, 23 Nov 2021 14:00:06 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20211123-cka_note_section_2_core_concepts/</guid>
+      <description>10. Cluster Architecture ▲ Kubernetes controll plane / worker node 組件 12. ETCD in Kubernetes 透過 kubectl get 都是 (透過 api-server ) 向 etcd 查詢資料。 講師提供的練習環境是使用 kubeadm 搭建的，課程最後的章節會教導如何從 scratch 建立 Kubernetes cl</description>
     </item>
     
   </channel>

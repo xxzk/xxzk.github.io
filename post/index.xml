@@ -8,7 +8,7 @@
     <language>en</language>
     <lastBuildDate>Tue, 26 Jul 2022 13:55:27 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/post/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>CKA_Note_Section_13_Troubleshooting</title>
+      <title>CKA Note Section 13 Troubleshooting</title>
       <link>https://blog.xxzk.me/post/20220726-cka_note_section_13_troubleshooting/</link>
       <pubDate>Tue, 26 Jul 2022 13:55:27 +0000</pubDate>
       
@@ -17,7 +17,7 @@
     </item>
     
     <item>
-      <title>CKA_Note_Section_11_Install_K8s_the_kubeadm_way</title>
+      <title>CKA Note Section 11 Install K8s the kubeadm way</title>
       <link>https://blog.xxzk.me/post/20220721-cka_note_section_11_install_k8s_the_kubeadm_way/</link>
       <pubDate>Thu, 21 Jul 2022 13:53:58 +0000</pubDate>
       
@@ -26,7 +26,7 @@
     </item>
     
     <item>
-      <title>CKA_Note_Section_10_Design_and_Install_a_Kubernetes_Cluster</title>
+      <title>CKA Note Section 10 Design and Install a Kubernetes Cluster</title>
       <link>https://blog.xxzk.me/post/20220719-cka_note_section_10_design_and_install_a_kubernetes_cluster/</link>
       <pubDate>Tue, 19 Jul 2022 14:43:27 +0000</pubDate>
       
@@ -53,7 +53,7 @@
     </item>
     
     <item>
-      <title>CKA_Note_Section_8_Storage</title>
+      <title>CKA Note Section 8 Storage</title>
       <link>https://blog.xxzk.me/post/20220704-cka_note_section_8_storage/</link>
       <pubDate>Mon, 04 Jul 2022 09:50:26 +0000</pubDate>
       
@@ -98,7 +98,7 @@
     </item>
     
     <item>
-      <title>CKA_Note_Section_7_Security</title>
+      <title>CKA Note Section 7 Security</title>
       <link>https://blog.xxzk.me/post/20211222-cka_note_section_7_security/</link>
       <pubDate>Wed, 22 Dec 2021 13:53:04 +0000</pubDate>
       
@@ -116,7 +116,7 @@
     </item>
     
     <item>
-      <title>CKA_Note_Section_6_Cluster_Maintence</title>
+      <title>CKA Note Section 6 Cluster Maintence</title>
       <link>https://blog.xxzk.me/post/20211126-cka_note_section_6_cluster_maintence/</link>
       <pubDate>Fri, 26 Nov 2021 11:24:39 +0000</pubDate>
       
@@ -125,7 +125,7 @@
     </item>
     
     <item>
-      <title>CKA_Note_Section_5_App_Lifecycle_Management</title>
+      <title>CKA Note Section 5 App Lifecycle Management</title>
       <link>https://blog.xxzk.me/post/20211125-cka_note_section_5_app_lifecycle_management/</link>
       <pubDate>Thu, 25 Nov 2021 16:55:33 +0000</pubDate>
       
@@ -134,7 +134,7 @@
     </item>
     
     <item>
-      <title>CKA_Note_Section_4_Logging_and_Monitoring</title>
+      <title>CKA Note Section 4 Logging and Monitoring</title>
       <link>https://blog.xxzk.me/post/20211125-cka_note_section_4_logging_and_monitoring/</link>
       <pubDate>Thu, 25 Nov 2021 16:03:41 +0000</pubDate>
       
@@ -143,7 +143,7 @@
     </item>
     
     <item>
-      <title>CKA_Note_Section_3_Scheduling</title>
+      <title>CKA Note Section 3 Scheduling</title>
       <link>https://blog.xxzk.me/post/20211124-cka_note_section_3_scheduling/</link>
       <pubDate>Wed, 24 Nov 2021 15:03:28 +0000</pubDate>
       
@@ -152,7 +152,7 @@
     </item>
     
     <item>
-      <title>CKA_Note_Section_2_Core_Concepts</title>
+      <title>CKA Note Section 2 Core Concepts</title>
       <link>https://blog.xxzk.me/post/20211123-cka_note_section_2_core_concepts/</link>
       <pubDate>Tue, 23 Nov 2021 14:00:06 +0000</pubDate>
       

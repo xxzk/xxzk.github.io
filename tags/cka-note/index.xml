@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>CKA-Note on 老柯的學習筆記</title>
+    <link>https://blog.xxzk.me/tags/cka-note/</link>
+    <description>Recent content in CKA-Note on 老柯的學習筆記</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 04 Jul 2022 13:58:19 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/tags/cka-note/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CKA Note Section 9 Networking</title>
+      <link>https://blog.xxzk.me/post/20220704-cka_note_section_9_networking/</link>
+      <pubDate>Mon, 04 Jul 2022 13:58:19 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20220704-cka_note_section_9_networking/</guid>
+      <description>前言 既然這個章節是介紹 Kubernetes Networking 那就先來複習一下之前看過的優質文章吧! [Hwchiu Docker Network - 網路模型 系列] Docker Network - 網路模型 [Day10] Container Network Interface 介紹 188. Prerequisite - Network Namespaces ▲ 使用 ip netns exec &amp;lt;NAMESPACE&amp;gt; ip link</description>
+    </item>
+    
+  </channel>
+</rss>

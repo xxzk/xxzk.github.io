@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>CKA_Note_Section_9_Networking - 老柯的學習筆記</title>
+  <title>CKA Note Section 9 Networking - 老柯的學習筆記</title>
   <meta name="renderer" content="webkit" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
@@ -39,19 +39,19 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
-<meta property="og:title" content="CKA_Note_Section_9_Networking" />
+<meta property="og:title" content="CKA Note Section 9 Networking" />
 <meta property="og:description" content="前言 既然這個章節是介紹 Kubernetes Networking 那就先來複習一下之前看過的優質文章吧! [Hwchiu Docker Network - 網路模型 系列] Docker Network - 網路模型 [Day10] Container Network Interface 介紹 188. Prerequisite - Network Namespaces ▲ 使用 ip netns exec &lt;NAMESPACE&gt; ip link" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.xxzk.me/post/20220704-cka_note_section_9_networking/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2022-07-04T13:58:19+00:00" />
 <meta property="article:modified_time" content="2022-07-04T13:58:19+00:00" />
 
-<meta itemprop="name" content="CKA_Note_Section_9_Networking">
+<meta itemprop="name" content="CKA Note Section 9 Networking">
 <meta itemprop="description" content="前言 既然這個章節是介紹 Kubernetes Networking 那就先來複習一下之前看過的優質文章吧! [Hwchiu Docker Network - 網路模型 系列] Docker Network - 網路模型 [Day10] Container Network Interface 介紹 188. Prerequisite - Network Namespaces ▲ 使用 ip netns exec &lt;NAMESPACE&gt; ip link"><meta itemprop="datePublished" content="2022-07-04T13:58:19+00:00" />
 <meta itemprop="dateModified" content="2022-07-04T13:58:19+00:00" />
-<meta itemprop="wordCount" content="2771">
-<meta itemprop="keywords" content="CKA,kubernetes," /><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="CKA_Note_Section_9_Networking"/>
+<meta itemprop="wordCount" content="2823">
+<meta itemprop="keywords" content="CKA-Note,kubernetes," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="CKA Note Section 9 Networking"/>
 <meta name="twitter:description" content="前言 既然這個章節是介紹 Kubernetes Networking 那就先來複習一下之前看過的優質文章吧! [Hwchiu Docker Network - 網路模型 系列] Docker Network - 網路模型 [Day10] Container Network Interface 介紹 188. Prerequisite - Network Namespaces ▲ 使用 ip netns exec &lt;NAMESPACE&gt; ip link"/>
 
 <!--[if lte IE 9]>
@@ -125,7 +125,7 @@
           <article class="post">
     
     <header class="post-header">
-      <h1 class="post-title">CKA_Note_Section_9_Networking</h1>
+      <h1 class="post-title">CKA Note Section 9 Networking</h1>
 
       <div class="post-meta">
         <span class="post-time"> 2022-07-04 </span>
@@ -200,6 +200,10 @@
 CNI 還有提供 library 可以自行開發屬於你自己的 CNI plugins~</p>
 <p><img src="cni_specific.jpg" alt="cni_specific"></p>
 <p>▲ CNI 切了兩個責任區，上方是 container runtime 必須要負責的；下方則是 plugin，<strong><span style='color:red'>達成 any runtime should be able to work with any plugins.</span></strong></p>
+<p>2022.08.03 更新:</p>
+<p>參加完 2022 COSCUP X KCD 之後 <a href="https://speakerdeck.com/johnlin/ebpf-based-container-networking?slide=5">eBPF-based Container Networking#5</a> 當中就有提到 CNI spec <strong>基本要求</strong> 與 <strong>次要支援目標</strong></p>
+<p><img src="coscup2022_ebpf_cni_lin_sir.jpg" alt="coscup2022_ebpf_cni_lin_sir"></p>
+<p>▲ 原來 IPAM, SNAT, Port mapping 都被歸類在次要目標。</p>
 <p><img src="cni_plugins.jpg" alt="cni_plugins"></p>
 <p>▲ CNI 自帶一些基本的 plugin，下方是第三方 plugin。延伸閱讀: <a href="https://www.hwchiu.com/cni-compare.html">[Hwchiu]常見 CNI (Container Network Interface) Plugin 介紹</a> <strong><span style='color:red'>而 docker 並不使用 CNI，而是自身的 CNM (container network model)</span></strong></p>
 <p><img src="k8s_components_port.jpg" alt="k8s_components_port"></p>
@@ -344,7 +348,7 @@ CNI 還有提供 library 可以自行開發屬於你自己的 CNI plugins~</p>
 </div>
 <footer class="post-footer">
       <div class="post-tags">
-          <a href="/tags/cka/">CKA</a>
+          <a href="/tags/cka-note/">CKA-Note</a>
           <a href="/tags/kubernetes/">kubernetes</a>
           </div>
       <nav class="post-nav">

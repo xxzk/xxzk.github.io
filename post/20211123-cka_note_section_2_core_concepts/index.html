@@ -49,7 +49,7 @@
 <meta itemprop="name" content="CKA Note Section 2 Core Concepts">
 <meta itemprop="description" content="10. Cluster Architecture ▲ Kubernetes controll plane / worker node 組件 12. ETCD in Kubernetes 透過 kubectl get 都是 (透過 api-server ) 向 etcd 查詢資料。 講師提供的練習環境是使用 kubeadm 搭建的，課程最後的章節會教導如何從 scratch 建立 Kubernetes cl"><meta itemprop="datePublished" content="2021-11-23T14:00:06+00:00" />
 <meta itemprop="dateModified" content="2021-11-23T14:00:06+00:00" />
-<meta itemprop="wordCount" content="994">
+<meta itemprop="wordCount" content="993">
 <meta itemprop="keywords" content="CKA-Note,kubernetes," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="CKA Note Section 2 Core Concepts"/>
 <meta name="twitter:description" content="10. Cluster Architecture ▲ Kubernetes controll plane / worker node 組件 12. ETCD in Kubernetes 透過 kubectl get 都是 (透過 api-server ) 向 etcd 查詢資料。 講師提供的練習環境是使用 kubeadm 搭建的，課程最後的章節會教導如何從 scratch 建立 Kubernetes cl"/>
@@ -173,7 +173,7 @@
 <p>▲ <code>--advertise-client-urls</code> etcd LISTEN 的 IP 以及 port，其中 port 必須是 2379。</p>
 <br>
 <p><img src="etcd_kubeadm_0.jpg" alt="etcd_kubeadm_0"></p>
-<p>▲ 使用 <code>kubeadm</code> 安裝的話 etcd 會被安裝在 <code>pod</code> 裡面。\</p>
+<p>▲ 使用 <code>kubeadm</code> 安裝的話 etcd 會被安裝在 <code>pod</code> 裡面。</p>
 <ul>
 <li>透過 <code>kubectl exec etcd-mini-k8s -n kube-system  -- etcdctl get / --prefix --keys-only</code> 可以查詢 <code>key</code>。</li>
 <li>etcd 的根目錄是 <code>/registry</code>。</li>

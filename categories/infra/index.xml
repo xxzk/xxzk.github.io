@@ -17,6 +17,15 @@
     </item>
     
     <item>
+      <title>200 LAB Network 網通設備設定筆記</title>
+      <link>https://blog.xxzk.me/post/20210722-lab-200-network-device-setting-note/</link>
+      <pubDate>Thu, 22 Jul 2021 08:53:50 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20210722-lab-200-network-device-setting-note/</guid>
+      <description>Cisco 3750G 前言日記 在記錄設定前先來段日記 XD，Cisco 3750G 章節紀錄機櫃搬遷後 Cisco 3750G 24TS 作為系統組自管 ToS (Top of Switch) 使用。 原先 K8s LAB 因為留停期間同事有拿來實驗 O</description>
+    </item>
+    
+    <item>
       <title>清除 Dell Server BIOS,iDRAC 密碼與設定值 &#43; 更新 Driver &#43; 建立 RAID</title>
       <link>https://blog.xxzk.me/post/20201119-clear_dell_bios_passwd_and_upgrade_driver/</link>
       <pubDate>Thu, 19 Nov 2020 10:03:54 +0000</pubDate>

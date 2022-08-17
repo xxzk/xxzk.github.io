@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>200 LAB Network 網通設備設定筆記 - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="Cisco 3750G 前言日記 在記錄設定前先來段日記 XD，Cisco 3750G 章節紀錄機櫃搬遷後 Cisco 3750G 24TS 作為系統組自管 ToS (Top of Switch) 使用。 原先 K8s LAB 因為留停期間同事有拿來實驗 O" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.98.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20210722-lab-200-network-device-setting-note/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="200 LAB Network 網通設備設定筆記" />
+<meta property="og:description" content="Cisco 3750G 前言日記 在記錄設定前先來段日記 XD，Cisco 3750G 章節紀錄機櫃搬遷後 Cisco 3750G 24TS 作為系統組自管 ToS (Top of Switch) 使用。 原先 K8s LAB 因為留停期間同事有拿來實驗 O" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.xxzk.me/post/20210722-lab-200-network-device-setting-note/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-07-22T08:53:50+00:00" />
+<meta property="article:modified_time" content="2021-07-22T08:53:50+00:00" />
+
+<meta itemprop="name" content="200 LAB Network 網通設備設定筆記">
+<meta itemprop="description" content="Cisco 3750G 前言日記 在記錄設定前先來段日記 XD，Cisco 3750G 章節紀錄機櫃搬遷後 Cisco 3750G 24TS 作為系統組自管 ToS (Top of Switch) 使用。 原先 K8s LAB 因為留停期間同事有拿來實驗 O"><meta itemprop="datePublished" content="2021-07-22T08:53:50+00:00" />
+<meta itemprop="dateModified" content="2021-07-22T08:53:50+00:00" />
+<meta itemprop="wordCount" content="2123">
+<meta itemprop="keywords" content="infra,network," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="200 LAB Network 網通設備設定筆記"/>
+<meta name="twitter:description" content="Cisco 3750G 前言日記 在記錄設定前先來段日記 XD，Cisco 3750G 章節紀錄機櫃搬遷後 Cisco 3750G 24TS 作為系統組自管 ToS (Top of Switch) 使用。 原先 K8s LAB 因為留停期間同事有拿來實驗 O"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">200 LAB Network 網通設備設定筆記</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-07-22 </span>
+        <div class="post-category">
+            <a href="/categories/infra/"> infra </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#cisco-3750g">Cisco 3750G</a>
+          <ul>
+            <li><a href="#前言日記">前言日記</a></li>
+            <li><a href="#firmware-ip-base-與-ip-service-差異">Firmware IP Base 與 IP service 差異</a></li>
+            <li><a href="#連接-console">連接 console</a></li>
+            <li><a href="#reset-to-factory">reset to factory</a></li>
+            <li><a href="#vlan">VLAN</a></li>
+            <li><a href="#trunk-mode">trunk mode</a></li>
+            <li><a href="#copy-running-config-to-startup-config">copy running-config to startup-config</a></li>
+            <li><a href="#set-ip-address">set IP address</a></li>
+            <li><a href="#set-hostname">set hostname</a></li>
+            <li><a href="#set-password">set password</a></li>
+            <li><a href="#set-snmp">set SNMP</a></li>
+            <li><a href="#upgrade-firmware">Upgrade Firmware</a></li>
+            <li><a href="#debug-後記">debug 後記</a></li>
+          </ul>
+        </li>
+        <li><a href="#dell-switch">Dell Switch</a>
+          <ul>
+            <li><a href="#dell-switch-reset-to-factory">Dell Switch reset to factory</a></li>
+            <li><a href="#dell-switch-set-hostname">Dell Switch set hostname</a></li>
+            <li><a href="#請-willy-查找是否有-loop">請 Willy 查找是否有 loop</a></li>
+            <li><a href="#stacking">stacking</a></li>
+            <li><a href="#lacp">LACP</a></li>
+            <li><a href="#vlan-1">VLAN</a></li>
+            <li><a href="#snmp-尚未設定">snmp (尚未設定)</a></li>
+          </ul>
+        </li>
+        <li><a href="#jumbo-frame-mtu-9000">Jumbo frame (MTU 9000)</a></li>
+        <li><a href="#interface-to-default">interface to default</a></li>
+        <li><a href="#更新-firmware">更新 Firmware</a></li>
+        <li><a href="#設定-ssh">設定 SSH</a>
+          <ul>
+            <li><a href="#設定-management-ip">設定 Management IP</a></li>
+            <li><a href="#設定-ssh-帳號">設定 ssh 帳號</a></li>
+            <li><a href="#ssh-server-設定">ssh server 設定</a></li>
+          </ul>
+        </li>
+        <li><a href="#forti-200d">Forti 200D</a>
+          <ul>
+            <li><a href="#forti-200d-reset-to-factory">Forti 200D reset to factory</a></li>
+            <li><a href="#變更-forti-gui-閒置自動登出時間">變更 Forti GUI 閒置自動登出時間</a></li>
+            <li><a href="#routing-table">routing table</a></li>
+            <li><a href="#forti-ddns-via-cli">Forti DDNS via CLI</a></li>
+            <li><a href="#20210923-debug-wireshark-顯示-tcp-previous-segment-not-captured">2021.09.23 [Debug] Wireshark 顯示 TCP Previous segment not captured</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="cisco-3750g">Cisco 3750G</h2>
+<h3 id="前言日記">前言日記</h3>
+<p>在記錄設定前先來段日記 XD，Cisco 3750G 章節紀錄機櫃搬遷後 Cisco 3750G 24TS 作為系統組自管 ToS (Top of Switch) 使用。<br>
+原先 K8s LAB 因為留停期間同事有拿來實驗 OpenStack，再加上大主管說要召回 Forti 200D，我就交接給 Patrick 自行處理/規劃了~~ <br>
+我想辦公室的那四台 R620 應該非常夠我練習 Kubernetes 相關了~ 畢竟目前還在用 minikube 練 CKA。</p>
+<h3 id="firmware-ip-base-與-ip-service-差異">Firmware IP Base 與 IP service 差異</h3>
+<p><img src="cisco_3750g_firmware_type.jpg" alt="cisco_3750g_firmware_type"></p>
+<p>▲ Cisco 3750 系列 Firmware 有分兩種不同 Firmware。</p>
+<p><a href="https://community.cisco.com/t5/networking-knowledge-base/what-is-the-difference-between-an-ip-base-image-and-an-ip/ta-p/3117957">What is the difference between an IP base image and an IP services image</a></p>
+<p>Catalyst 3750 and 3560 switches 在 IOS 版本 12.2(25)SEA (含) 以前 image (firmware) 分成兩種 <strong><span style='color:blue'>(1) 提供 L2 詳細功能與簡易 L3 routing 的 Standard Multilayer Image (SMI)</span></strong> <strong><span style='color:green'>(2) 提供 L3 進階功能 例如: RIP, OSPF, BGPv4, EIGRP 的 Enhanced Standard Multilayer Software Image (EMI)</span></strong></p>
+<p><strong><span style='color:red'>IP Base == SMI ; IP service == EMI</span></strong></p>
+<h3 id="連接-console">連接 console</h3>
+<p>這次做了一支 Linux Mint 21 LiveCD USB 當作隨插即用 Linux Base 的 OS。筆電連上區網 WiFi 後，我的 PC 就能透過 <code>ssh</code> 連入遠端操作~ 甚至透過 <code>tmux</code> 可以有「terminal 遠端桌面」的效果呢!</p>
+<p>遇到一個很奇怪的問題: 接上 console 線後 <code>dmesg | grep 'tty'</code> 有看到 <code>ttyUSB0</code>，但 <code>ll /dev/ttyUSB0</code> 一開始能看到後來就會消失 @@ &hellip;<br>
+找到這篇 <a href="https://askubuntu.com/questions/1403705/dev-ttyusb0-not-present-in-ubuntu-22-04">/dev/ttyUSB0 not present in Ubuntu 22.04</a> 提供解法:<br>
+<strong><span style='color:red'><code>sudo apt remove brltty</code> 之後重插 USB console 線，<code>/dev/ttyUSB0</code> 就能使用了~</span></strong></p>
+<p><strong><span style='color:red'>Cisco 3750G 使用的 serial speed 是 <code>9600 8N1</code>，Hardware Flow Control 必須是 <code>NO</code>。</span></strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo apt install minicom -y
+</span></span><span class="line"><span class="cl">sudo apt install ssh -y
+</span></span><span class="line"><span class="cl">systemctl status sshd.service
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## remove brltty to fix issue.</span>
+</span></span><span class="line"><span class="cl">sudo apt remove brltty -y
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## change &#39;mint&#39; user for ssh.</span>
+</span></span><span class="line"><span class="cl">passwd
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="reset-to-factory">reset to factory</h3>
+<p><a href="https://www.cisco.com/c/en/us/support/docs/switches/catalyst-2900-xl-series-switches/24328-156.html#reset_switch">Resetting Catalyst Switches to Factory Defaults</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Switch&gt;enable
+</span></span><span class="line"><span class="cl">Switch#write erase
+</span></span><span class="line"><span class="cl">Erasing the nvram filesystem will remove all configuration files! Continue? [confirm]y[OK]
+</span></span><span class="line"><span class="cl">Erase of nvram: complete
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Switch#reload
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="write_erase_vlan_still_exist.jpg" alt="write_erase_vlan_still_exist"></p>
+<p>▲ <strong><span style='color:red'>如果只執行 <code>write erase</code> VLAN data 還會存在!!</span></strong></p>
+<p><a href="https://www.cisco.com/c/en/us/support/docs/switches/catalyst-2900-xl-series-switches/24328-156.html#reset_vlan">Reset VLAN Information</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">## show flash directory
+</span></span><span class="line"><span class="cl">Switch#dir flash:
+</span></span><span class="line"><span class="cl">Switch#delete flash:vlan.dat
+</span></span><span class="line"><span class="cl">Delete filename [vlan.dat]? 
+</span></span><span class="line"><span class="cl">Delete flash:vlan.dat? [confirm]y
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="vlan">VLAN</h3>
+<p><a href="https://community.cisco.com/t5/networking-knowledge-base/how-to-configure-vlans-on-the-catalyst-switches/ta-p/3131780#toc-hId-1041406677">How To Configure VLANs On the Catalyst Switches</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">enable
+</span></span><span class="line"><span class="cl">configure terminal
+</span></span><span class="line"><span class="cl">vlan &lt;number&gt;
+</span></span><span class="line"><span class="cl">name &lt;name-string&gt;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">## exit press ctrl-z
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">show vlan
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">enable
+</span></span><span class="line"><span class="cl">configure terminal
+</span></span><span class="line"><span class="cl">interface range GigabitEthernet 1/0/1-24
+</span></span><span class="line"><span class="cl">switchport mode access
+</span></span><span class="line"><span class="cl">switchport access vlan 190
+</span></span><span class="line"><span class="cl">end
+</span></span><span class="line"><span class="cl">show vlan
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="trunk-mode">trunk mode</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">enable
+</span></span><span class="line"><span class="cl">config ter
+</span></span><span class="line"><span class="cl">interface ....
+</span></span><span class="line"><span class="cl">switchport trunk encapsulation dot1q
+</span></span><span class="line"><span class="cl">switchport mode trunk
+</span></span><span class="line"><span class="cl">end
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong><span style='color:red'>如果不下 <code>switchport trunk encapsulation dot1q</code> 會出現錯誤 <code>Command rejected: An interface whose trunk encapsulation is &quot;Auto&quot; can not be configured to &quot;trunk&quot; mode.</code></span></strong></p>
+<h3 id="copy-running-config-to-startup-config">copy running-config to startup-config</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">copy running-config startup-config
+</span></span><span class="line"><span class="cl">Destination filename [startup-config]?
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="set-ip-address">set IP address</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">enable
+</span></span><span class="line"><span class="cl">config ter
+</span></span><span class="line"><span class="cl">inter vlan 190
+</span></span><span class="line"><span class="cl">ip address 192.168.190.253 255.255.255.0
+</span></span><span class="line"><span class="cl">ip default-gateway 192.168.190.254 ## &#39;default gateway&#39; won&#39;t show in tab or ?
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="set-hostname">set hostname</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">enable
+</span></span><span class="line"><span class="cl">configure terminal
+</span></span><span class="line"><span class="cl">hostname &lt;hostname&gt;
+</span></span><span class="line"><span class="cl">end
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="set-password">set password</h3>
+<p><a href="https://www.cisco.com/c/en/us/support/docs/smb/switches/cisco-small-business-300-series-managed-switches/smb5563-configure-password-settings-on-a-switch-through-the-command.html#enable">Configure Enable Password Settings</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">enable
+</span></span><span class="line"><span class="cl">config ter
+</span></span><span class="line"><span class="cl">line console 0
+</span></span><span class="line"><span class="cl">enable password level 15 0 &lt;password-string&gt;
+</span></span><span class="line"><span class="cl">exit
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="set-snmp">set SNMP</h3>
+<p><a href="https://www.cisco.com/c/en/us/support/docs/ip/simple-network-management-protocol-snmp/7282-12.html#anc9">Enable SNMP Community Strings</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">enable
+</span></span><span class="line"><span class="cl">config ter
+</span></span><span class="line"><span class="cl">snmp-server community &lt;community-string&gt; &lt;RO,RW&gt;
+</span></span><span class="line"><span class="cl">end
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="upgrade-firmware">Upgrade Firmware</h3>
+<p><a href="https://www.cisco.com/c/en/us/support/docs/switches/catalyst-3750-series-switches/64898-upgrade-3750-stack.html#cfbin1">3750 Series Switch Stack IOS Upgrade - Manual (.bin Image)</a></p>
+<p><a href="https://software.cisco.com/download/home/282526529/type/280805680/release/12.2.55-SE12">[檔名/SHA-512 這邊找] Catalyst 3750V2-24TS Switch</a></p>
+<h3 id="debug-後記">debug 後記</h3>
+<ul>
+<li><code>.253</code> 必須綁在 VLAN interface 身上，而不是 Giga 1/0/24 (進線) 實體 interface 身上。</li>
+<li>要跨網段 ping 必須給定 default gateway (很基本，但當時腦袋一直卡在 L2 思考 @@)</li>
+</ul>
+<hr>
+<h2 id="dell-switch">Dell Switch</h2>
+<p><strong><span style='color:brown'>型號: Dell PowerConnect 8132F -&gt; Storage 使用</span></strong><br>
+<strong><span style='color:blue'>型號: Dell PowerConnect N4032F *2 (stacking) -&gt; 對接 Dell PowerEdge Server</span></strong></p>
+<h3 id="dell-switch-reset-to-factory">Dell Switch reset to factory</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">console&gt; en
+</span></span><span class="line"><span class="cl">console# delete startup-config
+</span></span><span class="line"><span class="cl">console# reload
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p><a href="http://informatech.info/threads/reset-dell-powerconnect-switch-to-factory-settings.1458/">Reset Dell PowerConnect Switch to Factory Settings | Informatech KB - La conaissance s&rsquo;accroit lorsqu&rsquo;on la partage</a></p>
+<br>
+<h3 id="dell-switch-set-hostname">Dell Switch set hostname</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">enable</span>
+</span></span><span class="line"><span class="cl">config
+</span></span><span class="line"><span class="cl">hostname LAB-200-Storage
+</span></span><span class="line"><span class="cl"><span class="nb">exit</span>
+</span></span><span class="line"><span class="cl">copy running-config startup-config
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="請-willy-查找是否有-loop">請 Willy 查找是否有 loop</h3>
+<p><span style='color:blue'>用 <code>tmux</code> 就能達到「遠端桌面」的效果，Willy 哥下命令的同時我這邊可以同步看到畫面 抄~筆~記</span></p>
+<p>xshell 登入 <code>xxx_dell_switch_console 192.168.200.49</code> 密碼 <code>xxx</code>
+接著輸入 <code>tmux att</code> -&gt; <code>minicom</code> 按下 Enter 後即可使用
+Willy 大大下命令的同時我這邊也看的到，可以順便解釋一下 XD</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 查看 CPU 使用量</span>
+</span></span><span class="line"><span class="cl">show process cpu
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## 查看 transceiver 資訊 (Dell 這邊不會有衰退值 QQ)</span>
+</span></span><span class="line"><span class="cl">show ip interface transceiver
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## 查看訊號衰減程度 (db 值)</span>
+</span></span><span class="line"><span class="cl">show fiber-ports optical-transceiver
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## 查看當前 running-config 的縮寫 </span>
+</span></span><span class="line"><span class="cl">show run
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Dell Switch N4032F 身上的 SFP+ 是使用 &ldquo;SFP-10G-SR&rdquo;，正常 <code>db</code> 值可以參考 Dell 官網的 datasheet<br>
+<a href="https://i.dell.com/sites/doccontent/shared-content/data-sheets/en/documents/dell-networking-optics-spec-sheet.pdf">dell-networking-optics-spec-sheet.pdf</a></p>
+<h3 id="stacking">stacking</h3>
+<p><a href="https://www.dell.com/support/kbdoc/zh-tw/000121374/how-to-stack-and-unstack-a-member-in-dell-emc-networking-n4000-switch?lang=en">How to stack and unstack a member in Dell EMC Networking N4000 switch | Dell 台灣</a></p>
+<h3 id="lacp">LACP</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">enable
+</span></span><span class="line"><span class="cl">config
+</span></span><span class="line"><span class="cl">interface range tengigabitethernet 1/0/1-2,te2/0/1-2
+</span></span><span class="line"><span class="cl">channel-group 1 mode active
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">### 原本用 on 想改 Trunk 的話
+</span></span><span class="line"><span class="cl">configure
+</span></span><span class="line"><span class="cl">interface te 1/0/x ##  或者用 range
+</span></span><span class="line"><span class="cl">switchport mode trunk
+</span></span><span class="line"><span class="cl">###
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">end
+</span></span><span class="line"><span class="cl">copy running-config startup-config
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">## 如果想要移除 LACP
+</span></span><span class="line"><span class="cl">no channel-group
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 查看 port-channel 有哪些成員</span>
+</span></span><span class="line"><span class="cl">show interfaces port-channel &lt;number&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a href="https://www.dell.com/support/kbdoc/zh-tw/000121857/how-to-create-link-aggregation-groups-lags-on-dell-networking-powerconnect-switches?lang=en">How to create Link Aggregation Groups (LAGs) on Dell Networking PowerConnect Switches | Dell 台灣</a></p>
+<p><a href="https://www.dell.com/support/kbdoc/zh-tw/000121867/how-to-use-the-interface-range-command-for-n1500-switches">How to use the interface range command for N1500 switches | Dell 台灣</a></p>
+<p><a href="https://www.dell.com/support/kbdoc/zh-tw/000104748/how-to-configure-switchport-modes-on-dell-emc-networking-n-series-switches?lang=en">How to Configure Switchport Modes on Dell EMC Networking N Series Switch | Dell 台灣</a></p>
+<h3 id="vlan-1">VLAN</h3>
+<h4 id="access-mode-port">Access mode port</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">enable</span>
+</span></span><span class="line"><span class="cl">config
+</span></span><span class="line"><span class="cl">vlan &lt;number&gt;
+</span></span><span class="line"><span class="cl">name xxx <span class="c1">## optional</span>
+</span></span><span class="line"><span class="cl">interfaces <span class="o">(</span>range<span class="o">)</span> Te 1/0/x <span class="c1">## or used &#34;interfaces port-channel&#34;</span>
+</span></span><span class="line"><span class="cl">switchport access vlan &lt;VLAN_NUMBER&gt;
+</span></span><span class="line"><span class="cl">end
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a href="https://www.dell.com/support/kbdoc/zh-tw/000125788/dell-emc-networking-configuring-vlan-on-switches?lang=en">Dell EMC Networking Configuring VLAN on Switches | Dell 台灣</a></p>
+<h4 id="trunk-mode-port">Trunk mode port</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">enable</span>
+</span></span><span class="line"><span class="cl">config
+</span></span><span class="line"><span class="cl">vlan &lt;number&gt;
+</span></span><span class="line"><span class="cl">name xxx  <span class="c1">## optional</span>
+</span></span><span class="line"><span class="cl">interfaces <span class="o">(</span>range<span class="o">)</span> Te 1/0/x <span class="c1">## or used &#34;interfaces port-channel&#34;</span>
+</span></span><span class="line"><span class="cl">switchport trunk allowed vlan add 201,202,250 <span class="c1">## 使用 add 可能會加不上去...</span>
+</span></span><span class="line"><span class="cl">end
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a href="https://www.dell.com/support/kbdoc/zh-tw/000104748/how-to-configure-switchport-modes-on-dell-emc-networking-n-series-switches?lang=en">How to Configure Switchport Modes on Dell EMC Networking N Series Switch | Dell 台灣</a></p>
+<h3 id="snmp-尚未設定">snmp (尚未設定)</h3>
+<p><a href="https://www.dell.com/support/kbdoc/zh-tw/000135459/how-to-configure-snmp-on-dell-emc-networking-n-series-switch">How to configure SNMP on Dell EMC Networking N series switch | Dell 台灣</a></p>
+<h2 id="jumbo-frame-mtu-9000">Jumbo frame (MTU 9000)</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">show system mtu
+</span></span><span class="line"><span class="cl">config
+</span></span><span class="line"><span class="cl">system jumbo mtu 9000
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="check_jumbo_frame_on_storage.jpg" alt="check_jumbo_frame_on_storage"></p>
+<p>▲ 到 Equallogic 上確認 Jumbo Frame</p>
+<h2 id="interface-to-default">interface to default</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">en
+</span></span><span class="line"><span class="cl">default interface te1/0/x
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="更新-firmware">更新 Firmware</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">copy usb://N4000v6.5.4.4.stk backup
+</span></span><span class="line"><span class="cl">show version
+</span></span><span class="line"><span class="cl">boot system backup
+</span></span><span class="line"><span class="cl">reload
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="upgrade_dell_fw_0.jpg" alt="upgrade_dell_fw_0"></p>
+<p>(這是後來 Dell Switch S4810 因為沒有 USB 孔使用的方式)<br>
+(<strong>沒有用到 SaltStack 單純看格式</strong>) <a href="https://dellos10-salt.readthedocs.io/en/latest/image_upgrade_example.html">Install or upgrade devices running Dell EMC Networking OS10 using SaltStack</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">en
+</span></span><span class="line"><span class="cl">config
+</span></span><span class="line"><span class="cl">interface ma 0/0
+</span></span><span class="line"><span class="cl">no ip address ## delete default MGMT IP
+</span></span><span class="line"><span class="cl">ip address 192.168.199.66/24
+</span></span><span class="line"><span class="cl">end
+</span></span><span class="line"><span class="cl">ping 192.168.199.254 ## test
+</span></span><span class="line"><span class="cl">FTOS#upgrade system scp://192.168.199.62//root/Dell_9.14.1.bin A:
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a href="https://jackstromberg.com/2014/12/how-to-upgrade-the-firmware-on-a-dell-powerconnect-n20003000-series-switch/">[How-To] Upgrade the firmware on a Dell PowerConnect N2000/3000 series switch | Jack Stromberg</a></p>
+<br>
+<h2 id="設定-ssh">設定 SSH</h2>
+<p><a href="https://www.dell.com/support/kbdoc/zh-tw/000120183/how-to-set-up-management-access-for-dell-networking-n2000-n3000-and-n4000-series-switches?lang=en">How to set up management access for Dell Networking N2000, N3000 and N4000 Series Switches</a></p>
+<h3 id="設定-management-ip">設定 Management IP</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">enable
+</span></span><span class="line"><span class="cl">config
+</span></span><span class="line"><span class="cl">interface out-of-band ## or vlan 1
+</span></span><span class="line"><span class="cl">ip address &lt;IP&gt; &lt;subnet mask&gt; &lt;default gateway&gt;
+</span></span><span class="line"><span class="cl">end
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="設定-ssh-帳號">設定 ssh 帳號</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">enable
+</span></span><span class="line"><span class="cl">config
+</span></span><span class="line"><span class="cl">username &lt;user name&gt; password &lt;password&gt; privilege 15
+</span></span><span class="line"><span class="cl">enable password &lt;password&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="ssh-server-設定">ssh server 設定</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">enable
+</span></span><span class="line"><span class="cl">config
+</span></span><span class="line"><span class="cl">crypto key generate dsa
+</span></span><span class="line"><span class="cl">crypto key generate rsa
+</span></span><span class="line"><span class="cl">ip ssh server
+</span></span><span class="line"><span class="cl">copy running-config startup-config
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<h2 id="forti-200d">Forti 200D</h2>
+<h3 id="forti-200d-reset-to-factory">Forti 200D reset to factory</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">exec factoryreset
+</span></span><span class="line"><span class="cl">## default use admin login (no password)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="變更-forti-gui-閒置自動登出時間">變更 Forti GUI 閒置自動登出時間</h3>
+<p><a href="https://kb.fortinet.com/kb/documentLink.do?externalID=FD46096">Technical Tip: Changing the GUI idle timeout</a></p>
+<p><img src="forti_gui_timeout_adjust.jpg" alt="forti_gui_timeout_adjust"></p>
+<h3 id="routing-table">routing table</h3>
+<p><a href="https://docs.fortinet.com/document/fortigate/6.0.0/cli-reference/372042/router-info-routing-table">router info routing-table </a></p>
+<h3 id="forti-ddns-via-cli">Forti DDNS via CLI</h3>
+<p>用 CLI 設定就可以指定 DNS server 了~ (謝謝 Rock)</p>
+<p><img src="set_fortiddns_via_cli.jpg" alt="set_fortiddns_via_cli"></p>
+<h3 id="20210923-debug-wireshark-顯示-tcp-previous-segment-not-captured">2021.09.23 [Debug] Wireshark 顯示 TCP Previous segment not captured</h3>
+<p><strong>討論串在 <code>xx</code> 關鍵字就找 <code>TCP Previous segment not captured</code> 吧~</strong> (更早之前的可能要用 <code>192.168.200</code> 當關鍵字)</p>
+<p><strong><span style='color:red'>特別感謝 TWNOG 社群技術支援~</span></strong></p>
+<p><img src="K8s_LAB_Network_diagram.jpg" alt="K8s_LAB_Network_diagram"></p>
+<p>▲ 當時附上的網路架構圖</p>
+<blockquote>
+<p>Office B - Forti LAN: 192.168.200.253/24<br>
+LAB - Forti LAN: 192.168.200.254/24<br>
+All subnet 200 VMs in ESXi host default gateway is 192.168.200.254</p>
+</blockquote>
+<br>
+<h4 id="查看完整設定檔-full-configuration">查看完整設定檔 (Full Configuration)</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">show full-configuration system interface LAN-to-20755
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<h4 id="設定-mtu-與-tcp-max-segment-size-mss">設定 MTU 與 TCP Max Segment Size (MSS)</h4>
+<br>
+<p><a href="https://docs.fortinet.com/document/fortigate/6.4.7/administration-guide/596096/interface-mtu-packet-size">【官方有提供 MTU/MSS 大小算法】Interface MTU packet size</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">config system interface
+</span></span><span class="line"><span class="cl">    edit &lt;interface&gt;
+</span></span><span class="line"><span class="cl">        set mtu-override enable
+</span></span><span class="line"><span class="cl">        set mtu ?
+</span></span><span class="line"><span class="cl">            &lt;integer&gt;    Maximum transmission unit (&lt;min&gt;-&lt;max&gt;)
+</span></span><span class="line"><span class="cl">    next
+</span></span><span class="line"><span class="cl">end
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="windows-10-修改-mtu">Windows 10 修改 MTU</h4>
+<p><strong><code>cmd.exe</code> 需要以 Administrator 開啟</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl">## 顯示目前所有 interface MTU
+</span></span><span class="line"><span class="cl">netsh interface ipv4 show subinterface
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">## 修改 <span class="s2">&#34;乙太網路 10&#34;</span> 的 MTU
+</span></span><span class="line"><span class="cl">netsh interface ipv4 set subinterface <span class="s2">&#34;乙太網路 10&#34;</span> mtu=1300
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="問題已解決">問題已解決</h4>
+<p>問題解決了，先講結論 不是 IPsec tunnel MTU / TCP MSS 的問題。 <strong>兇手是雙重 NAT</strong><br>
+(dest: <code>192.168.200.51</code> ) Office B 收到的 <code>src</code> 並不是 My PC 的 <code>192.168.212.x/24</code> 而是 IPsec tunnel 的 <code>172.19.x.x/16</code> (Private IP，同事說做 health check 用的)</p>
+<p><strong><span style='color:red'>▲ 第一重 NAT</span></strong></p>
+<p>接著 Office B 會在做第二次 NAT，將 <code>src</code> 換成 Office B Forti 身上 interface 設定的 <code>192.168.200.253/24</code> 。<br>
+也就是我在 <code>192.168.200.51</code> 執行 <code>w</code> 看到的 <code>FROM</code> 是 <code>192.168.200.253</code></p>
+<p><strong><span style='color:red'>▲ 第二重 NAT</span></strong></p>
+<p>同事先拆掉第二重 NAT，讓 <code>w</code> 下去看到 <code>FROM</code> 是 <code>172.19.x.x</code> 。 問題沒有解決，一樣會掉包。<br>
+兩層 NAT 都拆掉目前安好。</p>
+<p><strong><span style='color:red'>註: K8s-LAB Forti 有開啟 OSPF 相關設定來達成路由</span></strong></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2021-07-22
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/infra/">infra</a>
+          <a href="/tags/network/">network</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/20210723-config-dell-ps6210-storage-using-minicom/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">使用 minicom 設定 Dell PS6210 Storage (iSCSI)</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/20210629-docker-container-link/">
+            <span class="next-text nav-default">Docker 容器與容器的連結。Grafana &#43; Prometheus &#43; Blackbox_expoter</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.64437849d125a2d603b3e71d6de5225d641a32d17168a58106e0b61852079683.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

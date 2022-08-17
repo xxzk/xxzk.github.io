@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>終端機神器! tmux 手動編譯安裝 - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="圖片來源: GT-Wang tmux 是一款 terminal mutiplexer (終端機多工器)，自帶切割畫面 (pane) 的功能而且能夠在背景執行。 這篇主要紀錄在公司 Border (跳板機) 手動編譯安裝 for single user 應用場景、" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.98.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20210611-compile-tmux-for-bastion/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="終端機神器! tmux 手動編譯安裝" />
+<meta property="og:description" content="圖片來源: GT-Wang tmux 是一款 terminal mutiplexer (終端機多工器)，自帶切割畫面 (pane) 的功能而且能夠在背景執行。 這篇主要紀錄在公司 Border (跳板機) 手動編譯安裝 for single user 應用場景、" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.xxzk.me/post/20210611-compile-tmux-for-bastion/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-06-11T13:04:29+00:00" />
+<meta property="article:modified_time" content="2021-06-11T13:04:29+00:00" />
+
+<meta itemprop="name" content="終端機神器! tmux 手動編譯安裝">
+<meta itemprop="description" content="圖片來源: GT-Wang tmux 是一款 terminal mutiplexer (終端機多工器)，自帶切割畫面 (pane) 的功能而且能夠在背景執行。 這篇主要紀錄在公司 Border (跳板機) 手動編譯安裝 for single user 應用場景、"><meta itemprop="datePublished" content="2021-06-11T13:04:29+00:00" />
+<meta itemprop="dateModified" content="2021-06-11T13:04:29+00:00" />
+<meta itemprop="wordCount" content="1261">
+<meta itemprop="keywords" content="tmux," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="終端機神器! tmux 手動編譯安裝"/>
+<meta name="twitter:description" content="圖片來源: GT-Wang tmux 是一款 terminal mutiplexer (終端機多工器)，自帶切割畫面 (pane) 的功能而且能夠在背景執行。 這篇主要紀錄在公司 Border (跳板機) 手動編譯安裝 for single user 應用場景、"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">終端機神器! tmux 手動編譯安裝</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-06-11 </span>
+        <div class="post-category">
+            <a href="/categories/tools/"> tools </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#安裝-tmux">安裝 <code>tmux</code></a>
+          <ul>
+            <li><a href="#source-code-編譯安裝到跳板機">source code 編譯安裝到跳板機</a></li>
+          </ul>
+        </li>
+        <li><a href="#常用指令">常用指令</a>
+          <ul>
+            <li><a href="#pane-基礎">pane 基礎</a></li>
+            <li><a href="#windows-基礎">windows 基礎</a></li>
+            <li><a href="#session-基礎">session 基礎</a></li>
+            <li><a href="#將-pane-合併到其它-window">將 pane 合併到其它 window</a></li>
+            <li><a href="#調整-pane-大小">調整 pane 大小</a></li>
+            <li><a href="#平均分配">平均分配</a></li>
+            <li><a href="#重新排序-window">重新排序 window</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p><img src="https://blog.gtwang.org/wp-content/uploads/2019/12/linux-tmux-terminal-multiplexer-tutorial-20191204-02.png" alt="linux-tmux-terminal-multiplexer-tutorial-20191204-02.png"></p>
+<p>圖片來源: <a href="https://blog.gtwang.org/linux/linux-tmux-terminal-multiplexer-tutorial/">GT-Wang</a></p>
+<hr>
+<p><strong>tmux 是一款 terminal mutiplexer (終端機多工器)，自帶切割畫面 (pane) 的功能而且能夠在背景執行。</strong><br>
+<strong><span style='color:blue'>這篇主要紀錄在公司 Border (跳板機) 手動編譯安裝 for single user</span></strong><br>
+<strong>應用場景、操作，請參考這幾篇文章:</strong></p>
+<p><strong>操作 1 ==&gt;</strong> <a href="https://blog.gtwang.org/linux/linux-tmux-terminal-multiplexer-tutorial/">Linux tmux 終端機管理工具使用教學 - G. T. Wang</a><br>
+<strong>操作 2 (gif) ==&gt;</strong> <a href="https://larrylu.blog/tmux-33a24e595fbc">終端機 session 管理神器 — tmux.| Larry・Blog</a><br>
+<strong>應用場景 ==&gt;</strong> <a href="https://aji.tw/%E4%BD%A0%E7%B5%82%E7%A9%B6%E6%9C%83%E7%94%A8tmux%E7%9A%84%E9%82%A3%E7%82%BA%E4%BD%95%E4%B8%8D%E4%B8%80%E9%96%8B%E5%A7%8B%E5%B0%B1%E5%AD%B8-%E5%9F%BA%E7%A4%8E%E7%AF%87/">你終究會用tmux的，那為何不一開始就學 (基礎篇)</a></p>
+<p>因為不小心被 Upton 看到我在編譯 <code>tmux</code>  <del>(偷看人家，害羞 &gt;///&lt;)</del> 就順便解釋 <code>tmux</code> 應用在公司環境有什麼優勢!<br>
+一般來說我們都是連進 BD 後直接 <code>sudo ssh root@xxxx</code> 連入目標機器執行指令，可是當 VPN 斷線發生時&hellip; 在目標機器執行的指令會因為 ssh session 中斷而被強制終止。</p>
+<p><strong>沒有 <code>tmux</code> 的情況:</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">office == (ssh) ==&gt; BD == (ssh) ==&gt; RD&#39;s VM
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## in office XShell Desktop</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>C:<span class="se">\~</span><span class="o">]</span>$ ssh tesla_plaid@&lt;BD_IP&gt;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## login in BD</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>tesla_plaid@BD_IT_Local-Test-110 ~<span class="o">]</span>$ sudo ssh root@RDs VM
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## login in RD&#39;s VM</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@Web_Server<span class="o">]</span> watch -n3 <span class="nb">echo</span> <span class="s1">&#39;hi&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>當 VPN 斷線，遠端執行的命令就會被 close 掉</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">office == (X) ==&gt; BD == (X) ==&gt; RD&#39;s VM
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>使用 <code>tmux</code> 的狀況:</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">office == (ssh) ==&gt; BD | tmux == (ssh) ==&gt; RD&#39;s VM
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>當 VPN 斷線，因為與 RD&rsquo;s VM 的 ssh session 是被接在 <code>tmux</code> 身上，<code>tmux</code> 自帶背景執行因此在 RD&rsquo;s VM 執行的命令並不會中斷。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">office == (X) ==&gt; BD | tmux == (O) ==&gt; RD&#39;s VM
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>重播 VPN 之後只需要重新登入 BD，打開 tmux session 即可。<br>
+有點像是在 BD 放了一台筆電，用那台筆電去連 RD 的機器<br>
+我們 VPN 斷線，只是碰不到筆電，原本跑在筆電的工作不會斷線</p>
+<hr>
+<h2 id="安裝-tmux">安裝 <code>tmux</code></h2>
+<p>主流 linux distribution 都能透過套件管理器直接安裝。</p>
+<p><strong>Ubuntu</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">apt install tmux -y
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>RHEL/CentOS</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">yum install tmux -y
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>MacOS</strong> <del>不是 Linux distro 不過 Unix like</del></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">brew install tmux
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<h3 id="source-code-編譯安裝到跳板機">source code 編譯安裝到跳板機</h3>
+<p><a href="https://github.com/tmux/tmux/wiki/Installing">tmux installing wiki</a></p>
+<p><code>tmux</code> 會使用到 <strong>libevent</strong>, <strong>ncurses</strong> 這兩個相依套件。<br>
+我已經把這次使用的打包到 Nextcloud 上 (SYS -&gt; tmux_compile) 嫌去官網抓麻煩的可以直接下載回來丟到跳板機上</p>
+<p>(小弟使用 WSL 透過 <code>rsync</code> 將檔案上傳至跳板機)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">rsync -avP /home/xzk_wsl/download_c/Downloads/tmux_compile/ &lt;username&gt;@192.168.x.x:~/
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<h4 id="自動編譯--安裝腳本">自動編譯 + 安裝腳本</h4>
+<p>其中使用 <code>gizp</code> 的原因是直接使用 <code>tar -zxvf</code> 或者 <code>tar -tvf</code> (查看壓縮包內目錄) 都出現錯誤:</p>
+<p><a href="https://superuser.com/questions/841865/extracting-a-tar-gz-file-returns-this-does-not-look-like-a-tar-archive">Extracting a tar.gz file returns, “This does not look like a tar archive.”</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">tar: This does not look like a tar archive
+</span></span><span class="line"><span class="cl">tar: Skipping to next header
+</span></span><span class="line"><span class="cl">tar: Exiting with failure status due to previous errors
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong><span style='color:blue'>執行完畢後直接下達 <code>tmux</code> 就可以使用了~</span></strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## install tmux for board VM</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## un-tar.gz</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">tar -zxvf ~/libevent-2.1.12-stable.tar.gz
+</span></span><span class="line"><span class="cl">tar -zxvf ~/tmux-3.2.tar.gz
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">gzip -d ~/ncurses-6.2.tar.gz
+</span></span><span class="line"><span class="cl">tar -zxvf ~/ncurses-6.2.tar
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## compile and install libevent</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> libevent-2.1.12-stable
+</span></span><span class="line"><span class="cl">./configure --prefix<span class="o">=</span><span class="nv">$HOME</span>/local --enable-shared
+</span></span><span class="line"><span class="cl">make <span class="o">&amp;&amp;</span> make install
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> ~
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## compile and install ncurses</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> ncurses-6.2
+</span></span><span class="line"><span class="cl">./configure --prefix<span class="o">=</span><span class="nv">$HOME</span>/local --with-shared --with-termlib --enable-pc-files --with-pkg-config-libdir<span class="o">=</span><span class="nv">$HOME</span>/local/lib/pkgconfig
+</span></span><span class="line"><span class="cl">make <span class="o">&amp;&amp;</span> make install
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> ~
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## compile and install tmux</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> tmux-3.2
+</span></span><span class="line"><span class="cl"><span class="nv">PKG_CONFIG_PATH</span><span class="o">=</span><span class="nv">$HOME</span>/local/lib/pkgconfig ./configure --prefix<span class="o">=</span><span class="nv">$HOME</span>/local
+</span></span><span class="line"><span class="cl">make <span class="o">&amp;&amp;</span> make install
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## export ENV_VAR</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="nv">$HOME</span>/local/bin:<span class="nv">$PATH</span>
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">LD_LIBRARY_PATH</span><span class="o">=</span><span class="nv">$HOME</span>/local/lib:<span class="nv">$LD_LIBRARY_PATH</span>
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">MANPATH</span><span class="o">=</span><span class="nv">$HOME</span>/local/share/man:<span class="nv">$MANPATH</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<h2 id="常用指令">常用指令</h2>
+<p><a href="https://gist.github.com/MohamedAlaa/2961058">tmux shortcuts &amp; cheatsheet</a></p>
+<p>cheating sheet is here~</p>
+<h3 id="pane-基礎">pane 基礎</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">%       垂直分割
+</span></span><span class="line"><span class="cl">&#34;       水平分割
+</span></span><span class="line"><span class="cl">o       以輪流方式輪流切換 pane
+</span></span><span class="line"><span class="cl">arrow   切換目標
+</span></span><span class="line"><span class="cl">space   切換佈局
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">!       將當前 pane 變成獨立 window
+</span></span><span class="line"><span class="cl">x       關閉當前 pane
+</span></span><span class="line"><span class="cl">q       顯示 pane number
+</span></span><span class="line"><span class="cl">z       zoom-in 當前 pane (再按一次回來，狀態列會多一個 *z)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="windows-基礎">windows 基礎</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">c       建立新 windows (create)
+</span></span><span class="line"><span class="cl">&amp;       關閉 windows
+</span></span><span class="line"><span class="cl">w       (大推) 視覺化選單
+</span></span><span class="line"><span class="cl">n       切換至下一個視窗 (next)
+</span></span><span class="line"><span class="cl">p       切換至上一個視窗 (previous)
+</span></span><span class="line"><span class="cl">number  切換至指定的 windows 視窗
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="session-基礎">session 基礎</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">$       重新命名目前的 session
+</span></span><span class="line"><span class="cl">d       detach 當前 session
+</span></span><span class="line"><span class="cl">s       以視覺方式切換 session
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="將-pane-合併到其它-window">將 pane 合併到其它 window</h3>
+<p><a href="https://bezhermoso.github.io/til/move-a-tmux-pane-from-one-window-to-another/">Move a tmux pane from one window to another</a></p>
+<p><a href="https://unix.stackexchange.com/questions/14300/moving-tmux-pane-to-window">Moving tmux pane to window</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">## -p &lt;p_int&gt; 可以省略，預設當下 pane number。
+</span></span><span class="line"><span class="cl">## -t &lt;int&gt; 目標 window number
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">:join-pane -s &lt;p_int&gt; -t &lt;int&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="調整-pane-大小">調整 pane 大小</h3>
+<p><a href="https://stackoverflow.com/questions/16145078/in-tmux-can-i-resize-a-pane-to-an-absolute-value">In tmux can I resize a pane to an absolute value</a></p>
+<p><a href="https://michaelsoolee.com/resize-tmux-panes/">Resizing tmux panes</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">## 指定 cell size
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">:resize-pane -[DULR] &lt;cells_number&gt;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">## shortcut 連續 (不過剛建立的水平分割好像不能用 QQ)
+</span></span><span class="line"><span class="cl">ctrl+arrow
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">## shortcut 單次 (這個水平分割就可以使用了)
+</span></span><span class="line"><span class="cl">Esc+arrow
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="平均分配">平均分配</h3>
+<p><a href="https://unix.stackexchange.com/questions/32986/how-do-i-equally-balance-tmux1-split-panes">How do I equally balance tmux(1) split panes?</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">:select-layout even-vertical
+</span></span><span class="line"><span class="cl">:select-layout even-horizontal
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">## short cut 
+</span></span><span class="line"><span class="cl">Ctrl-b Alt-1
+</span></span><span class="line"><span class="cl">Ctrl-b Alt-2
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>不過通常我比較喜歡直接用 <code>space</code> 切換回來</p>
+<h3 id="重新排序-window">重新排序 window</h3>
+<p><a href="https://superuser.com/questions/343572/how-do-i-reorder-tmux-windows">How do I reorder tmux windows?</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">## &lt;int&gt; 是目標 (target) 的意思
+</span></span><span class="line"><span class="cl">:swap-window -t &lt;int&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2021-06-11
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/tmux/">tmux</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/20210617-minikube-installation/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">minikube 安裝指南。 一個精簡、測試環境使用的 k8s 叢集</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/20210608-intro_docker_image/">
+            <span class="next-text nav-default">Docker Image 介紹</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.64437849d125a2d603b3e71d6de5225d641a32d17168a58106e0b61852079683.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

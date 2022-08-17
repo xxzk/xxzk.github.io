@@ -67,7 +67,7 @@
       <pubDate>Thu, 23 Jun 2022 14:50:31 +0000</pubDate>
       
       <guid>https://blog.xxzk.me/post/20220623-install-librenms-with-docker-container/</guid>
-      <description>前言 本篇文章紀錄如何透過 docker-compose 快速架一個 LibreNMS 起來。這篇會出現的原因是為了要監控/debug IDC 7F iDRAC/ESXi 電口對接 Cisco Switch 的問題~ 安裝 docker-compose 【standalone】</description>
+      <description>前言 本篇文章紀錄如何透過 docker-compose 快速架一個 LibreNMS 起來。這篇會出現的原因是為了要監控/debug IDC 0F iDRAC/ESXi 電口對接 Cisco Switch 的問題~ 安裝 docker-compose 【standalone】</description>
     </item>
     
     <item>

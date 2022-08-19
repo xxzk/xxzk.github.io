@@ -49,7 +49,7 @@
 <meta itemprop="name" content="使用 container 快速部屬 LibreNMS">
 <meta itemprop="description" content="前言 本篇文章紀錄如何透過 docker-compose 快速架一個 LibreNMS 起來。這篇會出現的原因是為了要監控/debug IDC 0F iDRAC/ESXi 電口對接 Cisco Switch 的問題~ 安裝 docker-compose 【standalone】"><meta itemprop="datePublished" content="2022-06-23T14:50:31+00:00" />
 <meta itemprop="dateModified" content="2022-06-23T14:50:31+00:00" />
-<meta itemprop="wordCount" content="725">
+<meta itemprop="wordCount" content="1165">
 <meta itemprop="keywords" content="LibreNMS,docker," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="使用 container 快速部屬 LibreNMS"/>
 <meta name="twitter:description" content="前言 本篇文章紀錄如何透過 docker-compose 快速架一個 LibreNMS 起來。這篇會出現的原因是為了要監控/debug IDC 0F iDRAC/ESXi 電口對接 Cisco Switch 的問題~ 安裝 docker-compose 【standalone】"/>
@@ -155,7 +155,13 @@
           </ul>
         </li>
         <li><a href="#librenms-fast-updown-checking">LibreNMS Fast up/down checking</a></li>
-        <li><a href="#debug">debug</a></li>
+        <li><a href="#add-devices-using-script">Add devices using script</a></li>
+        <li><a href="#debug">debug</a>
+          <ul>
+            <li><a href="#automatic-polling-on-docker-images-not-working-217">Automatic polling on docker images not working #217</a></li>
+            <li><a href="#idrac-snmp-timeout-問題">iDRAC snmp timeout 問題</a></li>
+          </ul>
+        </li>
       </ul>
     </li>
   </ul>
@@ -197,7 +203,7 @@
 </span></span><span class="line"><span class="cl">curl -SL https://raw.githubusercontent.com/librenms/docker/master/examples/compose/docker-compose.yml -o ~/yml/librenms/docker-compose.yml
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p><strong><span style='color:red'>由於我們沒有發 Email 的需求，所以選擇把 <code>msmtpd</code> 拿掉</span></strong></p>
+</div><p><strong><span style='color:red'>由於我們沒有發 Email 的需求，所以選擇把 <code>msmtpd</code> 拿掉，<code>depends_on</code> 也要記得拿掉!!</span></strong></p>
 <h3 id="librenmsenv">librenms.env</h3>
 <p><a href="https://github.com/librenms/docker/blob/master/examples/compose/librenms.env">docker/examples/compose/librenms.env </a></p>
 <p>這個 env file 是要給 LibreNMS，從 <code>docker-compose.yml</code> 能夠得知。</p>
@@ -263,6 +269,7 @@
 </span><span class="lnt">11
 </span><span class="lnt">12
 </span><span class="lnt">13
+</span><span class="lnt">14
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="l">TZ=Taipei/Asia</span><span class="w">
@@ -278,9 +285,10 @@
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">MEMCACHED_PORT=11211</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">LIBRENMS_WEATHERMAP=false</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">LIBRENMS_WEATHERMAP_SCHEDULE=*/5 * * * *</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">REDIS_HOST=redis</span><span class="w">
 </span></span></span></code></pre></td></tr></table>
 </div>
-</div><p>更多環境變數說明可以參考 <a href="https://github.com/librenms/docker#environment-variables">Environment variables </a></p>
+</div><p>更多環境變數說明可以參考 <a href="https://github.com/librenms/docker#environment-variables">Environment variables</a></p>
 <h3 id="env">.env</h3>
 <p>這個檔案裡面必須放 MariaDB 的機敏資訊，如果有進版控記得把 <code>.env</code> 排除在外。</p>
 <div class="highlight"><div class="chroma">
@@ -347,10 +355,12 @@
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
+</span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker <span class="nb">exec</span> -it librenms /bin/bash
-</span></span><span class="line"><span class="cl">bash-5.1# vi config.php
+</span></span><span class="line"><span class="cl">bash-5.1# mkdir -p ./librenms/config
+</span></span><span class="line"><span class="cl">bash-5.1# vi ./librenms/config/fastping.php
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nv">$config</span><span class="o">[</span><span class="s1">&#39;ping_rrd_step&#39;</span><span class="o">]</span> <span class="o">=</span> 60<span class="p">;</span>
 </span></span></code></pre></td></tr></table>
@@ -374,7 +384,7 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">bash-5.1# vi /var/spool/cron/crontabs/librenms
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">bash-5.1# vi /opt/librenms/librenms.nonroot.cron
 </span></span></code></pre></td></tr></table>
 </div>
 </div><div class="highlight"><div class="chroma">
@@ -385,7 +395,9 @@
 <pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">*    *    * * *   librenms    /opt/librenms/ping.php &gt;&gt; /dev/null 2&gt;&amp;1
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p>cron config 的路徑是 <code>crond --help</code> 查到的，如果要確認是否有成功可以</p>
+</div><p><del>cron config 的路徑是 <code>crond --help</code> 查到的，如果要確認是否有成功可以</del><br>
+<strong><span style='color:red'>20220819 更新: LibreNMS 預設不啟動 <code>crond</code> (因為 <code>pidof crond</code> 沒有東西)，cron config 的路徑在 <code>/opt/librenms/librenms.nonroot.cron</code>。</span></strong><br>
+請參考這個 issue: <a href="https://github.com/librenms/docker/issues/211">1 Minute Polling</a></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -417,11 +429,81 @@
 </div><ol start="5">
 <li>如果有關閉 RRDCache 記得開回來。</li>
 </ol>
-<h2 id="debug">debug</h2>
+<h2 id="add-devices-using-script">Add devices using script</h2>
+<p>使用 LibreNMS 內建的 script 快速新增 devices</p>
+<ol>
+<li>使用 <code>snmp-scan.py</code> 新增裝置</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">usage: snmp-scan.py <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-t THREADS<span class="o">]</span> <span class="o">[</span>-g GROUP<span class="o">]</span> <span class="o">[</span>-l<span class="o">]</span> <span class="o">[</span>-v<span class="o">]</span> <span class="o">[</span>--ping-fallback<span class="o">]</span> <span class="o">[</span>--ping-only<span class="o">]</span> <span class="o">[</span>-P<span class="o">]</span> <span class="o">[</span>network ...<span class="o">]</span>
+</span></span><span class="line"><span class="cl">./snmp-scan.py &lt;network CIDR&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="2">
+<li>掃描 device 身上有哪些可用的「資料點」</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">./discovery.php -h all
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="3">
+<li>對 device 抓資料</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">./poller.php -h all
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="debug">debug</h2>
 <p>MariaDB 會 bind mount 到 <code>./db</code> ; LibreNMS 會 bind mount 到 <code>./librenms</code>。<strong><span style='color:red'>如果不是一次就設定成功，記得把這兩個目錄刪除!!</span></strong><br>
 這次我就發生沒有把這兩個目錄刪除，造成一直出現 <code>[Warning] Access denied for user 'librenms'@'&lt;private ip&gt;' (using password: YES)</code> 的智障情形 XD<br>
 查到這篇才恍然大悟 <a href="https://github.com/librenms/docker/issues/80">librenms and dispatcher won&rsquo;t connect to librenms_db #80</a></p>
-
+<h3 id="automatic-polling-on-docker-images-not-working-217">Automatic polling on docker images not working #217</h3>
+<p><a href="https://github.com/librenms/docker/issues/217">Automatic polling on docker images not working #217</a></p>
+<p>恩&hellip; 又是我踩到地雷 XD，不過這個 issue 是 2021/08 開起的，至今已經一年居然還在 @@</p>
+<p><strong><span style='color:brown'>症狀: 使用 docker-compose 佈建 LibreNMS (官方 YAML file) polling 不會自動定期執行 (也因此沒有圖)，手動 <code>./poller.php &lt;network CIDR&gt;/&lt;-h host&gt;</code> 可以正常執行。</span></strong></p>
+<p><strong><span style='color:blue'>處方籤: <code>docker-compose logs -f</code> 顯示 <code>librenms-dispatcher exit with code 1</code>、<code>REDIS_HOST</code> 必須給定值。在 <code>librenms.env</code> 加上 <code>REDIS_HOST=redis</code> 即可解決。</span></strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="line"><span class="cl">Hi, make sure you have <span class="sb">`REDIS_HOST=redis`</span> in your <span class="sb">`librenms.env`</span> file, if you are using docker-compose.
+</span></span><span class="line"><span class="cl">I have the same problem until <span class="sb">`docker-compose logs -f`</span> shows <span class="sb">`librenms-dispatcher exit with code 1`</span> and <span class="sb">`REDIS_HOST`</span> env variable needed over and over again.
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="idrac-snmp-timeout-問題">iDRAC snmp timeout 問題</h3>
+<p>由於 LibreNMS 預設使用 <code>v2c</code> 抓取，或許是我們的 iDRAC 版本過舊導致在 discovery 過程中出現斷線問題，必須 <strong><span style='color:red'>手動將 SNMP 版本改成 v1</span></strong> 來避免這個問題。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">SNMP[&#39;/usr/bin/snmpbulkwalk&#39; &#39;-v2c&#39; &#39;-c&#39; &#39;COMMUNITY&#39; &#39;-OteQUs&#39; &#39;-Ih&#39; &#39;-m&#39; &#39;DELL-RAC-MIB:IDRAC-MIB-SMIv2&#39; &#39;-M&#39; &#39;/opt/librenms/mibs:/opt/librenms/mibs/drac:/opt/librenms/mibs/dell&#39; &#39;udp:HOSTNAME:161&#39; &#39;drsRedCurrStatus&#39;]
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Exitcode: 1  
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Timeout: No Response from udp:192.168.xxx.11:161  
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
     </div>
 
     <div class="post-copyright">

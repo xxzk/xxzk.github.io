@@ -6,7 +6,16 @@
     <description>Recent content on 老柯的學習筆記</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 26 Jul 2022 13:55:27 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 25 Aug 2022 11:49:44 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用 snmp_exporter 抓取設備流量</title>
+      <link>https://blog.xxzk.me/post/20220825-moniting-device-traffic-via-snmp_exporter-with-prometheus/</link>
+      <pubDate>Thu, 25 Aug 2022 11:49:44 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20220825-moniting-device-traffic-via-snmp_exporter-with-prometheus/</guid>
+      <description>前言 本篇筆記紀錄如何使用 snmp_exporter 搭配 prometheus 與 Grafana 來即時監控網路設備流量。 公司原先使用 LibreNMS 作為即時流量的依據，由於 default polling interval 是 5 分鐘抓取一次，而且一次抓取 (walk) 的 OID</description>
+    </item>
+    
     <item>
       <title>CKA Note Section 13 Troubleshooting</title>
       <link>https://blog.xxzk.me/post/20220726-cka_note_section_13_troubleshooting/</link>

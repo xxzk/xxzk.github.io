@@ -6,7 +6,16 @@
     <description>Recent content in Categories on 老柯的學習筆記</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 26 Jul 2022 13:55:27 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/categories/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 25 Aug 2022 11:49:44 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>moniting</title>
+      <link>https://blog.xxzk.me/categories/moniting/</link>
+      <pubDate>Thu, 25 Aug 2022 11:49:44 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/categories/moniting/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>CKA-Note</title>
       <link>https://blog.xxzk.me/categories/cka-note/</link>

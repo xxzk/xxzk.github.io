@@ -1,0 +1,561 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 2,
+  "id": 2,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "vpcu68W4k"
+      },
+      "description": "208 office Forti WAN-IN traffic",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 24,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "stepAfter",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "binbps"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "FET-WAN1 In"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "FET-WAN1 In"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "CHT-WAN2 In"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "CHT-WAN2 In"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "FET-WAN3 In"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "FET-WAN3 In"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "CHT-WAN4 In"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "CHT-WAN4 In"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 13,
+        "x": 0,
+        "y": 0
+      },
+      "id": 4,
+      "options": {
+        "legend": {
+          "calcs": [
+            "last",
+            "min",
+            "max",
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "vpcu68W4k"
+          },
+          "editorMode": "code",
+          "expr": "irate(ifHCInOctets{ifAlias=\"FET\",ifIndex=\"3\",ifName=\"wan1\",instance='192.168.208.254'}[5m]) *8",
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "FET-WAN1 In"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "vpcu68W4k"
+          },
+          "editorMode": "code",
+          "expr": "irate(ifHCInOctets{ifAlias=\"CHT\",ifIndex=\"4\",ifName=\"wan2\",instance='192.168.208.254'}[5m]) *8",
+          "hide": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "CHT-WAN2 In"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "vpcu68W4k"
+          },
+          "editorMode": "code",
+          "expr": "irate(ifHCInOctets{ifAlias=\"FET\",ifIndex=\"41\",ifName=\"wan3\", instance='192.168.208.254'}[5m]) *8",
+          "hide": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "FET-WAN3 In"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "vpcu68W4k"
+          },
+          "editorMode": "code",
+          "expr": "irate(ifHCInOctets{ifAlias=\"CHT\",ifIndex=\"42\",ifName=\"wan4\", instance='192.168.208.254'}[5m]) *8",
+          "hide": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "CHT-WAN4 In"
+        }
+      ],
+      "title": "208 Forti WAN-IN Traffic",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "vpcu68W4k"
+      },
+      "description": "208 office Forti WAN-OUT traffic",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 24,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "stepAfter",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "binbps"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "FET-WAN1 Out"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "FET-WAN1 Out"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "CHT-WAN2 Out"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "CHT-WAN2 Out"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "FET-WAN3 Out"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "FET-WAN3 Out"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "CHT-WAN4 Out"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "CHT-WAN4 Out"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 11,
+        "x": 13,
+        "y": 0
+      },
+      "id": 6,
+      "options": {
+        "legend": {
+          "calcs": [
+            "last",
+            "min",
+            "max",
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "vpcu68W4k"
+          },
+          "editorMode": "code",
+          "expr": "irate(ifHCOutOctets{ifAlias=\"FET\",ifIndex=\"3\",ifName=\"wan1\",instance='192.168.208.254'}[5m]) *8",
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "FET-WAN1 Out"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "vpcu68W4k"
+          },
+          "editorMode": "code",
+          "expr": "irate(ifHCOutOctets{ifAlias=\"CHT\",ifIndex=\"4\",ifName=\"wan2\",instance='192.168.208.254'}[5m]) *8",
+          "hide": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "CHT-WAN2 Out"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "vpcu68W4k"
+          },
+          "editorMode": "code",
+          "expr": "irate(ifHCOutOctets{ifAlias=\"FET\",ifIndex=\"41\",ifName=\"wan3\", instance='192.168.208.254'}[5m]) *8",
+          "hide": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "FET-WAN3 Out"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "vpcu68W4k"
+          },
+          "editorMode": "code",
+          "expr": "irate(ifHCOutOctets{ifAlias=\"CHT\",ifIndex=\"42\",ifName=\"wan4\", instance='192.168.208.254'}[5m]) *8",
+          "hide": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "CHT-WAN4 Out"
+        }
+      ],
+      "title": "208 Forti WAN-OUT Traffic",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "vpcu68W4k"
+      },
+      "description": "Cisco Core Switch for 208 MIS, SYS, NET PCs\n(不含 OT, OM)",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "stepAfter",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "line"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 100000000
+              },
+              {
+                "color": "red",
+                "value": 150000000
+              }
+            ]
+          },
+          "unit": "binbps"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "In"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Port Channel 1 - In"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "Out"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Port Channel 1 - Out"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 11
+      },
+      "id": 2,
+      "options": {
+        "legend": {
+          "calcs": [
+            "last",
+            "min",
+            "max",
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "vpcu68W4k"
+          },
+          "editorMode": "code",
+          "expr": "irate(ifHCInOctets{ifDescr=\"Port-channel1\", ifIndex=\"149\", ifName=\"Po1\", instance=\"192.168.208.252\", job=\"snmp\"}[5m]) *8",
+          "format": "time_series",
+          "hide": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "In"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "vpcu68W4k"
+          },
+          "editorMode": "code",
+          "expr": "irate(ifHCOutOctets{ifDescr=\"Port-channel1\", ifIndex=\"149\", ifName=\"Po1\", instance=\"192.168.208.252\", job=\"snmp\"}[5m]) *8",
+          "hide": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "Out"
+        }
+      ],
+      "title": "208 PC  Traffic (Port-Channel 1)",
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 37,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-5m",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "208 Office Network",
+  "uid": "y3GY9NMVz",
+  "version": 4,
+  "weekStart": ""
+}

@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>使用 snmp_exporter 抓取設備流量 - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="前言 本篇筆記紀錄如何使用 snmp_exporter 搭配 prometheus 與 Grafana 來即時監控網路設備流量。 公司原先使用 LibreNMS 作為即時流量的依據，由於 default polling interval 是 5 分鐘抓取一次，而且一次抓取 (walk) 的 OID" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.98.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20220825-moniting-device-traffic-via-snmp_exporter-with-prometheus/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="使用 snmp_exporter 抓取設備流量" />
+<meta property="og:description" content="前言 本篇筆記紀錄如何使用 snmp_exporter 搭配 prometheus 與 Grafana 來即時監控網路設備流量。 公司原先使用 LibreNMS 作為即時流量的依據，由於 default polling interval 是 5 分鐘抓取一次，而且一次抓取 (walk) 的 OID" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.xxzk.me/post/20220825-moniting-device-traffic-via-snmp_exporter-with-prometheus/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-08-25T11:49:44+00:00" />
+<meta property="article:modified_time" content="2022-08-25T11:49:44+00:00" />
+
+<meta itemprop="name" content="使用 snmp_exporter 抓取設備流量">
+<meta itemprop="description" content="前言 本篇筆記紀錄如何使用 snmp_exporter 搭配 prometheus 與 Grafana 來即時監控網路設備流量。 公司原先使用 LibreNMS 作為即時流量的依據，由於 default polling interval 是 5 分鐘抓取一次，而且一次抓取 (walk) 的 OID"><meta itemprop="datePublished" content="2022-08-25T11:49:44+00:00" />
+<meta itemprop="dateModified" content="2022-08-25T11:49:44+00:00" />
+<meta itemprop="wordCount" content="2819">
+<meta itemprop="keywords" content="snmp,prometheus,grafana," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="使用 snmp_exporter 抓取設備流量"/>
+<meta name="twitter:description" content="前言 本篇筆記紀錄如何使用 snmp_exporter 搭配 prometheus 與 Grafana 來即時監控網路設備流量。 公司原先使用 LibreNMS 作為即時流量的依據，由於 default polling interval 是 5 分鐘抓取一次，而且一次抓取 (walk) 的 OID"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">使用 snmp_exporter 抓取設備流量</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-08-25 </span>
+        <div class="post-category">
+            <a href="/categories/moniting/"> moniting </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#前言">前言</a></li>
+        <li><a href="#安裝-snmp_exporter">安裝 snmp_exporter</a>
+          <ul>
+            <li><a href="#install-yq">install <code>yq</code></a></li>
+            <li><a href="#建立-systemd-config">建立 <code>systemd</code> config</a></li>
+          </ul>
+        </li>
+        <li><a href="#安裝-prometheus-via-docker-container">安裝 Prometheus via Docker container</a>
+          <ul>
+            <li><a href="#storage-prometheus">Storage-Prometheus</a></li>
+            <li><a href="#live-reload">live reload</a></li>
+            <li><a href="#reverse-proxy-prometheus-with-nginx">Reverse Proxy Prometheus with Nginx</a></li>
+          </ul>
+        </li>
+        <li><a href="#promql">PromQL</a></li>
+        <li><a href="#before-gafana">Before Gafana</a></li>
+        <li><a href="#grafana">Grafana</a>
+          <ul>
+            <li><a href="#run-grafana-behind-a-reverse-proxy">Run Grafana behind a reverse proxy</a></li>
+          </ul>
+        </li>
+        <li><a href="#使用-l2-switch-遇到的問題-cant-grab-by-vlan-id">使用 L2 Switch 遇到的問題: Can&rsquo;t grab by VLAN ID</a></li>
+        <li><a href="#參考資料">參考資料</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>本篇筆記紀錄如何使用 <a href="https://github.com/prometheus/snmp_exporter">snmp_exporter</a> 搭配 <a href="https://github.com/prometheus/prometheus">prometheus</a> 與 <a href="https://github.com/grafana/grafana">Grafana</a> 來即時監控網路設備流量。<br>
+公司原先使用 LibreNMS 作為即時流量的依據，由於 <strong><span style='color:blue'>default polling interval 是 5 分鐘抓取一次，而且一次抓取 (walk) 的 OID 也是世界多~</span></strong><br>
+雖然說 LibreNMS 有提供 <a href="https://docs.librenms.org/Support/1-Minute-Polling/">1-Minute Polling</a> 的方式，不過一次抓取就是長長一串造成設備不必要的負擔，更可能造成風暴 (前一次抓取尚未完成，時間到了又必須進行下一次)。<br>
+況且即使 1-Minute polling 完美運作，對於流量的精細程度個人認為是遠遠不足的! 被打 DDoS 幾秒之內流量就可能飆高，若針對流量 moniting 顆粒度太大就失去了意義、無法反映實際狀況。</p>
+<p>另外這次 Prometheus, Grafana 都是利用 Docker 安裝，建議參考先前寫的這篇 <a href="https://blog.xxzk.me/post/20210629-docker-container-link/">Docker 容器與容器的連結。Grafana + Prometheus + Blackbox_expoter</a></p>
+<h2 id="安裝-snmp_exporter">安裝 snmp_exporter</h2>
+<p>Prometheus 相關的 exporter 都是使用 Go lang 撰寫的，通常用 Go 寫的程式 (我目前遇到的啦) 都可以直接以 binary 直接執行! (例如: Hugo，連在 Windows x86 平台上也沒問題)</p>
+<p>直接到 <a href="https://github.com/prometheus/snmp_exporter/releases">snmp_exporter - release</a> 下載對應版本解壓縮後即可使用。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">wget https://github.com/prometheus/snmp_exporter/releases/download/v0.20.0/snmp_exporter-0.20.0.linux-amd64.tar.gz
+</span></span><span class="line"><span class="cl">tar -zxf snmp_exporter-0.20.0.linux-amd64.tar.gz
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> snmp_exporter-0.20.0.linux-amd64/
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">total 17M
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> <span class="m">3434</span> <span class="m">3434</span>  12K Feb <span class="m">12</span>  <span class="m">2021</span> LICENSE
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> <span class="m">3434</span> <span class="m">3434</span>   <span class="m">63</span> Feb <span class="m">12</span>  <span class="m">2021</span> NOTICE
+</span></span><span class="line"><span class="cl">-rwxr-xr-x <span class="m">1</span> <span class="m">3434</span> <span class="m">3434</span>  15M Feb <span class="m">12</span>  <span class="m">2021</span> snmp_exporter
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> <span class="m">3434</span> <span class="m">3434</span> 1.3M Feb <span class="m">12</span>  <span class="m">2021</span> snmp.yml
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>snmp exporter 提供預設的 config，裡面包含很多已經整理好的 module。我們可以透過 <code>yq</code> 方便查看!</p>
+<h3 id="install-yq">install <code>yq</code></h3>
+<p><a href="https://github.com/mikefarah/yq/#wget">yq - Install</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">wget https://github.com/mikefarah/yq/releases/download/v4.27.2/yq_linux_amd64 -O /usr/bin/yq <span class="o">&amp;&amp;</span> chmod +x /usr/bin/yq
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">yq keys snmp.yml
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">- apcups
+</span></span><span class="line"><span class="cl">- arista_sw
+</span></span><span class="line"><span class="cl">- cisco_wlc
+</span></span><span class="line"><span class="cl">- ddwrt
+</span></span><span class="line"><span class="cl">- if_mib
+</span></span><span class="line"><span class="cl">- infrapower_pdu
+</span></span><span class="line"><span class="cl">- keepalived
+</span></span><span class="line"><span class="cl">- kemp_loadmaster
+</span></span><span class="line"><span class="cl">- liebert_pdu
+</span></span><span class="line"><span class="cl">- mikrotik
+</span></span><span class="line"><span class="cl">- nec_ix
+</span></span><span class="line"><span class="cl">- paloalto_fw
+</span></span><span class="line"><span class="cl">- printer_mib
+</span></span><span class="line"><span class="cl">- raritan
+</span></span><span class="line"><span class="cl">- servertech_sentry3
+</span></span><span class="line"><span class="cl">- servertech_sentry4
+</span></span><span class="line"><span class="cl">- synology
+</span></span><span class="line"><span class="cl">- ubiquiti_airfiber
+</span></span><span class="line"><span class="cl">- ubiquiti_airmax
+</span></span><span class="line"><span class="cl">- ubiquiti_unifi
+</span></span><span class="line"><span class="cl">- wiener_mpod
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong><span style='color:red'>▲ 官方建議如果要抓取 switch, access point, router 可以使用 <code>if_mib</code> module。</span></strong></p>
+<h3 id="建立-systemd-config">建立 <code>systemd</code> config</h3>
+<p><a href="https://github.com/prometheus/snmp_exporter/blob/main/examples/systemd/snmp_exporter.service">snmp_exporter.service</a></p>
+<p>使用 <code>systemd</code> 來把 snmp exporter 變成 daemond 使用/管理上會比較方便。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">useradd prometheus
+</span></span><span class="line"><span class="cl">mkdir -p /home/prometheus/snmp_exporter/
+</span></span><span class="line"><span class="cl">chown prometheus:prometheus -R /home/prometheus/snmp_exporter/
+</span></span><span class="line"><span class="cl">ln -s /root/snmp_exporter-0.20.0.linux-amd64/snmp_exporter /home/prometheus/snmp_exporter/snmp_exporter
+</span></span><span class="line"><span class="cl">ln -s /root/snmp_exporter-0.20.0.linux-amd64/snmp.yml /home/prometheus/snmp_exporter/snmp.yml
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>因為 systemd config 內預設路徑是在 <code>/home/prometheus/snmp_exporter/</code> 底下，使用 <code>ln -s</code> 連結過去。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">wget https://raw.githubusercontent.com/prometheus/snmp_exporter/main/examples/systemd/snmp_exporter.service -O /usr/lib/systemd/system/snmp_exporter.service
+</span></span><span class="line"><span class="cl">chmod <span class="m">644</span> /usr/lib/systemd/system/snmp_exporter.service
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">ExecStart=/home/prometheus/snmp_exporter/snmp_exporter --config.file=/home/prometheus/snmp_exporter/snmp.yml
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong><span style='color:red'>▲ 官方提供的 <code>systemd</code> config 在 CentOS 7.9 2009 底下會不能運作，必須把 <code>--config.file=</code> 的 <code>''</code> 拿掉才會正常!</span></strong><br>
+(厚，這問題搞了五個小時! 直接用 shell 執行 <code>ExecStart</code> 的指令都沒有問題，不管以 <code>root</code> 或者 <code>prometheus</code> 身分執行)</p>
+<p>附上錯誤訊息希望能被 Google 收納，<del>拯救蒼生</del></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Aug 26 09:43:16 Eric_Prometheus_SNMP systemd[1]: Unit snmp_exporter.service entered failed state.                                    
+</span></span><span class="line"><span class="cl">Aug 26 09:43:16 Eric_Prometheus_SNMP systemd[1]: snmp_exporter.service failed.                                                       
+</span></span><span class="line"><span class="cl">Aug 26 09:43:16 Eric_Prometheus_SNMP systemd[1]: snmp_exporter.service holdoff time over, scheduling restart.                        
+</span></span><span class="line"><span class="cl">Aug 26 09:43:16 Eric_Prometheus_SNMP systemd[1]: Stopped SNMP Exporter.                                                              
+</span></span><span class="line"><span class="cl">Aug 26 09:43:16 Eric_Prometheus_SNMP systemd[1]: start request repeated too quickly for snmp_exporter.service                        
+</span></span><span class="line"><span class="cl">Aug 26 09:43:16 Eric_Prometheus_SNMP systemd[1]: Failed to start SNMP Exporter.                                                      
+</span></span><span class="line"><span class="cl">Aug 26 09:43:16 Eric_Prometheus_SNMP systemd[1]: Unit snmp_exporter.service entered failed state.                                    
+</span></span><span class="line"><span class="cl">Aug 26 09:43:16 Eric_Prometheus_SNMP systemd[1]: snmp_exporter.service failed.           
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="安裝-prometheus-via-docker-container">安裝 Prometheus via Docker container</h2>
+<p><a href="https://prometheus.io/docs/prometheus/latest/installation/">Prometheus Installation Document</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mkdir -p /root/yml/prometheus/ <span class="o">&amp;&amp;</span> <span class="nb">cd</span> /root/yml/prometheus/
+</span></span><span class="line"><span class="cl">vim prometheus.yml
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">global</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">scrape_interval</span><span class="p">:</span><span class="w">     </span><span class="l">5s</span><span class="w"> </span><span class="c"># Set the scrape interval to every 5 seconds. Default is every 1 minute.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">evaluation_interval</span><span class="p">:</span><span class="w"> </span><span class="l">15s</span><span class="w"> </span><span class="c"># Evaluate rules every 15 seconds. The default is every 1 minute.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">scrape_configs</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">job_name</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;local_prometheus&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">static_configs</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">targets</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s1">&#39;localhost:9090&#39;</span><span class="p">]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">job_name</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;snmp&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">static_configs</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">targets</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="m">192.168</span><span class="l">.xxx.xxx </span><span class="w"> </span><span class="c"># SNMP device.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">metrics_path</span><span class="p">:</span><span class="w"> </span><span class="l">/snmp</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">params</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">module</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="l">if_mib]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">relabel_configs</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">source_labels</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="l">__address__]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">target_label</span><span class="p">:</span><span class="w"> </span><span class="l">__param_target</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">source_labels</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="l">__param_target]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">target_label</span><span class="p">:</span><span class="w"> </span><span class="l">instance</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">target_label</span><span class="p">:</span><span class="w"> </span><span class="l">__address__</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">replacement</span><span class="p">:</span><span class="w"> </span><span class="m">127.0.0.1</span><span class="p">:</span><span class="m">9116</span><span class="w">  </span><span class="c"># The SNMP exporter&#39;s real hostname:port.</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong><span style='color:red'>▲ 將抓取時間更改為 5s</span></strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker run -itd --network host --name prometheus -v /root/yml/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml -v prometheus:/prometheus --restart always  prom/prometheus
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><a href="https://docs.docker.com/network/host/">Use host networking</a> 讓 prometheus container 使用跟 host OS 相同的 network namespace，目的是讓 prometheus config 當中的 snmp_exporter IP address 保持使用 <code>127.0.0.1</code>。</li>
+<li>將 prometheus config mapping (bind mount)，目的是方便修改。</li>
+<li>使用名為 &ldquo;prometheus&rdquo; 的 volume，不然預設是隨機產生名稱。</li>
+</ul>
+<h3 id="storage-prometheus">Storage-Prometheus</h3>
+<p><a href="https://prometheus.io/docs/prometheus/latest/storage/">Storage</a></p>
+<p>Prometheus 預設保存 <code>15d</code> 的資料，若要增加執行時必須給參數 <code>--storage.tsdb.retention.time</code>。<br>
+Docker 的方式如下 (假設已經執行過上面的指令，已經建立一個名為 <code>prometheus</code> 的 Docker container)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## stop and remove docker container</span>
+</span></span><span class="line"><span class="cl">docker stop prometheus <span class="o">&amp;&amp;</span> docker rm prometheus
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">docker run -itd --network host --name prometheus -v /root/yml/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml -v prometheus:/prometheus --restart always  prom/prometheus --storage.tsdb.retention.time<span class="o">=</span>1y --config.file<span class="o">=</span>/etc/prometheus/prometheus.yml --storage.tsdb.path<span class="o">=</span>/prometheus
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>▲ <strong><span style='color:blue'>除了加上 <code>--storage.tsdb.retention.time=1y</code> 將儲存時間改為 <code>1y</code>，還必須加上 <code>--config.file=/etc/prometheus/prometheus.yml</code> 才能正常執行。</span></strong></p>
+<p>註: 若沒加上 <code>--storage.tsdb.path=/prometheus</code> 預設是使用 <code>/data</code>。</p>
+<p><a href="https://github.com/prometheus/prometheus/issues/6188#issuecomment-557580654">參考資料</a>，確認方式可以打開瀏覽器查看 <code>http://&lt;ip&gt;:9090/flags</code></p>
+<h3 id="live-reload">live reload</h3>
+<p>Prometheus 在 version 2.0 之後若要使用 <code>curl -vX POST http://&lt;ip&gt;:&lt;port&gt;/-/reload</code> 來 live reload 讓 prometheus 重新吃設定檔，必須在 prometheus 執行時加上 <code>--web.enable-lifecycle</code> 參數，不然會得到 403 Forbidden。</p>
+<p><a href="https://prometheus.io/docs/prometheus/latest/migration/#prometheus-lifecycle">Prometheus 2.0 migration guide#prometheus-lifecycle</a></p>
+<p>這對直接使用官方 container image <del>懶惰的我</del>來說會有點麻煩，好險還有另外一種方法 <a href="https://prometheus.io/docs/introduction/faq/#can-i-reload-prometheuss-configuration">Frequently Asked Questions#Can I reload Prometheus&rsquo;s configuration? </a> 傳送 <code>SIGHUP</code>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker <span class="nb">exec</span> prometheus killall -HUP prometheus
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>▲ 雖然說這個指令能夠傳入 SIGHUP 讓 prometheus live reload config，但是遇到 Docker 這個問題 <a href="https://github.com/moby/moby/issues/15793#issuecomment-135411504">File mount does not update with changes from host</a> <strong><span style='color:red'>被我們 bind mount 進去 container 的 config file 其 inode 不會被更新到，白話文就是檔案內容沒有被更新啦! 所以 reload 也沒用 QQ，還是乖乖 <code>docker restart prometheus</code> 吧!</span></strong></p>
+<h3 id="reverse-proxy-prometheus-with-nginx">Reverse Proxy Prometheus with Nginx</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">yum install nginx -y
+</span></span><span class="line"><span class="cl">systemctl <span class="nb">enable</span> --now nginx.service
+</span></span><span class="line"><span class="cl">vim /etc/nginx/conf.d/prometheus.conf
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-nginx" data-lang="nginx"><span class="line"><span class="cl"><span class="k">server</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">server_name</span>  <span class="s">example.org</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kn">location</span> <span class="s">/</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kn">proxy_pass</span>           <span class="s">http://localhost:9090/</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">nginx -t
+</span></span><span class="line"><span class="cl">systemctl reload nginx.service
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="promql">PromQL</h2>
+<p><code>snmp_exporter</code> 成功執行後，使用瀏覽器打開 <code>http://&lt;IP&gt;:9116</code> 即可看到 <code>snmp_exporter</code> 簡單明瞭的網頁畫面。使用者可以自行輸入 <code>target</code> 與欲使用的 module，或者利用 <code>GET</code> method 直接快速輸入 <code>http://&lt;IP&gt;:9116/snmp?target=&lt;target_IP&gt;&amp;module=&lt;module_name&gt;</code> 即可拿到 snmp walk 來的資訊。</p>
+<p><img src="prometheus_ql_0.jpg" alt="prometheus_ql_0"></p>
+<p>▲ 拿到這些資訊複製貼上到 Prometheus 就能 Query。</p>
+<p><img src="prometheus_ql_1.jpg" alt="prometheus_ql_1"></p>
+<p>▲ <strong><span style='color:blue'><code>ifHCInOctets</code> 所記錄的是累積傳輸總量 (Byte)</span></strong></p>
+<p><img src="prometheus_ql_2.jpg" alt="prometheus_ql_2"></p>
+<p>▲ <strong><span style='color:red'>因此要使用 prometheus 內建的 function <a href="https://prometheus.io/docs/prometheus/latest/querying/functions/#irate"><code>irate</code></a>。</span></strong><code>irate</code> 會輸出 <em>per-second rate</em> ，其中 <code>[5m]</code> 即是 <em>range vectors</em> 算是使用 <code>irate</code> function 必須給予的參數 (註: 實測 irate range vectors 值不影響精準度)，而 <code>*8</code> 的部分目的是要將 Byte 轉換成 bits，因為我們講的 &lsquo;妹&rsquo; 實際上是 Mbps。</p>
+<p>對 <em>instant vectors</em> 或 <em>range vectors</em> 有興趣的可以參考:</p>
+<ul>
+<li><a href="https://shansan.top/2022/04/23/understanding-prometheus-range-vectors/">(译) 理解 Prometheus 的范围向量 (Range Vector)</a></li>
+<li><a href="https://blog.csdn.net/hugo_lei/article/details/113400270">Prometheus核心概念：一图了解瞬时向量Instant vector和区间向量Range vector的区别</a></li>
+</ul>
+<h2 id="before-gafana">Before Gafana</h2>
+<p>在進入 Grafana 做視覺化之前，我想要先把指標項目列出來! 這樣才能比較清楚到底在監控什麼、有哪些指標。</p>
+<ul>
+<li>Prometheus 抓取花費時間: <code>scrape_duration_seconds{instance=&quot;&lt;instance_IP&gt;&quot;, job=&quot;snmp&quot;}</code></li>
+<li><code>snmp_exporter</code> 透過 snmp 抓取 target 花費時間: <code>snmp_scrape_duration_seconds{instance=&quot;&lt;instance_IP&gt;&quot;, job=&quot;snmp&quot;}</code> (<strong><span style='color:red'>包含 walk + process 時間</span></strong>)</li>
+<li><code>snmp_exporter</code> snmp walk 花費時間: <code>snmp_scrape_walk_duration_seconds{instance=&quot;&lt;instance_IP&gt;&quot;, job=&quot;snmp&quot;}</code></li>
+<li><code>ifHC</code> 總流量累積系列，使用 64 bits counter 來記錄 (避免 32 bits 最高只能記錄到 4GB 會出現的一些問題)</li>
+<li>(承上) 其實 <code>ifHC</code> 不只有總流量，還有封包種類。例如: <code>ifHCInUcastPkts</code> unicast packet, <code>ifHCInBroadcastPkts</code> 廣播封包</li>
+</ul>
+<p><img src="ifhc_series.jpg" alt="ifhc_series"></p>
+<p>▲ <code>ifHC</code> 流量相關系列。</p>
+<p><img src="compare_with_exist_monition.jpg" alt="compare_with_exist_monition"></p>
+<p>▲ 與現有辦公室流量監控顆粒度差異比較。(雖然說這張圖 Prometheus 抓的設備 Port-Channel1 不完全是整間辦公室的 WAN 流量)</p>
+<h2 id="grafana">Grafana</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker run -itd --network host --name grafana -v grafana-storage:/var/lib/grafana --restart always grafana/grafana
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>因為我們 Prometheus docker container network type 是 <code>host</code> 因此 Grafana docker container 不能使用 <code>--link prometheus:prometheus</code> 聯結。</li>
+<li>如果有需要安裝 Grafana plugins =&gt; <a href="https://grafana.com/docs/grafana/latest/setup-grafana/installation/docker/#install-official-and-community-grafana-plugins">Install official and community Grafana plugins</a></li>
+<li><strong><span style='color:red'>預設登入帳號密碼都是 <code>admin</code>。</span></strong> <a href="https://grafana.com/docs/grafana/latest/setup-grafana/sign-in-to-grafana/#sign-in-to-grafana">Sign in to Grafana</a></li>
+<li><strong><span style='color:blue'>使用 port 3000</span></strong> (如果要更改成 <code>80/tcp</code> 請自行修改 <a href="https://github.com/grafana/grafana">Dockerfile</a>)</li>
+<li><a href="https://grafana.com/docs/grafana/latest/setup-grafana/configure-docker/">Configure a Grafana Docker image</a></li>
+</ul>
+<p><img src="grafana_config_0.jpg" alt="grafana_config_0"></p>
+<p>▲ <strong><span style='color:red'>更改 scrape interval 為 <code>5s</code>，因為我們 prometheus 就是設定 <code>5s</code>。</span></strong></p>
+<p><strong>增加完 data source 之後就來拉 dashboard 吧!</strong></p>
+<p><img src="grafana_query_0.jpg" alt="grafana_query_0"></p>
+<p>▲ <strong><span style='color:red'>為了後面方便將 query override，建議將 query name 命名!</span></strong></p>
+<p><img src="grafana_query_1.jpg" alt="grafana_query_1"></p>
+<p>▲ Panel options 可以設定 title 與 description。</p>
+<p><img src="grafana_query_2.jpg" alt="grafana_query_2"></p>
+<p>▲ Legend (n.) 圖例。可以切換樣式、位置、顯示那些值。</p>
+<p><img src="grafana_query_3.jpg" alt="grafana_query_3"></p>
+<p>▲ Axis 控管軸線，<a href="https://grafana.com/docs/grafana/v9.0/administration/organization-preferences/#change-the-grafana-default-timezone">Timezone</a> 預設 (default) 使用 browser 的時區。 <strong><span style='color:red'>順帶一提，Prometheus 預設使用 UTC 時區，而且不建議調整。</span></strong> <br>
+Scale 的部分則是 x 軸顯示數值的基準 (<del>很難翻啦</del>)</p>
+<p><img src="grafana_query_4.jpg" alt="grafana_query_4"></p>
+<p>▲ 上面這張圖是以 log 10 為基底顯示。 (<del>高中數學已還老師</del>)</p>
+<p><img src="grafana_query_5.jpg" alt="grafana_query_5"></p>
+<p>▲ Unit 有內建好幾種供選擇，Decimal 的部分則是小數精準度 (小數點後幾位)。</p>
+<p><img src="grafana_query_6.jpg" alt="grafana_query_6"></p>
+<p>▲ Threshold 閥值設定。</p>
+<p><img src="grafana_query_7.jpg" alt="grafana_query_7"></p>
+<p>▲ Tooltip 切換成 All 能顯示同一 data point 所有 query 的值。</p>
+<p><img src="grafana_query_8.jpg" alt="grafana_query_8"></p>
+<p>▲ <strong><span style='color:red'>Dashboard 開啟 <em>Shared Tooltip</em> 效果。</span></strong></p>
+<h3 id="run-grafana-behind-a-reverse-proxy">Run Grafana behind a reverse proxy</h3>
+<p><a href="https://grafana.com/tutorials/run-grafana-behind-a-proxy/">Run Grafana behind a reverse proxy</a></p>
+<p>Grafana 預設跑在 <code>3000/tcp</code>，而且我們沒有設定 domain name 給它，不想要跟 Grafana config 糾纏的話就在前面加個 Nginx reverse proxy 吧!<br>
+官方有提供正常版與 path rewrite 版範例 (例如: <code>http://example.com/grafana</code> 就需要用到)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">yum install nginx -y
+</span></span><span class="line"><span class="cl">systemctl <span class="nb">enable</span> --now nginx.service
+</span></span><span class="line"><span class="cl">vim /etc/nginx/conf.d/grafana.conf
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-nginx" data-lang="nginx"><span class="line"><span class="cl"><span class="c1"># this is required to proxy Grafana Live WebSocket connections.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">map</span> <span class="nv">$http_upgrade</span> <span class="nv">$connection_upgrade</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kn">default</span> <span class="s">upgrade</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kn">&#39;&#39;</span> <span class="s">close</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">upstream</span> <span class="s">grafana</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kn">server</span> <span class="n">localhost</span><span class="p">:</span><span class="mi">3000</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">server</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kn">server_name</span>  <span class="s">example.org</span>  <span class="s">www.example.org</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kn">root</span> <span class="s">/usr/share/nginx/html</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kn">index</span> <span class="s">index.html</span> <span class="s">index.htm</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="kn">location</span> <span class="s">/</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">proxy_set_header</span> <span class="s">Host</span> <span class="nv">$http_host</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">proxy_pass</span> <span class="s">http://grafana</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1"># Proxy Grafana Live WebSocket connections.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kn">location</span> <span class="s">/api/live/</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">proxy_http_version</span> <span class="mi">1</span><span class="s">.1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">proxy_set_header</span> <span class="s">Upgrade</span> <span class="nv">$http_upgrade</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">proxy_set_header</span> <span class="s">Connection</span> <span class="nv">$connection_upgrade</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">proxy_set_header</span> <span class="s">Host</span> <span class="nv">$http_host</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">proxy_pass</span> <span class="s">http://grafana</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">nginx -t
+</span></span><span class="line"><span class="cl">systemctl reload nginx.service
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="使用-l2-switch-遇到的問題-cant-grab-by-vlan-id">使用 L2 Switch 遇到的問題: Can&rsquo;t grab by VLAN ID</h2>
+<p><strong>感謝網路組同仁以及 TWNOG</strong></p>
+<p><img src="ifindex.jpg" alt="ifindex"></p>
+<p>▲ VLAN interface 雖然說有 VLAN interface、我們也能夠對該 interface 抓取流量，但&hellip;. (請接下圖)</p>
+<p><img src="vlan_190_traffic.jpg" alt="vlan_190_traffic"></p>
+<p>▲ VLAN ID 190 interface traffic，只有流進自己也就是 bind 在 vlan 190 的 <code>192.168.xxx.xxx/24</code> 的流量。<strong><span style='color:red'>換句話說: 無法抓取 per VLAN 的流量總和</span></strong></p>
+<p><img src="librenms_vlan_190.jpg" alt="librenms_vlan_190"></p>
+<p>▲ 從 LibreNMS 更能作證這個事實。</p>
+<p><strong><span style='color:red'>結論: 無法從 L2 抓取 per VLAN traffic。請從 L3 gateway 抓取~</span></strong></p>
+<p>(以公司 production 環境來說，一條打在 L2 switch 的進線會包含了許多 VLAN ID。)</p>
+<p><img src="scrape_traffic_from_l3.jpg" alt="scrape_traffic_from_l3"></p>
+<p>▲ <strong><span style='color:blue'>從 L3 device 就能抓到 per VLAN (by interface) 的流量囉!</span></strong></p>
+<p>註: 前提是 L3 device 身上有 interface。</p>
+<h2 id="參考資料">參考資料</h2>
+<ul>
+<li><a href="https://grafana.com/grafana/dashboards/1124-snmp-interface-throughput/">Grafana Dashboard Example - SNMP Interface Throughput</a></li>
+<li><a href="https://www.csdn.net/tags/MtTaMgzsNTA3MzcwLWJsb2cO0O0O.html">CSDN - prometheus 监控交换机流量</a></li>
+</ul>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2022-08-25
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/snmp/">snmp</a>
+          <a href="/tags/prometheus/">prometheus</a>
+          <a href="/tags/grafana/">grafana</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/20220726-cka_note_section_13_troubleshooting/">
+            <span class="next-text nav-default">CKA Note Section 13 Troubleshooting</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.64437849d125a2d603b3e71d6de5225d641a32d17168a58106e0b61852079683.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

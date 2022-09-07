@@ -49,7 +49,7 @@
 <meta itemprop="name" content="使用 snmp_exporter 抓取設備流量">
 <meta itemprop="description" content="前言 本篇筆記紀錄如何使用 snmp_exporter 搭配 prometheus 與 Grafana 來即時監控網路設備流量。 公司原先使用 LibreNMS 作為即時流量的依據，由於 default polling interval 是 5 分鐘抓取一次，而且一次抓取 (walk) 的 OID"><meta itemprop="datePublished" content="2022-08-25T11:49:44+00:00" />
 <meta itemprop="dateModified" content="2022-08-25T11:49:44+00:00" />
-<meta itemprop="wordCount" content="2819">
+<meta itemprop="wordCount" content="3402">
 <meta itemprop="keywords" content="snmp,prometheus,grafana," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="使用 snmp_exporter 抓取設備流量"/>
 <meta name="twitter:description" content="前言 本篇筆記紀錄如何使用 snmp_exporter 搭配 prometheus 與 Grafana 來即時監控網路設備流量。 公司原先使用 LibreNMS 作為即時流量的依據，由於 default polling interval 是 5 分鐘抓取一次，而且一次抓取 (walk) 的 OID"/>
@@ -162,6 +162,7 @@
         <li><a href="#grafana">Grafana</a>
           <ul>
             <li><a href="#run-grafana-behind-a-reverse-proxy">Run Grafana behind a reverse proxy</a></li>
+            <li><a href="#grafana-alert-警報設定">Grafana alert 警報設定</a></li>
           </ul>
         </li>
         <li><a href="#使用-l2-switch-遇到的問題-cant-grab-by-vlan-id">使用 L2 Switch 遇到的問題: Can&rsquo;t grab by VLAN ID</a></li>
@@ -650,7 +651,53 @@ Scale 的部分則是 x 軸顯示數值的基準 (<del>很難翻啦</del>)</p>
 </span></span><span class="line"><span class="cl">systemctl reload nginx.service
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="使用-l2-switch-遇到的問題-cant-grab-by-vlan-id">使用 L2 Switch 遇到的問題: Can&rsquo;t grab by VLAN ID</h2>
+</div><h3 id="grafana-alert-警報設定">Grafana alert 警報設定</h3>
+<p><img src="https://grafana.com/static/img/docs/alerting/unified/about-alerting-flow-diagram-latest.png" alt="about-alerting-flow-diagram-latest.png"></p>
+<p>圖片取自 <a href="https://grafana.com/docs/grafana/latest/alerting/">[Grafana.com] Grafana Alerting</a></p>
+<p><strong>Grafana 在實作警報上面分為幾個步驟:</strong></p>
+<ol>
+<li>
+<p>Alert rules，利用一條或多條 query/expression 制定警報規則，其「求值間隔」 (evaluation)、持續多久 fire the alert (意味著 pending 時長) 都是在 rule 設定。<br>
+警報能夠是全域的 (或者官方稱做 multi-dimensional) 或者單一 panel。</p>
+</li>
+<li>
+<p>Labels，將 alert rule 打上標籤。Notification policy 以及 silences (靜音功能) 都是透過 label 來判斷。<br>
+目前想到的有 <code>serverity</code> (嚴重程度), <code>team</code> (屬於哪個團隊的責任範圍), <code>IDC</code> (資料中心別), <code>type</code> (例如: VM,Network)</p>
+</li>
+<li>
+<p>Notification policies，通知政策。設定哪個警報要發、要發到哪裡 (contact point)。</p>
+</li>
+<li>
+<p>Contact points，警報通路/管道。</p>
+</li>
+</ol>
+<p><img src="grafana_alert_0.jpg" alt="grafana_alert_0"></p>
+<p>▲ 切到 panel 的 alert 頁面就能針對單一 panel 加 rule。</p>
+<p><img src="grafana_alert_1.jpg" alt="grafana_alert_1"></p>
+<p>▲ <strong><span style='color:red'>在加 rule 之前記得先去建議一個 Folder，預設的 General 沒辦法放。</span></strong></p>
+<p><img src="grafana_alert_3.jpg" alt="grafana_alert_3"></p>
+<p>▲ 以 Expression 制定 alert rule。按下 <code>run queries</code> 可以看到警報狀態。</p>
+<p><img src="grafana_alert_4.jpg" alt="grafana_alert_4"></p>
+<p>▲ <strong><span style='color:red'>每 5 秒抓值一次，若符合 alert rule 持續 20 秒 =&gt; fire alert</span></strong><br>
+但圖上可以看到 5s 實際上是不給設定的，因為 Grafana global evaluation 是 10s 不能設的比它還低!<br>
+再來下方定義當 no data/error timeout 時 alert state 為何。</p>
+<p><img src="grafana_alert_5.jpg" alt="grafana_alert_5"></p>
+<p>▲ 設定這條 alert rule 的詳細資訊，<strong><span style='color:red'>其中 <code>Folder</code>, <code>Group</code>, <code>Dashboard UID</code>, <code>Panel ID</code> 是必填。</span></strong></p>
+<p><img src="grafana_alert_6.jpg" alt="grafana_alert_6"></p>
+<p>▲ 最後是上 label 的部分。</p>
+<p><img src="grafana_alert_2.jpg" alt="grafana_alert_2"></p>
+<p>▲ 黃色的垂直線代表開始 pending，紅色垂直線才代表 alert fire。 (<del>speedtest.net 開三個分頁錯開在測才勉強 fire 一發，早知道去拖大 image 下來</del>)</p>
+<p><img src="grafana_alert_7.jpg" alt="grafana_alert_7"></p>
+<p>▲ 接著我們切換到 alert setting 設定 contact point。</p>
+<p><img src="grafana_alert_8.jpg" alt="grafana_alert_8"></p>
+<p>▲ Root policy (default policy) 是透過 EMail 發送。</p>
+<p><img src="grafana_alert_9.jpg" alt="grafana_alert_9"></p>
+<p>▲ 我們額外設一個 routing policy，符合 <code>IDC == 208</code> 的透過 <code>Grafana-LAB</code> 這個 contact point 傳送。</p>
+<p><img src="grafana_alert_10.jpg" alt="grafana_alert_10"></p>
+<p>▲ 發出來的警報。</p>
+<p><img src="grafana_alert_11.jpg" alt="grafana_alert_11"></p>
+<p>▲ alert history。</p>
+<h2 id="使用-l2-switch-遇到的問題-cant-grab-by-vlan-id">使用 L2 Switch 遇到的問題: Can&rsquo;t grab by VLAN ID</h2>
 <p><strong>感謝網路組同仁以及 TWNOG</strong></p>
 <p><img src="ifindex.jpg" alt="ifindex"></p>
 <p>▲ VLAN interface 雖然說有 VLAN interface、我們也能夠對該 interface 抓取流量，但&hellip;. (請接下圖)</p>

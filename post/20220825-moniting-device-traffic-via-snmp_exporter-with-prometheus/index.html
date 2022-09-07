@@ -704,7 +704,7 @@ Scale 的部分則是 x 軸顯示數值的基準 (<del>很難翻啦</del>)</p>
 <p><img src="vlan_190_traffic.jpg" alt="vlan_190_traffic"></p>
 <p>▲ VLAN ID 190 interface traffic，只有流進自己也就是 bind 在 vlan 190 的 <code>192.168.xxx.xxx/24</code> 的流量。<strong><span style='color:red'>換句話說: 無法抓取 per VLAN 的流量總和</span></strong></p>
 <p><img src="librenms_vlan_190.jpg" alt="librenms_vlan_190"></p>
-<p>▲ 從 LibreNMS 更能作證這個事實。</p>
+<p>▲ 從 LibreNMS 更能佐證這個事實。</p>
 <p><strong><span style='color:red'>結論: 無法從 L2 抓取 per VLAN traffic。請從 L3 gateway 抓取~</span></strong></p>
 <p>(以公司 production 環境來說，一條打在 L2 switch 的進線會包含了許多 VLAN ID。)</p>
 <p><img src="scrape_traffic_from_l3.jpg" alt="scrape_traffic_from_l3"></p>

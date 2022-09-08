@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>我的第一支 Terraform - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="我的第一支 Terraform Introduction to Terraform Terraform 是一款 Infrastructure as Code (IaC) 工具，以 code 來 定義 / 建造 (build) / 修改 (change) / 版本控制 (version) 基礎設施，支援地端 (on-prem) 與 雲端 (Cloud)。 安裝 Terraform CLI Install Terraform 1 2 3 4" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.98.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20210922-terraform-hello-world/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="我的第一支 Terraform" />
+<meta property="og:description" content="我的第一支 Terraform Introduction to Terraform Terraform 是一款 Infrastructure as Code (IaC) 工具，以 code 來 定義 / 建造 (build) / 修改 (change) / 版本控制 (version) 基礎設施，支援地端 (on-prem) 與 雲端 (Cloud)。 安裝 Terraform CLI Install Terraform 1 2 3 4" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.xxzk.me/post/20210922-terraform-hello-world/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-09-22T15:36:09+00:00" />
+<meta property="article:modified_time" content="2021-09-22T15:36:09+00:00" />
+
+<meta itemprop="name" content="我的第一支 Terraform">
+<meta itemprop="description" content="我的第一支 Terraform Introduction to Terraform Terraform 是一款 Infrastructure as Code (IaC) 工具，以 code 來 定義 / 建造 (build) / 修改 (change) / 版本控制 (version) 基礎設施，支援地端 (on-prem) 與 雲端 (Cloud)。 安裝 Terraform CLI Install Terraform 1 2 3 4"><meta itemprop="datePublished" content="2021-09-22T15:36:09+00:00" />
+<meta itemprop="dateModified" content="2021-09-22T15:36:09+00:00" />
+<meta itemprop="wordCount" content="2154">
+<meta itemprop="keywords" content="terraform," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="我的第一支 Terraform"/>
+<meta name="twitter:description" content="我的第一支 Terraform Introduction to Terraform Terraform 是一款 Infrastructure as Code (IaC) 工具，以 code 來 定義 / 建造 (build) / 修改 (change) / 版本控制 (version) 基礎設施，支援地端 (on-prem) 與 雲端 (Cloud)。 安裝 Terraform CLI Install Terraform 1 2 3 4"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">我的第一支 Terraform</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-09-22 </span>
+        <div class="post-category">
+            <a href="/categories/terraform/"> terraform </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#我的第一支-terraform">我的第一支 Terraform</a>
+      <ul>
+        <li><a href="#安裝-terraform-cli">安裝 Terraform CLI</a></li>
+        <li><a href="#terraform-hello-world-using-docker-provider">Terraform Hello World using Docker provider</a>
+          <ul>
+            <li><a href="#建立工作目錄">建立工作目錄</a></li>
+            <li><a href="#maintf"><code>main.tf</code></a></li>
+            <li><a href="#terraform-block-解釋"><code>terraform</code> Block 解釋</a></li>
+            <li><a href="#provider-block-解釋"><code>provider</code> Block 解釋</a></li>
+            <li><a href="#resource-block-解釋"><code>resource</code> Block 解釋</a></li>
+          </ul>
+        </li>
+        <li><a href="#initialize-the-directory-初始化目錄">Initialize the directory 初始化目錄</a></li>
+        <li><a href="#format-and-validate-the-configuration-正規化驗證-設定檔">Format and validate the configuration 正規化/驗證 設定檔</a></li>
+        <li><a href="#create-infrastructure-創建基礎設施">Create infrastructure 創建基礎設施</a></li>
+        <li><a href="#inspect-state-查看狀態">Inspect state 查看狀態</a>
+          <ul>
+            <li><a href="#查詢當前狀態">查詢當前狀態</a></li>
+            <li><a href="#列出所有-resource">列出所有 <code>resource</code></a></li>
+          </ul>
+        </li>
+        <li><a href="#change-infrastructure">Change Infrastructure</a></li>
+        <li><a href="#update-configuration-更新設定檔">Update configuration 更新設定檔</a></li>
+        <li><a href="#destroy-infrastructure-刪除-infra">Destroy Infrastructure 刪除 infra</a></li>
+        <li><a href="#define-input-variables-使用變數">Define Input Variables 使用變數</a></li>
+        <li><a href="#query-data-with-outputs-輸出">Query Data with Outputs 輸出</a></li>
+        <li><a href="#保持帥哥">保持帥哥</a>
+          <ul>
+            <li><a href="#hands-on">Hands-on</a></li>
+          </ul>
+        </li>
+        <li><a href="#發問">發問</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="我的第一支-terraform">我的第一支 Terraform</h1>
+<p><img src="terraform_logo.jpg" alt="terraform_logo"></p>
+<p><a href="https://www.terraform.io/intro/index.html">Introduction to Terraform </a></p>
+<p><strong>Terraform</strong> 是一款 Infrastructure as Code (IaC) 工具，以 code 來 定義 / 建造 (build) / 修改 (change) / 版本控制 (version) 基礎設施，支援地端 (on-prem) 與 雲端 (Cloud)。</p>
+<h2 id="安裝-terraform-cli">安裝 Terraform CLI</h2>
+<p><a href="https://learn.hashicorp.com/tutorials/terraform/install-cli">Install Terraform</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo yum install -y yum-utils
+</span></span><span class="line"><span class="cl">sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo
+</span></span><span class="line"><span class="cl">sudo yum -y install terraform
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## Auto Completion</span>
+</span></span><span class="line"><span class="cl">terraform -install-autocomplete
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## show version</span>
+</span></span><span class="line"><span class="cl">terraform --version
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Terraform v1.0.7
+</span></span><span class="line"><span class="cl">on linux_amd64
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## The auto completion file in bashrc</span>
+</span></span><span class="line"><span class="cl">tail ~/.bashrc
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">...
+</span></span><span class="line"><span class="cl"><span class="nb">complete</span> -C /usr/bin/terraform terraform
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="terraform-hello-world-using-docker-provider">Terraform Hello World using Docker provider</h2>
+<p><a href="https://learn.hashicorp.com/tutorials/terraform/docker-build?in=terraform/docker-get-started">Build Infrastructure</a></p>
+<p>這邊會使用 Docker 來跟 Terraform 說 Hello~</p>
+<h3 id="建立工作目錄">建立工作目錄</h3>
+<p><strong><span style='color:blue'>Terraform 設定檔 (configuration) 必須被放在自己的工作目錄下 (working directory)</span></strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mkdir -p ~/terraform/hello_world
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="maintf"><code>main.tf</code></h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-terraform" data-lang="terraform"><span class="line"><span class="cl"><span class="nx">terraform</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">required_providers</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="na">docker</span> = <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="na">source</span> = <span class="s2">&#34;kreuzwerker/docker&#34;</span>
+</span></span><span class="line"><span class="cl">      <span class="na">version</span> = <span class="s2">&#34;~&gt; 2.13.0&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="kr">
+</span></span></span><span class="line"><span class="cl"><span class="kr">provider</span> <span class="s2">&#34;docker&#34;</span> <span class="p">{}</span>
+</span></span><span class="line"><span class="cl"><span class="kr">
+</span></span></span><span class="line"><span class="cl"><span class="kr">resource</span> <span class="s2">&#34;docker_image&#34;</span> <span class="s2">&#34;nginx&#34;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="na">name</span>         = <span class="s2">&#34;nginx:latest&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="na">keep_locally</span> = <span class="kc">false</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="kr">
+</span></span></span><span class="line"><span class="cl"><span class="kr">resource</span> <span class="s2">&#34;docker_container&#34;</span> <span class="s2">&#34;nginx&#34;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="na">image</span> = <span class="nx">docker_image</span><span class="p">.</span><span class="nx">nginx</span><span class="p">.</span><span class="nx">latest</span>
+</span></span><span class="line"><span class="cl">  <span class="na">name</span>  = <span class="s2">&#34;tutorial&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">ports</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="na">internal</span> = <span class="m">80</span>
+</span></span><span class="line"><span class="cl">    <span class="na">external</span> = <span class="m">8000</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="terraform-block-解釋"><code>terraform</code> Block 解釋</h3>
+<p><code>terraform {}</code> 區塊設定 Terraform 相關設定，包含<strong>所需要的 <code>provider</code></strong>。 各個 <code>provider</code> 下面的 <code>source</code> 定義 Terraform 要從 <a href="https://registry.terraform.io/">Terraform Registry</a> 安裝。<br>
+例如範例的 <code>kreuzwerker/docker</code> 就等同於 <code>registry.terraform.io/kreuzwerker/docker</code>。</p>
+<p>另外 <code>version</code> 雖然是 optional，不過官方建議加上，藉此約束 <code>provider</code> 的版本。 如果使用者沒有定義，在 <code>init</code> 階段 Terraform 會自動下載最新版 (most recent version)。</p>
+<h3 id="provider-block-解釋"><code>provider</code> Block 解釋</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-terraform" data-lang="terraform"><span class="line"><span class="cl"><span class="kr">provider</span> <span class="s2">&#34;aws&#34;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="na">access_key</span> = <span class="s2">&#34;ACCESS_KEY_HERE&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="na">secret_key</span> = <span class="s2">&#34;SECRET_KEY_HERE&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="na">region</span>     = <span class="s2">&#34;ap-northeast-1&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>provider</code> 區塊定義特定 <code>provider</code> 的參數，例如: AWS 的相關 <code>token</code><br>
+<code>provider</code> 可以把他當作 Terraform 的 plug-in，Terraform 利用這些 plug-in 去管理資源。</p>
+<p><img src="terraform_hello_world_0.jpg" alt="terraform_hello_world_0"></p>
+<p>▲ 當工作目錄下只有 <code>.tf</code> (主設定檔) 而尚未進行 <code>terraform init</code> 時，執行 <code>terraform validate</code> 會出現 Error。<br>
+並且告知 <strong><code>Plugins are external binaries that Terraform uses to access and manipulate resources.</code></strong><br>
+<strong><span style='color:red'>plug-in 是外部二進制檔案</span></strong></p>
+<h3 id="resource-block-解釋"><code>resource</code> Block 解釋</h3>
+<p><code>resource</code> 格式:</p>
+<p><strong><span style='color:blue'> &gt; 其中 <code>&lt;resource_type&gt;</code> 前綴會帶有 <code>prodvider</code> 的字樣。</span></strong><br>
+<strong><span style='color:brown'> &gt; <code>&lt;resource_type&gt;</code> + <code>&lt;resource_name&gt;</code> 會形成一個獨特的 ID，以下面這個例子就是 <code>aws_instance.app_server</code>。</strong></span></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl"># resource &lt;resource_type&gt; &lt;resource_name&gt;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">resource &#34;aws_instance&#34; &#34;app_server&#34; {
+</span></span><span class="line"><span class="cl">  ami           = &#34;ami-830c94e3&#34;
+</span></span><span class="line"><span class="cl">  instance_type = &#34;t2.micro&#34;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  tags = {
+</span></span><span class="line"><span class="cl">    Name = &#34;ExampleAppServerInstance&#34;
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>resource</code> 是定義 <code>provider</code> 提供的 「元件」(components) 的地方，可以是實體的 (physical) 或著虛擬的 (virtual)。</p>
+<h2 id="initialize-the-directory-初始化目錄">Initialize the directory 初始化目錄</h2>
+<p><a href="https://learn.hashicorp.com/tutorials/terraform/docker-build?in=terraform/docker-get-started#initialize-the-directory">Initialize the directory</a></p>
+<p><code>terraform init</code> 有點類似 <code>gcc</code> 編譯，執行後做了這兩件事情:</p>
+<ol>
+<li>下載/安裝 <code>.tf</code> 內定義的 <code>provider</code> 在 <code>$(pwd)/.terraform</code> 裡面。</li>
+<li>創建一個 <code>.terraform.lock.hcl</code> lock file，裡面定義正在使用的 <code>provider</code> 版本。</li>
+</ol>
+<p><img src="terraform_hello_world_1.jpg" alt="terraform_hello_world_1"></p>
+<p><strong><code>.terraform.lock.hcl</code> 檔案內容</strong> <strong><span style='color:red'>不要手動去更改!</span></strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl"># This file is maintained automatically by &#34;terraform init&#34;.
+</span></span><span class="line"><span class="cl"># Manual edits may be lost in future updates.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">provider &#34;registry.terraform.io/kreuzwerker/docker&#34; {
+</span></span><span class="line"><span class="cl">  version     = &#34;2.13.0&#34;
+</span></span><span class="line"><span class="cl">  constraints = &#34;~&gt; 2.13.0&#34;
+</span></span><span class="line"><span class="cl">  hashes = [
+</span></span><span class="line"><span class="cl">    &#34;h1:3r/gPhfPCl4mxazpfg0S/qgxmt+QWuvYT3CXTxUz9fs=&#34;,
+</span></span><span class="line"><span class="cl">    &#34;zh:0df685adc7b5740ae0def7235a44e1bce2f71beaf155319c2464ad2fba5cb321&#34;,
+</span></span><span class="line"><span class="cl">    &#34;zh:2cf4b4f840fa84f1b906f4cca58c9782375e9988ad354afcd85b0180cd784205&#34;,
+</span></span><span class="line"><span class="cl">    &#34;zh:347b189655afdc0df1919a26fb64cb745bb02d8fa2006a087cb6679a1b62319d&#34;,
+</span></span><span class="line"><span class="cl">    &#34;zh:441521c85fecad348ca012db7b9d14544cbe0a237012f8a03d5660c73e9a32a6&#34;,
+</span></span><span class="line"><span class="cl">    &#34;zh:462a1f67d26182fbb5ee78bb8d4764a2983804fa5f9971ca006da439e9e97055&#34;,
+</span></span><span class="line"><span class="cl">    &#34;zh:53822eb743cd487cabbed3360221cc0404b80f933b746d80426a4e10fa2f958a&#34;,
+</span></span><span class="line"><span class="cl">    &#34;zh:55c6eda01dd3d3f877aad16de6bf91e84bfa9c93f852869581429640be19d472&#34;,
+</span></span><span class="line"><span class="cl">    &#34;zh:690bb327398f800f7945bab35b1ad2c6ec1c0fa7f8a1e5696b0bc4597540e3af&#34;,
+</span></span><span class="line"><span class="cl">    &#34;zh:6c55a9a761596ca974a9cbaeee3179fb8f50916fad18d2422a2d818c3f4dc241&#34;,
+</span></span><span class="line"><span class="cl">    &#34;zh:6efd9e6ffa4c4c73fd39c856456022aad6a3a0b176c550409345e894475bbf4f&#34;,
+</span></span><span class="line"><span class="cl">    &#34;zh:811a37e3a66d5e99a81e0e66c817363205b030962fcec68bb96ab53b029ffeac&#34;,
+</span></span><span class="line"><span class="cl">    &#34;zh:aacb4ab8dd11e834952877390bc19beabf9fb0591c101e96da559201f4b284ca&#34;,
+</span></span><span class="line"><span class="cl">    &#34;zh:cecdf49f9488a10ac9416be354e7de3ed45114a25235cebc4ec6771696d980e9&#34;,
+</span></span><span class="line"><span class="cl">  ]
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="format-and-validate-the-configuration-正規化驗證-設定檔">Format and validate the configuration 正規化/驗證 設定檔</h2>
+<p><a href="https://learn.hashicorp.com/tutorials/terraform/docker-build?in=terraform/docker-get-started#format-and-validate-the-configuration">Format and validate the configuration</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">terraform fmt
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>將 <code>.tf</code> 正規化 (formating)，使設定檔可讀性更高、更嚴謹。<strong><span style='color:red'>只有被更動的設定檔會被顯示出來</span></strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">terraform validate
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Success! The configuration is valid.
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>▲ 驗證語法</p>
+<h2 id="create-infrastructure-創建基礎設施">Create infrastructure 創建基礎設施</h2>
+<p><a href="https://learn.hashicorp.com/tutorials/terraform/docker-build?in=terraform/docker-get-started#create-infrastructure">Create infrastructure</a></p>
+<p>在執行 <code>terraform apply</code> 後 <strong><span style='color:red'>並不會馬上執行</span></strong> ，Terraform 會先列出 <strong>「執行清單」(execution plan)</strong><br>
+輸出內容與 <code>git diff</code> 頗為相似， <code>+</code> 項目會被 Terraform 創建。<br>
+<strong><span style='color:red'><code>known after apply</code> 代表這個數值將在物件建立後才能取得。</span></strong></p>
+<p><img src="terraform_hello_world_2.jpg" alt="terraform_hello_world_2"></p>
+<p>▲ 輸入 <code>yes</code> 才會開始執行。</p>
+<p><img src="terraform_hello_world_3.jpg" alt="terraform_hello_world_3"></p>
+<p>▲ 建立成功!</p>
+<p><img src="terraform_hello_world_4.jpg" alt="terraform_hello_world_4"></p>
+<p>▲ 工作目錄下多出 <strong><span style='color:red'><code>terraform.tfstate</code></span></strong>，裡面儲存 infra 的狀態。</p>
+<h2 id="inspect-state-查看狀態">Inspect state 查看狀態</h2>
+<p><a href="https://learn.hashicorp.com/tutorials/terraform/docker-build?in=terraform/docker-get-started#inspect-state">Inspect state</a></p>
+<p><code>terraform.tfstate</code> 是 Terraform <strong>唯一</strong> 追蹤由它建立的 <code>resource</code> 的方式，透過這個檔案去執行 <code>update</code> 或者 <code>destory</code>。<br>
+另外官方提醒 <code>terraform.tfstate</code> 通常含有 <strong><span style='color:red'>機敏資訊 sensitive information</span></strong> 建議儲存在 Terraform Cloud 或者 Terraform Enterprise (<del>還敢業配阿</del>)，我在 Docker 這個範例當中是沒有找到什麼啦~ 之後使用 <code>vsphere provider</code> 的時候再來看看裡面存了哪些資訊好了。</p>
+<h3 id="查詢當前狀態">查詢當前狀態</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">terraform show
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="列出所有-resource">列出所有 <code>resource</code></h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">terraform state list
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="change-infrastructure">Change Infrastructure</h2>
+<p><a href="https://learn.hashicorp.com/tutorials/terraform/docker-change?in=terraform/docker-get-started">Change Infrastructure</a></p>
+<p>上半部我們使用 Terraform 建立了一個 Nginx Docker container，接下來我們要使用 Terraform 來修改它。<br>
+當使用者修改設定檔 (<code>.tf</code>) Terraform 會建立 <strong>「執行清單」(execution plan)</strong> 並且 <strong><span style='color:red'>只異動需要變更的部分，藉此滿足 desired state</span></strong><br>
+(與 K8s 撰寫的 <code>YAML</code> 一樣都是在描述 desired state)</p>
+<h2 id="update-configuration-更新設定檔">Update configuration 更新設定檔</h2>
+<p><a href="https://learn.hashicorp.com/tutorials/terraform/docker-change?in=terraform/docker-get-started">Update configuration</a></p>
+<p>首先先把 <code>main.tf</code> 裡面的 <code>external = 8000</code> 修改成 <code>external = 8080</code>。 接著 <code>terraform apply</code></p>
+<p><img src="terraform_hello_world_5.jpg" alt="terraform_hello_world_5"></p>
+<p>▲ Docker 無法直接修改 existed container，只能重新建立一個新的。</p>
+<ul>
+<li><strong><code>-/+</code> 代表 Terraform 會 destroy and recreate the resource，而不是原地修改。</strong></li>
+<li><strong><code>~</code> 代表 Terraform 會原地 (in-place) 修改。</strong></li>
+</ul>
+<h2 id="destroy-infrastructure-刪除-infra">Destroy Infrastructure 刪除 infra</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">terraform destroy
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="terraform_hello_world_6.jpg" alt="terraform_hello_world_6"></p>
+<p>▲ 成功刪除!</p>
+<h2 id="define-input-variables-使用變數">Define Input Variables 使用變數</h2>
+<p><a href="https://learn.hashicorp.com/tutorials/terraform/docker-variables?in=terraform/docker-get-started">Define Input Variables</a></p>
+<p>到目前為止，我們所使用的 value 都是 hard-coded，在這個章節將介紹 Terraform variables。</p>
+<p>首先在工作目錄下建立 <code>variables.tf</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-terraform" data-lang="terraform"><span class="line"><span class="cl"><span class="kr">variable</span> <span class="s2">&#34;container_name&#34;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="na">description</span> = <span class="s2">&#34;Value of the name for the Docker container&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="na">type</span>        = <span class="nx">string</span>
+</span></span><span class="line"><span class="cl">  <span class="na">default</span>     = <span class="s2">&#34;EVG2603Container&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>接著修改 <code>main.tf</code> 裡面的 <code>docker_container</code> <code>resource</code> block，將 <code>name = &quot;tutorial&quot;</code> 修改成 <code>name  = var.container_name</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## apply </span>
+</span></span><span class="line"><span class="cl">terraform apply
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="terraform_hello_world_7.jpg" alt="terraform_hello_world_7"></p>
+<p>▲ 成功建立 &ldquo;EVG2603Container&rdquo;</p>
+<p>除了可以透過 <code>variables.tf</code> 來定義變數外，在 CLI 也可以 ( <strong><span style='color:red'>優先權 &gt; <code>variables.tf</code></span></strong> )。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">terraform apply -var <span class="s2">&#34;container_name=EVG_ACT&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="query-data-with-outputs-輸出">Query Data with Outputs 輸出</h2>
+<p>Terraform 除了可以 input variables 也可以 output variables。<br>
+在工作目錄下建立 <code>outputs.tf</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-terraform" data-lang="terraform"><span class="line"><span class="cl"><span class="kr">output</span> <span class="s2">&#34;container_id&#34;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="na">description</span> = <span class="s2">&#34;ID of the Docker container&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="na">value</span>       = <span class="nx">docker_container</span><span class="p">.</span><span class="nx">nginx</span><span class="p">.</span><span class="nx">id</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="kr">
+</span></span></span><span class="line"><span class="cl"><span class="kr">output</span> <span class="s2">&#34;image_id&#34;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="na">description</span> = <span class="s2">&#34;ID of the Docker image&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="na">value</span>       = <span class="nx">docker_image</span><span class="p">.</span><span class="nx">nginx</span><span class="p">.</span><span class="nx">id</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong><span style='color:red'><code>outputs.tf</code> 必須先被 <code>terraform apply</code></span></strong></p>
+<p><img src="terraform_hello_world_8.jpg" alt="terraform_hello_world_8"></p>
+<p>▲ &ldquo;Changes to Outputs&rdquo;</p>
+<p>成功之後我們就可以使用 <code>terraform output</code> 來查詢變數</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">terraform output
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">container_id</span> <span class="o">=</span> <span class="s2">&#34;78a62c03e259bc6b571e1af4ef8c2743549d9e917727e4bc3164877213eba338&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">image_id</span> <span class="o">=</span> <span class="s2">&#34;sha256:f8f4ffc8092c956ddd6a3a64814f36882798065799b8aedeebedf2855af3395bnginx:latest&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="保持帥哥">保持帥哥</h2>
+<p><del>抱歉，段落標題詐騙</del> 這個段落主要是要讓「機敏資訊」(sensitive data) 不要被直接存在 <code>main.tf</code> 裡面。<br>
+如此一來 <code>main.tf</code> 就能夠安心上版控工具了，不然 <code>provider</code> 相關帳號密碼都直接存在 <code>main.tf</code> 裡面上了版控豈不是裸奔嗎?</p>
+<p><a href="https://learn.hashicorp.com/tutorials/terraform/sensitive-variables">Protect Sensitive Input Variables</a></p>
+<p><strong><span style='color:red'>從 Terraform v0.14 後提供 <code>sensitive</code> 這個 variable flag，達成 (√) CLI output 不顯示明文密碼</span></strong><br>
+<strong><span style='color:blue'>注意!! 你的密碼還是以 plain text 的形式儲存在 <code>.tfvars</code> 裡面。建議使用 secret management tool 加以處理。</span></strong></p>
+<h3 id="hands-on">Hands-on</h3>
+<p><code>main.tf</code> (沿用上面範例，確保 <code>name  = var.container_name</code> 即可)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-terraform" data-lang="terraform"><span class="line"><span class="cl"><span class="nx">terraform</span> <span class="p">{</span>                                                                                                                          
+</span></span><span class="line"><span class="cl">  <span class="nx">required_providers</span> <span class="p">{</span>                                                                                                               
+</span></span><span class="line"><span class="cl">    <span class="na">docker</span> = <span class="p">{</span>                                                                                                                       
+</span></span><span class="line"><span class="cl">      <span class="na">source</span>  = <span class="s2">&#34;kreuzwerker/docker&#34;</span>                                                                                                 
+</span></span><span class="line"><span class="cl">      <span class="na">version</span> = <span class="s2">&#34;~&gt; 2.13.0&#34;</span>                                                                                                          
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>                                                                                                                                
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>                                                                                                                                  
+</span></span><span class="line"><span class="cl"><span class="p">}</span>                                                                                                                                    
+</span></span><span class="line"><span class="cl">                                                                                                                                     
+</span></span><span class="line"><span class="cl"><span class="kr">provider</span> <span class="s2">&#34;docker&#34;</span> <span class="p">{}</span>                                                                                                                 
+</span></span><span class="line"><span class="cl">                                                                                                                                     
+</span></span><span class="line"><span class="cl"><span class="kr">resource</span> <span class="s2">&#34;docker_image&#34;</span> <span class="s2">&#34;nginx&#34;</span> <span class="p">{</span>                                                                                                    
+</span></span><span class="line"><span class="cl">  <span class="na">name</span>         = <span class="s2">&#34;nginx:latest&#34;</span>                                                                                                      
+</span></span><span class="line"><span class="cl">  <span class="na">keep_locally</span> = <span class="kc">false</span>                                                                                                               
+</span></span><span class="line"><span class="cl"><span class="p">}</span>                                                                                                                                    
+</span></span><span class="line"><span class="cl">                                                                                                                                     
+</span></span><span class="line"><span class="cl"><span class="kr">resource</span> <span class="s2">&#34;docker_container&#34;</span> <span class="s2">&#34;nginx&#34;</span> <span class="p">{</span>                                                                                                
+</span></span><span class="line"><span class="cl">  <span class="na">image</span> = <span class="nx">docker_image</span><span class="p">.</span><span class="nx">nginx</span><span class="p">.</span><span class="nx">latest</span>                                                                                                  
+</span></span><span class="line"><span class="cl">  <span class="na">name</span>  = <span class="nb">var</span><span class="p">.</span><span class="nx">container_name</span>                                                                                                         
+</span></span><span class="line"><span class="cl">  <span class="nx">ports</span> <span class="p">{</span>                                                                                                                            
+</span></span><span class="line"><span class="cl">    <span class="na">internal</span> = <span class="m">80</span>                                                                                                                    
+</span></span><span class="line"><span class="cl">    <span class="na">external</span> = <span class="m">8000</span>                                                                                                                  
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>                                                                                                                                  
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>variables.tf</code> (將 <code>default</code> 移除，新增 <code>sensitive = true</code> )</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-terraform" data-lang="terraform"><span class="line"><span class="cl"><span class="kr">variable</span> <span class="s2">&#34;container_name&#34;</span> <span class="p">{</span>                                                                                                          
+</span></span><span class="line"><span class="cl">  <span class="na">description</span> = <span class="s2">&#34;Value of the name for the Docker container&#34;</span>                                                                         
+</span></span><span class="line"><span class="cl">  <span class="na">type</span>        = <span class="nx">string</span>                                                                                                               
+</span></span><span class="line"><span class="cl">  <span class="na">sensitive</span>   = <span class="kc">true</span>                                                                                                                 
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong><span style='color:blue'>新增</span></strong> <code>secret.tfvars</code> <strong><span style='color:red'>絕對要在 <code>.gitignore</code> 裡面!!</span></strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">container_name = &#34;EVG2603Container&#34;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>執行 <code>terraform apply -var-file=&quot;secret.tfvars&quot;</code> 就不會以明文顯示 <code>container_name</code> 囉!</p>
+<p><img src="terraform_hello_world_9.jpg" alt="terraform_hello_world_9"></p>
+<h2 id="發問">發問</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="line"><span class="cl">大家午安，想問一下有關於 Terraform 顯示的部分。
+</span></span><span class="line"><span class="cl">有沒有辦法讓 <span class="sb">`terrafrom apply`</span> 時使用 <span class="sb">`less`</span> 指令呢?
+</span></span><span class="line"><span class="cl">我用 <span class="sb">`terraform apply | less -R`</span> 顏色有了，但沒辦法 page down
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">用關鍵字: terraform output less 或者 show less 都沒有找到東西
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong><span style='color:red'>Ans: 使用 <code>tmux</code> scroll buffer ( <code>Ctrl-B + [ + PageUp/Down</code> )</span></strong></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2021-09-22
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/terraform/">terraform</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/20211027-ckad-note-section-5-observability/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">CKAD Note Section 5 Observability</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/20210730-ckad-note-section-3-configuration/">
+            <span class="next-text nav-default">CKAD Note Section 3 Configuration</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.64437849d125a2d603b3e71d6de5225d641a32d17168a58106e0b61852079683.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

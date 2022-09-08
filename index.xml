@@ -215,6 +215,15 @@
     </item>
     
     <item>
+      <title>我的第一支 Terraform</title>
+      <link>https://blog.xxzk.me/post/20210922-terraform-hello-world/</link>
+      <pubDate>Wed, 22 Sep 2021 15:36:09 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20210922-terraform-hello-world/</guid>
+      <description>我的第一支 Terraform Introduction to Terraform Terraform 是一款 Infrastructure as Code (IaC) 工具，以 code 來 定義 / 建造 (build) / 修改 (change) / 版本控制 (version) 基礎設施，支援地端 (on-prem) 與 雲端 (Cloud)。 安裝 Terraform CLI Install Terraform 1 2 3 4</description>
+    </item>
+    
+    <item>
       <title>CKAD Note Section 3 Configuration</title>
       <link>https://blog.xxzk.me/post/20210730-ckad-note-section-3-configuration/</link>
       <pubDate>Fri, 30 Jul 2021 11:29:19 +0000</pubDate>

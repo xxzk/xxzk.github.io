@@ -296,6 +296,15 @@
     </item>
     
     <item>
+      <title>【實驗記錄】到底 VM 在關機 (PowerOff) 狀態搬移</title>
+      <link>https://blog.xxzk.me/post/20210224-what-network-will-vmware-migration-used/20210224-what-network-will-vmware-migration-used/</link>
+      <pubDate>Wed, 24 Feb 2021 13:21:00 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20210224-what-network-will-vmware-migration-used/20210224-what-network-will-vmware-migration-used/</guid>
+      <description>LAB 架構圖 寫日記 這兩台 ESXi 主要是拿來測試 vSS 轉 vDS 用的。因為 DC1 10.x.x.53 ESXi Host 在 2021.02.19 發現 GBIC 故障 DC1 10.x.x.54 ESXi Host 2021.02.12 發生 DIMM_A3 Multi-bit memory errors (error rate 上升) + 2021.02.19 Power Supply 1 (PS1) 死去。兩台共通點都是 2021.01</description>
+    </item>
+    
+    <item>
       <title>隱藏 Apache、PHP、OpenSSL、Nginx 版本號</title>
       <link>https://blog.xxzk.me/post/20210223-hide-apache-php-openssl-nginx-version/</link>
       <pubDate>Tue, 23 Feb 2021 14:33:37 +0000</pubDate>

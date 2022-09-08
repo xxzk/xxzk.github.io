@@ -541,6 +541,27 @@
   </url>
   
   <url>
+    <loc>https://blog.xxzk.me/tags/bookstack/</loc>
+    <lastmod>2021-04-01T13:19:05+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/categories/bookstack/</loc>
+    <lastmod>2021-04-01T13:19:05+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/post/20210401-bookstack-fronts-customising/</loc>
+    <lastmod>2021-04-01T13:19:05+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.xxzk.me/post/20210224-what-network-will-vmware-migration-used/</loc>
     <lastmod>2021-02-24T13:21:00+00:00</lastmod>
     <changefreq>weekly</changefreq>

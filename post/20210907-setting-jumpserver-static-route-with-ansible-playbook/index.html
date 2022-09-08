@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Jumpserver 靜態路由設定 shell script &#43; Ansible Playbook 使用說明 - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="圖片來源 為什麼使用 Jumpserver 要上靜態路由? 公司現有 VM Network 環境只要是 Web server 的， default gateway 都是設定 Private IP Class B (172.x.0.0/16) 網段，也就是 Load Balance 身上。同時該台 VM 也會有 192.168.x.0/23 /24 的網卡 (192.168.x.254 or 253" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.98.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20210907-setting-jumpserver-static-route-with-ansible-playbook/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Jumpserver 靜態路由設定 shell script &#43; Ansible Playbook 使用說明" />
+<meta property="og:description" content="圖片來源 為什麼使用 Jumpserver 要上靜態路由? 公司現有 VM Network 環境只要是 Web server 的， default gateway 都是設定 Private IP Class B (172.x.0.0/16) 網段，也就是 Load Balance 身上。同時該台 VM 也會有 192.168.x.0/23 /24 的網卡 (192.168.x.254 or 253" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.xxzk.me/post/20210907-setting-jumpserver-static-route-with-ansible-playbook/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-09-07T09:36:54+00:00" />
+<meta property="article:modified_time" content="2021-09-07T09:36:54+00:00" />
+
+<meta itemprop="name" content="Jumpserver 靜態路由設定 shell script &#43; Ansible Playbook 使用說明">
+<meta itemprop="description" content="圖片來源 為什麼使用 Jumpserver 要上靜態路由? 公司現有 VM Network 環境只要是 Web server 的， default gateway 都是設定 Private IP Class B (172.x.0.0/16) 網段，也就是 Load Balance 身上。同時該台 VM 也會有 192.168.x.0/23 /24 的網卡 (192.168.x.254 or 253"><meta itemprop="datePublished" content="2021-09-07T09:36:54+00:00" />
+<meta itemprop="dateModified" content="2021-09-07T09:36:54+00:00" />
+<meta itemprop="wordCount" content="2199">
+<meta itemprop="keywords" content="ansible," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Jumpserver 靜態路由設定 shell script &#43; Ansible Playbook 使用說明"/>
+<meta name="twitter:description" content="圖片來源 為什麼使用 Jumpserver 要上靜態路由? 公司現有 VM Network 環境只要是 Web server 的， default gateway 都是設定 Private IP Class B (172.x.0.0/16) 網段，也就是 Load Balance 身上。同時該台 VM 也會有 192.168.x.0/23 /24 的網卡 (192.168.x.254 or 253"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Jumpserver 靜態路由設定 shell script &#43; Ansible Playbook 使用說明</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-09-07 </span>
+        <div class="post-category">
+            <a href="/categories/ansible/"> ansible </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#為什麼使用-jumpserver-要上靜態路由">為什麼使用 Jumpserver 要上靜態路由?</a>
+          <ul>
+            <li><a href="#情境一-網路組-nat-disabled">情境一: 網路組 NAT Disabled</a></li>
+            <li><a href="#情況二-網路組-nat-enabled">情況二: 網路組 NAT Enabled</a></li>
+          </ul>
+        </li>
+        <li><a href="#shell-script-目標功能">shell script 目標功能</a>
+          <ul>
+            <li><a href="#dc1-施作時遇到的問題">DC1 施作時遇到的問題</a></li>
+          </ul>
+        </li>
+        <li><a href="#jumpserver_static_routing_setupsh">jumpserver_static_routing_setup.sh</a></li>
+        <li><a href="#ansible-play-book">Ansible Play Book</a>
+          <ul>
+            <li><a href="#事前準備">事前準備</a></li>
+            <li><a href="#script_play_bookyml">script_play_book.yml</a></li>
+          </ul>
+        </li>
+        <li><a href="#後記">後記</a></li>
+        <li><a href="#20211223-異動">2021/12/23 異動</a>
+          <ul>
+            <li><a href="#change_ip_jumpserver_static_routing_setupsh">Change_IP_jumpserver_static_routing_setup.sh</a></li>
+            <li><a href="#change_ip_script_play_bookyml">Change_IP_script_play_book.yml</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p><img src="pexels-athena-910299.jpg" alt="pexels-athena-910299"></p>
+<p><a href="https://www.pexels.com/zh-tw/photo/910299/">圖片來源</a></p>
+<h2 id="為什麼使用-jumpserver-要上靜態路由">為什麼使用 Jumpserver 要上靜態路由?</h2>
+<p>公司現有 VM Network 環境只要是 Web server 的， default gateway 都是設定 Private IP Class B (172.x.0.0/16) 網段，也就是 <strong><span style='color:blue'>Load Balance</span></strong> 身上。同時該台 VM 也會有 <code>192.168.x.0/23 /24</code> 的網卡 (<code>192.168.x.254 or 253</code> 在 <strong><span style='color:red'>Forti</span></strong> 身上)<br>
+直接上 routing table 會比文字敘述更清楚~</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ip r
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">default via 172.x.x.254 dev eth0 proto static metric <span class="m">100</span> 
+</span></span><span class="line"><span class="cl">172.x.x.0/24 dev eth0 proto kernel scope link src 172.x.x.131 metric <span class="m">100</span> 
+</span></span><span class="line"><span class="cl">192.x.x.0/23 dev eth1 proto kernel scope link src 192.x.x.131 metric <span class="m">101</span> 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong><span style='color:red'>Jumpserver 只有 <code>192.168.x.0/24</code> 的網卡 (on Forti)</span></strong><br>
+<strong><span style='color:red'>Jumpserver 只有 <code>192.168.x.0/24</code> 的網卡 (on Forti)</span></strong><br>
+<strong><span style='color:red'>Jumpserver 只有 <code>192.168.x.0/24</code> 的網卡 (on Forti)</span></strong></p>
+<p><del>因為很重要，講三次</del></p>
+<h3 id="情境一-網路組-nat-disabled">情境一: 網路組 NAT Disabled</h3>
+<p>假設 IP:</p>
+<blockquote>
+<p>Jumpserver 192.168.x.74/24<br>
+Target VM  192.168.x.131/24</p>
+</blockquote>
+<p>在沒有以嚴格政策 (Policy) 限制的情況下，Jumpserver 是可以 <strong><span style='color:red'>單向</span></strong> 碰到 Target VM 的。<br>
+在 Jumpserver 執行 <code>ping 192.168.x.131</code>，Target VM 以 <code>tcpdump</code> 是可以看到 <code>src: 192.168.x.74</code> 的 ICMP 封包的。<br>
+<strong><span style='color:red'>不過 Jumpserver 卻收不到 echo 回應</span></strong> 原因是 Target VM 會按照既有 routing table 將 echo 封包傳給 default gateway。</p>
+<h3 id="情況二-網路組-nat-enabled">情況二: 網路組 NAT Enabled</h3>
+<p>這個時候當 <strong>Forti</strong> 收到 <code>src: 192.168.x.74  dst: 192.168.x.131</code> 的封包時會 <strong><span style='color:red'>將 <code>src</code> 替換成 <code>192.168.x.254 (Forti 身上的 Interface)</code></span></strong><br>
+這個時候 Jumpserver 可以收到來自 Target VM 的 echo 回應沒有問題。但產生一個問題:</p>
+<ol>
+<li>Target VM 收到的封包都是來自 <code>192.168.x.254</code> 的。這樣無法精準控管權限</li>
+</ol>
+<p><strong>而靜態路由的解法可以同時達成 (1) 雙方都可以碰到彼此 (2) 精準權限控管</strong></p>
+<br>
+<hr>
+<h2 id="shell-script-目標功能">shell script 目標功能</h2>
+<ol>
+<li>編輯 <code>/etc/hosts.deny</code>，增加 <code>sshd: &lt;Jumpserver_IP&gt;:allow</code>。(並且統一 <code>sshd: all</code> 格式)</li>
+<li>增加靜態路由 (1) 即時生效 (2) 永久。 <a href="https://linoxide.com/howto-permanently-add-static-route-in-linux/">How to Permanently add Static Route in Linux</a></li>
+<li>把 Jumpserver SSH public key 加入 <code>/root/.ssh/known_hosts</code>。</li>
+</ol>
+<br>
+<h3 id="dc1-施作時遇到的問題">DC1 施作時遇到的問題</h3>
+<ol>
+<li><code>/etc/hosts.deny</code> 格式不一致 (有無空格) 導致替換有問題。相關腳本 <code>edit_hosts_allow_script.sh</code></li>
+<li><code>eth0</code> <code>eth1</code> 不一致 (某些 VM <code>192.168.0.0/16</code> 是綁在 <code>eth0</code>)。這次我想用 Ansible 做判斷式抓取。 (註: 後來還是用 shell script 做判斷)</li>
+<li>(新增功能，之前是用 powershell 跑) 將 <code>DC2_IT_Jumpserver_Demo</code> 的 ssh public key 加到 <code>/root/.ssh/known_hosts</code> 裡面</li>
+</ol>
+<h2 id="jumpserver_static_routing_setupsh">jumpserver_static_routing_setup.sh</h2>
+<p><code>TARGET_IP</code> 設定 Jumpserver 的 IP。<br>
+<code>GATEWAY</code> 預設 <code>254</code>，當該網段的 Gateway 不是在 <code>254</code> 時更改。<br>
+<code>ssh_key_name</code> 是 <code>id.rsa.pub</code> 裡面的名稱，用於搜尋是否已存在 VM 裡面。<br>
+(20210910 新增) <code>DB_subnet</code> <strong><span style='color:red'>當遇到 DB 網段時必須手動指定 D2D 網段，否則 Jumpserver 收到的封包封包來源是錯的!</span></strong> 因為 DB 的 default gateway 是 W2D 網段。(以 Jumpserver 使用 D2D 網段訪問目標來說)<br>
+謝謝 Rock 被我盧這麼久 XD</p>
+<p><strong>註: 目前網卡名稱只支援 <code>eth.*</code> 與 <code>ens.*</code>。</strong><br>
+<strong>註: 應該先判斷是否有 172 這張網卡，在判斷是否有 192 這張網卡。如果沒有 172 (例如: DB) 就不用加靜態路由了</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span><span class="lnt">78
+</span><span class="lnt">79
+</span><span class="lnt">80
+</span><span class="lnt">81
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">TARGET_IP</span><span class="o">=</span><span class="s1">&#39;192.168.x.74&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">GATEWAY</span><span class="o">=</span><span class="s1">&#39;254&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">ssh_key_name</span><span class="o">=</span><span class="s2">&#34;root@DC2_BD_IT_Jumpserver_Demo&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">DB_subnet</span><span class="o">=</span><span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## Task 1: edit `/etc/hosts.deny`</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">sed -i -e <span class="s1">&#39;s|^sshd:\ \{0,\}all||g&#39;</span> -e <span class="s1">&#39;/^$/d&#39;</span> /etc/hosts.deny
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;sshd: </span><span class="si">${</span><span class="nv">TARGET_IP</span><span class="si">}</span><span class="s2">:allow&#34;</span> &gt;&gt; /etc/hosts.deny
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;sshd: all&#34;</span> &gt;&gt; /etc/hosts.deny
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## ==========</span>
+</span></span><span class="line"><span class="cl"><span class="c1">## Task 2: add static routing (即時 + 永久)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">### 先判斷是否有 192.168.x.0/24 這張網卡，若有才執行。 FLAG != &#39;0&#39; 代表沒有</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">ifconfig <span class="p">|</span> grep <span class="s1">&#39;192.168.&#39;</span> &gt; /dev/null
+</span></span><span class="line"><span class="cl"><span class="nv">FLAG_eth</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span> <span class="nv">$?</span><span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$FLAG_eth</span><span class="s2">&#34;</span> <span class="o">==</span> <span class="s2">&#34;0&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">#echo &#39;找到 192.168. 網卡!&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">## 192.168 網段。例如: 192.168.&#34;212&#34;.254。 &#34;212&#34; 會是輸出內容</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">## 有把 DB 有兩張 192.168 的網卡考慮進去 (head -n1 的部分)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">export</span> <span class="nv">SUBNET</span><span class="o">=</span><span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">export</span> <span class="nv">SUBNET</span><span class="o">=</span><span class="k">$(</span>ifconfig <span class="p">|</span> grep -e <span class="s2">&#34;inet 192.168.</span><span class="si">${</span><span class="nv">DB_subnet</span><span class="si">}</span><span class="s2">&#34;</span> <span class="p">|</span> sed -e <span class="s1">&#39;s|^ *||g&#39;</span> <span class="p">|</span> cut -d <span class="s1">&#39; &#39;</span> -f <span class="m">2</span> <span class="p">|</span> cut -d <span class="s1">&#39;.&#39;</span> -f <span class="m">3</span> <span class="p">|</span> head -n1<span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">## 192.168 網卡名稱。有把 DB 有兩張 192.168 的網卡考慮進去 (head -n1 的部分)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">export</span> <span class="nv">TARGET_NIC</span><span class="o">=</span><span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">export</span> <span class="nv">TARGET_NIC</span><span class="o">=</span><span class="k">$(</span>ifconfig <span class="p">|</span> grep -e <span class="s2">&#34;inet 192.168.</span><span class="si">${</span><span class="nv">DB_subnet</span><span class="si">}</span><span class="s2">&#34;</span> -U1 <span class="p">|</span> cut -d <span class="s1">&#39; &#39;</span> -f <span class="m">1</span> <span class="p">|</span> cut -d <span class="s1">&#39;:&#39;</span> -f <span class="m">1</span> <span class="p">|</span> grep -oE <span class="s2">&#34;(eth.*)||(ens.*)&#34;</span> <span class="p">|</span> head -n1<span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">## 網段、網卡 均不為空值才會繼續執行</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="o">[</span> -n <span class="s2">&#34;</span><span class="nv">$SUBNET</span><span class="s2">&#34;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="o">[</span> -n <span class="s2">&#34;</span><span class="nv">$TARGET_NIC</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">## 即時靜態路由 (若已存在該筆，則不會執行)</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">FLAG_route</span><span class="o">=</span><span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">        route <span class="p">|</span> grep <span class="s2">&#34;</span><span class="si">${</span><span class="nv">TARGET_IP</span><span class="si">}</span><span class="s2">&#34;</span> <span class="p">&amp;</span>&gt;/dev/null
+</span></span><span class="line"><span class="cl">        <span class="nv">FLAG_route</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span> <span class="nv">$?</span><span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$FLAG_route</span><span class="s2">&#34;</span> <span class="o">==</span> <span class="s2">&#34;1&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">echo</span> <span class="s1">&#39;即時靜態路由執行!&#39;</span>
+</span></span><span class="line"><span class="cl">            route add -net <span class="si">${</span><span class="nv">TARGET_IP</span><span class="si">}</span> netmask 255.255.255.255 gw 192.168.<span class="si">${</span><span class="nv">SUBNET</span><span class="si">}</span>.<span class="si">${</span><span class="nv">GATEWAY</span><span class="si">}</span> dev <span class="si">${</span><span class="nv">TARGET_NIC</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">fi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">## 永久靜態路由</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">conf_path</span><span class="o">=</span><span class="s2">&#34;/etc/sysconfig/network-scripts/route-</span><span class="si">${</span><span class="nv">TARGET_NIC</span><span class="si">}</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">        grep <span class="s2">&#34;</span><span class="si">${</span><span class="nv">TARGET_IP</span><span class="si">}</span><span class="s2">&#34;</span> <span class="si">${</span><span class="nv">conf_path</span><span class="si">}</span> <span class="p">&amp;</span>&gt;/dev/null 
+</span></span><span class="line"><span class="cl">        <span class="nv">FLAG_conf</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span> <span class="nv">$?</span><span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$FLAG_conf</span><span class="s2">&#34;</span> !<span class="o">=</span> <span class="s2">&#34;0&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">echo</span> <span class="s1">&#39;永久靜態路由執行!&#39;</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">echo</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">TARGET_IP</span><span class="si">}</span><span class="s2"> via 192.168.</span><span class="si">${</span><span class="nv">SUBNET</span><span class="si">}</span><span class="s2">.</span><span class="si">${</span><span class="nv">GATEWAY</span><span class="si">}</span><span class="s2"> dev </span><span class="si">${</span><span class="nv">TARGET_NIC</span><span class="si">}</span><span class="s2">&#34;</span> &gt;&gt; /etc/sysconfig/network-scripts/route-<span class="si">${</span><span class="nv">TARGET_NIC</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">fi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">fi</span>
+</span></span><span class="line"><span class="cl"><span class="k">fi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## ==========</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## Task 3: Public Key insert. 信任公鑰注入</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">mkdir -p /root/.ssh/ <span class="o">&amp;&amp;</span> touch /root/.ssh/authorized_keys
+</span></span><span class="line"><span class="cl"><span class="nv">FLAG_ssh</span><span class="o">=</span><span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">grep <span class="si">${</span><span class="nv">ssh_key_name</span><span class="si">}</span> /root/.ssh/authorized_keys <span class="p">&amp;</span>&gt;/dev/null
+</span></span><span class="line"><span class="cl"><span class="nv">FLAG_ssh</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span> <span class="nv">$?</span><span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$FLAG_ssh</span><span class="s2">&#34;</span> !<span class="o">=</span> <span class="s2">&#34;0&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s1">&#39;SSH Public Key 執行!&#39;</span>
+</span></span><span class="line"><span class="cl">cat &gt;&gt; /root/.ssh/authorized_keys <span class="s">&lt;&lt; EOF
+</span></span></span><span class="line"><span class="cl"><span class="s">ssh-rsa XXXX root@DC2_BD_IT_Jumpserver_Demo
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">fi</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="ansible-play-book">Ansible Play Book</h2>
+<h3 id="事前準備">事前準備</h3>
+<p>在工作目錄準備:</p>
+<blockquote>
+<p>inventory<br>
+jumpserver_static_routing_setup.sh<br>
+net-tools-2.0-0.25.20131004git.el7.x86_64.rpm<br>
+(Play Book 本人) script_play_book.yml</p>
+</blockquote>
+<h3 id="script_play_bookyml">script_play_book.yml</h3>
+<p><strong><span style='color:red'>請自行替換 <code>hosts</code> 為 inventory 內目標 group name</span></strong></p>
+<p>Task 1~2 都是安裝/更新 <code>net-tools</code> 的步驟，在 <code>when</code> 的地方有限定 RHEL/CentOS 7 才安裝。 (<a href="https://centos.pkgs.org/7/centos-x86_64/net-tools-2.0-0.25.20131004git.el7.x86_64.rpm.html">net-tools 說明</a>)<br>
+<strong>由於若已安裝 <code>net-tools v2.0-0.25</code> 會報錯，導致 Task 3 沒有被執行。因此加了一行 <code>ignore_errors: yes</code></strong></p>
+<p>Task 3 用 <code>script</code> module 執行位於 local (Ansible control node) 的 shell script。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nn">---</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">## 使用 Ansible Script module 執行 .sh file</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Run a script for setup Jumpserver.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l">librenms</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">tasks</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">copy &#39;net-tools.rpm&#39; to remote VM</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">copy</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">src</span><span class="p">:</span><span class="w"> </span><span class="l">net-tools-2.0-0.25.20131004git.el7.x86_64.rpm</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">dest</span><span class="p">:</span><span class="w"> </span><span class="l">/tmp/</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">when</span><span class="p">:</span><span class="w"> </span><span class="l">ansible_os_family == &#34;RedHat&#34; and ansible_facts[&#39;distribution_major_version&#39;] == &#34;7&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Install &#39;net-tools&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">shell</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">cmd</span><span class="p">:</span><span class="w"> </span><span class="l">rpm -Uvh --nosignature /tmp/net-tools-2.0-0.25.20131004git.el7.x86_64.rpm</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">warn</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">when</span><span class="p">:</span><span class="w"> </span><span class="l">ansible_os_family == &#34;RedHat&#34; and ansible_facts[&#39;distribution_major_version&#39;] == &#34;7&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">ignore_errors</span><span class="p">:</span><span class="w"> </span><span class="kc">yes</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Run the &#39;jumpserver_static_routing_setup.sh&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">script</span><span class="p">:</span><span class="w"> </span><span class="l">jumpserver_static_routing_setup.sh</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">when</span><span class="p">:</span><span class="w"> </span><span class="l">ansible_os_family == &#34;RedHat&#34;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="後記">後記</h2>
+<p>原本打算完全用 Ansible 完成這個任務，不過還是跟 shell script 比較熟一點 XD 只好混搭 Ansible 來使用。</p>
+<h2 id="20211223-異動">2021/12/23 異動</h2>
+<p><code>DC2_BD_IT_Jumpserver_Demo</code> IP 192.168.x.74 =&gt; 192.168.x.240</p>
+<h3 id="change_ip_jumpserver_static_routing_setupsh">Change_IP_jumpserver_static_routing_setup.sh</h3>
+<ul>
+<li>新增 <code>OLD_TARGET_IP</code>。</li>
+<li>shell script 會針對舊的 IP (<code>192.168.110.74</code>) 從相關 config file 移除。</li>
+<li>SSH public key 不會因為更改 IP 失效，因此移除。</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">TARGET_IP</span><span class="o">=</span><span class="s1">&#39;192.168.x.240&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">OLD_TARGET_IP</span><span class="o">=</span><span class="s1">&#39;192.168.x.74&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">GATEWAY</span><span class="o">=</span><span class="s1">&#39;254&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#export ssh_key_name=&#34;root@DC2_BD_IT_Jumpserver_Demo&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">DB_subnet</span><span class="o">=</span><span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## Task 1: edit `/etc/hosts.deny`</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">sed -i -e <span class="s2">&#34;s|^sshd:\ \{0,\}</span><span class="si">${</span><span class="nv">OLD_TARGET_IP</span><span class="si">}</span><span class="s2">:allow||g&#34;</span> /etc/hosts.deny
+</span></span><span class="line"><span class="cl">sed -i -e <span class="s1">&#39;s|^sshd:\ \{0,\}all||g&#39;</span> -e <span class="s1">&#39;/^$/d&#39;</span> /etc/hosts.deny
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;sshd: </span><span class="si">${</span><span class="nv">TARGET_IP</span><span class="si">}</span><span class="s2">:allow&#34;</span> &gt;&gt; /etc/hosts.deny
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;sshd: all&#34;</span> &gt;&gt; /etc/hosts.deny
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## ==========</span>
+</span></span><span class="line"><span class="cl"><span class="c1">## Task 2: add static routing (即時 + 永久)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">### 先判斷是否有 192.168.x.0/24 這張網卡，若有才執行。 FLAG != &#39;0&#39; 代表沒有</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">ifconfig <span class="p">|</span> grep <span class="s1">&#39;192.168.&#39;</span> &gt; /dev/null
+</span></span><span class="line"><span class="cl"><span class="nv">FLAG_eth</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span> <span class="nv">$?</span><span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$FLAG_eth</span><span class="s2">&#34;</span> <span class="o">==</span> <span class="s2">&#34;0&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">#echo &#39;找到 192.168. 網卡!&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">## 192.168 網段。例如: 192.168.&#34;212&#34;.254。 &#34;212&#34; 會是輸出內容</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">## 有把 DB 有兩張 192.168 的網卡考慮進去 (head -n1 的部分)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">export</span> <span class="nv">SUBNET</span><span class="o">=</span><span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">export</span> <span class="nv">SUBNET</span><span class="o">=</span><span class="k">$(</span>ifconfig <span class="p">|</span> grep -e <span class="s2">&#34;inet 192.168.</span><span class="si">${</span><span class="nv">DB_subnet</span><span class="si">}</span><span class="s2">&#34;</span> <span class="p">|</span> sed -e <span class="s1">&#39;s|^ *||g&#39;</span> <span class="p">|</span> cut -d <span class="s1">&#39; &#39;</span> -f <span class="m">2</span> <span class="p">|</span> cut -d <span class="s1">&#39;.&#39;</span> -f <span class="m">3</span> <span class="p">|</span> head -n1<span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">## 192.168 網卡名稱。有把 DB 有兩張 192.168 的網卡考慮進去 (head -n1 的部分)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">export</span> <span class="nv">TARGET_NIC</span><span class="o">=</span><span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">export</span> <span class="nv">TARGET_NIC</span><span class="o">=</span><span class="k">$(</span>ifconfig <span class="p">|</span> grep -e <span class="s2">&#34;inet 192.168.</span><span class="si">${</span><span class="nv">DB_subnet</span><span class="si">}</span><span class="s2">&#34;</span> -U1 <span class="p">|</span> cut -d <span class="s1">&#39; &#39;</span> -f <span class="m">1</span> <span class="p">|</span> cut -d <span class="s1">&#39;:&#39;</span> -f <span class="m">1</span> <span class="p">|</span> grep -oE <span class="s2">&#34;(eth.*)||(ens.*)&#34;</span> <span class="p">|</span> head -n1<span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">## 網段、網卡 均不為空值才會繼續執行</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="o">[</span> -n <span class="s2">&#34;</span><span class="nv">$SUBNET</span><span class="s2">&#34;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="o">[</span> -n <span class="s2">&#34;</span><span class="nv">$TARGET_NIC</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">## 即時靜態路由 (若已存在該筆，則不會執行)</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">FLAG_route</span><span class="o">=</span><span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">        route <span class="p">|</span> grep <span class="s2">&#34;</span><span class="si">${</span><span class="nv">TARGET_IP</span><span class="si">}</span><span class="s2">&#34;</span> <span class="p">&amp;</span>&gt;/dev/null
+</span></span><span class="line"><span class="cl">        <span class="nv">FLAG_route</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span> <span class="nv">$?</span><span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$FLAG_route</span><span class="s2">&#34;</span> <span class="o">==</span> <span class="s2">&#34;1&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">echo</span> <span class="s1">&#39;即時靜態路由執行!&#39;</span>
+</span></span><span class="line"><span class="cl">            route add -net <span class="si">${</span><span class="nv">TARGET_IP</span><span class="si">}</span> netmask 255.255.255.255 gw 192.168.<span class="si">${</span><span class="nv">SUBNET</span><span class="si">}</span>.<span class="si">${</span><span class="nv">GATEWAY</span><span class="si">}</span> dev <span class="si">${</span><span class="nv">TARGET_NIC</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl">            route del -net <span class="si">${</span><span class="nv">OLD_TARGET_IP</span><span class="si">}</span> netmask 255.255.255.255 gw 192.168.<span class="si">${</span><span class="nv">SUBNET</span><span class="si">}</span>.<span class="si">${</span><span class="nv">GATEWAY</span><span class="si">}</span> dev <span class="si">${</span><span class="nv">TARGET_NIC</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">fi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">## 永久靜態路由</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">conf_path</span><span class="o">=</span><span class="s2">&#34;/etc/sysconfig/network-scripts/route-</span><span class="si">${</span><span class="nv">TARGET_NIC</span><span class="si">}</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">        grep <span class="s2">&#34;</span><span class="si">${</span><span class="nv">TARGET_IP</span><span class="si">}</span><span class="s2">&#34;</span> <span class="si">${</span><span class="nv">conf_path</span><span class="si">}</span> <span class="p">&amp;</span>&gt;/dev/null 
+</span></span><span class="line"><span class="cl">        <span class="nv">FLAG_conf</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span> <span class="nv">$?</span><span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$FLAG_conf</span><span class="s2">&#34;</span> !<span class="o">=</span> <span class="s2">&#34;0&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">echo</span> <span class="s1">&#39;永久靜態路由執行!&#39;</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">echo</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">TARGET_IP</span><span class="si">}</span><span class="s2"> via 192.168.</span><span class="si">${</span><span class="nv">SUBNET</span><span class="si">}</span><span class="s2">.</span><span class="si">${</span><span class="nv">GATEWAY</span><span class="si">}</span><span class="s2"> dev </span><span class="si">${</span><span class="nv">TARGET_NIC</span><span class="si">}</span><span class="s2">&#34;</span> &gt;&gt; /etc/sysconfig/network-scripts/route-<span class="si">${</span><span class="nv">TARGET_NIC</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl">            sed -i -e <span class="s2">&#34;/^</span><span class="si">${</span><span class="nv">OLD_TARGET_IP</span><span class="si">}</span><span class="s2"> via 192.168.</span><span class="si">${</span><span class="nv">SUBNET</span><span class="si">}</span><span class="s2">.</span><span class="si">${</span><span class="nv">GATEWAY</span><span class="si">}</span><span class="s2"> dev </span><span class="si">${</span><span class="nv">TARGET_NIC</span><span class="si">}</span>$<span class="s2">/d&#34;</span> /etc/sysconfig/network-scripts/route-<span class="si">${</span><span class="nv">TARGET_NIC</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">fi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">fi</span>
+</span></span><span class="line"><span class="cl"><span class="k">fi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## ==========</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="change_ip_script_play_bookyml">Change_IP_script_play_book.yml</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nn">---</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">## 使用 Ansible Script module 執行 .sh file</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">## For Change IP ONLY !!</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Run a script for setup Jumpserver.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l">librenms</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">tasks</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Run the &#39;Change_IP_jumpserver_static_routing_setup.sh&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">script</span><span class="p">:</span><span class="w"> </span><span class="l">Change_IP_jumpserver_static_routing_setup.sh</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">when</span><span class="p">:</span><span class="w"> </span><span class="l">ansible_os_family == &#34;RedHat&#34;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo ansible-playbook -i inventory_Production_85_DB Change_IP_script_play_book.yml
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2021-09-07
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/ansible/">ansible</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/20210922-terraform-hello-world/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">我的第一支 Terraform</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/20210730-ckad-note-section-3-configuration/">
+            <span class="next-text nav-default">CKAD Note Section 3 Configuration</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.64437849d125a2d603b3e71d6de5225d641a32d17168a58106e0b61852079683.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

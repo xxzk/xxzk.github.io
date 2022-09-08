@@ -16,7 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="我的第一支 Terraform Introduction to Terraform Terraform 是一款 Infrastructure as Code (IaC) 工具，以 code 來 定義 / 建造 (build) / 修改 (change) / 版本控制 (version) 基礎設施，支援地端 (on-prem) 與 雲端 (Cloud)。 安裝 Terraform CLI Install Terraform 1 2 3 4" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="老柯" /><meta name="description" content="Introduction to Terraform Terraform 是一款 Infrastructure as Code (IaC) 工具，以 code 來 定義 / 建造 (build) / 修改 (change) / 版本控制 (version) 基礎設施，支援地端 (on-prem) 與 雲端 (Cloud)。 安裝 Terraform CLI Install Terraform 1 2 3 4 5 6 sudo yum install -y" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
@@ -40,19 +40,19 @@
 
 
 <meta property="og:title" content="我的第一支 Terraform" />
-<meta property="og:description" content="我的第一支 Terraform Introduction to Terraform Terraform 是一款 Infrastructure as Code (IaC) 工具，以 code 來 定義 / 建造 (build) / 修改 (change) / 版本控制 (version) 基礎設施，支援地端 (on-prem) 與 雲端 (Cloud)。 安裝 Terraform CLI Install Terraform 1 2 3 4" />
+<meta property="og:description" content="Introduction to Terraform Terraform 是一款 Infrastructure as Code (IaC) 工具，以 code 來 定義 / 建造 (build) / 修改 (change) / 版本控制 (version) 基礎設施，支援地端 (on-prem) 與 雲端 (Cloud)。 安裝 Terraform CLI Install Terraform 1 2 3 4 5 6 sudo yum install -y" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.xxzk.me/post/20210922-terraform-hello-world/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2021-09-22T15:36:09+00:00" />
 <meta property="article:modified_time" content="2021-09-22T15:36:09+00:00" />
 
 <meta itemprop="name" content="我的第一支 Terraform">
-<meta itemprop="description" content="我的第一支 Terraform Introduction to Terraform Terraform 是一款 Infrastructure as Code (IaC) 工具，以 code 來 定義 / 建造 (build) / 修改 (change) / 版本控制 (version) 基礎設施，支援地端 (on-prem) 與 雲端 (Cloud)。 安裝 Terraform CLI Install Terraform 1 2 3 4"><meta itemprop="datePublished" content="2021-09-22T15:36:09+00:00" />
+<meta itemprop="description" content="Introduction to Terraform Terraform 是一款 Infrastructure as Code (IaC) 工具，以 code 來 定義 / 建造 (build) / 修改 (change) / 版本控制 (version) 基礎設施，支援地端 (on-prem) 與 雲端 (Cloud)。 安裝 Terraform CLI Install Terraform 1 2 3 4 5 6 sudo yum install -y"><meta itemprop="datePublished" content="2021-09-22T15:36:09+00:00" />
 <meta itemprop="dateModified" content="2021-09-22T15:36:09+00:00" />
-<meta itemprop="wordCount" content="2154">
+<meta itemprop="wordCount" content="2148">
 <meta itemprop="keywords" content="terraform," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="我的第一支 Terraform"/>
-<meta name="twitter:description" content="我的第一支 Terraform Introduction to Terraform Terraform 是一款 Infrastructure as Code (IaC) 工具，以 code 來 定義 / 建造 (build) / 修改 (change) / 版本控制 (version) 基礎設施，支援地端 (on-prem) 與 雲端 (Cloud)。 安裝 Terraform CLI Install Terraform 1 2 3 4"/>
+<meta name="twitter:description" content="Introduction to Terraform Terraform 是一款 Infrastructure as Code (IaC) 工具，以 code 來 定義 / 建造 (build) / 修改 (change) / 版本控制 (version) 基礎設施，支援地端 (on-prem) 與 雲端 (Cloud)。 安裝 Terraform CLI Install Terraform 1 2 3 4 5 6 sudo yum install -y"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -141,7 +141,7 @@
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
   <ul>
-    <li><a href="#我的第一支-terraform">我的第一支 Terraform</a>
+    <li>
       <ul>
         <li><a href="#安裝-terraform-cli">安裝 Terraform CLI</a></li>
         <li><a href="#terraform-hello-world-using-docker-provider">Terraform Hello World using Docker provider</a>
@@ -180,8 +180,7 @@
   </div>
 </div>
     <div class="post-content">
-      <h1 id="我的第一支-terraform">我的第一支 Terraform</h1>
-<p><img src="terraform_logo.jpg" alt="terraform_logo"></p>
+      <p><img src="terraform_logo.jpg" alt="terraform_logo"></p>
 <p><a href="https://www.terraform.io/intro/index.html">Introduction to Terraform </a></p>
 <p><strong>Terraform</strong> 是一款 Infrastructure as Code (IaC) 工具，以 code 來 定義 / 建造 (build) / 修改 (change) / 版本控制 (version) 基礎設施，支援地端 (on-prem) 與 雲端 (Cloud)。</p>
 <h2 id="安裝-terraform-cli">安裝 Terraform CLI</h2>

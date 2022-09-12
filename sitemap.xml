@@ -660,6 +660,34 @@
   </url>
   
   <url>
+    <loc>https://blog.xxzk.me/tags/dig/</loc>
+    <lastmod>2020-12-10T11:46:20+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/tags/dns/</loc>
+    <lastmod>2020-12-10T11:46:20+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/categories/dns/</loc>
+    <lastmod>2020-12-10T11:46:20+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/post/20201210-about-dnssec-using-dig/</loc>
+    <lastmod>2020-12-10T11:46:20+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.xxzk.me/post/20201119-clear_dell_bios_passwd_and_upgrade_driver/</loc>
     <lastmod>2020-11-19T10:03:54+00:00</lastmod>
     <changefreq>weekly</changefreq>

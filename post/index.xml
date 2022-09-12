@@ -359,6 +359,15 @@
     </item>
     
     <item>
+      <title>淺談 DNSSEC 使用 dig</title>
+      <link>https://blog.xxzk.me/post/20201210-about-dnssec-using-dig/</link>
+      <pubDate>Thu, 10 Dec 2020 11:46:20 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20201210-about-dnssec-using-dig/</guid>
+      <description>圖片來源 CloudFlare 在開始之前必須先搞懂&amp;hellip;. DNS 在 Internet 中扮演什麼角色、功能是什麼 域名註冊商 DOMAIN name registrar 與 DNS hosting 域名伺服器託管商 的差別 DNSSEC 是什麼，為什麼</description>
+    </item>
+    
+    <item>
       <title>清除 Dell Server BIOS,iDRAC 密碼與設定值 &#43; 更新 Driver &#43; 建立 RAID</title>
       <link>https://blog.xxzk.me/post/20201119-clear_dell_bios_passwd_and_upgrade_driver/</link>
       <pubDate>Thu, 19 Nov 2020 10:03:54 +0000</pubDate>

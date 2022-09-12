@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>淺談 DNSSEC 使用 dig - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="圖片來源 CloudFlare 在開始之前必須先搞懂&amp;hellip;. DNS 在 Internet 中扮演什麼角色、功能是什麼 域名註冊商 DOMAIN name registrar 與 DNS hosting 域名伺服器託管商 的差別 DNSSEC 是什麼，為什麼" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.98.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20201210-about-dnssec-using-dig/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="淺談 DNSSEC 使用 dig" />
+<meta property="og:description" content="圖片來源 CloudFlare 在開始之前必須先搞懂&hellip;. DNS 在 Internet 中扮演什麼角色、功能是什麼 域名註冊商 DOMAIN name registrar 與 DNS hosting 域名伺服器託管商 的差別 DNSSEC 是什麼，為什麼" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.xxzk.me/post/20201210-about-dnssec-using-dig/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2020-12-10T11:46:20+00:00" />
+<meta property="article:modified_time" content="2020-12-10T11:46:20+00:00" />
+
+<meta itemprop="name" content="淺談 DNSSEC 使用 dig">
+<meta itemprop="description" content="圖片來源 CloudFlare 在開始之前必須先搞懂&hellip;. DNS 在 Internet 中扮演什麼角色、功能是什麼 域名註冊商 DOMAIN name registrar 與 DNS hosting 域名伺服器託管商 的差別 DNSSEC 是什麼，為什麼"><meta itemprop="datePublished" content="2020-12-10T11:46:20+00:00" />
+<meta itemprop="dateModified" content="2020-12-10T11:46:20+00:00" />
+<meta itemprop="wordCount" content="1089">
+<meta itemprop="keywords" content="DNS,dig," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="淺談 DNSSEC 使用 dig"/>
+<meta name="twitter:description" content="圖片來源 CloudFlare 在開始之前必須先搞懂&hellip;. DNS 在 Internet 中扮演什麼角色、功能是什麼 域名註冊商 DOMAIN name registrar 與 DNS hosting 域名伺服器託管商 的差別 DNSSEC 是什麼，為什麼"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">淺談 DNSSEC 使用 dig</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-12-10 </span>
+        <div class="post-category">
+            <a href="/categories/dns/"> DNS </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#dnssec-是什麼為什麼需要它">DNSSEC 是什麼，為什麼需要它</a>
+          <ul>
+            <li><a href="#使用-dig-查詢-domain-name-是否有設定-dnssec">使用 dig 查詢 DOMAIN Name 是否有設定 DNSSEC</a></li>
+          </ul>
+        </li>
+        <li><a href="#dig-命令介紹">dig 命令介紹</a></li>
+        <li><a href="#參考資料">參考資料</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p><img src="dnssec.jpeg" alt="dnssec"></p>
+<p>圖片來源 <a href="https://www.cloudflare.com/dns/dnssec/how-dnssec-works/">CloudFlare</a></p>
+<p><strong>在開始之前必須先搞懂&hellip;.</strong></p>
+<ol>
+<li>DNS 在 Internet 中扮演什麼角色、功能是什麼</li>
+<li>域名註冊商 DOMAIN name registrar 與 DNS hosting 域名伺服器託管商 的差別</li>
+</ol>
+<h2 id="dnssec-是什麼為什麼需要它">DNSSEC 是什麼，為什麼需要它</h2>
+<p>大家知道 DNS 是分散式的樹狀系統，在原始設計當中並沒有考量到環境安全性的問題，也就是沒有加入身分驗證機制。<br>
+DNSSEC (<strong>D</strong>omain <strong>N</strong>ame <strong>S</strong>ystem <strong>Sec</strong>urity Extensions) 就是用來解決這個問題的方案。透過層層簽署達到身分驗證的目的。<br>
+DNSSEC 簽署方式簡單說就是由上層域 (Parent Zones) 簽署下層域 (Child Zones) 的 RRSet，解釋一下:</p>
+<p>以 <code>blog.cloudflare.com</code> 這個 DOMAIN 來說 <code>. (root-server)</code> 是 <code>com.</code> 的 上層域 (Parent Zones)，同時對於 <code>blog</code> 而言 <code>cloudflare.</code> 是它的上層域，下層域反之。</p>
+<p>那什麼是 <strong>RRSet</strong> ? RRSet 全名 Resource Records Set，相同的 onwer (或者稱做 DOMAIN Name) + 相同的紀錄類型 (例如:NS、MX 、A、SOA 等) + 相同的 Class (例如:IN) ，即形成一個 RRSet。它是上層域 (Parent Zones) 簽署目標的最小單位，換句話說就是不會針對每條 DNS record 做簽署的動作。<br>
+搭配 CloudFlare 的示意圖會比較好理解</p>
+<p><img src="diagram_rrsets.jpg" alt="diagram_rrsets"></p>
+<p>那麼 RRSet 被簽署過後就會產生 &ldquo;RRSIG&rdquo;，RRISG (<strong>R</strong>esource <strong>R</strong>ecord <strong>Sig</strong>nature) 是 DNSSEC 帶來的新紀錄類型 (record type)。 另外還有新增 DNSKEY (DNS Public Key)、DS (Delegation Signer)<br>
+詳情參考 <a href="https://www.wikiwand.com/zh-hant/%E5%9F%9F%E5%90%8D%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%E6%89%A9%E5%B1%95">DNSSEC Wiki</a></p>
+<p><img src="diagram-zone-signing-keys-1.jpg" alt="diagram-zone-signing-keys-1"></p>
+<p>簽署過程可以參考:<br>
+<a href="https://www.cloudflare.com/dns/dnssec/how-dnssec-works/">【英文版】How DNSSEC Works</a><br>
+<a href="https://www.cloudflare.com/zh-tw/dns/dnssec/how-dnssec-works/">【繁體中文版】DNSSEC 如何運作</a></p>
+<h3 id="使用-dig-查詢-domain-name-是否有設定-dnssec">使用 dig 查詢 DOMAIN Name 是否有設定 DNSSEC</h3>
+<p>如果系統上還沒有安裝 <code>dig</code> 的話可以透過以下指令安裝</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo yum install bind-utils -y
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>使用 <strong><code>dig blog.cloudflare.com +dnssec</code></strong> 查詢 DOMAIN 是否有設定 DNSSEC<br>
+結果如下:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="p">;</span> &lt;&lt;&gt;&gt; DiG 9.11.4-P2-RedHat-9.11.4-26.P2.el7 &lt;&lt;&gt;&gt; blog.cloudflare.com +dnssec
+</span></span><span class="line"><span class="cl"><span class="p">;;</span> global options: +cmd
+</span></span><span class="line"><span class="cl"><span class="p">;;</span> Got answer:
+</span></span><span class="line"><span class="cl"><span class="p">;;</span> -&gt;&gt;HEADER<span class="s">&lt;&lt;- opco</span>de: QUERY, status: NOERROR, id: <span class="m">11783</span>
+</span></span><span class="line"><span class="cl"><span class="p">;;</span> flags: qr rd ra ad<span class="p">;</span> QUERY: 1, ANSWER: 3, AUTHORITY: 0, ADDITIONAL: <span class="m">1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">;;</span> OPT PSEUDOSECTION:
+</span></span><span class="line"><span class="cl"><span class="p">;</span> EDNS: version: 0, flags: <span class="k">do</span><span class="p">;</span> udp: <span class="m">1232</span>
+</span></span><span class="line"><span class="cl"><span class="p">;;</span> QUESTION SECTION:
+</span></span><span class="line"><span class="cl"><span class="p">;</span>blog.cloudflare.com.		IN	A
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">;;</span> ANSWER SECTION:
+</span></span><span class="line"><span class="cl">blog.cloudflare.com.	300	IN	A	104.18.26.46
+</span></span><span class="line"><span class="cl">blog.cloudflare.com.	300	IN	A	104.18.27.46
+</span></span><span class="line"><span class="cl">blog.cloudflare.com.	300	IN	RRSIG	A <span class="m">13</span> <span class="m">3</span> <span class="m">300</span> <span class="m">20201211070357</span> <span class="m">20201209050357</span> <span class="m">34505</span> blog.cloudflare.com. 071smTvNsTFdzlBw4FBc6TMmb5ctBQvwhrfQtA5tiSGv3phAMBVDa16K W8AYKtzQQ1tY+L2PMlf0TBS87OEoPA<span class="o">==</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">;;</span> Query time: <span class="m">17</span> msec
+</span></span><span class="line"><span class="cl"><span class="p">;;</span> SERVER: 1.1.1.1#53<span class="o">(</span>1.1.1.1<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">;;</span> WHEN: Thu Dec <span class="m">10</span> 14:03:57 CST <span class="m">2020</span>
+</span></span><span class="line"><span class="cl"><span class="p">;;</span> MSG SIZE  rcvd: <span class="m">195</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>可以發現 <strong>flags</strong> 的地方比起一般查詢多了 <code>ad</code> 代表 Authenticated Data<br>
+另外在 <strong>Answer Section</strong> 的部分多了一個前面提到的 <strong>RRSIG</strong> record<br>
+<a href="https://www.cyberciti.biz/faq/unix-linux-test-and-validate-dnssec-using-dig-command-line/">#Validate dnssec using dig-nixCraft</a></p>
+<p>如果出現這樣的結果就代表 DNSSEC 設定成功。不過值得一提的是就我所知，有別於 TLS/SSL Client (e.g. Browser,OS) 會去針對證書的合法性去做驗證，似乎目前沒有 Client 端會自動去從 root-server 驗證下來。<br>
+SITCON 裡面的 Chris 大大點破盲點表示:如果 Client 端要做這件事情的話，載入網頁的時間就會更長 (可能增加 10~200ms 不等的時間)</p>
+<p>也就是說 DNSSEC 目前只在 DNS resolver 與其他上層 DNS server 間達到<strong>驗證資料來源</strong>的目的。<br>
+那麼對於 Client 端而言有什麼辦法能夠增加 DNS 資料的可靠性，防止中間人攻擊 (MitM,Man in the Middle) 遭到竄改呢?<br>
+<strong>Ans: 使用 DNS over HTTPS (DoH)</strong>
+P.S. 不過目標 DNS resolver 最好也要支援 DNSSEC</p>
+<h2 id="dig-命令介紹">dig 命令介紹</h2>
+<ol>
+<li>
+<p>查詢 DOMAIN 對應 IP</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">dig &lt;DOMAIN&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>dig 預設查詢 A 紀錄</p>
+</li>
+<li>
+<p>指定 DNS server 查詢 DOMAIN 對應 IP</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">dig @&lt;DNS_Server_IP&gt; &lt;DOMAIN&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>指定查詢 MX 紀錄</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">dig &lt;DOMAIN&gt; MX
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>從 root-server 查詢起 (有點 tracert 的感覺)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">dig &lt;DOMAIN&gt; +trace
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>不想看落落長的 answer</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">dig &lt;DOMAIN&gt; +short
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+<h2 id="參考資料">參考資料</h2>
+<p><a href="https://free.com.tw/dnssec/">【實作】DNSSEC 不讓域名解析指向假的 IP 位址，加密簽名避免 DNS 快取污染</a></p>
+<p><a href="https://www.cyberciti.biz/faq/unix-linux-test-and-validate-dnssec-using-dig-command-line/">How to test and validate DNSSEC using dig command line - nixCraft</a></p>
+<p><a href="https://metebalci.com/blog/a-short-practical-tutorial-of-dig-dns-and-dnssec/">【大推，可以複習 DNS】A Short Practical Tutorial of dig, DNS and DNSSEC</a></p>
+<p><a href="https://www.iana.org/assignments/dns-parameters/dns-parameters.xhtml">【所有 DNS 參數】Domain Name System (DNS) Parameters</a></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2020-12-10
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/dns/">DNS</a>
+          <a href="/tags/dig/">dig</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/20210128-ansible-hello-world/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">我的第一支 Ansible。 Ansible Hello World</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/20201119-clear_dell_bios_passwd_and_upgrade_driver/">
+            <span class="next-text nav-default">清除 Dell Server BIOS,iDRAC 密碼與設定值 &#43; 更新 Driver &#43; 建立 RAID</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.64437849d125a2d603b3e71d6de5225d641a32d17168a58106e0b61852079683.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

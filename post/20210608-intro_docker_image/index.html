@@ -49,7 +49,7 @@
 <meta itemprop="name" content="Docker Image 介紹">
 <meta itemprop="description" content="圖片來源 此篇筆記主要參考 Docker 官方文件 About storage drivers 主要記錄自己找到的資料，所以不是很有系統性的教學。不過文內有附上邱宏瑋 (hwchiu) 鐵人賽系列文章，需要完整學習"><meta itemprop="datePublished" content="2021-06-08T15:54:10+00:00" />
 <meta itemprop="dateModified" content="2021-06-08T15:54:10+00:00" />
-<meta itemprop="wordCount" content="1562">
+<meta itemprop="wordCount" content="2037">
 <meta itemprop="keywords" content="docker,image," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Docker Image 介紹"/>
 <meta name="twitter:description" content="圖片來源 此篇筆記主要參考 Docker 官方文件 About storage drivers 主要記錄自己找到的資料，所以不是很有系統性的教學。不過文內有附上邱宏瑋 (hwchiu) 鐵人賽系列文章，需要完整學習"/>
@@ -158,6 +158,12 @@
           </ul>
         </li>
         <li><a href="#sfcentos_7-dockerfile">sf/centos_7 Dockerfile</a></li>
+        <li><a href="#use-the-overlayfs-storage-driver">Use the OverlayFS storage driver</a>
+          <ul>
+            <li><a href="#同場加映-docker---view-logs-for-a-container-or-service">同場加映 Docker - View logs for a container or service</a></li>
+          </ul>
+        </li>
+        <li><a href="#參考資料">參考資料</a></li>
       </ul>
     </li>
   </ul>
@@ -167,19 +173,13 @@
     <div class="post-content">
       <p><img src="storia-container-768x550.jpg" alt="storia-container-768x550"></p>
 <p><a href="https://www.criticalcase.com/blog/containers-from-the-origins-to-docker.html">圖片來源</a></p>
-<br>
 <p><strong>此篇筆記主要參考 Docker 官方文件 <a href="https://docs.docker.com/storage/storagedriver/">About storage drivers</a></strong><br>
 <strong>主要記錄自己找到的資料，所以不是很有系統性的教學。不過文內有附上邱宏瑋 (hwchiu) 鐵人賽系列文章，需要完整學習的可以去拜讀 &lt;(__)&gt;</strong></p>
-<br>
 <p><strong><span style='color:brown'>image 是運行 container 不可或缺的存在，它是容器的基底。</span></strong></p>
-<br>
-<hr>
 <h2 id="開始之前">開始之前</h2>
-<br>
 <p><strong>在開始之前我覺得有必要釐清一下名詞，避免大家誤以為&hellip;</strong><br>
 <strong>(1) 容器技術是 Docker 的專利。</strong><br>
 <strong>(2) Docker Image 是 Docker 制定的且特規。</strong></p>
-<br>
 <p>會有這些現象是因為 Docker 簡化了 containerization (容器化) 的繁雜步驟，讓容器化更加親民、易於使用。</p>
 <blockquote>
 <p>I promise<br>
@@ -190,13 +190,9 @@ I promise<br>
 To say containers or OCI containers rather than docker containers</p>
 </blockquote>
 <p><a href="https://www.facebook.com/groups/cloudnative.tw/permalink/475806496256024/">誓詞取自 Cloud Native Taiwan User Group 小飛機大大 &lt;(__)&gt; </a></p>
-<br>
 <p><a href="https://ithelp.ithome.com.tw/articles/10216215">[Day2] 淺談 Container 實現原理, 以 Docker 為例(I) </a><br>
 <a href="https://segmentfault.com/a/1190000009309347">【簡體中文】走进docker(02)：image(镜像)是什么？</a></p>
-<br>
-<hr>
 <h2 id="images-and-layers">Images and layers</h2>
-<br>
 <h3 id="基本觀念">基本觀念</h3>
 <ul>
 <li>一個 Docker image 是由一系列的 &ldquo;層&rdquo; (layer) 堆疊而成</li>
@@ -219,33 +215,23 @@ To say containers or OCI containers rather than docker containers</p>
 </span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">CMD</span> python /app/app.py<span class="err">
 </span></span></span></code></pre></td></tr></table>
 </div>
-</div><br>
-<p>這個範例包含了 <strong>4</strong> 個指令 (所以 image 會有 4 個 layers)。</p>
+</div><p>這個範例包含了 <strong>4</strong> 個指令 (所以 image 會有 4 個 layers)。</p>
 <p><code>FROM</code> 選擇 base image，以這個 dockerfile 來說就是選擇使用 <code>ubuntu:18.04</code> 作為基底。<br>
 <code>COPY</code> 將當前工作目錄 (PWD) 所有檔案複製到 <code>/app</code> 路徑底下。<br>
 <code>RUN</code> 執行指令，以上面範例來說就是在 <code>/app</code> 下執行 <code>make</code> 這個指令 (make 是編譯相關指令)。<br>
 <code>CMD</code> 定義當這個 image 被執行 (變成 container) 後要執行什麼指令。</p>
-<br>
 <p><strong>Q: 我可以用多個 <code>FROM</code> 嗎?</strong></p>
 <p>Ans: 可以，請參考 <a href="https://docs.docker.com/develop/develop-images/multistage-build/">Use multi-stage builds</a></p>
-<br>
-<hr>
 <h2 id="container-layers-diagram">container layers diagram</h2>
-<br>
 <p><img src="container-layers.jpg" alt="container-layers.jpg"></p>
-<br>
 <p>當我們把一個 docker image run 起來變成一個 container 後，整個 container layer 會是這樣。</p>
 <p><strong><span style='color:red'>&gt; 可寫層 (writable layer) 會被加在最上層，這也是為什麼 docker container 是可以寫入資料的原因 (假設沒有外掛任何 volume)</span></strong><br>
 <strong><span style='color:red'>&gt; 所有你認為異動到系統 (例如 <code>vim /etc/yum.conf</code>) 實際上都是在可寫層刪減，原因: image 是 read only</span></strong><br>
 <strong>&gt; 也因為可寫層是在 container 內，生命週期 (life cycle) 也跟著容器。當下達 <code>docker rm &lt;container_name&gt;</code> 可寫層資料隨即消失</strong><br>
 <strong>&gt; 可寫層採用 copy-on-write (CoW) 策略，(跨 layer) 下達檔案刪除指令 (例如 <code>rm -f /etc/yum.conf</code>) 實際上會增加 container 實際占用硬碟的空間</strong></p>
 <p>關於 CoW 這篇有實驗: <a href="https://www.cnblogs.com/woshimrf/p/docker-container-lawyer.html">关于base镜像</a></p>
-<br>
-<hr>
 <h2 id="多個-container-共用同一個-image">多個 container 共用同一個 image</h2>
-<br>
 <p><img src="sharing-layers.jpg" alt="sharing-layers.jpg"></p>
-<br>
 <p><strong><span style='color:red'>這個是 container 技術比起傳統虛擬化 (virtualization) 技術省空間的原因之一，硬碟占用一份 image 的空間，就可以跑出好幾個彼此獨立的環境</span></strong></p>
 <p>沒感覺? 來下個指令吧!</p>
 <p>列出所有 running container 占用硬碟的空間 (P.S. 為了方便，省略中間不重要的欄位)</p>
@@ -271,10 +257,7 @@ To say containers or OCI containers rather than docker containers</p>
 </div>
 </div><p><code>size</code> 顯示可寫層 (wirtalbe) 實際占用硬碟空間<br>
 <code>virtual size</code> 唯讀且共用的 image 加上可寫層使用空間。(image size + writable size)</p>
-<br>
-<hr>
 <h2 id="docker-pull">docker pull</h2>
-<br>
 <p><code>docker pull &lt;some_image&gt;</code> 執行時其實不是將整個 image <strong>完全</strong> 抓下來，而是分層抓取。<br>
 (一個 layer 一個 layer 抓，假設 local 有就不向 docker hub 抓取，以節省空間)</p>
 <p>查看 <code>centos:7</code> 這個 image 裡面包含了多少 layer</p>
@@ -346,15 +329,15 @@ To say containers or OCI containers rather than docker containers</p>
 <strong>Image ID 是對 local image 的 <code>JSON configure file</code> 做 hash</strong></p>
 <p>有興趣的這篇有使用 python 抓取 manifest 的實驗，可以深入研究參考 <a href="https://www.jianshu.com/p/716096892100">YHWXQ简简单单的生活-Docker的Pull Digest和Image ID</a></p>
 <p><a href="https://stackoverflow.com/questions/56364643/whats-the-difference-between-a-docker-images-image-id-and-its-digest">What&rsquo;s the difference between a Docker image&rsquo;s Image ID and its Digest?</a></p>
-<br>
 <p>對於 docker image 想要更深入探索的，這邊有個用 Go 寫的工具，可以視覺化每一層的變化<br>
 <a href="https://github.com/wagoodman/dive">wagoodman/dive</a></p>
-<br>
 <p><img src="https://raw.githubusercontent.com/wagoodman/dive/master/.data/demo.gif" alt="demo.gif"></p>
-<br>
-<hr>
 <h2 id="sfcentos_7-dockerfile">sf/centos_7 Dockerfile</h2>
-<br>
+<p>2022.09.12 順便更新: <strong><span style='color:red'>這個單純練習 Dockerfile, build image 的方式。正式環境不建議把 docker image 完全當作 VM 使用，查找工具應該獨立使用額外的 container</span></strong><br>
+例如:</p>
+<ol>
+<li><a href="https://blog.pichuang.com.tw/20211129-kubernetes-service-troubleshoot/">Phil Huang - 為什麼我佈署的 Kubernetes 服務不會動!? 個人除錯思路分享</a></li>
+</ol>
 <p>這是針對公司環境打造的 Docker image 基於 <code>centos:7</code> 加入了一些常用 debug 查找工具~<br>
 也因為加入了這些工具，弄得比官方原生 <code>centos:7</code> 還大包&hellip;.<br>
 官方 <code>centos:7</code> 只有 204 MB，單純這些工具就有 292 MB   XD<br>
@@ -407,7 +390,29 @@ To say containers or OCI containers rather than docker containers</p>
 </span></span></span><span class="line"><span class="cl"><span class="se"></span>    rsync scp wget git traceroute mtr htop python3<span class="err">
 </span></span></span></code></pre></td></tr></table>
 </div>
-</div>
+</div><h2 id="use-the-overlayfs-storage-driver">Use the OverlayFS storage driver</h2>
+<blockquote>
+<p>不想看廢話的請直接挑過這邊。  2022.09.12 新增的章節<br>
+這次 HA Rocket 升級後發生 Docker overlay2 merged (由 <code>df -Th</code> 查看) 將整個儲存空間吃滿的情況<br>
+與之前由 log 吃滿的情形不一樣，章節因此誕生!</p>
+</blockquote>
+<p>官方 document <a href="https://docs.docker.com/storage/storagedriver/overlayfs-driver/#how-the-overlay-driver-works">Use the OverlayFS storage driver</a></p>
+<p><img src="overlay_constructs.jpg" alt="overlay_constructs"></p>
+<p>▲ <a href="https://docs.docker.com/storage/storagedriver/overlayfs-driver/#how-the-overlay-driver-works">圖片來源</a> Docker OverlayFS 架構圖。</p>
+<p>OverlayFS 是一個現代化的 union filesystem (洋蔥檔案系統)，比起 AUFS 有更好的效能。 Docker 提供兩種 storage driver: <code>overlay</code>, <code>overlay2</code></p>
+<p><strong><span style='color:blue'>使用 <code>overlay2</code> Linux kernel 必須高於 version 4.0, RHEL/CentOS 必須高於 version 3.10.0-514。</span></strong></p>
+<p><strong><span style='color:red'>一句話講完: OverlayFS 將 <code>lowerdir</code> 與 <code>upperdir</code> 兩個 directory 呈現為單一一個 <code>merged</code> (也就是我們 <code>df -Th</code> 看到的 mount point)</span></strong></p>
+<p>container layer 又稱作可寫層，如果容器中有 App 持續對可寫層寫入、刪除 imager layer，就會導致 <code>/var/lib/docker/overlay2/</code> 目錄吃滿硬碟空間。<br>
+如果是 log 過大造成的，則會使 <code>/var/lib/docker/containers/&lt;id&gt;/xxx-json.log</code> 檔案吃滿硬碟空間。</p>
+<h3 id="同場加映-docker---view-logs-for-a-container-or-service">同場加映 Docker - View logs for a container or service</h3>
+<p><a href="https://docs.docker.com/config/containers/logging/">View logs for a container or service</a></p>
+<p><code>docker logs</code> 指令會從 container 內的 <code>STDOUT</code> 或者 <code>STDERR</code> 這兩個 I/O stream 抓取 data 作為 log。 若沒有設定好 log driver，很可能會造成 log file 過大吃滿儲存空間的情形。<br>
+可以參考 <a href="https://docs.docker.com/config/containers/logging/configure/#configure-the-default-logging-driver">Configure logging drivers</a> 調整達到 logroate 的目的。</p>
+<h2 id="參考資料">參考資料</h2>
+<ul>
+<li><a href="https://www.minwt.com/website/server/21794.html">[教學] 解決 Docker log檔肥大，與限定log檔大小、數量</a></li>
+</ul>
+
     </div>
 
     <div class="post-copyright">

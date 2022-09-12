@@ -49,7 +49,7 @@
 <meta itemprop="name" content="Docker Image 介紹">
 <meta itemprop="description" content="圖片來源 此篇筆記主要參考 Docker 官方文件 About storage drivers 主要記錄自己找到的資料，所以不是很有系統性的教學。不過文內有附上邱宏瑋 (hwchiu) 鐵人賽系列文章，需要完整學習"><meta itemprop="datePublished" content="2021-06-08T15:54:10+00:00" />
 <meta itemprop="dateModified" content="2021-06-08T15:54:10+00:00" />
-<meta itemprop="wordCount" content="2037">
+<meta itemprop="wordCount" content="2063">
 <meta itemprop="keywords" content="docker,image," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Docker Image 介紹"/>
 <meta name="twitter:description" content="圖片來源 此篇筆記主要參考 Docker 官方文件 About storage drivers 主要記錄自己找到的資料，所以不是很有系統性的教學。不過文內有附上邱宏瑋 (hwchiu) 鐵人賽系列文章，需要完整學習"/>
@@ -404,6 +404,8 @@ To say containers or OCI containers rather than docker containers</p>
 <p><strong><span style='color:red'>一句話講完: OverlayFS 將 <code>lowerdir</code> 與 <code>upperdir</code> 兩個 directory 呈現為單一一個 <code>merged</code> (也就是我們 <code>df -Th</code> 看到的 mount point)</span></strong></p>
 <p>container layer 又稱作可寫層，如果容器中有 App 持續對可寫層寫入、刪除 imager layer，就會導致 <code>/var/lib/docker/overlay2/</code> 目錄吃滿硬碟空間。<br>
 如果是 log 過大造成的，則會使 <code>/var/lib/docker/containers/&lt;id&gt;/xxx-json.log</code> 檔案吃滿硬碟空間。</p>
+<p><img src="show_container_overlay_info.jpg" alt="show_container_overlay_info"></p>
+<p>▲ 使用 <code>docker inspect &lt;id&gt; | jq .[].GraphDriver</code> 能夠查看一個 container 的 overlay 相關目錄與資訊。</p>
 <h3 id="同場加映-docker---view-logs-for-a-container-or-service">同場加映 Docker - View logs for a container or service</h3>
 <p><a href="https://docs.docker.com/config/containers/logging/">View logs for a container or service</a></p>
 <p><code>docker logs</code> 指令會從 container 內的 <code>STDOUT</code> 或者 <code>STDERR</code> 這兩個 I/O stream 抓取 data 作為 log。 若沒有設定好 log driver，很可能會造成 log file 過大吃滿儲存空間的情形。<br>

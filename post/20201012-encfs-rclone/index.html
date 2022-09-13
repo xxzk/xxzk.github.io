@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>EncFS &#43; Rclone 公有雲變私有雲，還能掛載串流! - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="前幾天看到 G Suite 改版的消息，雖然 Education 與 Business 往後都沒有 看似 10T 實際上有無限儲存空間 的雲端硬碟能用了，不過 5TB 的空間對於一般用戶 (冷儲存) 來說已經非常夠用" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.98.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20201012-encfs-rclone/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="EncFS &#43; Rclone 公有雲變私有雲，還能掛載串流!" />
+<meta property="og:description" content="前幾天看到 G Suite 改版的消息，雖然 Education 與 Business 往後都沒有 看似 10T 實際上有無限儲存空間 的雲端硬碟能用了，不過 5TB 的空間對於一般用戶 (冷儲存) 來說已經非常夠用" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.xxzk.me/post/20201012-encfs-rclone/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2020-10-12T13:48:24+00:00" />
+<meta property="article:modified_time" content="2020-10-12T13:48:24+00:00" />
+
+<meta itemprop="name" content="EncFS &#43; Rclone 公有雲變私有雲，還能掛載串流!">
+<meta itemprop="description" content="前幾天看到 G Suite 改版的消息，雖然 Education 與 Business 往後都沒有 看似 10T 實際上有無限儲存空間 的雲端硬碟能用了，不過 5TB 的空間對於一般用戶 (冷儲存) 來說已經非常夠用"><meta itemprop="datePublished" content="2020-10-12T13:48:24+00:00" />
+<meta itemprop="dateModified" content="2020-10-12T13:48:24+00:00" />
+<meta itemprop="wordCount" content="1032">
+<meta itemprop="keywords" content="rclone," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="EncFS &#43; Rclone 公有雲變私有雲，還能掛載串流!"/>
+<meta name="twitter:description" content="前幾天看到 G Suite 改版的消息，雖然 Education 與 Business 往後都沒有 看似 10T 實際上有無限儲存空間 的雲端硬碟能用了，不過 5TB 的空間對於一般用戶 (冷儲存) 來說已經非常夠用"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">EncFS &#43; Rclone 公有雲變私有雲，還能掛載串流!</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-10-12 </span>
+        <div class="post-category">
+            <a href="/categories/rclone/"> rclone </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#工具介紹">工具介紹</a></li>
+        <li><a href="#encfs-功能操作">EncFS 功能操作</a></li>
+        <li><a href="#rclone-安裝與設定">Rclone 安裝與設定</a></li>
+        <li><a href="#參考資料">參考資料</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p><img src="rclone_logo.png" alt="rclone_logo"></p>
+<p>前幾天看到 <a href="https://www.ithome.com.tw/news/140395">G Suite 改版</a>的消息，雖然 <code>Education</code> 與 <code>Business</code> 往後都沒有 <strong>看似 10T 實際上有無限儲存空間</strong> 的雲端硬碟能用了，不過 <code>5TB</code> 的空間對於一般用戶 (冷儲存) 來說已經非常夠用。<br>
+但 個人/公司 資料放上公有雲端硬碟還是有隱私以及商業機密的問題，本篇旨意就是利用 <code>EncFS</code> 搭配 <code>Rclone</code> 來加解密 上傳、同步備份/下載、串流 放在 <code>Google Drive</code> 上面的檔案。</p>
+<p>另外，公有雲端硬碟我認為是成本最低實踐 <a href="https://blog.gcos.me/post/2020-01-04_world-backup-day-and-321-rule/">備份三二一 Backup 3-2-1</a> 當中的 1 「至少一份在異地備援」</p>
+<p><img src="google_workspace.jpg" alt="google_workspace"></p>
+<p>▲ 附圖是 <a href="https://www.facebook.com/lokuochin">坂本真夕</a> 製作的 Google Workspace 方案列表</p>
+<h2 id="工具介紹">工具介紹</h2>
+<ol>
+<li>
+<p>EncFS</p>
+<p>EncFS 是一款使用 FUSE library 的 encrypted filesystem。用於即時加解密
+<a href="https://vgough.github.io/encfs/">官方網站</a></p>
+</li>
+<li>
+<p>Rclone</p>
+<p>強大的雲端空間克隆軟體
+<a href="https://rclone.org/">官方網站</a></p>
+</li>
+<li>
+<p>Google Drive 雲端硬碟</p>
+<p>Google 提供 個人/企業 使用的公有雲端硬碟
+<a href="drive.google.com/">Google Drive</a></p>
+</li>
+</ol>
+<h2 id="encfs-功能操作">EncFS 功能操作</h2>
+<ul>
+<li>建立加密資料夾，其中 <code>--reverse</code>  會將資料夾加密後映射到加密資料夾，由於是即時加解密，加密資料夾本身不占空間<br>
+第一次建立會要求使用者設定密碼，並於<strong>未加密</strong>資料夾產生設定檔 <code>.encfs6.xml</code></li>
+</ul>
+<p><code>encfs --reverse ./mydata/ ./encrtypted_mydata/</code></p>
+<p><img src="new_encfs_password.jpg" alt="new_encfs_password"></p>
+<ul>
+<li>觀察原資料夾 <code>mydata</code> 與加密資料夾 <code>encrypted_mydata</code> 的關係</li>
+</ul>
+<p><img src="overview.jpg" alt="overview"></p>
+<ul>
+<li>在原資料夾新增一個 <code>b.txt</code> 加密資料夾會同步出現，只不過檔名被加密了</li>
+</ul>
+<p><img src="add_new_file_sync.jpg" alt="add_new_file_sync"></p>
+<ul>
+<li>透過 <code>kill</code> 驗證 EncFS 是即時加解密</li>
+</ul>
+<p><img src="kill_encfs.jpg" alt="kill_encfs"></p>
+<ul>
+<li>透過 <code>mv</code> 重新命名資料夾驗證 <code>.encfs6.xml</code> 設定檔不會因為資料夾更名而失效</li>
+</ul>
+<p><img src="rename_dir_encfs.jpg" alt="rename_dir_encfs"></p>
+<ul>
+<li>建立一個名為 <code>download_encrypted_data</code> 的資料夾模擬從雲端硬碟抓回已加密資料</li>
+</ul>
+<p><img src="download_encrypted_data.jpg" alt="download_encrypted_data"></p>
+<ul>
+<li>對 <code>download_encrypted_data</code> 做解密，必須將設定檔丟入來源或是以環境變數執行 <code>ENCFS6_CONFIG=設定檔路徑 encfs 掛載目錄 解密目錄</code></li>
+</ul>
+<p><img src="decrypt_from_download.jpg" alt="decrypt_from_download"></p>
+<h2 id="rclone-安裝與設定">Rclone 安裝與設定</h2>
+<p>Rclone 的安裝非常簡單，一行指令即完成</p>
+<p><code>curl https://rclone.org/install.sh | sudo bash</code></p>
+<p>安裝完成後可以使用 <code>rclone -V</code> 查看版本</p>
+<p>Rclone 如何設定 Google Drive 請直接參考此篇<a href="https://www.ichiayi.com/wiki/tech/rclone">詳細手把手教學</a><br>
+<a href="https://www.playpcesor.com/2017/03/g-suite-Team-Drive-Google-Drive.html">Google Drive Team Drive 是什麼，差異在哪</a></p>
+<p>Rclone 基礎語法</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># local to Cloud</span>
+</span></span><span class="line"><span class="cl">rclone <span class="o">[</span>功能<span class="o">]</span> &lt;local_path&gt; &lt;雲端硬碟設定名稱:檔案路徑&gt; <span class="o">[</span>參數<span class="o">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#Cloud to local</span>
+</span></span><span class="line"><span class="cl">rclone <span class="o">[</span>功能<span class="o">]</span> &lt;雲端硬碟設定名稱:檔案路徑&gt; &lt;local_path&gt; <span class="o">[</span>參數<span class="o">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#Cloud to Cloud</span>
+</span></span><span class="line"><span class="cl">rclone <span class="o">[</span>功能<span class="o">]</span> &lt;雲端硬碟設定名稱:檔案路徑&gt; &lt;雲端硬碟設定名稱:檔案路徑&gt; <span class="o">[</span>參數<span class="o">]</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>其中 <code>Cloud to Cloud</code> 如果是 Google Drive 的話，可以透過這個參數傳輸檔案而不經由 local 流量</p>
+<p><code>--drive-server-side-across-configs</code></p>
+<p>亦可在設定檔 <code>~/.config/rclone/rclone.conf</code> 加入 <code>server_side_across_configs = true</code></p>
+<p>常用語法</p>
+<ul>
+<li><code>rclone copy</code> 複製</li>
+<li><code>rclone move</code> 搬移</li>
+<li><code>rclone sync</code> 同步 (比較雜湊碼相同跳過)</li>
+<li><code>rclone mkdir</code> 建立目錄</li>
+<li><code>rclone rmdir</code> 刪除目錄</li>
+<li><code>rclone ls</code> 同 linux <code>ls</code></li>
+<li><code>rclone lsd</code> 列出目錄</li>
+<li><code>rclone tree</code> 印出樹狀結構</li>
+<li><code>rclone size</code> 查看資料大小</li>
+</ul>
+<p>常用參數</p>
+<ul>
+<li><code>-n</code> == <code>--dry-run</code> 測試，不實際變動檔案</li>
+<li><code>-P</code> 顯示進度</li>
+<li><code>transfers=N</code> N 為線程數，預設為 4</li>
+</ul>
+<h2 id="參考資料">參考資料</h2>
+<ul>
+<li>
+<p>[心得] Google Drive 加密<br>
+<a href="https://www.ptt.cc/bbs/Free_box/M.1534577413.A.CF6.html">https://www.ptt.cc/bbs/Free_box/M.1534577413.A.CF6.html</a></p>
+</li>
+<li>
+<p>How to Encrypt directory with EncFS on Debian 9 Stretch Linux<br>
+<a href="https://linuxconfig.org/how-to-encrypt-directory-with-encfs-on-debian-9-stretch">https://linuxconfig.org/how-to-encrypt-directory-with-encfs-on-debian-9-stretch</a></p>
+</li>
+<li>
+<p>在Linux和 Windows 上使用 EncFS，如何加密雲存儲<br>
+<a href="https://hant.kutu66.com/Windows/article_11163">https://hant.kutu66.com/Windows/article_11163</a></p>
+</li>
+<li>
+<p>G Suite 推出「小組雲端硬碟」實測教學，幫企業管好專案資料<br>
+<a href="https://www.playpcesor.com/2017/03/g-suite-Team-Drive-Google-Drive.html">https://www.playpcesor.com/2017/03/g-suite-Team-Drive-Google-Drive.html</a></p>
+</li>
+<li>
+<p>CPULimit 限制 Linux 程式 CPU 使用率教學 - G. T. Wang<br>
+<a href="https://blog.gtwang.org/linux/limit-cpu-usage-of-a-process-in-linux-with-cpulimit-tool/">https://blog.gtwang.org/linux/limit-cpu-usage-of-a-process-in-linux-with-cpulimit-tool/</a></p>
+</li>
+<li>
+<p>CentOS7 使用 rclone 同步 Google Drive 檔案
+<a href="https://www.ichiayi.com/wiki/tech/rclone">https://www.ichiayi.com/wiki/tech/rclone</a></p>
+</li>
+<li>
+<p>Rclone 在不使用本機頻寬的條件下進行跨雲端硬碟傳輸 | Calos&rsquo;s Blog
+<a href="https://caloskao.org/rclone-across-transfer-each-cloud-drive-without-local-machine-bandwidth/">https://caloskao.org/rclone-across-transfer-each-cloud-drive-without-local-machine-bandwidth/</a></p>
+</li>
+<li>
+<p>Rclone 进阶使用教程 - 常用命令参数详解
+<a href="https://p3terx.com/archives/rclone-advanced-user-manual-common-command-parameters.html">https://p3terx.com/archives/rclone-advanced-user-manual-common-command-parameters.html</a></p>
+</li>
+</ul>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2020-10-12
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/rclone/">rclone</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/20201112-forti-split-tunneling/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Forti Client SSL-VPN 運作機制原理</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/20200929-intro-hinet-gpon-modem-to-otl/">
+            <span class="next-text nav-default">數據機到機房 淺談 GPON 以 HiNet FTTH 為例</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.64437849d125a2d603b3e71d6de5225d641a32d17168a58106e0b61852079683.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

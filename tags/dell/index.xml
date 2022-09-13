@@ -17,6 +17,15 @@
     </item>
     
     <item>
+      <title>Dell 硬體規格介紹 Infrastructure Specification</title>
+      <link>https://blog.xxzk.me/post/20201130-dell-infrastructure-specification/</link>
+      <pubDate>Mon, 30 Nov 2020 14:23:47 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20201130-dell-infrastructure-specification/</guid>
+      <description>這篇會簡單介紹公司大量使用到的 Dell EMC 伺服器硬體規格以及型號 從型號判斷 Dell EMC 伺服器 世代/產品類別/CPU slot 數/Intel or AMD CPU How to identify which generation your Dell PowerEdge server belongs</description>
+    </item>
+    
+    <item>
       <title>清除 Dell Server BIOS,iDRAC 密碼與設定值 &#43; 更新 Driver &#43; 建立 RAID</title>
       <link>https://blog.xxzk.me/post/20201119-clear_dell_bios_passwd_and_upgrade_driver/</link>
       <pubDate>Thu, 19 Nov 2020 10:03:54 +0000</pubDate>

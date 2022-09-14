@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>nsx-t on 老柯的學習筆記</title>
+    <link>https://blog.xxzk.me/tags/nsx-t/</link>
+    <description>Recent content in nsx-t on 老柯的學習筆記</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 01 Dec 2020 09:20:28 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/tags/nsx-t/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>解析 vRealize 發生「BIOS 電源管理未設定為 [由作業系統控制] 」 BIOS power management not set to OS controlled facing CPU contention</title>
+      <link>https://blog.xxzk.me/post/20201201-bios-power-management-not-set-to-os-controlled/</link>
+      <pubDate>Tue, 01 Dec 2020 09:20:28 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20201201-bios-power-management-not-set-to-os-controlled/</guid>
+      <description>這標題有夠長 中文警報標題全文: 位於主機上，且 BIOS 電源管理未設定為 [由作業系統控制] 的虛擬機器面臨 CPU 爭用 先講結論，未來在上機時應該考慮把 BIOS Power Management 設</description>
+    </item>
+    
+  </channel>
+</rss>

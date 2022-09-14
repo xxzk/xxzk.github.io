@@ -368,6 +368,15 @@
     </item>
     
     <item>
+      <title>解析 vRealize 發生「BIOS 電源管理未設定為 [由作業系統控制] 」 BIOS power management not set to OS controlled facing CPU contention</title>
+      <link>https://blog.xxzk.me/post/20201201-bios-power-management-not-set-to-os-controlled/</link>
+      <pubDate>Tue, 01 Dec 2020 09:20:28 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20201201-bios-power-management-not-set-to-os-controlled/</guid>
+      <description>這標題有夠長 中文警報標題全文: 位於主機上，且 BIOS 電源管理未設定為 [由作業系統控制] 的虛擬機器面臨 CPU 爭用 先講結論，未來在上機時應該考慮把 BIOS Power Management 設</description>
+    </item>
+    
+    <item>
       <title>Dell 硬體規格介紹 Infrastructure Specification</title>
       <link>https://blog.xxzk.me/post/20201130-dell-infrastructure-specification/</link>
       <pubDate>Mon, 30 Nov 2020 14:23:47 +0000</pubDate>

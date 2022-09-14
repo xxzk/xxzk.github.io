@@ -16,5 +16,14 @@
       <description>LAB 架構圖 寫日記 這兩台 ESXi 主要是拿來測試 vSS 轉 vDS 用的。因為 DC1 10.x.x.53 ESXi Host 在 2021.02.19 發現 GBIC 故障 DC1 10.x.x.54 ESXi Host 2021.02.12 發生 DIMM_A3 Multi-bit memory errors (error rate 上升) + 2021.02.19 Power Supply 1 (PS1) 死去。兩台共通點都是 2021.01</description>
     </item>
     
+    <item>
+      <title>解析 vRealize 發生「BIOS 電源管理未設定為 [由作業系統控制] 」 BIOS power management not set to OS controlled facing CPU contention</title>
+      <link>https://blog.xxzk.me/post/20201201-bios-power-management-not-set-to-os-controlled/</link>
+      <pubDate>Tue, 01 Dec 2020 09:20:28 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20201201-bios-power-management-not-set-to-os-controlled/</guid>
+      <description>這標題有夠長 中文警報標題全文: 位於主機上，且 BIOS 電源管理未設定為 [由作業系統控制] 的虛擬機器面臨 CPU 爭用 先講結論，未來在上機時應該考慮把 BIOS Power Management 設</description>
+    </item>
+    
   </channel>
 </rss>

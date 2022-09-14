@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Graylog 搜尋語法 - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="參考文件 Official Searching Doc 在開始之前可以將設定檔內的 allow_highlighting = true 打開，獲得螢光筆功能 Enabling/Disabling search result highlighting 基礎搜尋語法 Syntax Graylog 語法支援正規表示法 (RegEXP) 搜尋 Message 包含 ssh 的 log 1 ssh 搜尋 Message 包含" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.98.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20200923-how-to-search-in-graylog/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Graylog 搜尋語法" />
+<meta property="og:description" content="參考文件 Official Searching Doc 在開始之前可以將設定檔內的 allow_highlighting = true 打開，獲得螢光筆功能 Enabling/Disabling search result highlighting 基礎搜尋語法 Syntax Graylog 語法支援正規表示法 (RegEXP) 搜尋 Message 包含 ssh 的 log 1 ssh 搜尋 Message 包含" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.xxzk.me/post/20200923-how-to-search-in-graylog/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2020-09-23T16:46:52+00:00" />
+<meta property="article:modified_time" content="2020-09-23T16:46:52+00:00" />
+
+<meta itemprop="name" content="Graylog 搜尋語法">
+<meta itemprop="description" content="參考文件 Official Searching Doc 在開始之前可以將設定檔內的 allow_highlighting = true 打開，獲得螢光筆功能 Enabling/Disabling search result highlighting 基礎搜尋語法 Syntax Graylog 語法支援正規表示法 (RegEXP) 搜尋 Message 包含 ssh 的 log 1 ssh 搜尋 Message 包含"><meta itemprop="datePublished" content="2020-09-23T16:46:52+00:00" />
+<meta itemprop="dateModified" content="2020-09-23T16:46:52+00:00" />
+<meta itemprop="wordCount" content="375">
+<meta itemprop="keywords" content="graylog," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Graylog 搜尋語法"/>
+<meta name="twitter:description" content="參考文件 Official Searching Doc 在開始之前可以將設定檔內的 allow_highlighting = true 打開，獲得螢光筆功能 Enabling/Disabling search result highlighting 基礎搜尋語法 Syntax Graylog 語法支援正規表示法 (RegEXP) 搜尋 Message 包含 ssh 的 log 1 ssh 搜尋 Message 包含"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Graylog 搜尋語法</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-09-23 </span>
+        <div class="post-category">
+            <a href="/categories/graylog/"> graylog </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#基礎搜尋語法-syntax">基礎搜尋語法 Syntax</a></li>
+            <li><a href="#時間軸選擇區-time-fram-selector">時間軸選擇區 Time fram selector</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>參考文件 <a href="https://docs.graylog.org/en/3.2/pages/queries.html">Official Searching Doc</a></p>
+<p><img src="searching_area.jpg" alt="searching_area"></p>
+<p>在開始之前可以將設定檔內的 <code>allow_highlighting = true</code> 打開，獲得螢光筆功能 <br>
+<a href="https://docs.graylog.org/en/3.2/pages/searching/result_highlighting.html">Enabling/Disabling search result highlighting</a></p>
+<p><img src="enable_highlight.jpg" alt="enable_highlight"></p>
+<h3 id="基礎搜尋語法-syntax">基礎搜尋語法 Syntax</h3>
+<p>Graylog 語法支援<code>正規表示法 (RegEXP)</code></p>
+<p>搜尋 Message 包含 ssh 的 log</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">ssh
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>搜尋 Message 包含 ssh <code>或 (OR)</code> login 的 log</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">ssh login
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>搜尋 Message 包含 ssh&lt;空格&gt;login 的 log</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&#34;ssh login&#34; 或者 &#39;ssh login&#39;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>搜尋 Message 包含欄位名稱 (type) ssh 的 log</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">type:ssh
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>搜尋 Message 包含欄位名稱 (type) ssh <code>或 (OR)</code> login 的 log<br>
+<code>這邊注意!! 如果使用 Elasticsearch 6.x 版本，不可將 OR 替換成 &lt;空白&gt;</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">type:(ssh OR login)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>搜尋 Message 包含正規表示法 (RegEXP) 的 log</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">/ethernet[0-9]+/
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>搜尋來源為 <code>jumpserver</code> 的所有 log</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">source:jumpserver
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="時間軸選擇區-time-fram-selector">時間軸選擇區 Time fram selector</h3>
+<p>以事件發生時間限制搜尋結果 <a href="https://docs.graylog.org/en/3.2/pages/searching/time_frame_selector.html">Time frame selector</a></p>
+<p>時間軸分為三種:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">1. Relative 相對時間
+</span></span><span class="line"><span class="cl">2. Absolute 絕對時間
+</span></span><span class="line"><span class="cl">3. keyword  關鍵字時間 (類似自然語言，後續會介紹)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol>
+<li>Relative 相對時間</li>
+</ol>
+<p>不囉嗦直接上圖，一看就懂</p>
+<p><img src="Relative.png" alt="Relative"></p>
+<ol>
+<li>Absolute 絕對時間</li>
+</ol>
+<p>一句話講完: 西元幾年幾月幾日幾點幾分 到 西元幾年幾月幾日幾點幾分</p>
+<p><img src="Absolute.jpg" alt="Absolute"></p>
+<ol>
+<li>keyword  關鍵字時間</li>
+</ol>
+<p>近似自然語言的方式，以下舉例:</p>
+<ul>
+<li><code>last month</code> 上個月</li>
+<li><code>4 hours age</code> 四小時前</li>
+<li><code>1st of April to 2 days ago</code> 四月一號到兩天前</li>
+</ul>
+<p><img src="Keyword.jpg" alt="Keyword"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2020-09-23
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/graylog/">graylog</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/20200924-graylog-installation-use-centos77/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Gralylog 安裝紀錄 (使用 Default CentOS 7.7)</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.64437849d125a2d603b3e71d6de5225d641a32d17168a58106e0b61852079683.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

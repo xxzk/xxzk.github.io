@@ -421,5 +421,14 @@
       <description>本篇參考資料 How to install and configure Graylog on CentOS 7 執行系統更新 1 yum update -y 安裝 EPEL 1 yum install epel-release -y 安裝所需項目，其中 pwgen 套件是等等要用來產生 graylog server 設定檔的密鑰 1 yum install pwgen vim -y 安裝 java</description>
     </item>
     
+    <item>
+      <title>Graylog 搜尋語法</title>
+      <link>https://blog.xxzk.me/post/20200923-how-to-search-in-graylog/</link>
+      <pubDate>Wed, 23 Sep 2020 16:46:52 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20200923-how-to-search-in-graylog/</guid>
+      <description>參考文件 Official Searching Doc 在開始之前可以將設定檔內的 allow_highlighting = true 打開，獲得螢光筆功能 Enabling/Disabling search result highlighting 基礎搜尋語法 Syntax Graylog 語法支援正規表示法 (RegEXP) 搜尋 Message 包含 ssh 的 log 1 ssh 搜尋 Message 包含</description>
+    </item>
+    
   </channel>
 </rss>

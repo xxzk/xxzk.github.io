@@ -1,0 +1,18 @@
+version: '3.7'
+services:
+  minio:
+    container_name: minio
+    image: quay.io/minio/minio:RELEASE.2022-09-17T00-09-45Z
+    restart: always
+    network_mode: "host"
+    expose:
+      - "9000"
+      - "9001"
+    command: server /data --console-address ":9001"
+    volumes:
+      - Minio:/data
+    environment:
+      - MINIO_ROOT_USER
+      - MINIO_ROOT_PASSWORD
+volumes:
+  Minio:

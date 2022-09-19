@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>MinIO 簡單介紹 - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="min.io 簡介—主文 MinIO 是一套開源、高效能、K8s 取向 (Kubernetes-native) 的物件儲存解決方案。 同時強調 Hybrid Cloud 因為 MinIO 相容 AWS S3 服務 可以把它想成是 AWS S3 開源版。目前依據官方統計在" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.98.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20210503-minio-introduce/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="MinIO 簡單介紹" />
+<meta property="og:description" content="min.io 簡介—主文 MinIO 是一套開源、高效能、K8s 取向 (Kubernetes-native) 的物件儲存解決方案。 同時強調 Hybrid Cloud 因為 MinIO 相容 AWS S3 服務 可以把它想成是 AWS S3 開源版。目前依據官方統計在" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.xxzk.me/post/20210503-minio-introduce/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-05-03T13:41:55+00:00" />
+<meta property="article:modified_time" content="2021-05-03T13:41:55+00:00" />
+
+<meta itemprop="name" content="MinIO 簡單介紹">
+<meta itemprop="description" content="min.io 簡介—主文 MinIO 是一套開源、高效能、K8s 取向 (Kubernetes-native) 的物件儲存解決方案。 同時強調 Hybrid Cloud 因為 MinIO 相容 AWS S3 服務 可以把它想成是 AWS S3 開源版。目前依據官方統計在"><meta itemprop="datePublished" content="2021-05-03T13:41:55+00:00" />
+<meta itemprop="dateModified" content="2021-05-03T13:41:55+00:00" />
+<meta itemprop="wordCount" content="2684">
+<meta itemprop="keywords" content="minio,docker," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="MinIO 簡單介紹"/>
+<meta name="twitter:description" content="min.io 簡介—主文 MinIO 是一套開源、高效能、K8s 取向 (Kubernetes-native) 的物件儲存解決方案。 同時強調 Hybrid Cloud 因為 MinIO 相容 AWS S3 服務 可以把它想成是 AWS S3 開源版。目前依據官方統計在"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">MinIO 簡單介紹</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-05-03 </span>
+        <div class="post-category">
+            <a href="/categories/minio/"> minio </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#簡介主文">簡介—主文</a></li>
+        <li><a href="#簡介高效能">簡介—高效能</a></li>
+        <li><a href="#簡介-simply-run">簡介— Simply run</a></li>
+        <li><a href="#what-is-object-storage">What Is Object Storage?</a>
+          <ul>
+            <li><a href="#buckets">Buckets</a></li>
+          </ul>
+        </li>
+        <li><a href="#erasure-coding-糾刪碼-ec">Erasure Coding 糾刪碼 (EC)</a></li>
+        <li><a href="#使用-docker-安裝-minio">使用 Docker 安裝 MinIO</a>
+          <ul>
+            <li><a href="#建立-docker-volume">建立 Docker Volume</a></li>
+          </ul>
+        </li>
+        <li><a href="#docker-compose-安裝-20220919-新增">docker-compose 安裝 (2022.09.19 新增)</a></li>
+        <li><a href="#minio-client-mc">MinIO Client (mc)</a>
+          <ul>
+            <li><a href="#minio-client-mc-安裝">MinIO Client (mc) 安裝</a></li>
+            <li><a href="#shell-autocompletion">Shell autocompletion</a></li>
+            <li><a href="#加入一台-s3-目標">加入一台 S3 目標</a></li>
+          </ul>
+        </li>
+        <li><a href="#minio-security-安全性">MinIO Security 安全性</a>
+          <ul>
+            <li><a href="#identity-and-access-management-iam">Identity and Access Management (IAM)</a></li>
+          </ul>
+        </li>
+        <li><a href="#更多資訊">更多資訊</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p><img src="https://min.io/resources/img/logo/MINIO_wordmark.png" alt="minio_logo"></p>
+<p><a href="https://min.io/">min.io</a></p>
+<h2 id="簡介主文">簡介—主文</h2>
+<p><strong>MinIO 是一套開源、高效能、K8s 取向 (Kubernetes-native) 的物件儲存解決方案。</strong><br>
+<strong>同時強調 <span style="color:blue">Hybrid Cloud </span> 因為 MinIO 相容 AWS S3 服務</strong><br>
+<strong>可以把它想成是 AWS S3 開源版。目前依據官方統計在 AWS, Azure, GCP 上面的 MinIO 實例超過 7.7M 台 (七百七十萬，202105)</strong></p>
+<h2 id="簡介高效能">簡介—高效能</h2>
+<p><img src="https://min.io/resources/img/home/high-performance.svg" alt="minio_high-performance"></p>
+<p><strong>MinIO 是世界上最快的物件儲存伺服器 (Object Stroage Server) <span style="color:red">Read 183 GB/s and Write 171 GB/s</span></strong><br>
+正因為高效能，所以可以被 Spark, Presto, TensorFlow, H2O.ai 這種大數據、AI 算術模型軟體拿來當主要儲存區 (primary storage)，取代 Hadoop HDFS。<br>
+<del>阿其實我本人也沒碰過這些真正大數據的算術軟體，單純只是把官方簡介翻譯</del><br>
+註: R/W 數據是基於 Standard Hardware 的情況下。請參考 <a href="https://min.io/product/reference-hardware">MinIO-Reference Hardware</a></p>
+<h2 id="簡介-simply-run">簡介— Simply run</h2>
+<p><img src="https://min.io/resources/img/home/simplicity.gif" alt="minio)simply_run"></p>
+<p>▲ 上面動畫顯示 MinIO 部屬極為簡單 (不過我是用 docker 部屬啦) <code>./minio server /path/to/disk/</code> 就可以把 MinIO server run 起來。</p>
+<h2 id="what-is-object-storage">What Is Object Storage?</h2>
+<p><a href="https://docs.min.io/minio/baremetal/introduction/minio-overview.html#what-is-object-storage">What Is Object Storage?</a></p>
+<p>上面說了 &ldquo;object&rdquo; 好幾次，那究竟什麼是 &ldquo;object&rdquo; 呢? 其實 <strong>易懂白話就是檔案啦!</strong></p>
+<blockquote>
+<p>An object is binary data, sometimes referred to as a Binary Large OBject (BLOB). Blobs can be images, audio files, spreadsheets, or even binary executable code.</p>
+</blockquote>
+<h3 id="buckets">Buckets</h3>
+<p>與 AWS S3 相同，Buckets 就是 MinIO 裡面的 folder (資料夾) 或者 directory (目錄)。</p>
+<h2 id="erasure-coding-糾刪碼-ec">Erasure Coding 糾刪碼 (EC)</h2>
+<p><a href="https://docs.min.io/minio/baremetal/concepts/erasure-coding.html#minio-erasure-coding">Erasure Coding</a></p>
+<p>MinIO 用上了一個非常酷的東西，叫做<strong>糾刪碼 Erasure Coding</strong>。 這個使用目的跟實體硬碟 RAID 很像都是 <strong>確保資料可用性</strong> 的措施。<br>
+運作機制就是將資料打散成兩個東西 <strong><span style="color:blue">Data 與 Parity (同位元) Block</span>，其中 Parity Block 能夠重組遺失或者是被損壞的資料區塊</strong>。<br>
+不過這個機制也造成硬碟使用量翻倍，舉例: 儲存 2 GB 的影片實際占用 4GB。 更多細節可以參考上面官方文件</p>
+<p><strong>註: 下面的設定方式實際上只會占用一份硬碟空間。詳細請看最下方的 &ldquo;更多資訊&rdquo; 或關鍵字: MinIO standalone</strong><br>
+<strong>官方也提到 &ldquo;NOTE: Standalone MinIO servers are best suited for early development and evaluation.&rdquo;</strong><br>
+<del>翻譯:趴數不夠、沒有需求 不要直接去玩 Distributed Mode 啦!</del></p>
+<h2 id="使用-docker-安裝-minio">使用 Docker 安裝 MinIO</h2>
+<p><a href="https://docs.min.io/minio/baremetal/tutorials/minio-installation.html#docker-installation">Docker Installation</a></p>
+<h3 id="建立-docker-volume">建立 Docker Volume</h3>
+<p>有關於 Docker Volume 的介紹，請參考 <a href="https://docs.docker.com/storage/volumes/">Docker docs Use Volumes</a> <del>之後會不會專門產一篇筆記就看緣分了</del> <a href="https://blog.xxzk.me/post/20210513-intro_docker_volume/">Docker Volumes 介紹</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker volume create Minio
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>接著將容器 run 起來</p>
+<p><strong><span style='color:blue'>2022.09.19 整理筆記更新:</span></strong></p>
+<blockquote>
+<p>照著之前打的 MinIO 部屬文件部屬，發現怎麼 HTTP 9000 port 一直進不去管理介面 <br>
+原來是 MinIO 官方在今年 4 月將 MinIO console 整合至 MinIO 裡面了 <br>
+使用 HTTP 9000 port 會被導向到 console (如果建立時沒給定將隨機使用，官方建議使用 9001) <br>
+原本的 9000 port 一樣可以被 API 存取 (例如: mc,minio client) <br>
+新的 Dashboard 真好看~ 功能也變多了</p>
+</blockquote>
+<p><a href="https://blog.min.io/new-minio-console/">[官方 Blog] New MinIO Console Enables Efficient Cloud Scale Operations</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker run -itd --name minio --restart always -p 9000:9000 -p 9001:9001  -v Minio:/data -e <span class="s2">&#34;MINIO_ROOT_USER=root&#34;</span> -e <span class="s2">&#34;MINIO_ROOT_PASSWORD=password&#34;</span>  minio/minio server /data --console-address <span class="s2">&#34;:9001&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>9000:9000 9001:9001 port mapping<br>
+&ldquo;Minio&rdquo; volume mapping to &ldquo;/data&rdquo;<br>
+root=root<br>
+root_pw=password</p>
+</blockquote>
+<p><strong><span style="color:blue"> 如果需要 TLS 加密連線設定的話，進入 Container <code>${HOME}/.minio/certs</code> 目錄設定。Private Key 以 <code>.key</code> 結尾， certificates 以 <code>.crt</code> 結尾</span></strong></p>
+<h2 id="docker-compose-安裝-20220919-新增">docker-compose 安裝 (2022.09.19 新增)</h2>
+<p><a href="https://docs.min.io/docs/deploy-minio-on-docker-compose.html">Deploy MinIO on Docker Compose</a></p>
+<p>官方提供的 docker compose YAML file 偏向比較正規使用，我的屬於把上面那一行 <code>docker run ...</code> 變成 YAML file 而已~</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;3.7&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">services</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">minio</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l">minio</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">quay.io/minio/minio:RELEASE.2022-09-17T00-09-45Z</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l">always</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">network_mode</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;host&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">expose</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s2">&#34;9000&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s2">&#34;9001&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="l">server /data --console-address &#34;:9001&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">Minio:/data</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">environment</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">MINIO_ROOT_USER</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">MINIO_ROOT_PASSWORD</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">volumes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">Minio</span><span class="p">:</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>▲ <code>minio-docker-compose.yaml</code></p>
+<hr>
+<p><img src="minio_0.jpg" alt="minio_0"></p>
+<p>▲ 網頁輸入 root 帳號密碼就可以登入查看</p>
+<p><img src="minio_1.jpg" alt="minio_1"></p>
+<p>▲ 網頁操作可以下載該檔案或者分享，<strong><span style="color:red">分享連結目前必定有時間限制 (最高七天)</span></strong></p>
+<p>如果要永久分享的話要從 Buckets policy 下手，參考 <a href="https://github.com/minio/minio/issues/5180">how to generate share url permanent? #5180</a></p>
+<h2 id="minio-client-mc">MinIO Client (mc)</h2>
+<p><a href="https://docs.min.io/minio/baremetal/reference/minio-cli/minio-mc.html">MinIO Client (mc)</a></p>
+<p><strong><code>mc</code> 是一款 command line tool 支援 File System 和 Amazon S3 相容的雲端儲存服務 (cloud storage service)。</strong><br>
+<strong><span style="color:red">AWS Signature v2 and v4</span></strong></p>
+<h3 id="minio-client-mc-安裝">MinIO Client (mc) 安裝</h3>
+<p><strong>64-bit Intel</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl https://dl.min.io/client/mc/release/linux-amd64/mc <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --create-dirs <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -o <span class="nv">$HOME</span>/minio-binaries/mc
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">chmod +x <span class="nv">$HOME</span>/minio-binaries/mc
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:<span class="nv">$HOME</span>/minio-binaries/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">mc --help
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong><span style="color:red"><code>export</code> 只要登出這個 tty session 之後就會消失。可以把這行加入 <code>/root/.bashrc</code> 讓系統環境變數永久有效</span></strong></p>
+<h3 id="shell-autocompletion">Shell autocompletion</h3>
+<p><a href="https://github.com/minio/mc#shell-autocompletion">mc#shell-autocompletion</a><br>
+<code>mc</code> 有自帶指令自動補齊的功能，只需要透過以下指令開啟</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mc --autocompletion
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">mc: Your shell is <span class="nb">set</span> to <span class="s1">&#39;/bin/bash&#39;</span>, by env var <span class="s1">&#39;SHELL&#39;</span>.
+</span></span><span class="line"><span class="cl">mc: enabled autocompletion in your <span class="s1">&#39;bash&#39;</span> rc file. Please restart your shell.
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>重起 bash shell 的方式很簡單</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">exec</span> bash
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="加入一台-s3-目標">加入一台 S3 目標</h3>
+<h4 id="方法一-cli-新增">方法一: CLI 新增</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">bash +o <span class="nb">history</span>
+</span></span><span class="line"><span class="cl">mc <span class="nb">alias</span> <span class="nb">set</span> ALIAS HOSTNAME ACCESS_KEY SECRET_KEY
+</span></span><span class="line"><span class="cl">bash -o <span class="nb">history</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>其中 <code>HOSTNAME</code> 填入 URL endpoint 或者 IP。 Endpoint 範例: <code>https://s3.amazonaws.com</code>  IP 範例: <code>http://192.168.207.107:9000</code><br>
+<strong><span style="color:red">註: <code>bash +o history</code> 會關閉 + 清除本次 session 的命令紀錄</span></strong></p>
+<br>
+<h4 id="不推方法二-手動變更-json-檔案">(不推)方法二: 手動變更 json 檔案</h4>
+<p><a href="https://docs.min.io/minio/baremetal/reference/minio-cli/minio-mc.html#mc-configuration">Configuration File</a><br>
+直接更動檔案:</p>
+<ol>
+<li>HOME.mc\config.json</li>
+<li>USERPROFILE.mc\config.json</li>
+<li>HOMEDRIVE+HOMEPATH.mc\config.json</li>
+</ol>
+<br>
+<p><strong>顯示 &ldquo;local&rdquo; MinIO server 上面的 Object 與 bucket</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mc ls <span class="nb">local</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2021-04-26 14:27:31 CST<span class="o">]</span>     0B docker/
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2021-04-26 14:59:53 CST<span class="o">]</span>     0B rocket207/
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2021-04-27 14:22:55 CST<span class="o">]</span>     0B rocketcdn/
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>創建 bucket</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mc mb local/file-test
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Bucket created successfully <span class="sb">`</span>local/file-test<span class="sb">`</span>.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">mc ls local/
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>列出樹狀結構</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mc tree <span class="nb">local</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">local</span>
+</span></span><span class="line"><span class="cl">├─ docker
+</span></span><span class="line"><span class="cl">├─ file-test
+</span></span><span class="line"><span class="cl">├─ rocket207
+</span></span><span class="line"><span class="cl">│  └─ YPt4m8TtraZg7eArQ
+</span></span><span class="line"><span class="cl">│     └─ uploads
+</span></span><span class="line"><span class="cl">│        └─ GENERAL
+</span></span><span class="line"><span class="cl">│           └─ xN2ecy2DjmPFqmxrQ
+</span></span><span class="line"><span class="cl">└─ rocketcdn
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong><span style="color:red">[可能是 Bug] 若 bucket 內只有一個檔案沒辦法顯示出來</span></strong></p>
+<p><strong>查看 server 資訊</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mc admin info <span class="nb">local</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">●  localhost:9000
+</span></span><span class="line"><span class="cl">   Uptime: <span class="m">1</span> week 
+</span></span><span class="line"><span class="cl">   Version: 2021-04-22T15:44:28Z
+</span></span><span class="line"><span class="cl">   Network: 1/1 OK 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="m">53</span> KiB Used, <span class="m">4</span> Buckets, <span class="m">3</span> Objects
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>sync 到 remote MinIO server</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mc mirror /root/minio-binaries/ local/file-test
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">.../minio-binaries/mc:  19.58 MiB / 19.58 MiB ┃▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓┃ 91.47 MiB/s 0s
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong><span style="color:red"><code>mc</code> 指令加上 <code>--debug</code> 選項可以列出詳細連接過程</span></strong></p>
+<h2 id="minio-security-安全性">MinIO Security 安全性</h2>
+<p><strong>MinIO 安全性的部分包含兩大綱要:</strong><br>
+<strong><span style="color:blue">Identity and Access Management (IAM): 管理帳號 (access key) 與 密碼 (secret key) 以及權限 (Authorization)</span></strong><br>
+<strong><span style="color:green">Encryption and Key Management (EKM): MinIO 支援 Server-Side Object Encryption (SSE) 將實際在 server 的檔案透過 secret key 加密</span></strong></p>
+<p>本篇筆記將注重在 <strong>IAM</strong> 的部分。因為公司環境是 On-Prem (私有雲) 沒有強烈將檔案加密保護的需求。<br>
+<strong>未來若有上公有雲才來檢視是否需要保護營業機密使用 SSE</strong></p>
+<h3 id="identity-and-access-management-iam">Identity and Access Management (IAM)</h3>
+<p><strong>Authentication 掌管帳號密碼，Authorization 針對不同帳號設定權限</strong></p>
+<p>MinIO 使用 <strong>Policy-Based Access Control (PBAC)</strong> 存取控制基於政策。每一條政策裡面都有一條以上的 &ldquo;rule&rdquo; 去定義 使用者 (user) 或者 群組 (group) 有哪些權限。</p>
+<p>使用指令可以查看目前 MinIO server 上面的政策列表以及內容。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mc admin policy list <span class="nb">local</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">writeonly           
+</span></span><span class="line"><span class="cl">consoleAdmin        
+</span></span><span class="line"><span class="cl">diagnostics         
+</span></span><span class="line"><span class="cl"><span class="nb">readonly</span>            
+</span></span><span class="line"><span class="cl">readwrite  
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mc admin policy info <span class="nb">local</span> <span class="nb">readonly</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl"> <span class="s2">&#34;Version&#34;</span>: <span class="s2">&#34;2012-10-17&#34;</span>,
+</span></span><span class="line"><span class="cl"> <span class="s2">&#34;Statement&#34;</span>: <span class="o">[</span>
+</span></span><span class="line"><span class="cl">  <span class="o">{</span>
+</span></span><span class="line"><span class="cl">   <span class="s2">&#34;Effect&#34;</span>: <span class="s2">&#34;Allow&#34;</span>,
+</span></span><span class="line"><span class="cl">   <span class="s2">&#34;Action&#34;</span>: <span class="o">[</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;s3:GetBucketLocation&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;s3:GetObject&#34;</span>
+</span></span><span class="line"><span class="cl">   <span class="o">]</span>,
+</span></span><span class="line"><span class="cl">   <span class="s2">&#34;Resource&#34;</span>: <span class="o">[</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;arn:aws:s3:::*&#34;</span>
+</span></span><span class="line"><span class="cl">   <span class="o">]</span>
+</span></span><span class="line"><span class="cl">  <span class="o">}</span>
+</span></span><span class="line"><span class="cl"> <span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>列出 使用者 (user) 或者 群組 (group)，其中最高權限使用者 (root) 不會列出。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mc admin group list <span class="nb">local</span>
+</span></span><span class="line"><span class="cl">mc admin user list <span class="nb">local</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="實際操作-增加使用者">實際操作-增加使用者</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## will log in history</span>
+</span></span><span class="line"><span class="cl">mc admin user add local/ <span class="nb">test</span> test1234
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Added user <span class="sb">`</span><span class="nb">test</span><span class="sb">`</span> successfully.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## will NOT log in historty</span>
+</span></span><span class="line"><span class="cl">mc admin user add local/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Enter Access Key: <span class="nb">test</span>
+</span></span><span class="line"><span class="cl">Enter Secret Key: 
+</span></span><span class="line"><span class="cl">Added user <span class="sb">`</span><span class="nb">test</span><span class="sb">`</span> successfully.
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>查看帳號狀態:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mc admin user info local/ <span class="nb">test</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">AccessKey: <span class="nb">test</span>
+</span></span><span class="line"><span class="cl">Status: enabled
+</span></span><span class="line"><span class="cl">PolicyName: 
+</span></span><span class="line"><span class="cl">MemberOf: 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="minio_no_permission.jpg" alt="minio_no_permission"></p>
+<p>▲ 新建的帳號 test 沒辦法看到任何已存在的 bucket，也沒辦法創建新的 bucket。</p>
+<h4 id="實際操作-為使用者增加權限">實際操作-為使用者增加權限</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mc admin policy <span class="nb">set</span> local/ readwrite <span class="nv">user</span><span class="o">=</span><span class="nb">test</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Policy <span class="sb">`</span>readwrite<span class="sb">`</span> is <span class="nb">set</span> on user <span class="sb">`</span><span class="nb">test</span><span class="sb">`</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>上面這個操作會讓剛剛建立的 <code>test</code> 帳號獲得 <strong>所有 bucket 的 R/W 權限</strong>。<br>
+我一開始想說，那&hellip; 如果在 <code>TARGET</code> 給定 bucket 的話會不會就只針對某個 bucket 有 R/W 權限 ?<br>
+所以我下了</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mc admin policy <span class="nb">set</span> local/file-test readwrite <span class="nv">user</span><span class="o">=</span><span class="nb">test</span>
+</span></span><span class="line"><span class="cl">mc admin policy <span class="nb">set</span> local/file-test/ readwrite <span class="nv">user</span><span class="o">=</span><span class="nb">test</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>不管哪種，都不會有我想要的結果。 <strong><span style="color:red">原因就在 MinIO 內建的四個 Policy 是針對全域。權限的影響範圍是定義在 Policy 內，而不是 TARGET</span></strong><br>
+既然不符合想要的結果，就 Get your hands dirty 吧!</p>
+<h4 id="實際操作-自訂-policy">實際操作-自訂 Policy</h4>
+<p><a href="https://docs.min.io/minio/baremetal/security/IAM/iam-policies.html">MinIO-IAM Policy</a></p>
+<p><strong>目標: 針對 &ldquo;file-test&rdquo; 這個 bucket 開啟 R/W 權限</strong></p>
+<p>所以我從預設 policy readwrite 進行修改:</p>
+<p><strong>原本的:</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl"> <span class="nt">&#34;Version&#34;</span><span class="p">:</span> <span class="s2">&#34;2012-10-17&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"> <span class="nt">&#34;Statement&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">   <span class="nt">&#34;Effect&#34;</span><span class="p">:</span> <span class="s2">&#34;Allow&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">   <span class="nt">&#34;Action&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;s3:*&#34;</span>
+</span></span><span class="line"><span class="cl">   <span class="p">],</span>
+</span></span><span class="line"><span class="cl">   <span class="nt">&#34;Resource&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;arn:aws:s3:::*&#34;</span>
+</span></span><span class="line"><span class="cl">   <span class="p">]</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"> <span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>可以看到 &ldquo;Resource&rdquo; 陣列裡面有 <code>arn:aws:s3:::*</code>，把 <code>*</code> 改成 bucket 的路徑 (不包含 mc alias)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl"> <span class="nt">&#34;Version&#34;</span><span class="p">:</span> <span class="s2">&#34;2012-10-17&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"> <span class="nt">&#34;Statement&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">   <span class="nt">&#34;Effect&#34;</span><span class="p">:</span> <span class="s2">&#34;Allow&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">   <span class="nt">&#34;Action&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;s3:*&#34;</span>
+</span></span><span class="line"><span class="cl">   <span class="p">],</span>
+</span></span><span class="line"><span class="cl">   <span class="nt">&#34;Resource&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;arn:aws:s3:::file-test/*&#34;</span>
+</span></span><span class="line"><span class="cl">   <span class="p">]</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"> <span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然後把這個檔案存在 <code>/root/.mc/file-test_config.json</code> 裡面 (路徑可以隨意)<br>
+接著為 MinIO server 新增 Policy</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mc admin policy add local/ file-test_rw /root/.mc/file-test_config.json
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Added policy <span class="sb">`</span>file-test_rw<span class="sb">`</span> successfully.
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>查看一下</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mc admin policy info local/ file-test_rw
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl"> <span class="nt">&#34;Version&#34;</span><span class="p">:</span> <span class="s2">&#34;2012-10-17&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"> <span class="nt">&#34;Statement&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">   <span class="nt">&#34;Effect&#34;</span><span class="p">:</span> <span class="s2">&#34;Allow&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">   <span class="nt">&#34;Action&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;s3:*&#34;</span>
+</span></span><span class="line"><span class="cl">   <span class="p">],</span>
+</span></span><span class="line"><span class="cl">   <span class="nt">&#34;Resource&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;arn:aws:s3:::file-test/*&#34;</span>
+</span></span><span class="line"><span class="cl">   <span class="p">]</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"> <span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong><span style="color:blue">註1: arn 若沒有給予 <code>/*</code> 則會出現未授權請求 (unauthorize request) 錯誤訊息</span></strong><br>
+<strong><span style="color:blue">註2: Version 不是日期，是語法版本 (詳見下方連結)</span></strong></p>
+<p>接著 <code>unset</code> 本來在 <code>test</code> 身上的 <code>readwrite</code> 政策 + 把剛剛的政策賦予給 <code>test</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mc admin policy <span class="nb">unset</span> local/ readwrite <span class="nv">user</span><span class="o">=</span><span class="nb">test</span>
+</span></span><span class="line"><span class="cl">mc admin policy <span class="nb">set</span> local/ file-test_rw <span class="nv">user</span><span class="o">=</span><span class="nb">test</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">mc admin user info local/ <span class="nb">test</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="minio_file_test_only.jpg" alt="minio_file_test_only"></p>
+<p>▲ 實際使用 <code>test</code> <code>test1234</code> 登入 MinIO 就可以看到顯示的 bucket 只剩下 <code>file-test</code> 這個，而且有 R/W 權限。</p>
+<p><a href="https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html">Amazon Resource Names (ARNs)</a><br>
+<a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_version.html">IAM JSON policy elements: Version</a></p>
+<h2 id="更多資訊">更多資訊</h2>
+<p><a href="https://tonybai.com/2020/03/16/build-high-performance-object-storage-with-minio-part1-prototype/">使用minio搭建高性能对象存储-第一部分：原型 | Tony Bai</a></p>
+<p><img src="https://raw.githubusercontent.com/minio/minio/master/docs/screenshots/Architecture-diagram_distributed_nm.png" alt="Architecture-diagram_distributed_nm"></p>
+<p>▲ MinIO Distributed Mode 架構圖 (圖片過大，上傳不了 Bookstack)</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2021-05-03
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/minio/">minio</a>
+          <a href="/tags/docker/">docker</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/20210513-intro_docker_volume/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Docker Volumes 介紹</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/20210401-bookstack-fronts-customising/">
+            <span class="next-text nav-default">Bookstack 自訂字形與樣式 Customising Visuals</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.64437849d125a2d603b3e71d6de5225d641a32d17168a58106e0b61852079683.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -52,5 +52,14 @@
       <description>Docker docs Use volumes 前言 Docker Volume 是一個比較好的機制將 Docker Container 產生的資料永久保存 有稍微摸索過 Docker 的人可能會有點疑惑: 不是可以透過 -v /home/xzk:/mydata 把 host OS 上面的目錄映射進去 container 裡面嗎</description>
     </item>
     
+    <item>
+      <title>MinIO 簡單介紹</title>
+      <link>https://blog.xxzk.me/post/20210503-minio-introduce/</link>
+      <pubDate>Mon, 03 May 2021 13:41:55 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20210503-minio-introduce/</guid>
+      <description>min.io 簡介—主文 MinIO 是一套開源、高效能、K8s 取向 (Kubernetes-native) 的物件儲存解決方案。 同時強調 Hybrid Cloud 因為 MinIO 相容 AWS S3 服務 可以把它想成是 AWS S3 開源版。目前依據官方統計在</description>
+    </item>
+    
   </channel>
 </rss>

@@ -49,7 +49,7 @@
 <meta itemprop="name" content="CKA Note Section 6 Cluster Maintence">
 <meta itemprop="description" content="117. OS Upgrades 如果我們要將某個 worder node 下線，做一些例行維護 (例如: OS Upgrade) 可以使用 1 kubectl drain &lt;node_name&gt; 來達成，原本在目標 worker node 的 pod 會被 re-schedule 到其它 worker node 上面。當維護完成再使用 1"><meta itemprop="datePublished" content="2021-11-26T11:24:39+00:00" />
 <meta itemprop="dateModified" content="2021-11-26T11:24:39+00:00" />
-<meta itemprop="wordCount" content="1655">
+<meta itemprop="wordCount" content="1658">
 <meta itemprop="keywords" content="CKA-Note,kubernetes," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="CKA Note Section 6 Cluster Maintence"/>
 <meta name="twitter:description" content="117. OS Upgrades 如果我們要將某個 worder node 下線，做一些例行維護 (例如: OS Upgrade) 可以使用 1 kubectl drain &lt;node_name&gt; 來達成，原本在目標 worker node 的 pod 會被 re-schedule 到其它 worker node 上面。當維護完成再使用 1"/>
@@ -433,11 +433,12 @@
 <li>在講師搭建的練習 LAB 當中，<code>etcd</code> 都是以 static pod 部屬。</li>
 <li>承上，<code>API version == 3</code>。</li>
 <li>上面提到的 <code>etcdctl</code> 其實都省略了 TLS cert (還記得之前有說過，K8s 的各個元件溝通加密都是用 TLS 嗎)，少了這些參數就沒辦法拿到 <code>etcd</code> 的操作權限。</li>
-<li><code>--cacert</code>: CA-bundle</li>
+<li><code>--cacert</code>: trusted-ca-file</li>
 <li><code>--cert</code>: TLS cert file (證書本人)</li>
 <li><code>--endpoint</code>: <code>etcd</code> 所在的 IP address。例如: <code>--endpoints=[127.0.0.1:2379]</code></li>
-<li><code>--key</code>: TLS key 密鑰</li>
+<li><code>--key</code>: trusted-ca-key-file 密鑰</li>
 </ul>
+<p><a href="https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/#snapshot-using-etcdctl-options">Snapshot using etcdctl options</a></p>
 <p>大部分的日常使用 TLS cert 都是被 client side 拿來驗證 server side 身分，但其實 server side 也可以透過 TLS cert 對 client side 做認證。<br>
 除了 <code>etcd</code> 外，台灣有些證券商也是採用這種模式來保護下單安全 (金管會貌似沒有硬性規定使用 TLS cert)。</p>
 <p>對 TLS 相關機制有興趣的，我會推薦這篇 <a href="https://medium.com/@clu1022/%E9%82%A3%E4%BA%9B%E9%97%9C%E6%96%BCssl-tls%E7%9A%84%E4%BA%8C%E4%B8%89%E4%BA%8B-%E4%B8%80-why-ssl-tls-77ab5f4ba85">《那些關於SSL/TLS的二三事》</a></p>

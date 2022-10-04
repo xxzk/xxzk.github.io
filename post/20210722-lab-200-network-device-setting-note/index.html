@@ -49,7 +49,7 @@
 <meta itemprop="name" content="200 LAB Network 網通設備設定筆記">
 <meta itemprop="description" content="Cisco 3750G 前言日記 在記錄設定前先來段日記 XD，Cisco 3750G 章節紀錄機櫃搬遷後 Cisco 3750G 24TS 作為系統組自管 ToS (Top of Switch) 使用。 原先 K8s LAB 因為留停期間同事有拿來實驗 O"><meta itemprop="datePublished" content="2021-07-22T08:53:50+00:00" />
 <meta itemprop="dateModified" content="2021-07-22T08:53:50+00:00" />
-<meta itemprop="wordCount" content="2124">
+<meta itemprop="wordCount" content="2227">
 <meta itemprop="keywords" content="infra,network," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="200 LAB Network 網通設備設定筆記"/>
 <meta name="twitter:description" content="Cisco 3750G 前言日記 在記錄設定前先來段日記 XD，Cisco 3750G 章節紀錄機櫃搬遷後 Cisco 3750G 24TS 作為系統組自管 ToS (Top of Switch) 使用。 原先 K8s LAB 因為留停期間同事有拿來實驗 O"/>
@@ -190,6 +190,8 @@
             <li><a href="#20210923-debug-wireshark-顯示-tcp-previous-segment-not-captured">2021.09.23 [Debug] Wireshark 顯示 TCP Previous segment not captured</a></li>
           </ul>
         </li>
+        <li><a href="#esxi-host-add-static-route">ESXi host add static route</a></li>
+        <li><a href="#vcsa-vcenter-add-static-route">VCSA (vCenter) add static route</a></li>
       </ul>
     </li>
   </ul>
@@ -813,6 +815,46 @@ All subnet 200 VMs in ESXi host default gateway is 192.168.200.254</p>
 <p>同事先拆掉第二重 NAT，讓 <code>w</code> 下去看到 <code>FROM</code> 是 <code>172.19.x.x</code> 。 問題沒有解決，一樣會掉包。<br>
 兩層 NAT 都拆掉目前安好。</p>
 <p><strong><span style='color:red'>註: K8s-LAB Forti 有開啟 OSPF 相關設定來達成路由</span></strong></p>
+<hr>
+<h2 id="esxi-host-add-static-route">ESXi host add static route</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## esxcfg-route -a target_network_IP netmask default_gateway</span>
+</span></span><span class="line"><span class="cl">esxcfg-route -a 192.168.x.0/24 10.x.x.x
+</span></span><span class="line"><span class="cl">esxcli network ip route ipv4 list
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a href="https://kb.vmware.com/s/article/2001426">Configuring static routes for vmkernel ports on an ESXi host (2001426)</a></p>
+<h2 id="vcsa-vcenter-add-static-route">VCSA (vCenter) add static route</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## show interface </span>
+</span></span><span class="line"><span class="cl">com.vmware.appliance.version1.networking.interfaces.list
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## add static route via vcsa api</span>
+</span></span><span class="line"><span class="cl">com.vmware.appliance.version1.networking.routes.add --interface nic0 --gateway 10.x.x.x --destination 192.168.x.0 --prefix <span class="m">24</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## show routing table</span>
+</span></span><span class="line"><span class="cl">com.vmware.appliance.version1.networking.routes.list
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong><span style='color:red'>透過 API 加的 static route 是永久的，會被寫入 <code>/etc/sysconfig/network/routes</code> 當中。</span></strong></p>
+<p><a href="https://www.giovannidominoni.it/static-routes-on-vcsa-6-7-with-api-commands/">Static Routes on VCSA 6.7 with Api Commands - GiovanniDominoni.it</a></p>
 
     </div>
 

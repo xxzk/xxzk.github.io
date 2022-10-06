@@ -49,7 +49,7 @@
 <meta itemprop="name" content="200 LAB Network 網通設備設定筆記">
 <meta itemprop="description" content="Cisco 3750G 前言日記 在記錄設定前先來段日記 XD，Cisco 3750G 章節紀錄機櫃搬遷後 Cisco 3750G 24TS 作為系統組自管 ToS (Top of Switch) 使用。 原先 K8s LAB 因為留停期間同事有拿來實驗 O"><meta itemprop="datePublished" content="2021-07-22T08:53:50+00:00" />
 <meta itemprop="dateModified" content="2021-07-22T08:53:50+00:00" />
-<meta itemprop="wordCount" content="2227">
+<meta itemprop="wordCount" content="2300">
 <meta itemprop="keywords" content="infra,network," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="200 LAB Network 網通設備設定筆記"/>
 <meta name="twitter:description" content="Cisco 3750G 前言日記 在記錄設定前先來段日記 XD，Cisco 3750G 章節紀錄機櫃搬遷後 Cisco 3750G 24TS 作為系統組自管 ToS (Top of Switch) 使用。 原先 K8s LAB 因為留停期間同事有拿來實驗 O"/>
@@ -155,6 +155,7 @@
             <li><a href="#set-ip-address">set IP address</a></li>
             <li><a href="#set-hostname">set hostname</a></li>
             <li><a href="#set-password">set password</a></li>
+            <li><a href="#enable-ssh">enable ssh</a></li>
             <li><a href="#set-snmp">set SNMP</a></li>
             <li><a href="#upgrade-firmware">Upgrade Firmware</a></li>
             <li><a href="#debug-後記">debug 後記</a></li>
@@ -387,22 +388,64 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="set-password">set password</h3>
-<p><a href="https://www.cisco.com/c/en/us/support/docs/smb/switches/cisco-small-business-300-series-managed-switches/smb5563-configure-password-settings-on-a-switch-through-the-command.html#enable">Configure Enable Password Settings</a></p>
+<p><a href="https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst3750/software/release/15-0_1_se/configuration/guide/scg_3750/swauthen.html">Protecting Enable and Enable Secret Passwords with Encryption</a></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
-</span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">enable
 </span></span><span class="line"><span class="cl">config ter
-</span></span><span class="line"><span class="cl">line console 0
-</span></span><span class="line"><span class="cl">enable password level 15 0 &lt;password-string&gt;
+</span></span><span class="line"><span class="cl">enable secret 0  &lt;password-string&gt;
 </span></span><span class="line"><span class="cl">exit
 </span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="enable-ssh">enable ssh</h3>
+<p><a href="https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst3750/software/release/12-2_58_se/configuration/guide/3750scg/swauthen.html#79642">Setting Up the Switch to Run SSH (required)</a></p>
+<p><a href="https://community.cisco.com/t5/switching/3750-ssh-access/td-p/743860">3750 SSH access </a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">enable
+</span></span><span class="line"><span class="cl">config ter
+</span></span><span class="line"><span class="cl">username &lt;username&gt; secret &lt;password&gt;
+</span></span><span class="line"><span class="cl">hostname &lt;hostname&gt;
+</span></span><span class="line"><span class="cl">ip domain-name &lt;domain_name&gt;
+</span></span><span class="line"><span class="cl">crypto key generate rsa ## &lt;suggest min 1024&gt;
+</span></span><span class="line"><span class="cl">ip ssh timeout &lt;second&gt;
+</span></span><span class="line"><span class="cl">ip ssh authentication-retries &lt;number&gt;
+</span></span><span class="line"><span class="cl">line vty 0 15 
+</span></span><span class="line"><span class="cl">transport input ssh
+</span></span><span class="line"><span class="cl">end
+</span></span><span class="line"><span class="cl">copy running-config startup-config
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>如果看查看 SSH 狀態</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-mysql" data-lang="mysql"><span class="line"><span class="cl"><span class="n">enable</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">show</span><span class="w"> </span><span class="n">ip</span><span class="w"> </span><span class="n">ssh</span><span class="w"> </span><span class="o">`</span><span class="k">OR</span><span class="o">`</span><span class="w"> </span><span class="k">show</span><span class="w"> </span><span class="n">ssh</span><span class="w"> 
+</span></span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="set-snmp">set SNMP</h3>
 <p><a href="https://www.cisco.com/c/en/us/support/docs/ip/simple-network-management-protocol-snmp/7282-12.html#anc9">Enable SNMP Community Strings</a></p>

@@ -49,7 +49,7 @@
 <meta itemprop="name" content="CKA Note Section 10 Design and Install a Kubernetes Cluster">
 <meta itemprop="description" content="222. Choosing Kubernetes Infrastructure 這個章節在講如何選擇 K8s 建在哪裡，知道了一個蠻有趣的名詞 Kubernetes Turnkey Cloud Solutions 223. Configure High Availability ▲ api-server 可以是 Active-Active mode，不過 kubectl config 一次只能設定一個 URL，所以建議"><meta itemprop="datePublished" content="2022-07-19T14:43:27+00:00" />
 <meta itemprop="dateModified" content="2022-07-19T14:43:27+00:00" />
-<meta itemprop="wordCount" content="1132">
+<meta itemprop="wordCount" content="1229">
 <meta itemprop="keywords" content="CKA-Note,kubernetes," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="CKA Note Section 10 Design and Install a Kubernetes Cluster"/>
 <meta name="twitter:description" content="222. Choosing Kubernetes Infrastructure 這個章節在講如何選擇 K8s 建在哪裡，知道了一個蠻有趣的名詞 Kubernetes Turnkey Cloud Solutions 223. Configure High Availability ▲ api-server 可以是 Active-Active mode，不過 kubectl config 一次只能設定一個 URL，所以建議"/>
@@ -266,6 +266,22 @@ office WSL used.  搭配 FireFox portable 使用 (設定 SOCKS 5 proxy)，即可
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><code>kubectl</code> <a href="https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/#enable-kubectl-autocompletion">自動補齊</a></p>
+<p><strong><span style='color:blue'>2022.10.18 更新 minikube version: 1.27.1</span></strong></p>
+<p>不知道為什麼 minikube 自帶的 kubectl 一直沒辦法自動補齊，後來手動安裝 <code>kubelet</code> 想直接使用 kubelet 的 bash completion 卻也無法使用 (<code>kubectl: /usr/local/bin/kubectl</code>, <code>source &lt;(kubectl completion bash)</code>) @@</p>
+<p>變成 <code>minikube kubelet -- completion bash</code> 混搭手動額外安裝的 <code>kubelet</code> 方能使用。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">source</span> &lt;<span class="o">(</span>minikube kubectl -- completion bash<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">alias</span> <span class="nv">k</span><span class="o">=</span>kubectl
+</span></span><span class="line"><span class="cl"><span class="nb">complete</span> -o default -F __start_kubectl k
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>▲ <code>~/.bashrc</code></p>
 <h3 id="echoserver-部屬">echoserver 部屬</h3>
 <p>2022.07.25 註: 這邊應該是在練習 CKAD <code>service</code> 的時候弄的吧~</p>
 <div class="highlight"><div class="chroma">

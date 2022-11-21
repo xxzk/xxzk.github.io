@@ -3,7 +3,49 @@
   
   <url>
     <loc>https://blog.xxzk.me/categories/</loc>
-    <lastmod>2022-08-25T11:49:44+00:00</lastmod>
+    <lastmod>2022-11-08T13:49:51+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/tags/linux/</loc>
+    <lastmod>2022-11-08T13:49:51+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/categories/linux/</loc>
+    <lastmod>2022-11-08T13:49:51+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/post/20221108-linux-process-monitoring-command-usage/</loc>
+    <lastmod>2022-11-08T13:49:51+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/post/</loc>
+    <lastmod>2022-11-08T13:49:51+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/tags/</loc>
+    <lastmod>2022-11-08T13:49:51+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/</loc>
+    <lastmod>2022-11-08T13:49:51+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -17,13 +59,6 @@
   
   <url>
     <loc>https://blog.xxzk.me/categories/moniting/</loc>
-    <lastmod>2022-08-25T11:49:44+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.xxzk.me/post/</loc>
     <lastmod>2022-08-25T11:49:44+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -44,21 +79,7 @@
   </url>
   
   <url>
-    <loc>https://blog.xxzk.me/tags/</loc>
-    <lastmod>2022-08-25T11:49:44+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.xxzk.me/post/20220825-moniting-device-traffic-via-snmp_exporter-with-prometheus/</loc>
-    <lastmod>2022-08-25T11:49:44+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.xxzk.me/</loc>
     <lastmod>2022-08-25T11:49:44+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>

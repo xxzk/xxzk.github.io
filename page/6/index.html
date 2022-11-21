@@ -122,6 +122,27 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/20210907-setting-jumpserver-static-route-with-ansible-playbook/">Jumpserver 靜態路由設定 shell script &#43; Ansible Playbook 使用說明</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2021-09-07 </span>
+      <div class="post-category">
+          <a href="/categories/ansible/"> ansible </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      圖片來源 為什麼使用 Jumpserver 要上靜態路由? 公司現有 VM Network 環境只要是 Web server 的， default gateway 都是設定 Private IP Class B (172.x.0.0/16) 網段，也就是 Load Balance 身上。同時該台 VM 也會有 192.168.x.0/23 /24 的網卡 (192.168.x.254 or 253
+    </div>
+    <div class="read-more">
+      <a href="/post/20210907-setting-jumpserver-static-route-with-ansible-playbook/" class="read-more-link">Read more...</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/20210730-ckad-note-section-3-configuration/">CKAD Note Section 3 Configuration</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2021-07-30 </span>
@@ -200,27 +221,6 @@
     </div>
     <div class="read-more">
       <a href="/post/20210722-lab-200-network-device-setting-note/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/20210629-docker-container-link/">Docker 容器與容器的連結。Grafana &#43; Prometheus &#43; Blackbox_expoter</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2021-06-29 </span>
-      <div class="post-category">
-          <a href="/categories/docker/"> docker </a>
-          </div>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      此篇筆記紀錄如何使用 docker run --link ... 讓容器與容器之間連結。順便給 Upton 參考監控 LAB 要怎麼出~ Blackbox_expoter 1 docker run -itd --name blackbox_expoter -p 9115:9115 -v /root/yml/blackbox_expoter/:/config --restart always prom/blackbox-exporter:master --config.file=/config/blackbox.yml blackbox.yml 更多範例 可以從 blackbox_expoter/example.yml 尋找。 關於設定
-    </div>
-    <div class="read-more">
-      <a href="/post/20210629-docker-container-link/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>

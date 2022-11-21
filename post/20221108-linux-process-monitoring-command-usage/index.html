@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Linux 系統監控命令使用筆記 (ps,top,htop) - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="前言 每次想要查系統資源使用狀況都要 Google 一次 (除了 ps -aux, top, htop 很直覺的以外啦)，不如趁這次偕同 RD team 查找 iowait 高的原因整理一篇自己的筆記節省時間。 【常用指" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.98.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20221108-linux-process-monitoring-command-usage/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Linux 系統監控命令使用筆記 (ps,top,htop)" />
+<meta property="og:description" content="前言 每次想要查系統資源使用狀況都要 Google 一次 (除了 ps -aux, top, htop 很直覺的以外啦)，不如趁這次偕同 RD team 查找 iowait 高的原因整理一篇自己的筆記節省時間。 【常用指" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.xxzk.me/post/20221108-linux-process-monitoring-command-usage/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-11-08T13:49:51+00:00" />
+<meta property="article:modified_time" content="2022-11-08T13:49:51+00:00" />
+
+<meta itemprop="name" content="Linux 系統監控命令使用筆記 (ps,top,htop)">
+<meta itemprop="description" content="前言 每次想要查系統資源使用狀況都要 Google 一次 (除了 ps -aux, top, htop 很直覺的以外啦)，不如趁這次偕同 RD team 查找 iowait 高的原因整理一篇自己的筆記節省時間。 【常用指"><meta itemprop="datePublished" content="2022-11-08T13:49:51+00:00" />
+<meta itemprop="dateModified" content="2022-11-08T13:49:51+00:00" />
+<meta itemprop="wordCount" content="1783">
+<meta itemprop="keywords" content="linux," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Linux 系統監控命令使用筆記 (ps,top,htop)"/>
+<meta name="twitter:description" content="前言 每次想要查系統資源使用狀況都要 Google 一次 (除了 ps -aux, top, htop 很直覺的以外啦)，不如趁這次偕同 RD team 查找 iowait 高的原因整理一篇自己的筆記節省時間。 【常用指"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Linux 系統監控命令使用筆記 (ps,top,htop)</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-11-08 </span>
+        <div class="post-category">
+            <a href="/categories/linux/"> linux </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#前言">前言</a></li>
+        <li><a href="#常用指令-cheatsheet">【常用指令】 cheatsheet</a>
+          <ul>
+            <li><a href="#ps-常用指令"><code>ps</code> 常用指令</a></li>
+            <li><a href="#top-常用指令"><code>top</code> 常用指令</a></li>
+            <li><a href="#iostat-常用指令"><code>iostat</code> 常用指令</a></li>
+            <li><a href="#htop-常用指令"><code>htop</code> 常用指令</a></li>
+          </ul>
+        </li>
+        <li><a href="#top-介紹"><code>top</code> 介紹</a>
+          <ul>
+            <li><a href="#about-process">About Process</a></li>
+            <li><a href="#top-欄位介紹"><code>top</code> 欄位介紹</a></li>
+            <li><a href="#一般操作">一般操作</a></li>
+            <li><a href="#參考資料">參考資料</a></li>
+          </ul>
+        </li>
+        <li><a href="#htop-介紹"><code>htop</code> 介紹</a>
+          <ul>
+            <li><a href="#凍住-不許走">凍住! 不許走~</a></li>
+          </ul>
+        </li>
+        <li><a href="#iostat-查看-io-狀態"><code>iostat</code> 查看 I/O 狀態</a></li>
+        <li><a href="#額外補充">額外補充</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>每次想要查系統資源使用狀況都要 Google 一次 (除了 <code>ps -aux</code>, <code>top</code>, <code>htop</code> 很直覺的以外啦)，不如趁這次偕同 RD team 查找 <code>iowait</code> 高的原因整理一篇自己的筆記節省時間。</p>
+<h2 id="常用指令-cheatsheet">【常用指令】 cheatsheet</h2>
+<h3 id="ps-常用指令"><code>ps</code> 常用指令</h3>
+<ol>
+<li>以 <code>%CPU</code> 排序前 5 名</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ps -eo user,command,pcpu,pmem --sort -pcpu <span class="p">|</span> head -5
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="2">
+<li>以 <code>%MEM</code> 排序前 5 名</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ps -eo user,command,pcpu,pmem --sort -pmem <span class="p">|</span> head -5
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a href="https://www.networkworld.com/article/3596800/how-to-sort-ps-output.html">How to sort ps output</a></p>
+<p><a href="https://www.digitalocean.com/community/tutorials/linux-ps-command">[DigitalOcean] Linux ps command - 20 Real Life Examples</a></p>
+<h3 id="top-常用指令"><code>top</code> 常用指令</h3>
+<ul>
+<li>以 <code>%CPU</code> 排序 <strong><span style='color:blue'>(或者在互動模式下按 <code>P</code>)</span></strong></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">top -o %CPU
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>以 <code>%MEM</code> 排序 <strong><span style='color:blue'>(或者在互動模式下按 <code>M</code>)</span></strong></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">top -o %MEM
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>高亮資源排序欄位</li>
+</ul>
+<p><img src="highlight_sorting_field.jpg" alt="highlight_sorting_field"></p>
+<p>▲ <strong><span style='color:blue'>按下 <code>b</code></span></strong> 開啟高亮模式後，接著 <strong><span style='color:blue'>按下 <code>x</code></span></strong> (按下 <code>y</code> 則是顯示 running task)</p>
+<ul>
+<li>切換 <code>%CPU(s)</code> 顯示方式</li>
+</ul>
+<p><img src="cpu_type.jpg" alt="cpu_type"></p>
+<p>▲ <strong><span style='color:blue'>按下 <code>t</code></span></strong> 即可切換顯示百分比</p>
+<ul>
+<li>切換 <code>Memory</code>、<code>SWAP</code> 顯示方式</li>
+</ul>
+<p><img src="memory_type.jpg" alt="memory_type"></p>
+<p>▲ <strong><span style='color:blue'>按下 <code>m</code></span></strong> 即可切換顯示百分比</p>
+<h3 id="iostat-常用指令"><code>iostat</code> 常用指令</h3>
+<ul>
+<li>每 <code>20s</code> 顯示一次系統 I/O 狀態</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">iostat -xd <span class="m">20</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="iostat_xd20.jpg" alt="iostat_xd20"></p>
+<h3 id="htop-常用指令"><code>htop</code> 常用指令</h3>
+<p><img src="htop_tag.jpg" alt="htop_tag"></p>
+<p>▲ <strong><span style='color:blue'>按下 <code>c</code></span></strong> 可以高亮 (tag) 選取 process 與其 child process，若只要選擇單個 process 可以使用 <code>Space</code>。 <strong><span style='color:red'>按下 <code>U</code></span></strong> 即可 un-tag 所有已高亮的項目。</p>
+<h2 id="top-介紹"><code>top</code> 介紹</h2>
+<h3 id="about-process">About Process</h3>
+<p>再開始說明 <code>top</code> 欄位之前我想先補充一些恐龍書的知識! <del>老師對不起我忘了，能夠還我學費嗎</del></p>
+<ul>
+<li>Process 是電腦中已執行 Program 的實體，每一個 Process 互相獨立。</li>
+<li>Process 需要一些資源才能完成工作，如 CPU、記憶體、檔案以及 I/O 裝置。</li>
+<li>Process 不是基本執行單位，而是 Thread (執行緒) 的容器。 (註: 換句話說 thread 才是調度進 CPU 的單位)</li>
+<li>每個 Process 由一個 Memory Space 和一個以上的 Thread 所組成。</li>
+</ul>
+<blockquote>
+<p>引述自 <a href="https://medium.com/erens-tech-book/%E7%90%86%E8%A7%A3-process-thread-94a40721b492">【恐龍】理解 Process &amp; Thread</a> <br>
+進階閱讀 <a href="https://ithelp.ithome.com.tw/articles/10220156">[為什麼需要 process/connection pool] 30-09之應用層的兩個池 - 進 ( 線 ) 程池與連線池 </a></p>
+</blockquote>
+<p><img src="process_state_transition_diagram.jpg" alt="process_state_transition_diagram"></p>
+<p>▲ 每個 Process 都會需要在不同的 state 中切換，就有了以下的 State Transition Diagram。<a href="https://ithelp.ithome.com.tw/articles/10276152">圖片/引述 來源 - 杰哥的考研紀錄</a></p>
+<p><img src="process_in_swap_ironman.jpg" alt="process_in_swap_ironman"></p>
+<p>▲ process 會因為沒有足夠的 memory 直接被分配到 swap，就必須等待 memory 足夠才會被從 disk 調出來。 <a href="https://ithelp.ithome.com.tw/articles/10276152">圖片/引述 來源 - 杰哥的考研紀錄</a></p>
+<h3 id="top-欄位介紹"><code>top</code> 欄位介紹</h3>
+<p><img src="top_top.jpg" alt="top_top"></p>
+<ul>
+<li><code>top</code> 最上方的欄位顯示 <strong><span style='color:red'>system time (<code>15:29:46</code>)、system 已經運作多久 <code>30 days 23:55</code>、目前線上人數</span></strong> (是 shell login 喔，不是服務線上人數 XD)</li>
+<li>load average 則是 <strong><span style='color:green'>1, 5, 15 分鐘 CPU 的平均負載</span></strong></li>
+<li>Tasks 顯示系統總共有多少 process 存在 ( <strong>按下 <code>H</code> 可以切換到 thread 模式</strong> )</li>
+<li><code>%CPU(s)</code> 告知 CPU 使用率
+<ul>
+<li><code>us</code> 代表 user ( <strong><span style='color:red'>不包含 nice 被調整的 prcoess</span></strong> )</li>
+<li><code>sy</code> 代表 kernel process</li>
+<li><code>ni</code> 代表 nice 被調整的 prcoess</li>
+<li><code>id</code> 代表 idle 閒置</li>
+<li><strong><span style='color:purple'><code>wa</code> 代表 I/O wait (也是最常看的)</span></strong></li>
+<li><code>hi</code> 硬體中斷 (hardware interrupts)</li>
+<li><code>si</code> 軟體中斷 (software interrupts)</li>
+<li><strong><span style='color:blue'><code>st</code> time stolen from this vm by the hypervisor，中文我想翻譯成「超賣值」當這個數值越高代表虛擬化底層 CPU 資源壅擠</span></strong></li>
+</ul>
+</li>
+</ul>
+<p><img src="top_buttom.jpg" alt="top_buttom"></p>
+<ul>
+<li><code>PID</code> Process ID</li>
+<li><code>USER</code> effective username (能夠對應到 user ID 的)</li>
+<li><code>PR</code> 調度優先值 scheduling priority</li>
+<li><code>NI</code> nice 值 ( <strong><span style='color:blue'>越低越優先，預設是零，能被使用者手動更改</span></strong> )</li>
+</ul>
+<p><img src="man_top_process_state.jpg" alt="man_top_process_state"></p>
+<p>▲ <code>S</code> 欄位代表 process state</p>
+<ul>
+<li><code>VIRT</code> 虛擬記憶體大小 Virtual Memory Size (KiB)</li>
+<li><code>RES</code>  實體記憶體大小 Resident Memory Size (KiB), The non-swapped physical memory a task is using.</li>
+<li><code>SHR</code>  共享記憶體大小 Shared Memory Size (KiB)</li>
+</ul>
+<h3 id="一般操作">一般操作</h3>
+<ul>
+<li><code>R</code>: 反向排序</li>
+<li><code>Enter/Space</code>: 刷新畫面 (預設 <code>3s</code> 更新一次)</li>
+<li><code>d/s</code>: 設定刷新間隔</li>
+<li><code>B</code>: 數字使用粗體 (個人無感)</li>
+<li><code>I</code>: Irix mode On/Off (當 On 時 <code>%CPU</code> 上限會變成 <code>100% * cores</code>。Off 則稱作 <code>Solaris Mode</code> 上限是 100%)</li>
+<li><code>V</code>: 以樹狀模式顯示 (註: 無法與資源排序一起使用)</li>
+<li><code>L</code>: 查詢字串，搭配 <code>&amp;</code> 使用</li>
+</ul>
+<h3 id="參考資料">參考資料</h3>
+<ul>
+<li><a href="https://tigercosmos.xyz/post/2020/04/unix/top-usage/">Unix/Linux TOP 指令使用詳解</a></li>
+<li><a href="https://www.booleanworld.com/guide-linux-top-command/">A Guide to the Linux “Top” Command</a></li>
+</ul>
+<h2 id="htop-介紹"><code>htop</code> 介紹</h2>
+<p>有關於 <code>htop</code> 的介紹，下面兩篇文章都寫得非常清楚了，個人覺得沒必要自己再寫一次! 我就只整理常用的部分~</p>
+<ul>
+<li><a href="https://medium.com/starbugs/do-you-understand-htop-ffb72b3d5629">[星巴哥技術專欄] 你一定用過 htop，但你有看懂每個欄位嗎？</a></li>
+<li><a href="https://blog.gtwang.org/linux/linux-htop-interactive-process-viewer-tutorial/">Linux 的 htop 系統狀態即時監控指令工具使用教學 - G. T. Wang</a></li>
+</ul>
+<h3 id="凍住-不許走">凍住! 不許走~</h3>
+<p>不管是 <code>top</code> 或者 <code>htop</code> 如果想要凍住當前畫面，可以 <strong><span style='color:red'>按下 <code>ctrl + s</code> 來凍結畫面</span></strong> ，不過也無法與 command 互動~ <strong><span style='color:blue'>按下 <code>ctrl + q</code> 釋放</span></strong>。</p>
+<p><a href="https://superuser.com/questions/1036978/how-to-freeze-the-list-of-processes-in-htop">How to freeze the list of processes in htop?</a></p>
+<h2 id="iostat-查看-io-狀態"><code>iostat</code> 查看 I/O 狀態</h2>
+<ul>
+<li>RHEL / CentOS 7 預設並沒有安裝 <code>iostat</code> 指令，可以透過 <code>yum</code> 安裝或者 <code>rpm</code> (所需相依套件原生應該有，在 CentOS 7.9 2009 試過)</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">yum install sysstat -y
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">rpm -i http://mirror.centos.org/centos/7/os/x86_64/Packages/sysstat-10.1.5-19.el7.x86_64.rpm
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a href="https://centos.pkgs.org/7/centos-x86_64/sysstat-10.1.5-19.el7.x86_64.rpm.html">[pkgs.org] sysstat-10.1.5-19.el7.x86_64.rpm</a></p>
+<ul>
+<li>On Debian / Ubuntu / Linux Mint</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">apt-get install sysstat
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><code>-x</code> 選項顯示更多</li>
+<li><code>-d</code> 只顯示 device 資訊 (不顯示 CPU 使用資訊)</li>
+</ul>
+<p><img src="iostat_compare.jpg" alt="iostat_compare"></p>
+<ol>
+<li><code>rrqm/s</code>: 每秒 I/O merge read，Linux OS 會將數個 I/O request merge 成一個向更底層請求 (例如: driver)</li>
+<li><code>wrqm/s</code>: 每秒 I/O merge write</li>
+<li><strong><span style='color:blue'><code>r/s</code>: 每秒 read request (merge 之後) 完成數</span></strong></li>
+<li><strong><span style='color:blue'><code>w/s</code>: 每秒 write request (merge 之後) 完成數</span></strong></li>
+<li><strong><span style='color:blue'><code>rkB/s</code>: 每秒讀取 (read) 吞吐量，read kilobyte per second</span></strong></li>
+<li><strong><span style='color:blue'><code>wkB/s</code>: 每秒讀取 (write) 吞吐量，write kilobyte per second</span></strong></li>
+<li><code>avgrq-sz</code>: 平均每個讀取請求 (read request) 帶多大的 size，單位是 sectors。 <em>The average size (in sectors) of the requests that were issued to the device.</em></li>
+<li><code>avgqu-sz</code>: <em>The average queue length of the requests that were issued to the device.</em></li>
+<li><strong><span style='color:blue'><code>await</code>: 當一個 I/O request 送到 device 後平均耗費多少時間處理，包含列隊等待時間! 單位是 <code>ms</code></span></strong></li>
+<li><strong><span style='color:blue'><code>r_await</code>: 當一個 I/O <strong>read</strong> request 送到 device 後平均耗費多少時間處理，包含列隊等待時間! 單位是 <code>ms</code></span></strong></li>
+<li><strong><span style='color:blue'><code>w_await</code>: 當一個 I/O <strong>write</strong> request 送到 device 後平均耗費多少時間處理，包含列隊等待時間! 單位是 <code>ms</code></span></strong></li>
+<li><code>svctm</code>: <strong><span style='color:red'>未來版本將會移除該項目，請忽略!</span></strong></li>
+<li><strong><span style='color:red'><code>%util</code>: I/O 頻寬使用百分比，最高 100%</span></strong></li>
+</ol>
+<p><img src="swap_partition_full_and_busy.jpg" alt="swap_partition_full_and_busy"></p>
+<p>▲ 上圖 <code>sdb</code> 是 swap 分區，因為 memory overflow 導致 <code>iowait</code> 高 (圖中看不到)。</p>
+<p>參考資料:</p>
+<p><a href="https://www.geeksforgeeks.org/iostat-command-in-linux-with-examples/">iostat command in Linux with examples</a><br>
+<a href="https://ithelp.ithome.com.tw/articles/10102987">Linux系統效能分析與探討 - [18] 更豐富的iostat內容</a></p>
+<h2 id="額外補充">額外補充</h2>
+<ul>
+<li><a href="https://blog.gtwang.org/linux/glances-cli-curses-based-monitoring-tool/">[跨平台開源系統監控工具] Glances 命令列系統監控工具 - G. T. Wang</a></li>
+<li><a href="https://www.speedtest.net/apps/cli">Speedtest CLI</a></li>
+<li><a href="https://github.com/lmc999/RegionRestrictionCheck">串流媒體區域測試  lmc999/RegionRestrictionCheck </a></li>
+</ul>
+<p><img src="stream_media_unlock_test.jpg" alt="stream_media_unlock_test"></p>
+<ul>
+<li><a href="https://github.com/ernisn/superspeed">[針對中國地區網路測速] ernisn/superspeed </a></li>
+</ul>
+<p><img src="https://github.com/ernisn/superspeed/blob/master/SuperSpeed.png?raw=true" alt="SuperSpeed"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2022-11-08
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/linux/">linux</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/20220825-moniting-device-traffic-via-snmp_exporter-with-prometheus/">
+            <span class="next-text nav-default">使用 snmp_exporter 抓取設備流量</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.64437849d125a2d603b3e71d6de5225d641a32d17168a58106e0b61852079683.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

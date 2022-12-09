@@ -16,7 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="更新紀錄 2022.12 刪改原有內容、新增 全域/區域 變數設定方式 簡介 Ansible 是一種開源配置工具，Linux 系統管理員使用的自動化工具。 Ansible 能讓系統管理員從一個控制" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="老柯" /><meta name="description" content="更新紀錄 2022.12 刪改原有內容、新增 全域/區域 變數設定方式 新增 playbook 簡介 Ansible 是一種開源配置工具，Linux 系統管理員使用的自動化工具。 Ansible 能讓系統管理員從一" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
@@ -40,19 +40,19 @@
 
 
 <meta property="og:title" content="我的第一支 Ansible。 Ansible Hello World" />
-<meta property="og:description" content="更新紀錄 2022.12 刪改原有內容、新增 全域/區域 變數設定方式 簡介 Ansible 是一種開源配置工具，Linux 系統管理員使用的自動化工具。 Ansible 能讓系統管理員從一個控制" />
+<meta property="og:description" content="更新紀錄 2022.12 刪改原有內容、新增 全域/區域 變數設定方式 新增 playbook 簡介 Ansible 是一種開源配置工具，Linux 系統管理員使用的自動化工具。 Ansible 能讓系統管理員從一" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.xxzk.me/post/20210128-ansible-hello-world/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2021-01-28T16:44:50+00:00" />
 <meta property="article:modified_time" content="2021-01-28T16:44:50+00:00" />
 
 <meta itemprop="name" content="我的第一支 Ansible。 Ansible Hello World">
-<meta itemprop="description" content="更新紀錄 2022.12 刪改原有內容、新增 全域/區域 變數設定方式 簡介 Ansible 是一種開源配置工具，Linux 系統管理員使用的自動化工具。 Ansible 能讓系統管理員從一個控制"><meta itemprop="datePublished" content="2021-01-28T16:44:50+00:00" />
+<meta itemprop="description" content="更新紀錄 2022.12 刪改原有內容、新增 全域/區域 變數設定方式 新增 playbook 簡介 Ansible 是一種開源配置工具，Linux 系統管理員使用的自動化工具。 Ansible 能讓系統管理員從一"><meta itemprop="datePublished" content="2021-01-28T16:44:50+00:00" />
 <meta itemprop="dateModified" content="2021-01-28T16:44:50+00:00" />
-<meta itemprop="wordCount" content="911">
+<meta itemprop="wordCount" content="1463">
 <meta itemprop="keywords" content="ansible," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="我的第一支 Ansible。 Ansible Hello World"/>
-<meta name="twitter:description" content="更新紀錄 2022.12 刪改原有內容、新增 全域/區域 變數設定方式 簡介 Ansible 是一種開源配置工具，Linux 系統管理員使用的自動化工具。 Ansible 能讓系統管理員從一個控制"/>
+<meta name="twitter:description" content="更新紀錄 2022.12 刪改原有內容、新增 全域/區域 變數設定方式 新增 playbook 簡介 Ansible 是一種開源配置工具，Linux 系統管理員使用的自動化工具。 Ansible 能讓系統管理員從一"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -145,6 +145,7 @@
       <ul>
         <li><a href="#更新紀錄">更新紀錄</a></li>
         <li><a href="#簡介">簡介</a></li>
+        <li><a href="#ansible-command-shell-completion">Ansible command shell completion</a></li>
         <li><a href="#iventory-file-hostfile">Iventory File (hostfile)</a></li>
         <li><a href="#我的-inventory">我的 Inventory</a>
           <ul>
@@ -163,6 +164,12 @@
             <li><a href="#嫌太慢嗎">嫌太慢嗎?</a></li>
           </ul>
         </li>
+        <li><a href="#playbook">Playbook</a>
+          <ul>
+            <li><a href="#推薦閱讀">推薦閱讀</a></li>
+            <li><a href="#bare-metal-ping-test-playbook">Bare-Metal ping test Playbook</a></li>
+          </ul>
+        </li>
       </ul>
     </li>
   </ul>
@@ -176,6 +183,7 @@
 <li>2022.12
 <ol>
 <li>刪改原有內容、新增 <code>全域/區域 變數設定方式</code></li>
+<li>新增 <code>playbook</code></li>
 </ol>
 </li>
 </ul>
@@ -187,7 +195,43 @@
 簡介出自<a href="https://dywang.csie.cyut.edu.tw/dywang/ansible/node17.html">朝陽資工系-王德譽老師#Ansible 前言</a><br>
 <del>朝陽資訊學院兩尊神都提供 「終生保固」 讚讚 XD</del></p>
 <p>此篇會記錄我的第一支 Ansible 腳本配置~</p>
-<h2 id="iventory-file-hostfile">Iventory File (hostfile)</h2>
+<h2 id="ansible-command-shell-completion">Ansible command shell completion</h2>
+<p><a href="https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#adding-ansible-command-shell-completion">Adding Ansible command shell completion</a></p>
+<p>官方建議安裝 <code>argcomplete</code> 來為 <code>bash</code>, <code>zsh</code>, <code>tcsh</code> 新增 <code>[tab][tab]</code> 自動補齊的功能。</p>
+<p>(WSL Ubuntu 22.04 並沒有自帶 <code>pip</code>，透過以下指令安裝)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo apt update
+</span></span><span class="line"><span class="cl">sudo apt install python3-pip
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">pip3 --version
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">python3 -m pip install --user argcomplete
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## Global completion requires bash 4.2</span>
+</span></span><span class="line"><span class="cl">activate-global-python-argcomplete3 --user
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">&gt; Installing bash completion script /home/eric_xzk/.bash_completion.d/python-argcomplete.sh
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="iventory-file-hostfile">Iventory File (hostfile)</h2>
 <p>這個檔案內主要記錄主機 列表/群組。範例可以參考:</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -422,6 +466,111 @@ ansible.cfg 讓使用者看到所有可用的組態設定、其預設值、如�
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong><span style='color:red'><code>-f --forks</code> 代表 Ansible 會同時使用 N 個 processes 去執行。預設 5 個</span></strong></p>
+<hr>
+<h2 id="playbook">Playbook</h2>
+<h3 id="推薦閱讀">推薦閱讀</h3>
+<ul>
+<li><a href="https://chengweichen.com/2018/02/ansible-playbook-1.html">[艦長] 讓您安心執行 Ansible playbook 的小技巧（1）</a></li>
+</ul>
+<p>▲ 執行 Playbook 前透過內建 <code>options</code> 來幫助再次確認 <code>task</code>，debug 時也很好用。</p>
+<ul>
+<li><a href="https://chengweichen.com/2018/02/ansible-playbook-2.html">[艦長] 讓您安心執行 Ansible playbook 的小技巧（2）</a></li>
+</ul>
+<p>▲ 介紹利用 <code>debug</code>, <code>register</code>, <code>fail</code> module 來幫助除錯與檢查。</p>
+<h3 id="bare-metal-ping-test-playbook">Bare-Metal ping test Playbook</h3>
+<p>有新 server 上架，完成所有設定後都必須測試所有網段連線正常。過去都是建一台 VM 之後一個一個切換 <code>Port-Group</code> =&gt; <code>nmcli</code> 設定 IP =&gt; 使用 <code>ping</code> 測試，這次透過 Ansible Playbook 幫我們自動執行 <code>ping</code> 的步驟，節省一些時間。(切換 <code>Port-Group</code> 變成新增好幾張 NIC，並且綁定 IP)</p>
+<p><strong><code>inventory</code></strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="p">[</span><span class="l">all:vars]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">ansible_ssh_user=&#39;root&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">[</span><span class="l">local]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">My_Local_CentOS ansible_ssh_host=192.168.60.155</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">[</span><span class="l">dc2-vlan]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">VLAN-Baremetal-1 ansible_ssh_host=x.x.x.x</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong><code>ansible.cfg</code></strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-ini" data-lang="ini"><span class="line"><span class="cl"><span class="k">[defaults]</span>
+</span></span><span class="line"><span class="cl"><span class="na">host_key_checking</span> <span class="o">=</span> <span class="s">false</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong><code>ping-playbook.yaml</code></strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nn">---</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># - name: Ping Test for local VM</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#   hosts: local</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#   gather_facts: false</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#   tasks:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#   - name: Ping DNS</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#     shell: &#34;ping -4 -i 0.01 -c 30 1.1.1.1 | tail -3&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#     register: result</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#   - debug:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#       msg: &#34;{{ result.stdout_lines }}&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Ping Test 172 Prefix for bare-metal</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l">dc2-vlan</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">gather_facts</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">tasks</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">DC2-M-Web_RD3 x.x.x.0/24</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">shell</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;ping -4 -i 0.01 -c 30 x.x.x.254 | tail -3&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l">result</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">debug</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">msg</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;{{ result.stdout_lines }}&#34;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><a href="https://docs.ansible.com/ansible/latest/collections/ansible/builtin/ping_module.html">Ansible 內建 <code>ping</code> module</a> 只能回應 <code>pong</code>，而且沒辦法指定目標 <code>IP</code></li>
+<li><a href="https://docs.ansible.com/ansible/latest/collections/ansible/netcommon/net_ping_module.html#ansible-collections-ansible-netcommon-net-ping-module">ansible.netcommon.net_ping</a> 看起來十分強大，但只能用在網通設備上 (必須指定 <code>ansible_network_os</code>)</li>
+<li>總和以上，還是選擇熟悉的 <code>shell</code> module! 搭配 <code>tail</code> 還能過濾輸出結果~ 不然官方的 <a href="https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_filters.html">Using filters to manipulate data</a> 落落長</li>
+</ul>
+<p><img src="debug_module_syntax_error.jpg" alt="debug_module_syntax_error"></p>
+<p>▲ <code>debug</code> 模組必須獨立使用，不能併在同一個 <code>task</code> 裡面! 不然會報 <strong><span style='color:red'><code>ERROR! conflicting action statements</code></span></strong> (<code>--syntax-check</code> 會報在 <code>- name</code> 這邊 Umm&hellip; 好喔) 謝謝小飛機~</p>
+<p><img src="ping_playbook_0.jpg" alt="ping_playbook_0"></p>
+<p>▲ <code>v0.1</code> 版本即使 <code>ping</code> 沒通也會列在 <strong><span style='color:green'><code>OK</code></span></strong> 當中，下一版改進項目 ++</p>
 
     </div>
 

@@ -49,7 +49,7 @@
 <meta itemprop="name" content="我的第一支 Ansible。 Ansible Hello World">
 <meta itemprop="description" content="更新紀錄 2022.12 刪改原有內容、新增 全域/區域 變數設定方式 新增 playbook 簡介 Ansible 是一種開源配置工具，Linux 系統管理員使用的自動化工具。 Ansible 能讓系統管理員從一"><meta itemprop="datePublished" content="2021-01-28T16:44:50+00:00" />
 <meta itemprop="dateModified" content="2021-01-28T16:44:50+00:00" />
-<meta itemprop="wordCount" content="1463">
+<meta itemprop="wordCount" content="1473">
 <meta itemprop="keywords" content="ansible," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="我的第一支 Ansible。 Ansible Hello World"/>
 <meta name="twitter:description" content="更新紀錄 2022.12 刪改原有內容、新增 全域/區域 變數設定方式 新增 playbook 簡介 Ansible 是一種開源配置工具，Linux 系統管理員使用的自動化工具。 Ansible 能讓系統管理員從一"/>
@@ -252,11 +252,11 @@
 </span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">[netbox]
-</span></span><span class="line"><span class="cl">Eric_NetBox_207 ansible_ssh_host=192.168.207.77
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">[</span><span class="err">netbox</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="err">Eric_NetBox_</span><span class="mi">207</span> <span class="err">ansible_ssh_host=</span><span class="mf">192.168</span><span class="err">.</span><span class="mf">207.77</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">[ALL_207]
-</span></span><span class="line"><span class="cl">192.168.207.[1:253]
+</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="err">ALL_</span><span class="mi">207</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="mf">192.168</span><span class="err">.</span><span class="mi">207</span><span class="err">.</span><span class="p">[</span><span class="mi">1</span><span class="err">:</span><span class="mi">253</span><span class="p">]</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>其中 <span style="color:blue"><strong>netbox</strong></span> 與 <span style="color:blue"><strong>ALL_207</strong></span> 是 <span style="color:red"><strong>群組名稱 Group Name</strong></span></p>
@@ -351,14 +351,14 @@ ansible_sudo_pass: SSH sudo 明文密碼。 <span style="color:red"><strong>不�
 </span><span class="lnt">7
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="p">[</span><span class="l">atlanta]</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">host1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">host2</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">[</span><span class="l">atlanta:vars]</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">ntp_server=ntp.atlanta.example.com</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">proxy=proxy.atlanta.example.com</span><span class="w">
-</span></span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">[</span><span class="err">atlanta</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="err">host</span><span class="mi">1</span>
+</span></span><span class="line"><span class="cl"><span class="err">host</span><span class="mi">2</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="err">atlanta:vars</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="err">ntp_server=ntp.atlanta.example.com</span>
+</span></span><span class="line"><span class="cl"><span class="err">proxy=proxy.atlanta.example.com</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -427,8 +427,8 @@ ansible.cfg 讓使用者看到所有可用的組態設定、其預設值、如�
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">[defaults]
-</span></span><span class="line"><span class="cl">host_key_checking = false
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">[</span><span class="err">defaults</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="err">host_key_checking</span> <span class="err">=</span> <span class="kc">false</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>加上 <span style="color:red">host_key_checking = false</span> 略過檢查 SSH fingerprint<br>
@@ -492,15 +492,15 @@ ansible.cfg 讓使用者看到所有可用的組態設定、其預設值、如�
 </span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="p">[</span><span class="l">all:vars]</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">ansible_ssh_user=&#39;root&#39;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">[</span><span class="l">local]</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">My_Local_CentOS ansible_ssh_host=192.168.60.155</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">[</span><span class="l">dc2-vlan]</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">VLAN-Baremetal-1 ansible_ssh_host=x.x.x.x</span><span class="w">
-</span></span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">[</span><span class="err">all:vars</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="err">ansible_ssh_user=&#39;root&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="err">local</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="err">My_Local_CentOS</span> <span class="err">ansible_ssh_host=</span><span class="mf">192.168</span><span class="err">.</span><span class="mf">60.155</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="err">dc</span><span class="mi">2</span><span class="err">-vlan</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="err">VLAN-Baremetal</span><span class="mi">-1</span> <span class="err">ansible_ssh_host=x.x.x.x</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong><code>ansible.cfg</code></strong></p>
 <div class="highlight"><div class="chroma">
@@ -509,8 +509,8 @@ ansible.cfg 讓使用者看到所有可用的組態設定、其預設值、如�
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-ini" data-lang="ini"><span class="line"><span class="cl"><span class="k">[defaults]</span>
-</span></span><span class="line"><span class="cl"><span class="na">host_key_checking</span> <span class="o">=</span> <span class="s">false</span>
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">[</span><span class="err">defaults</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="err">host_key_checking</span> <span class="err">=</span> <span class="kc">false</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong><code>ping-playbook.yaml</code></strong></p>

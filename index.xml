@@ -112,7 +112,7 @@
       <pubDate>Thu, 28 Apr 2022 15:47:12 +0000</pubDate>
       
       <guid>https://blog.xxzk.me/post/20220503-use-hexo-and-github-pages-to-build-blog/</guid>
-      <description>此篇記錄第一次使用 Hexo 搭配 GitHub Pages 來架設 blog。 使用 Git Bash (MINGW 64) 安裝 Hexo Hexo Documentation nvs Mac, Linux Install 以 administrator 打開 Git Bash 1 2 3 export NVS_HOME=&amp;#34;$HOME/.nvs&amp;#34; git clone https://github.com/jasongin/nvs &amp;#34;$NVS_HOME&amp;#34; . &amp;#34;$NVS_HOME/nvs.sh&amp;#34; install 1 2 3 nvs add latest nvs use latest nvs link latest ▲ 版本</description>
+      <description>更新紀錄 2022.04.28: 此篇記錄第一次使用 Hexo 搭配 GitHub Pages 來架設 blog。 2022.12.19: 調整順序 (將 VSCode Snippet 片段放在前面)，因為後來實際是使用 Hugo 架設，之後將會新增 Hugo 安裝章節。 2022.12.20:</description>
     </item>
     
     <item>
@@ -211,7 +211,7 @@
       <pubDate>Tue, 02 Nov 2021 13:56:46 +0000</pubDate>
       
       <guid>https://blog.xxzk.me/post/20211102-ckad-note-section-6-pod-design/</guid>
-      <description>79. Labels, Selectors and Annotations 1 2 3 4 5 6 7 8 9 10 11 12 13 apiVersion:v1kind:Podmetadata:name:label-demolabels:environment:productionapp:nginxspec:containers:- name:nginximage:nginx:1.14.2ports:- containerPort:80 我們可以在 kubernetes object 上貼上標籤 (labels) 用於分類。使用 kubectl get pod --selector &amp;lt;key&amp;gt;=&amp;lt;value&amp;gt; 可以篩選。 最後 Annotation 就是有點像註解的東西，給人看的 例</description>
+      <description>79. Labels, Selectors and Annotations 1 2 3 4 5 6 7 8 9 10 11 12 13 apiVersion: v1 kind: Pod metadata: name: label-demo labels: environment: production app: nginx spec: containers: - name: nginx image: nginx:1.14.2 ports: - containerPort: 80 我們可以在 kubernetes object 上貼上標籤 (labels) 用於分類。使用 kubectl get pod --selector &amp;lt;key&amp;gt;=&amp;lt;value&amp;gt; 可以篩選</description>
     </item>
     
     <item>

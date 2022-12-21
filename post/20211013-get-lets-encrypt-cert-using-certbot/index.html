@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>使用 certbot 取得免費 Let&#39;s Encrypt TLS/SSL 憑證 - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="更新紀錄 2022.12.20: 整合另一篇筆記，關於缺少中繼憑證 (issuer certificate, intermediate certificate) 導致 curl 報錯，而瀏覽器沒事的 trouble shooting 過程。 介紹 Let&amp;rsquo;s Encrypt 是一個 ISRG 建立的非營利項目，免費提供 TLS/SSL Certi" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.108.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20211013-get-lets-encrypt-cert-using-certbot/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="使用 certbot 取得免費 Let&#39;s Encrypt TLS/SSL 憑證" />
+<meta property="og:description" content="更新紀錄 2022.12.20: 整合另一篇筆記，關於缺少中繼憑證 (issuer certificate, intermediate certificate) 導致 curl 報錯，而瀏覽器沒事的 trouble shooting 過程。 介紹 Let&rsquo;s Encrypt 是一個 ISRG 建立的非營利項目，免費提供 TLS/SSL Certi" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.xxzk.me/post/20211013-get-lets-encrypt-cert-using-certbot/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-10-13T15:47:29+00:00" />
+<meta property="article:modified_time" content="2021-10-13T15:47:29+00:00" />
+<meta itemprop="name" content="使用 certbot 取得免費 Let&#39;s Encrypt TLS/SSL 憑證">
+<meta itemprop="description" content="更新紀錄 2022.12.20: 整合另一篇筆記，關於缺少中繼憑證 (issuer certificate, intermediate certificate) 導致 curl 報錯，而瀏覽器沒事的 trouble shooting 過程。 介紹 Let&rsquo;s Encrypt 是一個 ISRG 建立的非營利項目，免費提供 TLS/SSL Certi"><meta itemprop="datePublished" content="2021-10-13T15:47:29+00:00" />
+<meta itemprop="dateModified" content="2021-10-13T15:47:29+00:00" />
+<meta itemprop="wordCount" content="2313">
+<meta itemprop="keywords" content="SSL-TLS-certification,cloudflare," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="使用 certbot 取得免費 Let&#39;s Encrypt TLS/SSL 憑證"/>
+<meta name="twitter:description" content="更新紀錄 2022.12.20: 整合另一篇筆記，關於缺少中繼憑證 (issuer certificate, intermediate certificate) 導致 curl 報錯，而瀏覽器沒事的 trouble shooting 過程。 介紹 Let&rsquo;s Encrypt 是一個 ISRG 建立的非營利項目，免費提供 TLS/SSL Certi"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">使用 certbot 取得免費 Let&#39;s Encrypt TLS/SSL 憑證</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-10-13 </span>
+        <div class="post-category">
+            <a href="/categories/ssl-tls-certification/"> SSL-TLS-certification </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#更新紀錄">更新紀錄</a></li>
+        <li><a href="#介紹">介紹</a>
+          <ul>
+            <li><a href="#系統環境">系統環境</a></li>
+          </ul>
+        </li>
+        <li><a href="#安裝-certbot">安裝 certbot</a></li>
+        <li><a href="#manual-申請-ca-憑證">[Manual] 申請 CA 憑證</a></li>
+        <li><a href="#cloudflare-plugin-申請-ca-憑證">[CloudFlare Plugin] 申請 CA 憑證</a>
+          <ul>
+            <li><a href="#安裝-cloudflare-dns-plugin">安裝 CloudFlare DNS Plugin</a></li>
+            <li><a href="#範例">範例</a></li>
+          </ul>
+        </li>
+        <li><a href="#自動更新憑證-automated-renewals">自動更新憑證 Automated Renewals</a></li>
+        <li><a href="#lets-encrypt-rate-limits">Let&rsquo;s Encrypt Rate Limits</a></li>
+        <li><a href="#trouble-shooting-缺少中繼憑證-造成-curl-顯示錯誤">[Trouble shooting] 缺少中繼憑證 造成 <code>curl</code> 顯示錯誤</a>
+          <ul>
+            <li><a href="#思考邏輯--查找過程">思考邏輯 &amp; 查找過程</a></li>
+            <li><a href="#參考資料">參考資料</a></li>
+            <li><a href="#q--a">Q &amp; A</a></li>
+            <li><a href="#其它查找工具">其它查找工具</a></li>
+            <li><a href="#特別感謝">特別感謝</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <center>
+<p><img src="https://letsencrypt.org/images/letsencrypt-logo-horizontal.svg" alt="Let&amp;rsquo;s Encrypt logo"></p>
+</center>
+<h2 id="更新紀錄">更新紀錄</h2>
+<p>2022.12.20: 整合另一篇筆記，關於缺少中繼憑證 (issuer certificate, intermediate certificate) 導致 <code>curl</code> 報錯，而瀏覽器沒事的 trouble shooting 過程。</p>
+<h2 id="介紹">介紹</h2>
+<p><a href="https://letsencrypt.org/">Let&rsquo;s Encrypt</a> 是一個 <a href="https://www.abetterinternet.org/">ISRG</a> 建立的非營利項目，<strong>免費提供 TLS/SSL Certification</strong>。<br>
+除了有超多網路巨頭 <a href="https://letsencrypt.org/sponsors/">贊助商</a> 同時也是 <a href="https://www.linuxfoundation.org/projects">Linux Foundation 合作的項目</a></p>
+<p>本篇筆記會記錄使用 <a href="https://certbot.eff.org/">certbot</a> 這款專門為 Let&rsquo;s Encrypt 打造的 ACME client (<a href="https://datatracker.ietf.org/doc/html/rfc8555">Automatic Certificate Management Environment</a>) 來產生免費的 TLS/SSL 憑證 (TLS certification)</p>
+<h3 id="系統環境">系統環境</h3>
+<blockquote>
+<p>DNS hosting: CloudFlare (Free plan)<br>
+OS: CentOS 7.9.2009</p>
+</blockquote>
+<h2 id="安裝-certbot">安裝 certbot</h2>
+<p><strong><span style='color:red'>2021.10.13 更新，不建議用 yum 安裝 certbot。原因: EPEL 內的版本過低，無法使用 Cloudflare API token。</span></strong><br>
+<strong><span style='color:blue'>建議使用 <code>pip3 install</code> 或者 Docker</span></strong><br>
+<a href="https://certbot.eff.org/docs/install.html#running-with-docker">Running with Docker</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">yum install python3-pip -y
+</span></span><span class="line"><span class="cl">pip3 install --upgrade pip
+</span></span><span class="line"><span class="cl">pip3 install --upgrade setuptools
+</span></span><span class="line"><span class="cl">pip3 install certbot
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#yum install certbot nginx -y</span>
+</span></span><span class="line"><span class="cl">certbot --version
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">certbot 1.11.0
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>從相依性套件我們可以知道 certbot 是由 Python 撰寫的。</p>
+<h2 id="manual-申請-ca-憑證">[Manual] 申請 CA 憑證</h2>
+<p>certbot 有兩大功能: <strong><span style='color:red'>1. 獲取憑證  2. 安裝憑證</span></strong></p>
+<blockquote>
+<p>The Certbot client supports two types of plugins for obtaining and installing certificates: authenticators and installers.</p>
+</blockquote>
+<p><a href="https://certbot.eff.org/docs/using.html#getting-certificates-and-choosing-plugins">Getting certificates (and choosing plugins)</a></p>
+<p><a href="https://certbot.eff.org/docs/using.html#manual">certbot-Document</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">certbot certonly --manual --preferred-challenges dns
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>上面的指令翻譯成白話文就是:</p>
+<blockquote>
+<p><code>certonly</code> =&gt; 我只要獲取憑證 (obtaining certification)<br>
+<code>--manual</code> =&gt; 我要手動進行域名擁有權驗證<br>
+<code>--preferred-challenges dns</code> =&gt; 偏好使用 DNS record 驗證 (預設使用 HTTP-01)</p>
+</blockquote>
+<p><img src="certbot_manual_0.jpg" alt="certbot_manual_0"></p>
+<p>▲ 輸入要申請的域名、拿到指定 TXT record。 <strong><span style='color:red'>如果要申請 wildcard 以上面範例來說輸入 <code>*.xxzk.me</code> 即可</span></strong></p>
+<p><img src="certbot_manual_1.jpg" alt="certbot_manual_1"></p>
+<p>▲ 到 DNS hosting 設定 DNS record (證明網域擁有權)。這邊使用的是 CloudFlare。 對於驗證網域有問題的這邊請 <a href="https://letsencrypt.org/how-it-works/#domain-validation">Domain Validation</a></p>
+<p>沒有綽啦! 買到域名第一件事情就是設定 <code>NS</code> 讓 CloudFlare 代管<br>
+回想上一次使用 CloudFlare DNS hosting 已經是 2015/1/20 的事情了 (菸~</p>
+<p><img src="certbot_manual_2.jpg" alt="certbot_manual_2"></p>
+<p>▲ 驗證完成，成功拿到 Let&rsquo;s Encrypt 簽發的 TLS Certification</p>
+<p>這是 certbot 產生的 <code>README</code>。告訴使用者&hellip;</p>
+<p><strong><span style='color:red'>不要在這個路徑移動或者重新命名這些檔案，Web server 要使用 <code>ln</code> 過去即可</span></strong></p>
+<ol>
+<li><code>privkey.pem</code> 一看就知道是 private key 只不過習慣上會把附檔名改成 <code>.key</code></li>
+<li><code>fullchain.pem</code> 一看就知道是 CA Bundle</li>
+<li><code>chain.pem</code> 用猜的也知道只包含 Root CA + issuer CA</li>
+<li><code>cert.pem</code> 想都不用想，證書本人</li>
+</ol>
+<p>上面能這麼囂張的原因是&hellip; 我都用 <code>openssl</code> 偷看答案了 ^__^</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">openssl x509 -in &lt;*.pem&gt; -text
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="line"><span class="cl">This directory contains your keys and certificates.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="sb">`privkey.pem`</span>  : the private key for your certificate.
+</span></span><span class="line"><span class="cl"><span class="sb">`fullchain.pem`</span>: the certificate file used in most server software.
+</span></span><span class="line"><span class="cl"><span class="sb">`chain.pem`</span>    : used for OCSP stapling in Nginx &gt;=1.3.7.
+</span></span><span class="line"><span class="cl"><span class="sb">`cert.pem`</span>     : will break many server configurations, and should not be used
+</span></span><span class="line"><span class="cl">                 without reading further documentation (see link below).
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">WARNING: DO NOT MOVE OR RENAME THESE FILES!
+</span></span><span class="line"><span class="cl">         Certbot expects these files to remain in this location in order
+</span></span><span class="line"><span class="cl">         to function properly!
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">We recommend not moving these files. For more information, see the Certbot
+</span></span><span class="line"><span class="cl">User Guide at https://certbot.eff.org/docs/using.html#where-are-my-certificates.
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="cloudflare-plugin-申請-ca-憑證">[CloudFlare Plugin] 申請 CA 憑證</h2>
+<p>certbot CloudFlare 的 Plugin 可以做到自動幫我們更換 DNS record 的目的。這在之後 <strong>使用 cron job 自動更新憑證</strong> 時會使用到。 Let&rsquo;s Encrypt 頒布的憑證時效只有 <strong>3 個月</strong>，如果不使用自動更新 (renew) 的方式會很麻煩。</p>
+<p><a href="https://certbot-dns-cloudflare.readthedocs.io/en/stable/">Welcome to certbot-dns-cloudflare’s documentation!</a></p>
+<h3 id="安裝-cloudflare-dns-plugin">安裝 CloudFlare DNS Plugin</h3>
+<p><strong><span style='color:red'>2021.10.13 更新，不建議用 yum 安裝 certbot-dns-cloudflare。原因: EPEL 內的版本過低，無法使用 Cloudflare API token。</span></strong><br>
+<strong><span style='color:blue'>建議使用 <code>pip3 install</code> 或者 Docker</span></strong><br>
+<a href="https://certbot.eff.org/docs/install.html#running-with-docker">Running with Docker</a><br>
+<a href="https://hub.docker.com/r/certbot/dns-cloudflare">[Docker Hub] certbot/dns-cloudflare</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">yum install python3-pip -y
+</span></span><span class="line"><span class="cl">pip3 install --upgrade pip
+</span></span><span class="line"><span class="cl">pip3 install --upgrade setuptools
+</span></span><span class="line"><span class="cl">pip3 install cloudflare certbot-dns-cloudflare
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#yum install python2-certbot-dns-cloudflare.noarch -y</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="cloudflare_plugin_0.jpg" alt="cloudflare_plugin_0"></p>
+<p>▲ 到 <a href="https://dash.cloudflare.com/?to=/:account/profile/api-tokens">CloudFlare Dashboard 申請 API token</a>。</p>
+<h3 id="範例">範例</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">certbot certonly --force-renewal --dns-cloudflare --dns-cloudflare-credentials /etc/letsencrypt/cloudflare.ini  -d *.xxzk.me
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat cloudflare.ini
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Cloudflare API token used by Certbot</span>
+</span></span><span class="line"><span class="cl"><span class="nv">dns_cloudflare_api_token</span> <span class="o">=</span> -5I5fericishandsomeXXWjGnopeeking7JehahahasbNxx
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>在 <code>--force-renewal</code> 之前 <code>cert.pem</code> 的 SHA256SUM 是 <code>da579f4e9d38db942ce66c2e9b5e4dbaec14272bbb6ccc873d151c688294bd87</code><br>
+拿到新的 <code>cert.pem</code> 之後在算一次 SHA256SUM 雜湊 <code>08b65867e2007e047629aa41f53bcc13b47048afb8a7d36c61e75dc8e422e0ba</code><br>
+得證，有更新!</p>
+<p><img src="cloudflare_plugin_1.jpg" alt="cloudflare_plugin_1"></p>
+<p>▲ <code>--force-renewal</code> 成功</p>
+<h2 id="自動更新憑證-automated-renewals">自動更新憑證 Automated Renewals</h2>
+<p><a href="https://certbot.eff.org/docs/using.html#automated-renewals">Automated Renewals</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">SLEEPTIME</span><span class="o">=</span><span class="k">$(</span>awk <span class="s1">&#39;BEGIN{srand(); print int(rand()*(3600+1))}&#39;</span><span class="k">)</span><span class="p">;</span> <span class="nb">echo</span> <span class="s2">&#34;0 0,12 * * * root sleep </span><span class="nv">$SLEEPTIME</span><span class="s2"> &amp;&amp; certbot renew -q&#34;</span> <span class="p">|</span> sudo tee -a /etc/crontab &gt; /dev/null
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>至於需要 random sleep 的原因是不想讓 server 在 00:00 接受 DDoS 攻擊 XD<br>
+<a href="https://community.letsencrypt.org/t/why-need-a-random-sleep-in-cron-for-certbot/111429">Why need a random sleep in cron for certbot?</a></p>
+<h2 id="lets-encrypt-rate-limits">Let&rsquo;s Encrypt Rate Limits</h2>
+<p><a href="https://letsencrypt.org/docs/rate-limits/">Rate Limits</a></p>
+<p><strong>Let&rsquo;s Encrypt 基於公平合理使用原則，針對不同操作訂下上限值。</strong></p>
+<p><strong><span style='color:red'>1. 主要限制: 單一註冊域名 (Registered Domain) 每周至多 50 次申請證書。(Renew 則不在此限)</span></strong><br>
+<strong>2. 每張證書能夠容納 100 個子域名 (subdomain)。這種證書又稱為 <code>SAN certificate</code></strong><br>
+<strong>3. 基於上述兩點，每周至多能申請 5000 個子域名 (subdomain)</strong><br>
+<strong>4. 每個相同證書 (certificate) 每周至多 5 次更新 (renew)</strong></p>
+<p>碰觸到 <strong>1.</strong> 錯誤訊息會顯示 <code>too many certificates already issued</code><br>
+碰觸到 <strong>4.</strong> 錯誤訊息會顯示 <code>too many certificates already issued for exact set of domains</code></p>
+<p>Let&rsquo;s Encrypt 有加入 <a href="https://certificate.transparency.dev/">Certificate Transparency</a> 這個專案，所以所有簽發憑證的紀錄 (log) 都能透過 <a href="https://crt.sh/">crt.sh</a> 查詢。</p>
+<h2 id="trouble-shooting-缺少中繼憑證-造成-curl-顯示錯誤">[Trouble shooting] 缺少中繼憑證 造成 <code>curl</code> 顯示錯誤</h2>
+<p>簡單說明問題，就是當我們 <code>curl</code> 會產生 <strong><span style='color:red'>curl: (60) Peer&rsquo;s Certificate issuer is not recognized</span></strong> 的錯誤，但使用 browser 直接開啟 URL 卻不會跳任何憑證相關錯誤。</p>
+<h3 id="思考邏輯--查找過程">思考邏輯 &amp; 查找過程</h3>
+<ul>
+<li>瀏覽器打開 <strong><span style='color:blue'>URL</span></strong> 不會跳憑證錯誤 &gt; <strong>在沒有私自匯入自簽憑證前提下</strong> ，代表這張證書是經過 <strong><span style='color:red'>Root CA</span></strong> 認可的。</li>
+</ul>
+<p>從瀏覽器打開憑證頁面可以看到完整的 <strong><span style='color:red'>Trusted Chain</span></strong> ，而且知道:</p>
+<ol>
+<li>公司買的、伺服器給的憑證是 <strong><span style='color:blue'>wildcard certificate</span></strong> (*.xxxx-tech.com)</li>
+<li><strong><span style='color:blue'>issuer (又稱簽發者、中繼)</span></strong> 是 <em>Sectigo RSA Domain Validation Secure Server CA</em></li>
+<li><strong><span style='color:red'>Root CA</span></strong> 是 <em>USERTrust RSA Certification Authority</em></li>
+</ol>
+<p><img src="browser_certificate.jpg" alt="browser_certificate"></p>
+<ul>
+<li>查找到這裡我就想說: <strong><span style='color:blue'>那會不會是 client 端系統的 Root CA 沒有包含 <em>USERTrust RSA Certification Authority</em> ?</span></strong></li>
+</ul>
+<p>(註:天真的以為憑證單靠 Root CA 做驗證，沒有 Full Trusted Chain 的概念)</p>
+<p>那就先來更新 <code>ca-cerificates</code> 吧! <code>yum update</code> (更新 package index) <code>yum install ca-certificates</code> 結果系統告訴我們 <strong><span style='color:red'>ca-certificates 套件已是最新版</span></strong></p>
+<p>Umm.. 不然就搞剛一點 <strong><span style='color:blue'>確認系統 Root CA 是不是真的有 <em>USERTrust RSA Certification Authority</em></span></strong></p>
+<ul>
+<li>透過 <code>strace curl https://xxx.xxx-tech.com | less</code> 查看 <code>curl</code> 會去哪個地方抓從放在系統的憑證 (Root CA 公鑰)</li>
+</ul>
+<p>(關鍵字 <code>Open</code>)，得知路徑為 <code>/etc/pki/ca-trust/extracted/openssl/ca-bundle.trust.crt</code>，那就看看這個檔案有沒有包含 <em>USERTrust RSA Certification Authority</em> 吧!</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">grep -i -A10 <span class="s1">&#39;userTrust RSA&#39;</span> /etc/pki/ca-trust/extracted/openssl/ca-bundle.trust.crt
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="grep_ca_in_linux.jpg" alt="grep_ca_in_linux"></p>
+<p>▲ 經過比對後不僅有，key 的內容完全一樣 (比對公鑰建議採用瞇牌法 看邊 <strong><span style='color:red'>單看開頭不準</span></strong>)</p>
+<ul>
+<li>
+<p>使用 <code>curl -v https//xxx.xxx-tech.com</code> 得知 <strong><span style='color:blue'>NSS error -8179 (SEC_ERROR_UNKNOWN_ISSUER)</span></strong> 確認發生原因 <strong><span style='color:red'>是因為 server 沒有給中繼 (issuer) 憑證</span></strong></p>
+</li>
+<li>
+<p>後續開了一台 Nginx 起來測試，並且按照 <a href="https://www.ssls.com/knowledgebase/how-to-install-an-ssl-certificate-on-a-nginx-server/">這篇</a> 製作 <strong><span style='color:red'>CA bundle</span></strong></p>
+</li>
+</ul>
+<p>製作方式:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat your_domain.crt intermediate.crt root.crt &gt;&gt; ca-bundle.crt
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<ul>
+<li>your_domain.crt: 網路組給我們的 WildCard 憑證</li>
+<li>intermediate.crt: issuer 中繼憑證 (Sectigo 官網抓)</li>
+<li>root.crt: Root CA 憑證 (Sectigo 官網抓)</li>
+</ul>
+</blockquote>
+<p>修改後的 Nginx conf 如下:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-nginx" data-lang="nginx"><span class="line"><span class="cl"><span class="k">upstream</span> <span class="s">xxx</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="kn">server</span> <span class="n">10.192.x.x</span><span class="p">:</span><span class="mi">3000</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="kn">server</span> <span class="n">10.192.x.x</span><span class="p">:</span><span class="mi">3000</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">server</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">listen</span>       <span class="mi">80</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">server_name</span>  <span class="s">xxx.xxx-tech.com</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kn">return</span> <span class="mi">301</span> <span class="s">https://xxx.xxx-tech.com</span><span class="nv">$request_uri</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">server</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">listen</span> <span class="mi">443</span>  <span class="s">ssl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kn">server_name</span>  <span class="s">xxx.xxx-tech.com</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kn">client_max_body_size</span> <span class="s">200M</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kn">ssl_certificate</span> <span class="s">/etc/nginx/ssl/ca-bundle.crt</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">ssl_certificate_key</span> <span class="s">/etc/nginx/ssl/xxx-tech_com.key</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">#ssl_trusted_certificate    /etc/nginx/ssl/ssl-bundle.crt;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kn">ssl_dhparam</span> <span class="s">/etc/nginx/ssl/dhparams.pem</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">ssl_prefer_server_ciphers</span> <span class="no">on</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">ssl_protocols</span> <span class="s">SSLv2</span>  <span class="s">TLSv1.2</span> <span class="s">TLSv1.3</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">ssl_session_cache</span> <span class="s">shared:SSL:50m</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">ssl_session_tickets</span> <span class="no">off</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">ssl_stapling</span>               <span class="no">off</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">ssl_ciphers</span> <span class="s">&#39;ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!3DES:!MD5:!PSK&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">ssl_session_timeout</span> <span class="s">1d</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">location</span> <span class="s">/</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kn">proxy_pass</span> <span class="s">http://xxx</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kn">proxy_http_version</span> <span class="mi">1</span><span class="s">.1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kn">proxy_set_header</span> <span class="s">Upgrade</span> <span class="nv">$http_upgrade</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kn">proxy_set_header</span> <span class="s">Connection</span> <span class="s">&#34;upgrade&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kn">proxy_set_header</span> <span class="s">Host</span> <span class="nv">$http_host</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="kn">proxy_set_header</span> <span class="s">X-Real-IP</span> <span class="nv">$remote_addr</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kn">proxy_set_header</span> <span class="s">X-Forwarded-For</span> <span class="nv">$proxy_add_x_forwarded_for</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kn">proxy_set_header</span> <span class="s">X-Forward-Proto</span> <span class="s">http</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kn">proxy_set_header</span> <span class="s">X-Nginx-Proxy</span> <span class="s">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kn">proxy_redirect</span> <span class="no">off</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>▲ reverse proxy, 有 HTTP 轉 HTTPS 功能 (80 轉 443)，<code>ssl_certificate</code> 直接遞出完整 <strong><span style='color:red'>trusted chain</span></strong></p>
+<h3 id="參考資料">參考資料</h3>
+<ul>
+<li><a href="https://www.ssls.com/knowledgebase/how-to-install-an-ssl-certificate-on-a-nginx-server/">How to install an SSL certificate on a NGINX server – HelpDesk | SSLs.com</a></li>
+<li><a href="https://serverfault.com/questions/485597/default-ca-cert-bundle-location">ssl certificate - Default CA Cert Bundle Location - Server Fault</a></li>
+<li><a href="https://unix.stackexchange.com/questions/97244/list-all-available-ssl-ca-certificates">linux - List all available ssl ca certificates - Unix &amp; Linux Stack Exchange</a></li>
+<li><a href="https://support.sectigo.com/Com_KnowledgeDetailPage?Id=kA01N000000rfBO">Sectigo Knowledge Base</a></li>
+</ul>
+<h3 id="q--a">Q &amp; A</h3>
+<ul>
+<li>(瀏覽器憑證圖) 就有包含整個 trusted chain 了，為什麼還要加中繼 ? 瀏覽器預設也只有 root ca 的憑證不是嗎?</li>
+</ul>
+<p>因為 root CA 不是直接簽發給你，他是往下簽給中繼，中繼再簽給你。 <strong><span style='color:red'>server 沒傳中繼憑證就會炸開</span></strong></p>
+<ul>
+<li>root ca 簽 issuer ，然後我們跟 issuer 買， issuer 幫我們簽章，那為什麼 browser 沒有炸 ? 而且還抓的到 issuer 的資訊 (瀏覽器憑證圖)</li>
+</ul>
+<p><strong><span style='color:blue'>browser 維護的 CA list 除了有包含 Root CA 還有 issuer 的</span></strong></p>
+<p><img src="firefox_cert_manager.jpg" alt="firefox_cert_manager"></p>
+<h3 id="其它查找工具">其它查找工具</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## openSSL</span>
+</span></span><span class="line"><span class="cl">openssl s_client -showcerts -servername www.example.com -connect www.example.com:443 &lt;/dev/null
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## drwetter/testssl.sh</span>
+</span></span><span class="line"><span class="cl">docker run --rm -ti drwetter/testssl.sh -S https://www.google.com
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a href="https://github.com/drwetter/testssl.sh">[GitHub] drwetter/testssl.sh</a></p>
+<h3 id="特別感謝">特別感謝</h3>
+<ul>
+<li>Willy</li>
+<li><a href="https://seadog007.me/">seadog007</a></li>
+<li>James58899</li>
+<li>Tony Yip</li>
+</ul>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2021-10-13
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/ssl-tls-certification/">SSL-TLS-certification</a>
+          <a href="/tags/cloudflare/">cloudflare</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/20211027-ckad-note-section-5-observability/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">CKAD Note Section 5 Observability</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/20210922-terraform-hello-world/">
+            <span class="next-text nav-default">我的第一支 Terraform</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

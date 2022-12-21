@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>VCSA 7.0 (vCenter) 安裝教學 - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="先前準備 建議在同一台 ESXi host 上開一台 Windows 10 主機，並將 .iso 丟入這樣在上傳會比較快。 將 .iso 掛載 or 解壓縮後可以看到安裝所需檔案: vcsa-ui-installer: 圖形化安裝精靈 (有 Wind" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.108.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20210127-how-to-install-vcsa7-via-ova/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="VCSA 7.0 (vCenter) 安裝教學" />
+<meta property="og:description" content="先前準備 建議在同一台 ESXi host 上開一台 Windows 10 主機，並將 .iso 丟入這樣在上傳會比較快。 將 .iso 掛載 or 解壓縮後可以看到安裝所需檔案: vcsa-ui-installer: 圖形化安裝精靈 (有 Wind" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.xxzk.me/post/20210127-how-to-install-vcsa7-via-ova/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-01-27T15:13:00+00:00" />
+<meta property="article:modified_time" content="2021-01-27T15:13:00+00:00" />
+<meta itemprop="name" content="VCSA 7.0 (vCenter) 安裝教學">
+<meta itemprop="description" content="先前準備 建議在同一台 ESXi host 上開一台 Windows 10 主機，並將 .iso 丟入這樣在上傳會比較快。 將 .iso 掛載 or 解壓縮後可以看到安裝所需檔案: vcsa-ui-installer: 圖形化安裝精靈 (有 Wind"><meta itemprop="datePublished" content="2021-01-27T15:13:00+00:00" />
+<meta itemprop="dateModified" content="2021-01-27T15:13:00+00:00" />
+<meta itemprop="wordCount" content="622">
+<meta itemprop="keywords" content="vSphere,VCSA," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="VCSA 7.0 (vCenter) 安裝教學"/>
+<meta name="twitter:description" content="先前準備 建議在同一台 ESXi host 上開一台 Windows 10 主機，並將 .iso 丟入這樣在上傳會比較快。 將 .iso 掛載 or 解壓縮後可以看到安裝所需檔案: vcsa-ui-installer: 圖形化安裝精靈 (有 Wind"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">VCSA 7.0 (vCenter) 安裝教學</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-01-27 </span>
+        <div class="post-category">
+            <a href="/categories/vcsa/"> VCSA </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#先前準備">先前準備</a></li>
+        <li><a href="#安裝步驟">安裝步驟</a></li>
+        <li><a href="#設定-time-zone">設定 Time Zone</a>
+          <ul>
+            <li><a href="#登入-vcsa">登入 VCSA</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p><img src="vsphere_7_simple.jpg" alt="vsphere_7_simple"></p>
+<h2 id="先前準備">先前準備</h2>
+<p>建議在同一台 ESXi host 上開一台 Windows 10 主機，並將 <code>.iso</code> 丟入這樣在上傳會比較快。</p>
+<p>將 <code>.iso</code> 掛載 or 解壓縮後可以看到安裝所需檔案:</p>
+<blockquote>
+<ul>
+<li>vcsa-ui-installer: 圖形化安裝精靈 (有 Windows、Mac 與 Linux 版本)</li>
+<li>vcsa-cli-installer: 文字命令列安裝，一樣三個平台都有</li>
+<li>vcsa: OVF 檔案存放目錄</li>
+</ul>
+</blockquote>
+<h2 id="安裝步驟">安裝步驟</h2>
+<p><strong>本次教學採用 OVA 建立 VCSA</strong></p>
+<ol>
+<li>登入 ESXi host 並且點選建立虛擬機，選擇 <strong><span style='color:red'>從 OVF 或 OVA 檔案部屬虛擬機器</span></strong></li>
+</ol>
+<p><img src="create_vm_from_ova.jpg" alt="create_vm_from_ova"></p>
+<ol start="2">
+<li>選取 OVA 檔案 並且輸入虛擬機名稱</li>
+</ol>
+<p><img src="select_ova.jpg" alt="select_ova"></p>
+<ol start="3">
+<li>選擇儲存區 (Storage Pool)</li>
+</ol>
+<p><img src="select_vcsa_storage.jpg" alt="select_vcsa_storage"></p>
+<ol start="4">
+<li>選擇部屬類型 (使用 GUI 部屬會直接在下面比較差異)，選擇 <strong><span style='color:blue'>Medium 、磁碟精簡佈建、自動開啟電源 以及 <code>Port Group</code></span></strong></li>
+</ol>
+<p><img src="port_group_and_scale_size.jpg" alt="port_group_and_scale_size"></p>
+<ol start="5">
+<li>網路設定 DNS Server 直接留空 ( <strong><span style='color:red'>2022.12.21 註: DNS 不應該留空，應當配置</span></strong> )</li>
+</ol>
+<p><img src="vcsa_network_config.jpg" alt="vcsa_network_config"></p>
+<ol start="6">
+<li>SSO 以及 <code>root</code> 密碼 (因為 VCSA 底層也是 Linux distrobution 之一的 photon)</li>
+</ol>
+<p><img src="vcsa_sso_config.jpg" alt="vcsa_sso_config"></p>
+<ol start="7">
+<li>最後留空的部分</li>
+</ol>
+<p><img src="vcsa_last_config.jpg" alt="vcsa_last_config"></p>
+<ol start="8">
+<li>Summary</li>
+</ol>
+<p><img src="vcsa_all_config.jpg" alt="vcsa_all_config"></p>
+<ol start="9">
+<li>部屬完成後畫面會顯示這樣，要求你透過 <a href="https://x.x.x.x">https://x.x.x.x</a>  進行 <strong><span style='color:red'>Stage 2</span></strong> 的設定</li>
+</ol>
+<p><img src="vcsa_ready_use_browser.jpg" alt="vcsa_ready_use_browser"></p>
+<ul>
+<li><strong>vCenter IP:5480 &gt;  SSO 登入 VMware vCenter Server Management</strong></li>
+<li><strong>vCenter IP &gt; 非 SSO 登入 vSphere Client</strong></li>
+</ul>
+<ol start="10">
+<li>網頁畫面</li>
+</ol>
+<p><img src="web_successful.jpg" alt="web_successful"></p>
+<ol start="11">
+<li><strong><span style='color:blue'>點選 Set Up 輸入系統帳號密碼</span></strong></li>
+</ol>
+<p><img src="set_up_login_web.jpg" alt="set_up_login_web"></p>
+<ol start="12">
+<li><strong>Stage 2</strong></li>
+</ol>
+<p><img src="stage_2.jpg" alt="stage_2"></p>
+<p><img src="enable_ssh.png" alt="enable_ssh"></p>
+<p>▲ 開啟 SSH 服務 ( <strong><span style='color:red'>2022.12.21 更新: 用完請關閉 SSH 服務，除非需要建立 VCSA HA。校時的部分也推薦使用 NTP server111</span></strong> )</p>
+<ol start="13">
+<li>SSO 詳細設定</li>
+</ol>
+<p><img src="stage_2_sso.jpg" alt="stage_2_sso"></p>
+<ol start="14">
+<li><strong><span style='color:red'>取消勾選 CEIP 計畫</span></strong></li>
+</ol>
+<p><img src="no_CEIP.jpg" alt="no_CEIP"></p>
+<ol start="15">
+<li>Stage 2 Summary</li>
+</ol>
+<p><img src="stage_all.jpg" alt="stage_all"></p>
+<ol start="16">
+<li>灌到 68% 出現這個錯誤，使用 SSH 連入。 註: 可以先 <strong><span style='color:red'>Ctrl + F5</span></strong> 重新整理網頁試試看</li>
+</ol>
+<p><img src="use_ssh_login_to_vcsa.jpg" alt="use_ssh_login_to_vcsa"></p>
+<p>根據官方這篇 QA <a href="https://kb.vmware.com/s/article/2109887">Stopping, Starting or Restarting VMware vCenter Server Appliance 6.x &amp; above services (2109887)</a> 即可排除狀況</p>
+<p><img src="start_applmgmt.jpg" alt="start_applmgmt"></p>
+<ol start="17">
+<li>網頁成功出現</li>
+</ol>
+<p><img src="web_with_5480.jpg" alt="web_with_5480"></p>
+<p><img src="web_without_5480.jpg" alt="web_without_5480"></p>
+<ol start="18">
+<li>使用 <code>Administrator@...</code> 登入</li>
+</ol>
+<p><img src="vcenter_login_sso.jpg" alt="vcenter_login_sso"></p>
+<ol start="19">
+<li>新增 License</li>
+</ol>
+<p><img src="add_license.jpg" alt="add_license"></p>
+<ol start="20">
+<li>Assign license for Asset</li>
+</ol>
+<p><img src="asset_assign_license.jpg" alt="asset_assign_license"></p>
+<ol start="21">
+<li>(這次勾選到 HA 有爆炸，因此實驗中) 使用 Cluster 批次加入 ESXi host</li>
+</ol>
+<p><img src="cluster_add_esxi_hosts.jpg" alt="cluster_add_esxi_hosts"></p>
+<p><img src="esxi_sha1_fingerprint.jpg" alt="esxi_sha1_fingerprint"></p>
+<p>▲ SHA1 Fingerprint 的部分</p>
+<p><img src="esxi_hosts_summary.jpg" alt="esxi_hosts_summary"></p>
+<p>▲ Summary</p>
+<ol start="22">
+<li>連結 LDAP (網路組開通主機政策)</li>
+</ol>
+<h2 id="設定-time-zone">設定 Time Zone</h2>
+<h3 id="登入-vcsa">登入 VCSA</h3>
+<p>使用 [https://&lt;VCSA_IP&gt;:5480] 進入 VCSA 後臺管理介面，設定 <strong><span style='color:red'>Time zone</span></strong> 與 <strong><span style='color:red'>NTP server</span></strong></p>
+<p>其中 Time synchronization 有三種模式:</p>
+<blockquote>
+<ul>
+<li>Disable: 不同步</li>
+<li>Host: 與 ESXi 對時 (跟 VM Option 裡面勾選同步一樣)</li>
+<li>NTP: 跟指定 NTP server 對時</li>
+</ul>
+</blockquote>
+<p>參考資料:</p>
+<ul>
+<li><a href="https://docs.vmware.com/en/VMware-vSphere/6.7/com.vmware.vsphere.vcsa.doc/GUID-A43F56F8-A89F-4AEC-AB4A-70410004242E.html">Configure the System Time Zone and Time Synchronization Settings</a></li>
+<li><a href="https://communities.vmware.com/t5/VMware-vCenter-Discussions/Unable-to-setup-timezone-for-VCSA-6-5/td-p/2741922">官方論壇就有提到當 VCSA 從 6.0.x 升級到 6.5.x 會發生 Timezone 被清除的情況</a></li>
+</ul>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2021-01-27
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/vsphere/">vSphere</a>
+          <a href="/tags/vcsa/">VCSA</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/20210128-ansible-hello-world/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">我的第一支 Ansible。 Ansible Hello World</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/20201210-about-dnssec-using-dig/">
+            <span class="next-text nav-default">淺談 DNSSEC 使用 dig</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

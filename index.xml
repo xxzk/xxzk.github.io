@@ -386,6 +386,15 @@
     </item>
     
     <item>
+      <title>VCSA 7.0 (vCenter) 安裝教學</title>
+      <link>https://blog.xxzk.me/post/20210127-how-to-install-vcsa7-via-ova/</link>
+      <pubDate>Wed, 27 Jan 2021 15:13:00 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20210127-how-to-install-vcsa7-via-ova/</guid>
+      <description>先前準備 建議在同一台 ESXi host 上開一台 Windows 10 主機，並將 .iso 丟入這樣在上傳會比較快。 將 .iso 掛載 or 解壓縮後可以看到安裝所需檔案: vcsa-ui-installer: 圖形化安裝精靈 (有 Wind</description>
+    </item>
+    
+    <item>
       <title>淺談 DNSSEC 使用 dig</title>
       <link>https://blog.xxzk.me/post/20201210-about-dnssec-using-dig/</link>
       <pubDate>Thu, 10 Dec 2020 11:46:20 +0000</pubDate>

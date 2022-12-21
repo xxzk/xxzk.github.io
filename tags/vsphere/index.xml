@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>vSphere on 老柯的學習筆記</title>
+    <link>https://blog.xxzk.me/tags/vsphere/</link>
+    <description>Recent content in vSphere on 老柯的學習筆記</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Wed, 27 Jan 2021 15:13:00 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/tags/vsphere/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>VCSA 7.0 (vCenter) 安裝教學</title>
+      <link>https://blog.xxzk.me/post/20210127-how-to-install-vcsa7-via-ova/</link>
+      <pubDate>Wed, 27 Jan 2021 15:13:00 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20210127-how-to-install-vcsa7-via-ova/</guid>
+      <description>先前準備 建議在同一台 ESXi host 上開一台 Windows 10 主機，並將 .iso 丟入這樣在上傳會比較快。 將 .iso 掛載 or 解壓縮後可以看到安裝所需檔案: vcsa-ui-installer: 圖形化安裝精靈 (有 Wind</description>
+    </item>
+    
+  </channel>
+</rss>

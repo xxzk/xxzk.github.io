@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>vsphere on 老柯的學習筆記</title>
+    <title>vSphere on 老柯的學習筆記</title>
     <link>https://blog.xxzk.me/categories/vsphere/</link>
-    <description>Recent content in vsphere on 老柯的學習筆記</description>
+    <description>Recent content in vSphere on 老柯的學習筆記</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Tue, 21 Jun 2022 15:46:54 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/categories/vsphere/index.xml" rel="self" type="application/rss+xml" />
@@ -23,6 +23,15 @@
       
       <guid>https://blog.xxzk.me/post/20210512-vsphere-showed-that-vm-is-orphanded/</guid>
       <description>通常這個狀況會發生在 ESXi 升級失敗、Firmware 更新踩到地雷爆炸、ESXi 重灌地獄，好不容易 ESXi 灌好了準備回到人間 卻在 vSphere 上面看到該 ESXi Host 所有 VM 顯</description>
+    </item>
+    
+    <item>
+      <title>搞懂 vSphere、vCenter 和 ESXi 的關係</title>
+      <link>https://blog.xxzk.me/post/20201023-about-vsphere-vcenter-esxi/</link>
+      <pubDate>Fri, 23 Oct 2020 14:03:42 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20201023-about-vsphere-vcenter-esxi/</guid>
+      <description>拿 Office 2019 來舉例好了， 購買 Office 2019 其實就包含 Word、Excel、Powerpoint &amp;hellip;. 等軟體 vSphere 就好像 Office 2019 有相同概念就很好理解 ESXi ESXi 是 VMWare 公司出產的 OS Level</description>
     </item>
     
   </channel>

@@ -849,6 +849,13 @@
   </url>
   
   <url>
+    <loc>https://blog.xxzk.me/post/20201023-about-vsphere-vcenter-esxi/</loc>
+    <lastmod>2020-10-23T14:03:42+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.xxzk.me/tags/rdp/</loc>
     <lastmod>2020-10-15T13:53:23+00:00</lastmod>
     <changefreq>weekly</changefreq>

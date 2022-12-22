@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>在 Ubuntu 使用 Windows 遠端桌面 (RDP) - 老柯的學習筆記</title>
+  <title>搞懂 vSphere、vCenter 和 ESXi 的關係 - 老柯的學習筆記</title>
   <meta name="renderer" content="webkit" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
@@ -16,7 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="20201016 更新 公司架構圖的 IPsec 是 Site to Site VPN 啦! 一般使用者用的是 Remote access VPN 採用 SSL VPN FortiClient for Linux 可以正常使用喔~ 自己雷自己 這篇會出產的原因是因為&amp;hellip;. FortiClient Linux" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="老柯" /><meta name="description" content="拿 Office 2019 來舉例好了， 購買 Office 2019 其實就包含 Word、Excel、Powerpoint &amp;hellip;. 等軟體 vSphere 就好像 Office 2019 有相同概念就很好理解 ESXi ESXi 是 VMWare 公司出產的 OS Level" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
@@ -26,7 +26,7 @@
 <meta name="generator" content="Hugo 0.108.0 with theme even" />
 
 
-<link rel="canonical" href="https://blog.xxzk.me/post/20201015-ubuntu-rdp-client-remmina/" />
+<link rel="canonical" href="https://blog.xxzk.me/post/20201023-about-vsphere-vcenter-esxi/" />
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -39,19 +39,19 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
-<meta property="og:title" content="在 Ubuntu 使用 Windows 遠端桌面 (RDP)" />
-<meta property="og:description" content="20201016 更新 公司架構圖的 IPsec 是 Site to Site VPN 啦! 一般使用者用的是 Remote access VPN 採用 SSL VPN FortiClient for Linux 可以正常使用喔~ 自己雷自己 這篇會出產的原因是因為&hellip;. FortiClient Linux" />
+<meta property="og:title" content="搞懂 vSphere、vCenter 和 ESXi 的關係" />
+<meta property="og:description" content="拿 Office 2019 來舉例好了， 購買 Office 2019 其實就包含 Word、Excel、Powerpoint &hellip;. 等軟體 vSphere 就好像 Office 2019 有相同概念就很好理解 ESXi ESXi 是 VMWare 公司出產的 OS Level" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://blog.xxzk.me/post/20201015-ubuntu-rdp-client-remmina/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2020-10-15T13:53:23+00:00" />
-<meta property="article:modified_time" content="2020-10-15T13:53:23+00:00" />
-<meta itemprop="name" content="在 Ubuntu 使用 Windows 遠端桌面 (RDP)">
-<meta itemprop="description" content="20201016 更新 公司架構圖的 IPsec 是 Site to Site VPN 啦! 一般使用者用的是 Remote access VPN 採用 SSL VPN FortiClient for Linux 可以正常使用喔~ 自己雷自己 這篇會出產的原因是因為&hellip;. FortiClient Linux"><meta itemprop="datePublished" content="2020-10-15T13:53:23+00:00" />
-<meta itemprop="dateModified" content="2020-10-15T13:53:23+00:00" />
-<meta itemprop="wordCount" content="281">
-<meta itemprop="keywords" content="ubuntu,RDP," /><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="在 Ubuntu 使用 Windows 遠端桌面 (RDP)"/>
-<meta name="twitter:description" content="20201016 更新 公司架構圖的 IPsec 是 Site to Site VPN 啦! 一般使用者用的是 Remote access VPN 採用 SSL VPN FortiClient for Linux 可以正常使用喔~ 自己雷自己 這篇會出產的原因是因為&hellip;. FortiClient Linux"/>
+<meta property="og:url" content="https://blog.xxzk.me/post/20201023-about-vsphere-vcenter-esxi/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2020-10-23T14:03:42+00:00" />
+<meta property="article:modified_time" content="2020-10-23T14:03:42+00:00" />
+<meta itemprop="name" content="搞懂 vSphere、vCenter 和 ESXi 的關係">
+<meta itemprop="description" content="拿 Office 2019 來舉例好了， 購買 Office 2019 其實就包含 Word、Excel、Powerpoint &hellip;. 等軟體 vSphere 就好像 Office 2019 有相同概念就很好理解 ESXi ESXi 是 VMWare 公司出產的 OS Level"><meta itemprop="datePublished" content="2020-10-23T14:03:42+00:00" />
+<meta itemprop="dateModified" content="2020-10-23T14:03:42+00:00" />
+<meta itemprop="wordCount" content="399">
+<meta itemprop="keywords" content="vSphere," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="搞懂 vSphere、vCenter 和 ESXi 的關係"/>
+<meta name="twitter:description" content="拿 Office 2019 來舉例好了， 購買 Office 2019 其實就包含 Word、Excel、Powerpoint &hellip;. 等軟體 vSphere 就好像 Office 2019 有相同概念就很好理解 ESXi ESXi 是 VMWare 公司出產的 OS Level"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -124,12 +124,12 @@
           <article class="post">
     
     <header class="post-header">
-      <h1 class="post-title">在 Ubuntu 使用 Windows 遠端桌面 (RDP)</h1>
+      <h1 class="post-title">搞懂 vSphere、vCenter 和 ESXi 的關係</h1>
 
       <div class="post-meta">
-        <span class="post-time"> 2020-10-15 </span>
+        <span class="post-time"> 2020-10-23 </span>
         <div class="post-category">
-            <a href="/categories/ubuntu/"> ubuntu </a>
+            <a href="/categories/vsphere/"> vSphere </a>
             </div>
         
       </div>
@@ -142,8 +142,8 @@
   <ul>
     <li>
       <ul>
-        <li><a href="#安裝-remmina-on-mint-192-tina">安裝 Remmina on Mint 19.2 Tina</a></li>
-        <li><a href="#參考資料">參考資料</a></li>
+        <li><a href="#esxi">ESXi</a></li>
+        <li><a href="#vcenter">vCenter</a></li>
       </ul>
     </li>
   </ul>
@@ -151,37 +151,36 @@
   </div>
 </div>
     <div class="post-content">
-      <p><strong>20201016 更新</strong></p>
-<p>公司架構圖的 IPsec 是 Site to Site VPN 啦! 一般使用者用的是 Remote access VPN 採用 SSL VPN<br>
-FortiClient for Linux 可以正常使用喔~ <del>自己雷自己</del></p>
-<p>這篇會出產的原因是因為&hellip;.</p>
-<ol>
-<li>FortiClient Linux 版本不支援 IPsec</li>
-<li>參考這篇 <a href="http://duckfly-tw.blogspot.com/2019/01/linux-mint-l2tp-vpn-client.html">Linux Mint 建立 L2TP VPN CLIENT</a> 也沒辦法設定好 Forti IPsec</li>
-<li>Fortinet 官網幾年前的<a href="https://kb.fortinet.com/kb/documentLink.do?externalID=FD37618">教學</a> 也沒辦法設定完成</li>
-</ol>
-<p>但還是希望在X樓開會時手邊裝有 <code>Linux Mint 19.2</code> 的筆電可以摸到 <code>CCC</code> &gt; <code>DDD</code> or <code>DDDD</code> ，既然 Ubuntu 沒辦法完成 Forti IPsec 的設定那就想說透過 8F 的 Windows</p>
-<h2 id="安裝-remmina-on-mint-192-tina">安裝 Remmina on Mint 19.2 Tina</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo apt-add-repository ppa:remmina-ppa-team/remmina-next
-</span></span><span class="line"><span class="cl">sudo apt update
-</span></span><span class="line"><span class="cl">sudo apt install remmina remmina-plugin-rdp remmina-plugin-secret
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>設定參考如圖片，假如有遇到 <code>Your libfreerdp does not support H264</code> 請參閱參考資料連結</p>
-<p><img src="rdp_setting.jpg" alt="rdp_setting"></p>
-<h2 id="參考資料">參考資料</h2>
+      <p><strong>拿 Office 2019 來舉例好了， 購買 Office 2019 其實就包含 Word、Excel、Powerpoint &hellip;. 等軟體</strong><br>
+<strong>vSphere 就好像 Office 2019 有相同概念就很好理解</strong></p>
+<p><img src="vSphere_suite.png" alt="vSphere_suite.png"></p>
+<h2 id="esxi">ESXi</h2>
+<p><code>ESXi</code> 是 VMWare 公司出產的 <code>OS Level Hypervisor</code> 又稱做 <code>Type I Hypervisor</code> 對於虛擬化有不清楚的地方可以參考 洪朝貴老師的文章 (亦是圖片來源) <a href="https://newtoypia.blogspot.com/2015/04/virtualization-terminology.html">明智消費者的虛擬化技術基本觀念及術語 </a><br>
+或者 <a href="https://www.cyut.edu.tw/~ckhung/b/virt/virtualization.svg">sozi 簡報</a></p>
+<p>以下圖為例這是基於 <code>Host OS</code> 的 <code>Hypervisor</code><br>
+ESXi 少掉了一層 <code>Host OS</code> 動作更靈敏 (效能) 更不容易跌倒 (Host OS crash)</p>
+<p><img src="type_2_hypervisor.jpg" alt="type_2_hypervisor"></p>
+<p>以公司目前架構，在 Cloud 的世界當中屬於自建機房 (On-Premises)<br>
+圖片來源以及參考資料 <a href="https://www.bmc.com/blogs/saas-vs-paas-vs-iaas-whats-the-difference-and-how-to-choose/">SaaS vs PaaS vs IaaS: What’s The Difference &amp; How To Choose</a></p>
+<p><img src="bmc_cloud_diff.png" alt="bmc_cloud_diff"></p>
+<h2 id="vcenter">vCenter</h2>
+<p><strong>vCenter 能管理多台 ESXi Host 並且提供 vSphere Client 網頁管理介面</strong></p>
+<p><img src="vcenter_207.jpg" alt="vcenter_207"></p>
+<p>vCenter 可以獨立安裝在 <code>Bare Metal</code> 上，但通常會直接安裝在 <code>ESXi host VM</code> 內，舊版 vCenter 通常是安裝在一台 Windows 上<br>
+目前公司使用的都是 <code>VCSA</code> (vCenter Server Application) 底層 OS 採用 <code>Photon OS</code> (Linux Distrobution 之一，有Open Source) 開發者是 VMWare\</p>
+<p>在 vSphere 6.5 中 <code>VCSA</code> 包含了:</p>
 <ul>
-<li><a href="https://ithelp.ithome.com.tw/articles/10135387">[完全用 GNU/Linux 工作] 21. 遠端桌面軟體 - Remmina - iT 邦幫忙::一起幫忙解決難題，拯救 IT 人的一天</a></li>
-<li><a href="https://remmina.org/how-to-install-remmina/">How to install Remmina - Remmina</a></li>
-<li><a href="https://gitlab.com/Remmina/Remmina/-/issues/1584">Your libfreerdp does not support H264 (#1584) · Issues · Remmina / Remmina · GitLab</a></li>
+<li>Update Manager</li>
+<li>內置備份恢復功能</li>
+<li>自帶 HA 支持</li>
+<li>增強的 Appliance 管理能力</li>
 </ul>
+<ul>
+<li><a href="https://upload.facebook.com/notes/vmware-taiwan/vsphere-65-%E6%96%B0%E5%8A%9F%E8%83%BD%E5%AE%8C%E6%95%B4%E4%BB%8B%E7%B4%B9-1-%E5%85%A8%E5%8A%9F%E8%83%BD-vcenter-server-appliance/610141879194637/">vSphere 6.5 新功能完整介紹 (1) － 全功能 vCenter Server Appliance</a></li>
+<li><a href="https://ithelp.ithome.com.tw/articles/10184500">【IT 邦幫忙】VMware vCenter Server Appliance 6.5 Step-By-Step Installation </a></li>
+</ul>
+<p>目前安裝的授權 (License) 包含了這些功能</p>
+<p><img src="VCSA_license.jpg" alt="VCSA_license"></p>
 
     </div>
 
@@ -193,7 +192,7 @@ FortiClient for Linux 可以正常使用喔~ <del>自己雷自己</del></p>
   <p class="copyright-item">
     <span class="item-title">LastMod</span>
     <span class="item-content">
-        2020-10-15
+        2020-10-23
         
     </span>
   </p>
@@ -202,17 +201,16 @@ FortiClient for Linux 可以正常使用喔~ <del>自己雷自己</del></p>
 </div>
 <footer class="post-footer">
       <div class="post-tags">
-          <a href="/tags/ubuntu/">ubuntu</a>
-          <a href="/tags/rdp/">RDP</a>
+          <a href="/tags/vsphere/">vSphere</a>
           </div>
       <nav class="post-nav">
-        <a class="prev" href="/post/20201023-about-vsphere-vcenter-esxi/">
+        <a class="prev" href="/post/20201112-forti-split-tunneling/">
             <i class="iconfont icon-left"></i>
-            <span class="prev-text nav-default">搞懂 vSphere、vCenter 和 ESXi 的關係</span>
+            <span class="prev-text nav-default">Forti Client SSL-VPN 運作機制原理</span>
             <span class="prev-text nav-mobile">Prev</span>
           </a>
-        <a class="next" href="/post/20201012-encfs-rclone/">
-            <span class="next-text nav-default">EncFS &#43; Rclone 公有雲變私有雲，還能掛載串流!</span>
+        <a class="next" href="/post/20201015-ubuntu-rdp-client-remmina/">
+            <span class="next-text nav-default">在 Ubuntu 使用 Windows 遠端桌面 (RDP)</span>
             <span class="next-text nav-mobile">Next</span>
             <i class="iconfont icon-right"></i>
           </a>

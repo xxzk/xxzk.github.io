@@ -25,5 +25,14 @@
       <description>先前準備 建議在同一台 ESXi host 上開一台 Windows 10 主機，並將 .iso 丟入這樣在上傳會比較快。 將 .iso 掛載 or 解壓縮後可以看到安裝所需檔案: vcsa-ui-installer: 圖形化安裝精靈 (有 Wind</description>
     </item>
     
+    <item>
+      <title>搞懂 vSphere、vCenter 和 ESXi 的關係</title>
+      <link>https://blog.xxzk.me/post/20201023-about-vsphere-vcenter-esxi/</link>
+      <pubDate>Fri, 23 Oct 2020 14:03:42 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20201023-about-vsphere-vcenter-esxi/</guid>
+      <description>拿 Office 2019 來舉例好了， 購買 Office 2019 其實就包含 Word、Excel、Powerpoint &amp;hellip;. 等軟體 vSphere 就好像 Office 2019 有相同概念就很好理解 ESXi ESXi 是 VMWare 公司出產的 OS Level</description>
+    </item>
+    
   </channel>
 </rss>

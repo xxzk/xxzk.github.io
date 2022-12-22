@@ -458,6 +458,15 @@
     </item>
     
     <item>
+      <title>搞懂 vSphere、vCenter 和 ESXi 的關係</title>
+      <link>https://blog.xxzk.me/post/20201023-about-vsphere-vcenter-esxi/</link>
+      <pubDate>Fri, 23 Oct 2020 14:03:42 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20201023-about-vsphere-vcenter-esxi/</guid>
+      <description>拿 Office 2019 來舉例好了， 購買 Office 2019 其實就包含 Word、Excel、Powerpoint &amp;hellip;. 等軟體 vSphere 就好像 Office 2019 有相同概念就很好理解 ESXi ESXi 是 VMWare 公司出產的 OS Level</description>
+    </item>
+    
+    <item>
       <title>在 Ubuntu 使用 Windows 遠端桌面 (RDP)</title>
       <link>https://blog.xxzk.me/post/20201015-ubuntu-rdp-client-remmina/</link>
       <pubDate>Thu, 15 Oct 2020 13:53:23 +0000</pubDate>

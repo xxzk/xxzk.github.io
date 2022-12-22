@@ -134,6 +134,15 @@
     </item>
     
     <item>
+      <title>Linux 限制網路速度，使用 Wondershaper</title>
+      <link>https://blog.xxzk.me/post/20211126-linux-network-limiter-wondershaper/20211126-linux-network-limiter-wondershaper/</link>
+      <pubDate>Fri, 26 Nov 2021 14:23:11 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20211126-linux-network-limiter-wondershaper/20211126-linux-network-limiter-wondershaper/</guid>
+      <description>Wonder Shaper 是一支底層使用 Linux 自帶的流量控制命令 tc 的 shell script，能夠簡單、方便、快速 達成限流的目的 在 Wonder Shaper v1.3 以上版本等待列隊方式從本來的 CBQ 變更成 HT</description>
+    </item>
+    
+    <item>
       <title>CKA Note Section 6 Cluster Maintence</title>
       <link>https://blog.xxzk.me/post/20211126-cka_note_section_6_cluster_maintence/</link>
       <pubDate>Fri, 26 Nov 2021 11:24:39 +0000</pubDate>

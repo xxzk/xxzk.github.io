@@ -289,6 +289,27 @@
   </url>
   
   <url>
+    <loc>https://blog.xxzk.me/post/20211126-linux-network-limiter-wondershaper/20211126-linux-network-limiter-wondershaper/</loc>
+    <lastmod>2021-11-26T14:23:11+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/tags/network/</loc>
+    <lastmod>2021-11-26T14:23:11+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/categories/network/</loc>
+    <lastmod>2021-11-26T14:23:11+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.xxzk.me/post/20211126-cka_note_section_6_cluster_maintence/</loc>
     <lastmod>2021-11-26T11:24:39+00:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -500,13 +521,6 @@
   
   <url>
     <loc>https://blog.xxzk.me/tags/infra/</loc>
-    <lastmod>2021-07-22T08:53:50+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.xxzk.me/tags/network/</loc>
     <lastmod>2021-07-22T08:53:50+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>

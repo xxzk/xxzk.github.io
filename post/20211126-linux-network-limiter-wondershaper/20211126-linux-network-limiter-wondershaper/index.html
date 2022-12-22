@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Linux 限制網路速度，使用 Wondershaper - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="Wonder Shaper 是一支底層使用 Linux 自帶的流量控制命令 tc 的 shell script，能夠簡單、方便、快速 達成限流的目的 在 Wonder Shaper v1.3 以上版本等待列隊方式從本來的 CBQ 變更成 HT" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.108.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20211126-linux-network-limiter-wondershaper/20211126-linux-network-limiter-wondershaper/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Linux 限制網路速度，使用 Wondershaper" />
+<meta property="og:description" content="Wonder Shaper 是一支底層使用 Linux 自帶的流量控制命令 tc 的 shell script，能夠簡單、方便、快速 達成限流的目的 在 Wonder Shaper v1.3 以上版本等待列隊方式從本來的 CBQ 變更成 HT" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.xxzk.me/post/20211126-linux-network-limiter-wondershaper/20211126-linux-network-limiter-wondershaper/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-11-26T14:23:11+00:00" />
+<meta property="article:modified_time" content="2021-11-26T14:23:11+00:00" />
+<meta itemprop="name" content="Linux 限制網路速度，使用 Wondershaper">
+<meta itemprop="description" content="Wonder Shaper 是一支底層使用 Linux 自帶的流量控制命令 tc 的 shell script，能夠簡單、方便、快速 達成限流的目的 在 Wonder Shaper v1.3 以上版本等待列隊方式從本來的 CBQ 變更成 HT"><meta itemprop="datePublished" content="2021-11-26T14:23:11+00:00" />
+<meta itemprop="dateModified" content="2021-11-26T14:23:11+00:00" />
+<meta itemprop="wordCount" content="681">
+<meta itemprop="keywords" content="network," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Linux 限制網路速度，使用 Wondershaper"/>
+<meta name="twitter:description" content="Wonder Shaper 是一支底層使用 Linux 自帶的流量控制命令 tc 的 shell script，能夠簡單、方便、快速 達成限流的目的 在 Wonder Shaper v1.3 以上版本等待列隊方式從本來的 CBQ 變更成 HT"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Linux 限制網路速度，使用 Wondershaper</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-11-26 </span>
+        <div class="post-category">
+            <a href="/categories/network/"> network </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#安裝-wondershaper">安裝 Wondershaper</a>
+          <ul>
+            <li><a href="#安裝至系統">安裝至系統</a></li>
+            <li><a href="#systemd">systemd</a></li>
+          </ul>
+        </li>
+        <li><a href="#實驗">實驗</a>
+          <ul>
+            <li><a href="#安裝-speedtest-cli">安裝 speedtest CLI</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p><img src="pexels-kehn-hermano-3849167.jpg" alt="pexels-kehn-hermano-3849167"></p>
+<p><strong><span style='color:red'>Wonder Shaper 是一支底層使用 Linux 自帶的流量控制命令 <code>tc</code> 的 shell script，能夠簡單、方便、快速 達成限流的目的</span></strong> <br>
+在 Wonder Shaper v1.3 以上版本等待列隊方式從本來的 CBQ 變更成 HTB，針對 10Mb (tenmegabits) 以上的速率提供更好的流量控制方式。</p>
+<p><a href="https://github.com/magnific0/wondershaper">【GitHub】magnific0/wondershaper </a></p>
+<h2 id="安裝-wondershaper">安裝 Wondershaper</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> /opt
+</span></span><span class="line"><span class="cl">yum install git -y
+</span></span><span class="line"><span class="cl">git clone https://github.com/magnific0/wondershaper.git
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> wondershaper
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>因為是 shell script 的關係，因此可以直接執行使用。取得 wondershaper 使用方式 (有哪些參數):</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">./wondershaper -h
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>-h</code>            : 顯示使用方式<br>
+<code>-a &lt;adapter&gt;</code>  : 選擇目標網卡 (例如: <code>eth0</code> )<br>
+<code>-d &lt;rate&gt;</code>     : 設定下載 (Download) 網路速率<br>
+<code>-u &lt;rate&gt;</code>     : 設定上傳 (Upload) 網路速率<br>
+<code>-p</code>            : 使用 <code>/etc/systemd/wondershaper.conf</code> 內的設定檔<br>
+<code>-c</code>            : 清除目標網卡所有限制<br>
+<code>-s</code>            : 顯示目標網卡當前的設定<br>
+<code>-v</code>            : 顯示 Wondershaper 版本</p>
+<p>Example 範例:</p>
+<p>針對 <code>eth0</code> 網卡設定 <strong>下載 25Mbps 上傳 2Mbps</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">./wondershaper -a eth0 -d <span class="m">25600</span> -u <span class="m">2048</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="安裝至系統">安裝至系統</h3>
+<p>如果不想每次都要跑到 <code>/opt/wondershaper</code> 下面執行的話，官方也有提供 makefile 安裝至 <code>/usr/bin</code> (預設)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo make install
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>完成後執行 <code>which</code> 應該會顯示 <code>/usr/bin/wondershaper</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">which wondershaper
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="systemd">systemd</h3>
+<p>如果想要 OS 一啟動就套用頻寬限制，可以使用這種方式。<span style="color:red"><strong>必須先執行 make install</strong></span><br>
+編輯設定檔:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim /etc/systemd/wondershaper.conf
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>Enable service</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo systemctl <span class="nb">enable</span> --now wondershaper.service
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="實驗">實驗</h2>
+<p>實驗使用 <a href="https://www.speedtest.net/apps/cli">speedtest.net 提供的 CLI 工具</a><br>
+測速伺服器節點個人習慣選擇 <strong>Chief Telecom 是方電信</strong></p>
+<h3 id="安裝-speedtest-cli">安裝 speedtest CLI</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo yum install wget
+</span></span><span class="line"><span class="cl">wget https://bintray.com/ookla/rhel/rpm -O bintray-ookla-rhel.repo
+</span></span><span class="line"><span class="cl">sudo mv bintray-ookla-rhel.repo /etc/yum.repos.d/
+</span></span><span class="line"><span class="cl">sudo yum install speedtest -y
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>顯示測速伺服器列表 (server ID)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">speedtest -L
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>選擇節點測速</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">speedtest -s &lt;sperver_id&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">   Speedtest by Ookla
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">     Server: Chief Telecom - Taichung (id = 4940)
+</span></span><span class="line"><span class="cl">        ISP: Digital United
+</span></span><span class="line"><span class="cl">    Latency:     9.13 ms   (0.30 ms jitter)
+</span></span><span class="line"><span class="cl">   Download:    56.89 Mbps (data used: 28.5 MB)                               
+</span></span><span class="line"><span class="cl">     Upload:    97.31 Mbps (data used: 47.5 MB)                               
+</span></span><span class="line"><span class="cl">Packet Loss:     0.0%
+</span></span><span class="line"><span class="cl"> Result URL: https://www.speedtest.net/result/c/
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>確定 default gateway 是 <code>eth0</code> 後開始限速</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">route -n
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>使用 Wondershaper 限速前使用 <code>ip link</code> 顯示網卡狀態</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc mq state UP mode DEFAULT group default qlen 1000
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>執行限速</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">systemctl start wondershaper.service
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>網卡狀態 qdisc mq -&gt; qdisc htp</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc htb state UP mode DEFAULT group default qlen 1000
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>再次執行 <code>speedtest</code> 測速</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">   Speedtest by Ookla
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">     Server: Chief Telecom - Taichung (id = 4940)
+</span></span><span class="line"><span class="cl">        ISP: Digital United
+</span></span><span class="line"><span class="cl">    Latency:     8.85 ms   (0.09 ms jitter)
+</span></span><span class="line"><span class="cl">   Download:    23.80 Mbps (data used: 17.6 MB)                               
+</span></span><span class="line"><span class="cl">     Upload:     1.87 Mbps (data used: 845.8 kB)                               
+</span></span><span class="line"><span class="cl">Packet Loss:     2.5%
+</span></span><span class="line"><span class="cl"> Result URL: https://www.speedtest.net/result/c/
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong><span style='color:red'>掉包率經過幾次反覆測試，有出現 0.0%~2.5%</span></strong></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2021-11-26
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/network/">network</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/20211220-diff-between-shell-and-exec-in-dockerfile/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Dockerfile - Shell 與 Exec 的差異</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/20211126-cka_note_section_6_cluster_maintence/">
+            <span class="next-text nav-default">CKA Note Section 6 Cluster Maintence</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -6,7 +6,16 @@
     <description>Recent content in vSphere on 老柯的學習筆記</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 27 Jan 2021 15:13:00 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/tags/vsphere/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 12 May 2021 11:25:56 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/tags/vsphere/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>vSphere 顯示 VM Orphaned (虛擬機孤立狀態)</title>
+      <link>https://blog.xxzk.me/post/20210512-vsphere-showed-that-vm-is-orphanded/</link>
+      <pubDate>Wed, 12 May 2021 11:25:56 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20210512-vsphere-showed-that-vm-is-orphanded/</guid>
+      <description>通常這個狀況會發生在 ESXi 升級失敗、Firmware 更新踩到地雷爆炸、ESXi 重灌地獄，好不容易 ESXi 灌好了準備回到人間 卻在 vSphere 上面看到該 ESXi Host 所有 VM 顯</description>
+    </item>
+    
     <item>
       <title>VCSA 7.0 (vCenter) 安裝教學</title>
       <link>https://blog.xxzk.me/post/20210127-how-to-install-vcsa7-via-ova/</link>

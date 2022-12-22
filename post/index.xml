@@ -332,6 +332,15 @@
     </item>
     
     <item>
+      <title>vSphere 顯示 VM Orphaned (虛擬機孤立狀態)</title>
+      <link>https://blog.xxzk.me/post/20210512-vsphere-showed-that-vm-is-orphanded/</link>
+      <pubDate>Wed, 12 May 2021 11:25:56 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20210512-vsphere-showed-that-vm-is-orphanded/</guid>
+      <description>通常這個狀況會發生在 ESXi 升級失敗、Firmware 更新踩到地雷爆炸、ESXi 重灌地獄，好不容易 ESXi 灌好了準備回到人間 卻在 vSphere 上面看到該 ESXi Host 所有 VM 顯</description>
+    </item>
+    
+    <item>
       <title>MinIO 簡單介紹</title>
       <link>https://blog.xxzk.me/post/20210503-minio-introduce/</link>
       <pubDate>Mon, 03 May 2021 13:41:55 +0000</pubDate>

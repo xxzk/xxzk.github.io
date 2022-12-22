@@ -16,5 +16,14 @@
       <description>前言 這篇簡單紀錄透過使用 patch iso 映像檔，在沒有外網的情況下去做 upgrade。更新的原因很簡單，原本的 VCSA 7.0U1 還沒有跨 vCenter vMotion (Advanced Cross vCenter Server vMotion, XVM) 移轉的功能，必</description>
     </item>
     
+    <item>
+      <title>vSphere 顯示 VM Orphaned (虛擬機孤立狀態)</title>
+      <link>https://blog.xxzk.me/post/20210512-vsphere-showed-that-vm-is-orphanded/</link>
+      <pubDate>Wed, 12 May 2021 11:25:56 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20210512-vsphere-showed-that-vm-is-orphanded/</guid>
+      <description>通常這個狀況會發生在 ESXi 升級失敗、Firmware 更新踩到地雷爆炸、ESXi 重灌地獄，好不容易 ESXi 灌好了準備回到人間 卻在 vSphere 上面看到該 ESXi Host 所有 VM 顯</description>
+    </item>
+    
   </channel>
 </rss>

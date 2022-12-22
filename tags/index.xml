@@ -251,6 +251,15 @@
     </item>
     
     <item>
+      <title>vSphere</title>
+      <link>https://blog.xxzk.me/tags/vsphere/</link>
+      <pubDate>Wed, 12 May 2021 11:25:56 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/tags/vsphere/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>minio</title>
       <link>https://blog.xxzk.me/tags/minio/</link>
       <pubDate>Mon, 03 May 2021 13:41:55 +0000</pubDate>
@@ -328,15 +337,6 @@
       <pubDate>Sat, 20 Feb 2021 10:54:58 +0000</pubDate>
       
       <guid>https://blog.xxzk.me/tags/httpd/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>vSphere</title>
-      <link>https://blog.xxzk.me/tags/vsphere/</link>
-      <pubDate>Wed, 27 Jan 2021 15:13:00 +0000</pubDate>
-      
-      <guid>https://blog.xxzk.me/tags/vsphere/</guid>
       <description></description>
     </item>
     

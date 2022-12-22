@@ -17,7 +17,7 @@
     </item>
     
     <item>
-      <title>將 Apache (access|error) log 透過 rsyslog 發至 Graylog</title>
+      <title>將 Apache access/error log 透過 rsyslog 發至 Graylog</title>
       <link>https://blog.xxzk.me/post/20200924-httpd-log-to-graylog-with-rsyslog/</link>
       <pubDate>Thu, 24 Sep 2020 15:29:12 +0000</pubDate>
       

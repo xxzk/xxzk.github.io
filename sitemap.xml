@@ -835,6 +835,34 @@
   </url>
   
   <url>
+    <loc>https://blog.xxzk.me/tags/rdp/</loc>
+    <lastmod>2020-10-15T13:53:23+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/tags/ubuntu/</loc>
+    <lastmod>2020-10-15T13:53:23+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/categories/ubuntu/</loc>
+    <lastmod>2020-10-15T13:53:23+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/post/20201015-ubuntu-rdp-client-remmina/</loc>
+    <lastmod>2020-10-15T13:53:23+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.xxzk.me/post/20201012-encfs-rclone/</loc>
     <lastmod>2020-10-12T13:48:24+00:00</lastmod>
     <changefreq>weekly</changefreq>

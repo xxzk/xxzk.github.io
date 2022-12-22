@@ -8,7 +8,7 @@
     <language>en</language>
     <lastBuildDate>Thu, 24 Sep 2020 15:29:12 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/categories/graylog/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>將 Apache access/error log 透過 rsyslog 發至 Graylog</title>
+      <title>將 Apache access,error log 透過 rsyslog 發至 Graylog</title>
       <link>https://blog.xxzk.me/post/20200924-httpd-log-to-graylog-with-rsyslog/</link>
       <pubDate>Thu, 24 Sep 2020 15:29:12 +0000</pubDate>
       

@@ -458,6 +458,15 @@
     </item>
     
     <item>
+      <title>將 Apache (access|error) log 透過 rsyslog 發至 Graylog</title>
+      <link>https://blog.xxzk.me/post/20200924-httpd-log-to-graylog-with-rsyslog/</link>
+      <pubDate>Thu, 24 Sep 2020 15:29:12 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20200924-httpd-log-to-graylog-with-rsyslog/</guid>
+      <description>由於 httpd 預設沒有將 access/error log 丟到 syslog 做處理，要需手動新增 新增方式有兩種 直接編輯 httpd.conf 將 log file 導向到 syslog 編輯 rsyslog.conf 叫 rsyslog 去撈本來存放在 /var/log/httpd/(access|error).log 第一種方式會需要做 systemctl reload httpd.service ，對於</description>
+    </item>
+    
+    <item>
       <title>Gralylog 安裝紀錄 (使用 Default CentOS 7.7)</title>
       <link>https://blog.xxzk.me/post/20200924-graylog-installation-use-centos77/</link>
       <pubDate>Thu, 24 Sep 2020 15:09:16 +0000</pubDate>

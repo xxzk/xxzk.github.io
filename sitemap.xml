@@ -884,6 +884,27 @@
   </url>
   
   <url>
+    <loc>https://blog.xxzk.me/categories/graylog/</loc>
+    <lastmod>2020-09-24T15:29:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/tags/log/</loc>
+    <lastmod>2020-09-24T15:29:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/post/20200924-httpd-log-to-graylog-with-rsyslog/</loc>
+    <lastmod>2020-09-24T15:29:12+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.xxzk.me/post/20200924-graylog-installation-use-centos77/</loc>
     <lastmod>2020-09-24T15:09:16+00:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -893,13 +914,6 @@
   <url>
     <loc>https://blog.xxzk.me/tags/graylog/</loc>
     <lastmod>2020-09-24T15:09:16+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.xxzk.me/categories/graylog/</loc>
-    <lastmod>2020-09-23T16:46:52+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>

@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>LibreNMS 警報建置實務 LibreNMS Alarm Setting - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="此篇筆記紀錄如何使用 LibreNMS 發送 IPMI 警報至 RocketChat WebHook Channel LibreNMS 動態分組 Dynamic Grouping 動態群組可以自動將裝置依照設定的條件自動加入群組 (新加的裝置也可以喔)。這個功能除了方" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.108.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20210302-librenms-alert-setting-note/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="LibreNMS 警報建置實務 LibreNMS Alarm Setting" />
+<meta property="og:description" content="此篇筆記紀錄如何使用 LibreNMS 發送 IPMI 警報至 RocketChat WebHook Channel LibreNMS 動態分組 Dynamic Grouping 動態群組可以自動將裝置依照設定的條件自動加入群組 (新加的裝置也可以喔)。這個功能除了方" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.xxzk.me/post/20210302-librenms-alert-setting-note/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-03-02T14:22:28+00:00" />
+<meta property="article:modified_time" content="2021-03-02T14:22:28+00:00" />
+<meta itemprop="name" content="LibreNMS 警報建置實務 LibreNMS Alarm Setting">
+<meta itemprop="description" content="此篇筆記紀錄如何使用 LibreNMS 發送 IPMI 警報至 RocketChat WebHook Channel LibreNMS 動態分組 Dynamic Grouping 動態群組可以自動將裝置依照設定的條件自動加入群組 (新加的裝置也可以喔)。這個功能除了方"><meta itemprop="datePublished" content="2021-03-02T14:22:28+00:00" />
+<meta itemprop="dateModified" content="2021-03-02T14:22:28+00:00" />
+<meta itemprop="wordCount" content="2218">
+<meta itemprop="keywords" content="librenms,alert," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="LibreNMS 警報建置實務 LibreNMS Alarm Setting"/>
+<meta name="twitter:description" content="此篇筆記紀錄如何使用 LibreNMS 發送 IPMI 警報至 RocketChat WebHook Channel LibreNMS 動態分組 Dynamic Grouping 動態群組可以自動將裝置依照設定的條件自動加入群組 (新加的裝置也可以喔)。這個功能除了方"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">LibreNMS 警報建置實務 LibreNMS Alarm Setting</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-03-02 </span>
+        <div class="post-category">
+            <a href="/categories/librenms/"> librenms </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#librenms-動態分組-dynamic-grouping">LibreNMS 動態分組 Dynamic Grouping</a></li>
+        <li><a href="#rocketchat-建立-channelweb-hook-連結">RocketChat 建立 Channel/Web Hook 連結</a></li>
+        <li><a href="#librenms-增加警報管道-alert-transport">LibreNMS 增加警報管道 (Alert-Transport)</a></li>
+        <li><a href="#librenms-設定警報規則-alarm-rule">LibreNMS 設定警報規則 Alarm Rule</a>
+          <ul>
+            <li><a href="#確認-oid-路徑">確認 OID 路徑</a></li>
+          </ul>
+        </li>
+        <li><a href="#noc-人員確認狀況查找說明">NOC 人員確認狀況查找說明</a></li>
+        <li><a href="#常用警報-20210717-新增20220818-更新">常用警報 (20210717 新增，20220818 更新)</a>
+          <ul>
+            <li><a href="#sqlesxi-cpu-avg-usage-alert">【SQL】ESXi CPU AVG usage alert</a></li>
+            <li><a href="#dimmdell-idrac-memory-status-notgood">【DIMM】Dell iDRAC Memory Status notGood</a></li>
+            <li><a href="#raid-狀態dell-idrac-virtual-disk-faileddegraded">【RAID 狀態】Dell iDRAC Virtual Disk Failed/Degraded</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>此篇筆記紀錄如何使用 LibreNMS 發送 IPMI 警報至 RocketChat WebHook Channel</p>
+<h2 id="librenms-動態分組-dynamic-grouping">LibreNMS 動態分組 Dynamic Grouping</h2>
+<p>動態群組可以自動將裝置依照設定的條件自動加入群組 (新加的裝置也可以喔)。這個功能除了方便 管理/查找 外，待會的警報建置也會派上用場~<br>
+<a href="https://docs.librenms.org/Extensions/Device-Groups/">LibreNMS Docs-Dynamic Groups</a></p>
+<p><img src="librenms_dynamic_grouping_0.jpg" alt="librenms_dynamic_grouping_0"></p>
+<p>▲ LibreNMS 動態分組功能</p>
+<p>觀察 iDrac 裝置的共同特點可以發現 Hardware 欄位都包含 <code>iDrac</code> <del>廢話王欸</del> 就利用這個當作條件吧!</p>
+<p><img src="librenms_dynamic_grouping_1.jpg" alt="librenms_dynamic_grouping_1"></p>
+<p>▲ Hardware 欄位包含 <code>iDrac</code></p>
+<p>但是打開動態群組規則選單卻噴出一大堆類型&hellip; 要怎麼知道 &ldquo;Hardware&rdquo; 在哪裡呢?<br>
+(1) 選取欄位最上方可以搜尋。直接搜尋 &ldquo;hardware&rdquo;，卻出現兩個選項 有時候不太好確認到底哪個才是我們要的。雖然這個例子來說 87% 就是 <code>devices.hardware</code> 這個，<del>但這樣就沒辦法打第二點了 所以裝笨一下 謝謝配合</del></p>
+<p><img src="librenms_dynamic_grouping_3.jpg" alt="librenms_dynamic_grouping_3"></p>
+<p>(2) 官方文件有提到類型顯示的方式都是 DB 裡面的 <code>&lt;table&gt;.&lt;column&gt;</code>。就直接進 MariaDB 查詢吧~</p>
+<p>登入 mysql</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mysql -uroot -p
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>進入 (使用) librenms</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="n">use</span><span class="w"> </span><span class="n">librenms</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>人生地不熟，<code>show</code> 一下 table</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">show</span><span class="w"> </span><span class="n">tables</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>找到我們要確認的兩個 <code>&lt;table&gt;</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="o">+</span><span class="c1">---------------------------+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">|</span><span class="w"> </span><span class="n">Tables_in_librenms</span><span class="w">        </span><span class="o">|</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">+</span><span class="c1">---------------------------+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">|</span><span class="w"> </span><span class="n">access_points</span><span class="w">             </span><span class="o">|</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">|</span><span class="w"> </span><span class="p">....</span><span class="w">                      </span><span class="o">|</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">|</span><span class="w"> </span><span class="n">devices</span><span class="w">                   </span><span class="o">|</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">|</span><span class="w"> </span><span class="p">....</span><span class="w">                      </span><span class="o">|</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">|</span><span class="w"> </span><span class="n">entPhysical</span><span class="w">               </span><span class="o">|</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">+</span><span class="c1">---------------------------+
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>接著用 <code>desc</code> 確認這張表有哪些欄位 (column)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">desc</span><span class="w"> </span><span class="n">devices</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>從網址可以得知 <code>x.x.x.x</code> 這台的 ID 是 <code>129</code>，可使使用</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">devices</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">device_id</span><span class="o">=</span><span class="s1">&#39;129&#39;</span><span class="err">\</span><span class="k">G</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>列出所有。終於可以確認我們要的就是 <code>devices.hardware</code></p>
+<p><img src="librenms_dynamic_grouping_2.jpg" alt="librenms_dynamic_grouping_2"></p>
+<h2 id="rocketchat-建立-channelweb-hook-連結">RocketChat 建立 Channel/Web Hook 連結</h2>
+<p><a href="https://docs.rocket.chat/guides/administrator-guides/integrations">RocketChat Docs-Integrations WebHooks</a></p>
+<p><img src="rocketchat_create_webhook_channel_0.jpg" alt="rocketchat_create_webhook_channel_0"></p>
+<p>▲ 建立 RocketChat Channel</p>
+<p><img src="rocketchat_create_webhook_channel_1.jpg" alt="rocketchat_create_webhook_channel_1"></p>
+<p>▲ 邀請使用者的部分可以先將 bot 邀請進來</p>
+<p><img src="rocketchat_create_webhook_channel_2.jpg" alt="rocketchat_create_webhook_channel_2"></p>
+<p>▲ 進入管理介面</p>
+<p><img src="rocketchat_create_webhook_channel_3.jpg" alt="rocketchat_create_webhook_channel_3"></p>
+<p>▲ 整合 -&gt; Incomming -&gt; New</p>
+<p><img src="rocketchat_create_webhook_channel_4.jpg" alt="rocketchat_create_webhook_channel_4"></p>
+<p><strong><span style="color:red">▲ 記得勾選 Enable</span></strong><br>
+<strong><span style="color:red">2021.03.25 更新: 使用者不用加 <code>@</code></span></strong><br>
+按下儲存之後再次進入即可複製 Web Hook Links</p>
+<h2 id="librenms-增加警報管道-alert-transport">LibreNMS 增加警報管道 (Alert-Transport)</h2>
+<p><img src="librenms_add_alert_transport_0.jpg" alt="librenms_add_alert_transport_0"></p>
+<p>▲ 增加警報管道</p>
+<p><img src="librenms_add_alert_transport_1.jpg" alt="librenms_add_alert_transport_1"></p>
+<p>▲ 填入警報名稱、Web hook URL</p>
+<p>不過這邊要把 Web hook 的 domain 直接改成 <code>whrocket node 1</code> 的 <code>IP Address Port:3000</code>。<br>
+直接使用反代 (詳情請見 Nginx reverse proxy 架構圖、設定檔) domain 會沒辦法重送警報，原因待查。</p>
+<h2 id="librenms-設定警報規則-alarm-rule">LibreNMS 設定警報規則 Alarm Rule</h2>
+<p><img src="librenms_alarm_rules_0.jpg" alt="librenms_alarm_rules_0"></p>
+<p>▲ 警報規則頁面</p>
+<blockquote>
+<p><strong>Severity:</strong> 警報嚴重程度，關係到 RocketChat 那隻<del>臭貓咪</del>左邊的底色，總共有 OK、Warning、Critical 三個等級。<br>
+<strong>Max alerts:</strong> 警報被觸發期間，警報被發送的次數限制。 <code>-1</code> 代表不限制，當另外一個選項 <code>interval == 0</code> 時無效。<br>
+<strong>Delay:</strong> 條件被觸發後延遲多久發送警報，通常會搭配 poller (輪詢器) 設定的時間。<br>
+舉例: poller 設定 5 min 輪詢一次，結果 delay 設定 3 min，在還沒下一次輪詢前就會成功發送警報。涼去~<br>
+通常會設置 delay 就是不希望因為 網路因素 or 設備反應慢 誤發警報，造成第一線受理人員警報麻痺。<br>
+<strong>Interval:</strong> 多久重新發送一次警報 (How often)。<code>0</code> 代表只發送一次，單位有 (s,m,h,d) 秒 分鐘 小時 天。<br>
+<strong>Mute alerts:</strong> 僅顯示在 LibreNMS WebUI 上，不透過設定管道發送警報。<br>
+<strong>Invert rule match:</strong> 當規則沒有被觸發時發送警報 (一個邏輯閘 NOT gate 的概念)<br>
+<strong>Recovery alerts:</strong> 設定成 &ldquo;ON&rdquo; 時，狀況恢復會發送警報告知狀況已恢復。並且有 &ldquo;Time elapsed&rdquo; 幫你算狀況持續多久~<br>
+<strong>Match devices,groups and location list:</strong> 規則針對的目標，可以是單一裝置、群組、地點清單。<br>
+<strong>All devices except in list:</strong> 字面上的意思: 黑名單<br>
+<strong>Transports:</strong> 警報管道<br>
+<strong>Procedure URL:</strong> 放處理方式文件連結 (例如: bookstack) 給第一線受理人員。</p>
+</blockquote>
+<p><img src="librenms_alarm_rules_1.jpg" alt="librenms_alarm_rules_1"></p>
+<p>▲ LibreNMS 其實有內建許多範本、食譜 供使用者方便使用/修改</p>
+<p><img src="librenms_alarm_rules_2.jpg" alt="librenms_alarm_rules_2"></p>
+<p>▲ 將規則從範本 (Collection) 導入</p>
+<p>在上方搜尋 iDrac，找到我們要的 <strong>Global System Status Critical/NonRecoverable</strong><br>
+Global System Status 算是一個指標，當整台伺服器出現任一硬體問題時 (包含預設 State 上沒有的外接 RAID Card 陣列中硬碟故障) 就會亮燈</p>
+<p><img src="librenms_alarm_rules_3.jpg" alt="librenms_alarm_rules_3"></p>
+<blockquote>
+<p><strong>sensors.sensor_current:</strong> 代表目前感知器 (sensor) 抓取到的值<br>
+<strong>sensors.sensor_oid:</strong> 是 SNMP 當中的 Object ID。</p>
+</blockquote>
+<p>實際選擇該範本後，可以發現 <code>sensors.sensor_current</code> 利用正規表示法 (regex) 定義值要是 5 或者 6 (進階使用者在範本清單就能看出來)<br>
+<strong>而且 (AND)</strong> <code>sensors.sensor_oid</code> 必須完全等於 <code>.1.3.6.1.4.1.674.10892.2.2.1</code>，才能觸發規則。</p>
+<p><a href="https://www.dell.com/support/manuals/zh-tw/dell-cmnd-mntr-v9.1/dcm_snmp-v2/system-state-global-system-status?guid=guid-dfff06b8-91cb-4b8d-a87f-c48677bac9db&amp;lang=en-us">Dell Command | Monitor Version 9.1 SNMP Reference Guide</a><br>
+▲ 提到 System state global system status 回傳值代表的意義</p>
+<blockquote>
+<p>other: 1<br>
+unknown: 2<br>
+ok: 3<br>
+nonCritical: 4<br>
+critical: 5<br>
+nonRecoverable: 6</p>
+</blockquote>
+<p><a href="https://www.dell.com/support/manuals/zh-tw/dell-openmanage-software-v8.3/snmp_idrac8/status-group?guid=guid-1a12fe37-b563-42f2-a080-601d10b07e14&amp;lang=en-us">Dell OpenManage SNMP Reference Guide for iDRAC and Chassis Management Controller | Dell 台灣</a></p>
+<p><img src="librenms_alarm_rules_4.jpg" alt="librenms_alarm_rules_4"></p>
+<p><span style="color:red"><strong>使用範本需要親自確認實際抓取到的 OID 路徑是否完全正確</strong></span><br>
+<span style="color:red"><strong>使用範本需要親自確認實際抓取到的 OID 路徑是否完全正確</strong></span><br>
+<span style="color:red"><strong>使用範本需要親自確認實際抓取到的 OID 路徑是否完全正確</strong></span></p>
+<h3 id="確認-oid-路徑">確認 OID 路徑</h3>
+<p><img src="librenms_capture_debug_0.jpg" alt="librenms_capture_debug_0"></p>
+<p>▲ 進入單一裝置 capture debug 模式</p>
+<p><img src="librenms_capture_debug_1.jpg" alt="librenms_capture_debug_1"></p>
+<p>▲ 執行 snmp 抓取</p>
+<p>將結果複製到慣用的 Editor 上 (推薦開源的 VSCode，注意與 Visual Studio IDE 的差別 兩者截然不同)
+搜尋範本上的 <code>.1.3.6.1.4.1.674.10892.2.2.1</code> 後發現少了一個 <code>.0</code>，趕緊補上去<br>
+最後記得執行 <code>Alerts</code> 查看目前裝置狀態是否符合任一警報規則</p>
+<p><img src="librenms_alert_match_test.jpg" alt="librenms_alert_match_test"></p>
+<p>▲ 觸發警報測試</p>
+<p><img src="librenms_capture_debug_2.jpg" alt="librenms_capture_debug_2"></p>
+<h2 id="noc-人員確認狀況查找說明">NOC 人員確認狀況查找說明</h2>
+<p><img src="how_to_check_ipmi_0.jpg" alt="how_to_check_ipmi_0"></p>
+<p>▲ 從 <code>iDrac</code> 群組進入，找到該 IP</p>
+<p><img src="how_to_check_ipmi_1.jpg" alt="how_to_check_ipmi_1"></p>
+<p>▲ 查看 <code>state</code> 欄位</p>
+<p><img src="how_to_check_ipmi_2.jpg" alt="how_to_check_ipmi_2"></p>
+<p>▲ 以 RAM (ECC RDIMM) 錯誤率飆高 (即將壞掉) 會長這樣</p>
+<p>補充一點，以目前 <code>x.x.x.x iDrac</code> 來說雖然抓到 Global System Status 是 <strong>nonCritical</strong>
+其它狀態欄位卻都正常，是因為 <strong>RAID6 陣列其中一顆硬碟死去</strong>
+LibreNMS 沒有針對 RAID 卡內的硬碟做監控 (方法應該有 後續有空再查)</p>
+<h2 id="常用警報-20210717-新增20220818-更新">常用警報 (20210717 新增，20220818 更新)</h2>
+<p><strong><span style='color:blue'>這個段落會記錄常用的警報</span></strong></p>
+<h3 id="sqlesxi-cpu-avg-usage-alert">【SQL】ESXi CPU AVG usage alert</h3>
+<p>本來使用 <code>processors.processor_perc_warn</code> 作為判斷標準，但發現無法正確被觸發!(明明 <code>mempools.mempool_perc</code> 運作正常 @@)<br>
+加上如果使用 <code>processors.processor_usage</code> <strong><span style='color:red'>只要有單一核心 usage 高於設定值警報就會被觸發。</span></strong><br>
+因此使用<a href="https://docs.librenms.org/Alerting/Rules/#advanced">官方提供的 SQL 語法</a>來制定</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="k">AVG</span><span class="p">(</span><span class="n">processors</span><span class="p">.</span><span class="n">processor_usage</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">cpu_avg</span><span class="w"> </span><span class="k">FROM</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">devices</span><span class="p">,</span><span class="n">processors</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="p">(</span><span class="n">devices</span><span class="p">.</span><span class="n">device_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">devices</span><span class="p">.</span><span class="n">device_id</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">=</span><span class="w"> </span><span class="n">processors</span><span class="p">.</span><span class="n">device_id</span><span class="p">)</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="p">(</span><span class="n">devices</span><span class="p">.</span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">devices</span><span class="p">.</span><span class="n">disabled</span><span class="w"> </span><span class="o">=</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="mi">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">devices</span><span class="p">.</span><span class="k">ignore</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">))</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">HAVING</span><span class="w"> </span><span class="k">AVG</span><span class="p">(</span><span class="n">processors</span><span class="p">.</span><span class="n">processor_usage</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">&gt;</span><span class="w"> </span><span class="mi">80</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><code>main</code> 頁面還是需要隨便掛一個條件式，再使用 SQL overwrite。</li>
+</ul>
+<h3 id="dimmdell-idrac-memory-status-notgood">【DIMM】Dell iDRAC Memory Status notGood</h3>
+<p>修改自範本 <strong>Dell iDRAC Memory Status Critical</strong></p>
+<p>在 <a href="https://github.com/librenms/librenms/blob/master/mibs/drac/IDRAC-MIB">[GitHub]LibreNMS iDrac-MIB</a> 當中搜尋: <code>-- Memory Device Table</code> 可以找到。 <strong><span style='color:blue'>memoryDeviceStatus</span></strong> 在第五項，所以<br>
+<code>-- OID Format: 1.3.6.1.4.1.674.10892.5.4.1100.50.1.&lt;a&gt;.&lt;i1&gt;.&lt;i2&gt;</code><br>
+當中的 <code>&lt;a&gt;</code> 是 <code>5</code></p>
+<p>使用 <strong>ObjectStatusEnum</strong> 列舉清單，這個狀態在 MIB 的開頭有定義 (208 行)。</p>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">ObjectStatusEnum        ::= INTEGER {
+</span></span><span class="line"><span class="cl">    other(1),           -- the status of the object is not one of the
+</span></span><span class="line"><span class="cl">                        --  following:
+</span></span><span class="line"><span class="cl">    unknown(2),         -- the status of the object is unknown
+</span></span><span class="line"><span class="cl">                        --  (not known or monitored)
+</span></span><span class="line"><span class="cl">    ok(3),              -- the status of the object is ok
+</span></span><span class="line"><span class="cl">    nonCritical(4),     -- the status of the object is warning, non-critical
+</span></span><span class="line"><span class="cl">    critical(5),        -- the status of the object is critical (failure)
+</span></span><span class="line"><span class="cl">    nonRecoverable(6)   -- the status of the object is non-recoverable (dead)
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="librenms-設定紀錄">LibreNMS 設定紀錄</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Rule Name:      Dell iDRAC Memory Status notGood
+</span></span><span class="line"><span class="cl">Devices:        iDrac
+</span></span><span class="line"><span class="cl">Transport:      xxx_ipmi_alert_librenms_DIMM
+</span></span><span class="line"><span class="cl">Extra:          1/0/300
+</span></span><span class="line"><span class="cl">Rule:           sensors.sensor_current != 3 AND sensors.sensor_oid LIKE &#39;.1.3.6.1.4.1.674.10892.5.4.1100.50.1.5%&#39;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="raid-狀態dell-idrac-virtual-disk-faileddegraded">【RAID 狀態】Dell iDRAC Virtual Disk Failed/Degraded</h3>
+<p>修改自範本 <strong>Dell iDRAC Virtual Disk Failed/Degraded</strong></p>
+<p>在 <a href="https://github.com/librenms/librenms/blob/master/mibs/drac/IDRAC-MIB">[GitHub]LibreNMS iDrac-MIB</a> 當中搜尋: <code>-- Virtual Disk Table</code> 可以找到 <code>virtualDiskState</code>。<br>
+But 我不知道為什麼會是 <code>.10892.5.5.1.20.140.1.1.&quot;4&quot;</code> 而不是 <code>.10892.5.5.1.20.140.1.1.&quot;3&quot;</code> 冏<br>
+實際上去撈 snmp 也沒有 <code>&quot;3&quot;</code> 的項目，就這樣吧&hellip; 範本是對的</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">virtualDiskState OBJECT-TYPE
+</span></span><span class="line"><span class="cl">    SYNTAX          INTEGER
+</span></span><span class="line"><span class="cl">                    {
+</span></span><span class="line"><span class="cl">                    unknown(1),
+</span></span><span class="line"><span class="cl">                    online(2),
+</span></span><span class="line"><span class="cl">                    failed(3),
+</span></span><span class="line"><span class="cl">                    degraded(4)
+</span></span><span class="line"><span class="cl">                    }
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="librenms-設定紀錄-1">LibreNMS 設定紀錄</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Rule Name:      Dell iDRAC Virtual Disk Failed/Degraded
+</span></span><span class="line"><span class="cl">Devices:        iDrac
+</span></span><span class="line"><span class="cl">Transport:      xxx_ipmi_alert_librenms_RAID
+</span></span><span class="line"><span class="cl">Extra:          1/0/300
+</span></span><span class="line"><span class="cl">Rule:           sensors.sensor_current REGEXP &#34;[3|4]&#34; AND sensors.sensor_oid LIKE &#39;.1.3.6.1.4.1.674.10892.5.5.1.20.140.1.1.4%&#39;
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2021-03-02
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/librenms/">librenms</a>
+          <a href="/tags/alert/">alert</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/20210401-bookstack-fronts-customising/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Bookstack 自訂字形與樣式 Customising Visuals</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/20210224-what-network-will-vmware-migration-used/">
+            <span class="next-text nav-default">【實驗記錄】到底 VM 在關機 (PowerOff) 狀態搬移</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

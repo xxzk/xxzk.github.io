@@ -377,6 +377,15 @@
     </item>
     
     <item>
+      <title>LibreNMS 警報建置實務 LibreNMS Alarm Setting</title>
+      <link>https://blog.xxzk.me/post/20210302-librenms-alert-setting-note/</link>
+      <pubDate>Tue, 02 Mar 2021 14:22:28 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20210302-librenms-alert-setting-note/</guid>
+      <description>此篇筆記紀錄如何使用 LibreNMS 發送 IPMI 警報至 RocketChat WebHook Channel LibreNMS 動態分組 Dynamic Grouping 動態群組可以自動將裝置依照設定的條件自動加入群組 (新加的裝置也可以喔)。這個功能除了方</description>
+    </item>
+    
+    <item>
       <title>【實驗記錄】到底 VM 在關機 (PowerOff) 狀態搬移</title>
       <link>https://blog.xxzk.me/post/20210224-what-network-will-vmware-migration-used/</link>
       <pubDate>Wed, 24 Feb 2021 13:21:00 +0000</pubDate>

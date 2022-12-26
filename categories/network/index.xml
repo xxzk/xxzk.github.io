@@ -16,5 +16,14 @@
       <description>Wonder Shaper 是一支底層使用 Linux 自帶的流量控制命令 tc 的 shell script，能夠簡單、方便、快速 達成限流的目的 在 Wonder Shaper v1.3 以上版本等待列隊方式從本來的 CBQ 變更成 HT</description>
     </item>
     
+    <item>
+      <title>簡單介紹 VMWare NSX Network Virtualization Platform</title>
+      <link>https://blog.xxzk.me/post/20201224-simply-introduce-vmware-nsxt/</link>
+      <pubDate>Thu, 24 Dec 2020 13:46:50 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20201224-simply-introduce-vmware-nsxt/</guid>
+      <description>VMwatre NSX Network Virtualization Platform 是一個涵蓋 L2 ~ L7 的網路虛擬化平台 是 VMWare 併購 Nicira 後的產物 什麼是網路虛擬化 ▲ 圖片來源 The VMware NSX Network Virtualization Platform 白皮書 左邊的 Server Virtualization 是將 Bare-Metal (Hardware,</description>
+    </item>
+    
   </channel>
 </rss>

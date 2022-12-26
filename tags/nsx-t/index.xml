@@ -6,14 +6,14 @@
     <description>Recent content in nsx-t on 老柯的學習筆記</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 01 Dec 2020 09:20:28 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/tags/nsx-t/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 24 Dec 2020 13:46:50 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/tags/nsx-t/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>解析 vRealize 發生「BIOS 電源管理未設定為 [由作業系統控制] 」 BIOS power management not set to OS controlled facing CPU contention</title>
-      <link>https://blog.xxzk.me/post/20201201-bios-power-management-not-set-to-os-controlled/</link>
-      <pubDate>Tue, 01 Dec 2020 09:20:28 +0000</pubDate>
+      <title>簡單介紹 VMWare NSX Network Virtualization Platform</title>
+      <link>https://blog.xxzk.me/post/20201224-simply-introduce-vmware-nsxt/</link>
+      <pubDate>Thu, 24 Dec 2020 13:46:50 +0000</pubDate>
       
-      <guid>https://blog.xxzk.me/post/20201201-bios-power-management-not-set-to-os-controlled/</guid>
-      <description>這標題有夠長 中文警報標題全文: 位於主機上，且 BIOS 電源管理未設定為 [由作業系統控制] 的虛擬機器面臨 CPU 爭用 先講結論，未來在上機時應該考慮把 BIOS Power Management 設</description>
+      <guid>https://blog.xxzk.me/post/20201224-simply-introduce-vmware-nsxt/</guid>
+      <description>VMwatre NSX Network Virtualization Platform 是一個涵蓋 L2 ~ L7 的網路虛擬化平台 是 VMWare 併購 Nicira 後的產物 什麼是網路虛擬化 ▲ 圖片來源 The VMware NSX Network Virtualization Platform 白皮書 左邊的 Server Virtualization 是將 Bare-Metal (Hardware,</description>
     </item>
     
   </channel>

@@ -17,6 +17,15 @@
     </item>
     
     <item>
+      <title>簡單介紹 VMWare NSX Network Virtualization Platform</title>
+      <link>https://blog.xxzk.me/post/20201224-simply-introduce-vmware-nsxt/</link>
+      <pubDate>Thu, 24 Dec 2020 13:46:50 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20201224-simply-introduce-vmware-nsxt/</guid>
+      <description>VMwatre NSX Network Virtualization Platform 是一個涵蓋 L2 ~ L7 的網路虛擬化平台 是 VMWare 併購 Nicira 後的產物 什麼是網路虛擬化 ▲ 圖片來源 The VMware NSX Network Virtualization Platform 白皮書 左邊的 Server Virtualization 是將 Bare-Metal (Hardware,</description>
+    </item>
+    
+    <item>
       <title>解析 vRealize 發生「BIOS 電源管理未設定為 [由作業系統控制] 」 BIOS power management not set to OS controlled facing CPU contention</title>
       <link>https://blog.xxzk.me/post/20201201-bios-power-management-not-set-to-os-controlled/</link>
       <pubDate>Tue, 01 Dec 2020 09:20:28 +0000</pubDate>

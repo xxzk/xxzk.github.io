@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>簡單介紹 VMWare NSX Network Virtualization Platform - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="VMwatre NSX Network Virtualization Platform 是一個涵蓋 L2 ~ L7 的網路虛擬化平台 是 VMWare 併購 Nicira 後的產物 什麼是網路虛擬化 ▲ 圖片來源 The VMware NSX Network Virtualization Platform 白皮書 左邊的 Server Virtualization 是將 Bare-Metal (Hardware," /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.108.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20201224-simply-introduce-vmware-nsxt/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="簡單介紹 VMWare NSX Network Virtualization Platform" />
+<meta property="og:description" content="VMwatre NSX Network Virtualization Platform 是一個涵蓋 L2 ~ L7 的網路虛擬化平台 是 VMWare 併購 Nicira 後的產物 什麼是網路虛擬化 ▲ 圖片來源 The VMware NSX Network Virtualization Platform 白皮書 左邊的 Server Virtualization 是將 Bare-Metal (Hardware," />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.xxzk.me/post/20201224-simply-introduce-vmware-nsxt/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2020-12-24T13:46:50+00:00" />
+<meta property="article:modified_time" content="2020-12-24T13:46:50+00:00" />
+<meta itemprop="name" content="簡單介紹 VMWare NSX Network Virtualization Platform">
+<meta itemprop="description" content="VMwatre NSX Network Virtualization Platform 是一個涵蓋 L2 ~ L7 的網路虛擬化平台 是 VMWare 併購 Nicira 後的產物 什麼是網路虛擬化 ▲ 圖片來源 The VMware NSX Network Virtualization Platform 白皮書 左邊的 Server Virtualization 是將 Bare-Metal (Hardware,"><meta itemprop="datePublished" content="2020-12-24T13:46:50+00:00" />
+<meta itemprop="dateModified" content="2020-12-24T13:46:50+00:00" />
+<meta itemprop="wordCount" content="1032">
+<meta itemprop="keywords" content="nsx-t,vmware,vsphere," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="簡單介紹 VMWare NSX Network Virtualization Platform"/>
+<meta name="twitter:description" content="VMwatre NSX Network Virtualization Platform 是一個涵蓋 L2 ~ L7 的網路虛擬化平台 是 VMWare 併購 Nicira 後的產物 什麼是網路虛擬化 ▲ 圖片來源 The VMware NSX Network Virtualization Platform 白皮書 左邊的 Server Virtualization 是將 Bare-Metal (Hardware,"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">簡單介紹 VMWare NSX Network Virtualization Platform</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-12-24 </span>
+        <div class="post-category">
+            <a href="/categories/network/"> network </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#什麼是網路虛擬化">什麼是網路虛擬化</a></li>
+        <li><a href="#nsx-如何運作-how-it-works">NSX 如何運作 How it Works</a></li>
+        <li><a href="#nsx-v-與-nsx-t-的差異">NSX-V 與 NSX-T 的差異</a></li>
+        <li><a href="#參考資料">參考資料</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p><img src="nsx_intro_official_website.jpg" alt="nsx_intro_official_website"></p>
+<p><strong>VMwatre NSX Network Virtualization Platform 是一個涵蓋 L2 ~ L7 的網路虛擬化平台</strong><br>
+<strong>是 VMWare <a href="https://www.ithome.com.tw/node/75097">併購 Nicira</a> 後的產物</strong></p>
+<h2 id="什麼是網路虛擬化">什麼是網路虛擬化</h2>
+<p><img src="network_virtualization_diagram.jpg" alt="network_virtualization_diagram"></p>
+<p>▲ 圖片來源 <a href="https://www.vmware.com/content/dam/digitalmarketing/vmware/en/pdf/whitepaper/products/nsx/vmware-nsx-network-virtualization-platform-white-paper.pdf">The VMware NSX Network Virtualization Platform 白皮書</a></p>
+<p>左邊的 <strong>Server Virtualization</strong> 是將 Bare-Metal (Hardware,硬體) 透過 Virtualization Layer aka <strong>Hypervisor</strong> (講白話: 公司用的 VMWare ESXi) 模擬出多個一台電腦所需的硬體資源，並在這個條件上建立 <strong>Virtual Mechine (VM)</strong>。<br>
+各台 VM 在邏輯上可以視為獨立環境 (isolate) 彼此互不干擾、享有獨立資源。實際上還是會發生硬體爭用的情況<br>
+延伸相關閱讀 <a href="https://blog.xxzk.me/post/20201201-bios-power-management-not-set-to-os-controlled/">解析 vRealize 發生「BIOS 電源管理未設定為 [由作業系統控制] 」 BIOS power management not set to OS controlled facing CPU contention</a><br>
+將硬體虛擬化的好處是可以充分利用硬體效能、加快部屬時間&hellip;. 等</p>
+<p>有了初步虛擬化的概念後，右邊這張 <strong>Network Virtualization</strong> 就不難理解。就是將封包處理的地點從本來的實體網通設備 (Physical Network Device) 拉到 NSX VM 內。但這不代表我們可以<strong>完全省去</strong>購買網通設備的錢。<br>
+VMware 官網列出四大項 <strong>VMware NSX-T 帶來的優勢</strong></p>
+<ul>
+<li>以少許成本進行網路水平擴充</li>
+<li>同級最佳的安全性，已內建於您的基礎架構之中 (註: NSX 可以讓 LAN to LAN 擁有防火牆，讓區網環境更加安全)</li>
+<li>現代化分散式應用程式的完整堆疊網路</li>
+<li>網路與安全性自動化</li>
+</ul>
+<h2 id="nsx-如何運作-how-it-works">NSX 如何運作 How it Works</h2>
+<p>在 vSwitch (不論是 vSS,vStandard Switch 或者 vDS,vDistributed Switch) 都只能做到 L2 的功能。<br>
+不過 NSX 也必須基於 vSwitch (由 NSX 去控制 vSwitch 這樣) 的網路環境。直接上圖~</p>
+<p><img src="how_nsx_works_0.jpg" alt="how_nsx_works_0"></p>
+<p>▲ How VMWare NSX Works 1</p>
+<ol>
+<li>可以想像成 vSphere Client (不精準白話文: vCenter) 透過 NSX 提供的 API 下達網路管理命令</li>
+<li>接著由 NSX 去管控 vSwitch 達成管理目的</li>
+</ol>
+<p><img src="nsx_network_hypervisor.jpg" alt="nsx_network_hypervisor"></p>
+<p>NSX 就好像 &ldquo;Network Hypervisor&rdquo;，只不過這台 NSX (NSX-V) 是部屬在基於 VMWare vSphere 的 Hypervisor -&gt; ESXi 的虛擬環境內<br>
+<del>介於是與不是之間</del> <del>全看使用什麼角度去看這塊綠豆糕</del></p>
+<p>另外補充一下 vSwitch 是 ESXi 自帶的功能，NSX 可不是喔!</p>
+<p>NSX 裡面的功能 例如: Firewall , VLANs , Load Blance , VPN 都是在 VM 裡面的容器 (Container) 裡面獨立運作</p>
+<blockquote>
+<p>Similar to how a virtual machine is a software container that presents logical compute services to an application, a virtual network is a software container that presents logical network services – logical switches, logical routers, logical firewalls, logical load balancers, logical VPNs and more – to connected workloads.</p>
+</blockquote>
+<p><img src="nsx_logical_work_flow.jpg" alt="nsx_logical_work_flow"></p>
+<p>▲ NSX 運作 (Logical)</p>
+<p><img src="nsx_physical_work_flow.jpg" alt="nsx_physical_work_flow"></p>
+<p>▲ NSX 運作 (Physical)</p>
+<p>邏輯上封包是透過 NSX 處理，但實際 (物理) 上封包還是要透過實體網通設備來繞送。<br>
+以智慧型倉儲 <a href="https://www.bnext.com.tw/article/60231/logisticrepublic-ec-hub">物流共和國 EC Hub</a> 來比喻的話，負責在倉庫內搬運紙箱的機器人就好像 NSX，還是要有開車的物流大哥 (實體網通設備) 來運送不同倉儲之間的包裹。</p>
+<h2 id="nsx-v-與-nsx-t-的差異">NSX-V 與 NSX-T 的差異</h2>
+<p>簡單來說 NSX-V 是 VMWare 最先發布的 SDN (Software Define Network)，只支援 vSphere<br>
+後來除了客戶敲碗之外 VMWare 也符合內部的多雲政策，因此推出 NSX-T 就可以支援非 vSphere 的平台，例如: KVM , RedHat 的Openshift , K8s , Docker。<br>
+能支援這麼多平台可以歸功於 NSX-T 採用 RESTFul API 的方式 (個人淺見)</p>
+<h2 id="參考資料">參考資料</h2>
+<ul>
+<li><a href="https://www.vmware.com/content/dam/digitalmarketing/vmware/en/pdf/whitepaper/products/nsx/vmware-nsx-network-virtualization-platform-white-paper.pdf">The VMware NSX Network Virtualization Platform 白皮書</a></li>
+<li><a href="https://www.weithenn.org/2015/01/Study-VMware-NSX-Part01.html">【VMKernel 理解應該有錯】不自量力 Weithenn VMware NSX 筆記 (1) - 初探</a></li>
+<li><a href="https://docs.vmware.com/tw/VMware-NSX-T-Data-Center/2.4/nsxt_24_install.pdf">NSX-T Data Center 安裝指南</a></li>
+<li><a href="https://kknews.cc/zh-tw/news/9znljyq.html">【kknews】VMware NSX-V與NSX-T比較</a></li>
+</ul>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2020-12-24
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/nsx-t/">nsx-t</a>
+          <a href="/tags/vmware/">vmware</a>
+          <a href="/tags/vsphere/">vsphere</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/20210122-upgrade-esxi-650-to-670/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">升級 ESXi 6.5.0 -&gt; 6.7.0  Upgrading ESXi From 6.5.0 to 6.7.0</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/20201210-about-dnssec-using-dig/">
+            <span class="next-text nav-default">淺談 DNSSEC 使用 dig</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

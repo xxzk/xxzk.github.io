@@ -842,6 +842,20 @@
   </url>
   
   <url>
+    <loc>https://blog.xxzk.me/tags/nsx-t/</loc>
+    <lastmod>2020-12-24T13:46:50+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/post/20201224-simply-introduce-vmware-nsxt/</loc>
+    <lastmod>2020-12-24T13:46:50+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.xxzk.me/tags/dig/</loc>
     <lastmod>2020-12-10T11:46:20+00:00</lastmod>
     <changefreq>weekly</changefreq>

@@ -35,6 +35,15 @@
     </item>
     
     <item>
+      <title>簡單介紹 VMWare NSX Network Virtualization Platform</title>
+      <link>https://blog.xxzk.me/post/20201224-simply-introduce-vmware-nsxt/</link>
+      <pubDate>Thu, 24 Dec 2020 13:46:50 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20201224-simply-introduce-vmware-nsxt/</guid>
+      <description>VMwatre NSX Network Virtualization Platform 是一個涵蓋 L2 ~ L7 的網路虛擬化平台 是 VMWare 併購 Nicira 後的產物 什麼是網路虛擬化 ▲ 圖片來源 The VMware NSX Network Virtualization Platform 白皮書 左邊的 Server Virtualization 是將 Bare-Metal (Hardware,</description>
+    </item>
+    
+    <item>
       <title>搞懂 vSphere、vCenter 和 ESXi 的關係</title>
       <link>https://blog.xxzk.me/post/20201023-about-vsphere-vcenter-esxi/</link>
       <pubDate>Fri, 23 Oct 2020 14:03:42 +0000</pubDate>

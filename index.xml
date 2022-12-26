@@ -332,6 +332,15 @@
     </item>
     
     <item>
+      <title>Nextcloud 建置，使用 Docker Compose</title>
+      <link>https://blog.xxzk.me/post/20210527-install-nextcloud-with-docker-compose/</link>
+      <pubDate>Thu, 27 May 2021 15:11:37 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20210527-install-nextcloud-with-docker-compose/</guid>
+      <description>圖片來源: wiki 安裝 Docker 與 Docker Compose Docker 參考文章: Install Docker Engine on CentOS 新增 docker repo 1 2 yum install -y yum-utils yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo 安裝 docker-ce 1 yum install docker-ce docker-ce-cli containerd.io -y enable/start docker 1 systemctl enable --now docker.service 跑個 docker hello world 確認 docker 安裝成功 1 docker run hello-world Docker</description>
+    </item>
+    
+    <item>
       <title>Docker Volumes 介紹</title>
       <link>https://blog.xxzk.me/post/20210513-intro_docker_volume/</link>
       <pubDate>Thu, 13 May 2021 13:37:47 +0000</pubDate>

@@ -772,6 +772,20 @@
   </url>
   
   <url>
+    <loc>https://blog.xxzk.me/tags/esxi/</loc>
+    <lastmod>2021-01-22T13:46:48+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/post/20210122-upgrade-esxi-650-to-670/</loc>
+    <lastmod>2021-01-22T13:46:48+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.xxzk.me/tags/dig/</loc>
     <lastmod>2020-12-10T11:46:20+00:00</lastmod>
     <changefreq>weekly</changefreq>

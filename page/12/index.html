@@ -121,6 +121,27 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/20200924-httpd-log-to-graylog-with-rsyslog/">將 Apache access,error log 透過 rsyslog 發至 Graylog</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2020-09-24 </span>
+      <div class="post-category">
+          <a href="/categories/graylog/"> graylog </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      由於 httpd 預設沒有將 access/error log 丟到 syslog 做處理，要需手動新增 新增方式有兩種 直接編輯 httpd.conf 將 log file 導向到 syslog 編輯 rsyslog.conf 叫 rsyslog 去撈本來存放在 /var/log/httpd/(access|error).log 第一種方式會需要做 systemctl reload httpd.service ，對於
+    </div>
+    <div class="read-more">
+      <a href="/post/20200924-httpd-log-to-graylog-with-rsyslog/" class="read-more-link">Read more...</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/20200924-graylog-installation-use-centos77/">Gralylog 安裝紀錄 (使用 Default CentOS 7.7)</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2020-09-24 </span>

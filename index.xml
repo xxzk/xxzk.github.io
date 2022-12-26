@@ -413,6 +413,15 @@
     </item>
     
     <item>
+      <title>升級 ESXi 6.5.0 -&gt; 6.7.0  Upgrading ESXi From 6.5.0 to 6.7.0</title>
+      <link>https://blog.xxzk.me/post/20210122-upgrade-esxi-650-to-670/</link>
+      <pubDate>Fri, 22 Jan 2021 13:46:48 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20210122-upgrade-esxi-650-to-670/</guid>
+      <description>圖片來源 Before Upgrading 此篇為這次針對 DCX 升級 ESXi 的安裝紀錄。新上了 4 台 Dell R630 暫時緩解 DCX 資源吃緊的情況。 使用 vMotion (VMware Live Migration 技術) 動態轉移將 VM 移至其他 ESXi Host，就可</description>
+    </item>
+    
+    <item>
       <title>淺談 DNSSEC 使用 dig</title>
       <link>https://blog.xxzk.me/post/20201210-about-dnssec-using-dig/</link>
       <pubDate>Thu, 10 Dec 2020 11:46:20 +0000</pubDate>

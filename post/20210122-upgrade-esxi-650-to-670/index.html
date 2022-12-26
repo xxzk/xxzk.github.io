@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>升級 ESXi 6.5.0 -&gt; 6.7.0  Upgrading ESXi From 6.5.0 to 6.7.0 - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="圖片來源 Before Upgrading 此篇為這次針對 DCX 升級 ESXi 的安裝紀錄。新上了 4 台 Dell R630 暫時緩解 DCX 資源吃緊的情況。 使用 vMotion (VMware Live Migration 技術) 動態轉移將 VM 移至其他 ESXi Host，就可" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.108.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20210122-upgrade-esxi-650-to-670/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="升級 ESXi 6.5.0 -&gt; 6.7.0  Upgrading ESXi From 6.5.0 to 6.7.0" />
+<meta property="og:description" content="圖片來源 Before Upgrading 此篇為這次針對 DCX 升級 ESXi 的安裝紀錄。新上了 4 台 Dell R630 暫時緩解 DCX 資源吃緊的情況。 使用 vMotion (VMware Live Migration 技術) 動態轉移將 VM 移至其他 ESXi Host，就可" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.xxzk.me/post/20210122-upgrade-esxi-650-to-670/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-01-22T13:46:48+00:00" />
+<meta property="article:modified_time" content="2021-01-22T13:46:48+00:00" />
+<meta itemprop="name" content="升級 ESXi 6.5.0 -&gt; 6.7.0  Upgrading ESXi From 6.5.0 to 6.7.0">
+<meta itemprop="description" content="圖片來源 Before Upgrading 此篇為這次針對 DCX 升級 ESXi 的安裝紀錄。新上了 4 台 Dell R630 暫時緩解 DCX 資源吃緊的情況。 使用 vMotion (VMware Live Migration 技術) 動態轉移將 VM 移至其他 ESXi Host，就可"><meta itemprop="datePublished" content="2021-01-22T13:46:48+00:00" />
+<meta itemprop="dateModified" content="2021-01-22T13:46:48+00:00" />
+<meta itemprop="wordCount" content="1078">
+<meta itemprop="keywords" content="dell,ESXi,vSphere," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="升級 ESXi 6.5.0 -&gt; 6.7.0  Upgrading ESXi From 6.5.0 to 6.7.0"/>
+<meta name="twitter:description" content="圖片來源 Before Upgrading 此篇為這次針對 DCX 升級 ESXi 的安裝紀錄。新上了 4 台 Dell R630 暫時緩解 DCX 資源吃緊的情況。 使用 vMotion (VMware Live Migration 技術) 動態轉移將 VM 移至其他 ESXi Host，就可"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">升級 ESXi 6.5.0 -&gt; 6.7.0  Upgrading ESXi From 6.5.0 to 6.7.0</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-01-22 </span>
+        <div class="post-category">
+            <a href="/categories/vsphere/"> vSphere </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#before-upgrading">Before Upgrading</a>
+          <ul>
+            <li><a href="#快速筆記">快速筆記</a></li>
+          </ul>
+        </li>
+        <li><a href="#vmotion">vMotion</a></li>
+        <li><a href="#idrac-console">iDrac Console</a></li>
+        <li><a href="#esxi-installation">ESXi Installation</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p><img src="esxi_670_logo.jpg" alt="esxi_670_logo"></p>
+<p><a href="https://clipart.me/download/maintenance-and-repair-series-of-signs-vector-9385">圖片來源</a></p>
+<h2 id="before-upgrading">Before Upgrading</h2>
+<p>此篇為這次針對 <strong>DCX</strong> 升級 ESXi 的安裝紀錄。新上了 4 台 Dell R630 暫時緩解 <strong>DCX</strong> 資源吃緊的情況。<br>
+使用 vMotion (VMware Live Migration 技術) 動態轉移將 VM 移至其他 ESXi Host，就可以關機 維護/升級 啦~</p>
+<p>事前準備:</p>
+<ol>
+<li>在設備段 Windows 主機一台。方便利用 iDrac Console 進行升級</li>
+<li>VMware-VMvisor-Installer-6.7.0.update03-15160138.x86_64-DellEMC_Customized-A04.iso。<br>
+此為 Dell EMC 針對 ESXi 做的最佳化 iso 安裝映像檔，裡面包含 Dell Server 的驅動。<br>
+相較於直接使用 VMware 官方提供的 iso 省去了安裝 driver 的步驟，還有穩定性 Dell 也會先行測試才釋出</li>
+</ol>
+<h3 id="快速筆記">快速筆記</h3>
+<ol>
+<li>利用 vMotion 將目標 ESXi 主機 PowerOn 機器移轉到其他機器，這次可以搬移到新上機的 <code>x.x.x.x~y</code>  (我挑 x)</li>
+<li>通知 NOC 同仁 ESXi Host 要升級 6.7 版本，將會離線、ping 不到</li>
+<li>vSphere Client 將目標 ESXi 主機切換成維護模式 (Maintenance Mode)</li>
+<li>利用該網段 Windows 10 主機開啟瀏覽器登入 iDrac， <strong><span style='color:red'>使用 Java</span></strong> 開啟 Console</li>
+<li>掛載 iso (Virtual Media)， <strong><span style='color:red'>並且設定下次開機引導到 iso</span></strong></li>
+<li>Reboot ESXi Host (F12 and F11)</li>
+<li>VMware ESXi 6.7.0 Installer 設定</li>
+<li>vSphere Client 離開 Maintenance Mode <strong><span style='color:red'>並檢查 vSwitch Uplink 網卡 (vmnic) 是否安好</span></strong></li>
+<li>搬移回去</li>
+<li>告知 NOC 同仁機器已回復</li>
+</ol>
+<h2 id="vmotion">vMotion</h2>
+<p><strong>從目標 ESXi Host 將 VM 移出。</strong></p>
+<p><img src="migrate_all_vm_from_esxi_host_0.jpg" alt="migrate_all_vm_from_esxi_host_0"></p>
+<p>▲ 全選 PowerOn 的 VM</p>
+<p><img src="migrate_all_vm_from_esxi_host_1.jpg" alt="migrate_all_vm_from_esxi_host_1"></p>
+<p>▲ 警告使用針對多個目標做轉移</p>
+<p><img src="migrate_all_vm_from_esxi_host_2.jpg" alt="migrate_all_vm_from_esxi_host_2"></p>
+<p>▲ 選擇轉移計算資源與儲存資源</p>
+<p><img src="migrate_all_vm_from_esxi_host_3.jpg" alt="migrate_all_vm_from_esxi_host_3"></p>
+<p>▲ 轉移到哪台 ESXi Host 上</p>
+<p><img src="migrate_all_vm_from_esxi_host_4.jpg" alt="migrate_all_vm_from_esxi_host_4"></p>
+<p>▲ 選擇精簡部建 (Thin Provison) <strong><span style='color:red'>20221226 整理更新: 應該要選擇 same from source 與來源維持一致</span></strong></p>
+<p><img src="migrate_all_vm_from_esxi_host_5.jpg" alt="migrate_all_vm_from_esxi_host_5"></p>
+<p>▲ VMware 會幫我們確認網路是否都能對應上</p>
+<p><img src="migrate_all_vm_from_esxi_host_6.jpg" alt="migrate_all_vm_from_esxi_host_6"></p>
+<p>▲ 選擇高優先轉移。不過也會吃比較多的 CPU 資源</p>
+<p><img src="migrate_all_vm_from_esxi_host_7.jpg" alt="migrate_all_vm_from_esxi_host_7"></p>
+<p>▲ 最後確認</p>
+<p><strong>確認所有 PowerOn VM 都轉移過去 + <del>組長電話沒有響</del> 就可以把目標主機掛 Maintenance Mode 囉!</strong><br>
+<strong><span style='color:red'>掛完要同步通知 NOC 機器即將關機 維護/更新</span></strong></p>
+<p><img src="enter_maintenance_mode.jpg" alt="enter_maintenance_mode"></p>
+<h2 id="idrac-console">iDrac Console</h2>
+<p>利用該網段 Windows 10 主機開啟瀏覽器登入 iDrac，<strong>使用 Java</strong> 開啟 Console。<br>
+會使用 Java 開啟而非 HTML 5 的原因是 HTML 5 版本 <strong><span style='color:red'>沒有下次引導的功能</span></strong> ，在使用上較為不便<br>
+不過聽 Ryzen 說新版 iDrac HTML 5 也有下次引導的功能，就不用額外下載檔案囉!</p>
+<p><img src="mapping_iso_file_esxi_0.jpg" alt="mapping_iso_file_esxi_0"></p>
+<p>▲ 連接虛擬介質 (我猜 Virtual Media)</p>
+<p><img src="mapping_iso_file_esxi_1.jpg" alt="mapping_iso_file_esxi_1"></p>
+<p>▲ 映射 CD/DVD (Mapping CD/DVD)</p>
+<p><img src="mapping_iso_file_esxi_2.jpg" alt="mapping_iso_file_esxi_2"></p>
+<p>▲ 選擇 iso file</p>
+<p><img src="mapping_iso_file_esxi_3.jpg" alt="mapping_iso_file_esxi_3"></p>
+<p>▲ 確認 iso 有成功掛載</p>
+<p><img src="mapping_iso_file_esxi_4.jpg" alt="mapping_iso_file_esxi_4"></p>
+<p>▲ 下次引導設定成虛擬 CD/DVD/ISO</p>
+<p><img src="mapping_iso_file_esxi_5.jpg" alt="mapping_iso_file_esxi_5"></p>
+<p>▲ 下次引導設定成虛擬 CD/DVD/ISO (確認)</p>
+<p><img src="mapping_iso_file_esxi_6.jpg" alt="mapping_iso_file_esxi_6"></p>
+<p>▲ Reboot ESXi</p>
+<p><img src="mapping_iso_file_esxi_7.jpg" alt="mapping_iso_file_esxi_7"></p>
+<p>▲ 可以看到 &ldquo;IPMI:Boot to Virtual CD Requested&rdquo; 字樣</p>
+<p><img src="mapping_iso_file_esxi_8.jpg" alt="mapping_iso_file_esxi_8"></p>
+<p>▲ 開始透過網路載入 iso，速度取決於網路頻寬 (iDrac 實體 port 通常是瓶頸)</p>
+<h2 id="esxi-installation">ESXi Installation</h2>
+<p><img src="esxi_67_installation_0.jpg" alt="esxi_67_installation_0"></p>
+<p>▲ 進入 ESXi 6.7.0 安裝引導精靈</p>
+<p><img src="esxi_67_installation_1.jpg" alt="esxi_67_installation_1"></p>
+<p>▲ 同意 EULA。<del>賣身契 哪次不同意!</del></p>
+<p><img src="esxi_67_installation_2.jpg" alt="esxi_67_installation_2"></p>
+<p>▲ 掃描可以被安裝的裝置</p>
+<p><img src="esxi_67_installation_3.jpg" alt="esxi_67_installation_3"></p>
+<p>▲ <strong><span style='color:red'>選擇 Daul SD Card</span></strong></p>
+<p>第一張是 RAID 卡，按下去會變成全新安裝 (而且極有可能洗掉 port group , PowerOff VM 等)<br>
+ESXi 屬於會將整個 OS 載入 RAM 的類型。 <a href="https://community.spiceworks.com/topic/2150132-once-loaded-does-vmware-esxi-run-totally-in-memory">ESXi is completely stored in memory on boot</a><br>
+理論上開機後拔掉 boot device 也不會造成影響~ 所以通常會灌在 SD Card 內，而且會有兩張做 Mirror<br>
+在 <a href="https://blog.xxzk.me">Jan 2021. Dell R630 上機紀錄#Integrated Device</a> 可以看到相關設定<br>
+覺得很神奇嗎? 請參考朝陽資管朝貴老師的 <a href="https://github.com/ckhung/mbootuz">豪邁帥氣裸奔!</a></p>
+<p><img src="esxi_67_installation_4.jpg" alt="esxi_67_installation_4"></p>
+<p>▲ 掃描 Dual SD Card 是否已存在舊版 ESXi</p>
+<p><img src="esxi_67_installation_5.jpg" alt="esxi_67_installation_5"></p>
+<p>▲ 掃描到舊版，詢問要升級還是安裝。選擇升級</p>
+<p><img src="esxi_67_installation_6.jpg" alt="esxi_67_installation_6"></p>
+<p>▲ 按下 F11 確認 Upgrade</p>
+<p><img src="esxi_67_installation_7.jpg" alt="esxi_67_installation_7"></p>
+<p>▲ 安裝中</p>
+<p><img src="esxi_67_installation_8.jpg" alt="esxi_67_installation_8"></p>
+<p>▲ 確認下次引導已復歸，即可按下 Enter Reboot</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2021-01-22
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/dell/">dell</a>
+          <a href="/tags/esxi/">ESXi</a>
+          <a href="/tags/vsphere/">vSphere</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/20210127-how-to-install-vcsa7-via-ova/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">VCSA 7.0 (vCenter) 安裝教學</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/20201210-about-dnssec-using-dig/">
+            <span class="next-text nav-default">淺談 DNSSEC 使用 dig</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

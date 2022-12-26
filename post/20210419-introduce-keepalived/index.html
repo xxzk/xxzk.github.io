@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Nginx Keepalived (HA) 設定 - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="本篇筆記參考: NGINX Document-High Availability Support Based on keepalived [sysctl]CentLinux-keepalived: Configure Floating IP in CentOS 7 Servers nixCraft-Verify: Keepalived IP Failover Working Or Not With tcpdump Command man keepalived.conf Keepalived 是一套由 C 語言撰寫的路由軟體 (Routing software)，主要目的是提供 Linux 設施" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.108.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20210419-introduce-keepalived/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Nginx Keepalived (HA) 設定" />
+<meta property="og:description" content="本篇筆記參考: NGINX Document-High Availability Support Based on keepalived [sysctl]CentLinux-keepalived: Configure Floating IP in CentOS 7 Servers nixCraft-Verify: Keepalived IP Failover Working Or Not With tcpdump Command man keepalived.conf Keepalived 是一套由 C 語言撰寫的路由軟體 (Routing software)，主要目的是提供 Linux 設施" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.xxzk.me/post/20210419-introduce-keepalived/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-04-19T15:40:55+00:00" />
+<meta property="article:modified_time" content="2021-04-19T15:40:55+00:00" />
+<meta itemprop="name" content="Nginx Keepalived (HA) 設定">
+<meta itemprop="description" content="本篇筆記參考: NGINX Document-High Availability Support Based on keepalived [sysctl]CentLinux-keepalived: Configure Floating IP in CentOS 7 Servers nixCraft-Verify: Keepalived IP Failover Working Or Not With tcpdump Command man keepalived.conf Keepalived 是一套由 C 語言撰寫的路由軟體 (Routing software)，主要目的是提供 Linux 設施"><meta itemprop="datePublished" content="2021-04-19T15:40:55+00:00" />
+<meta itemprop="dateModified" content="2021-04-19T15:40:55+00:00" />
+<meta itemprop="wordCount" content="1530">
+<meta itemprop="keywords" content="keepalived," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Nginx Keepalived (HA) 設定"/>
+<meta name="twitter:description" content="本篇筆記參考: NGINX Document-High Availability Support Based on keepalived [sysctl]CentLinux-keepalived: Configure Floating IP in CentOS 7 Servers nixCraft-Verify: Keepalived IP Failover Working Or Not With tcpdump Command man keepalived.conf Keepalived 是一套由 C 語言撰寫的路由軟體 (Routing software)，主要目的是提供 Linux 設施"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Nginx Keepalived (HA) 設定</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-04-19 </span>
+        <div class="post-category">
+            <a href="/categories/keepalived/"> keepalived </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#安裝-keepalived-與-nginx">安裝 keepalived 與 Nginx</a></li>
+        <li><a href="#nginx-網頁特徵化">Nginx 網頁特徵化</a></li>
+        <li><a href="#sysctl-設定">sysctl 設定</a></li>
+        <li><a href="#keepalivedconf">keepalived.conf</a></li>
+        <li><a href="#vrrp_script-script_name">vrrp_script &lt;SCRIPT_NAME&gt;</a></li>
+        <li><a href="#vrrp_instance-string">vrrp_instance <STRING></a></li>
+        <li><a href="#觀察-vrrp-封包-可看優先權">觀察 VRRP 封包 (可看優先權)</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p><img src="https://www.keepalived.org/images/ka-header-new.png" alt="ka-header-new.png"></p>
+<p><strong>本篇筆記參考:</strong></p>
+<ul>
+<li><a href="https://docs.nginx.com/nginx/admin-guide/high-availability/ha-keepalived/">NGINX Document-High Availability Support Based on keepalived</a></li>
+<li><a href="https://www.centlinux.com/2018/08/keepalived-configure-floating-ip-centos-7.html">[sysctl]CentLinux-keepalived: Configure Floating IP in CentOS 7 Servers </a></li>
+<li><a href="https://www.cyberciti.biz/faq/linux-unix-verify-keepalived-working-or-not/">nixCraft-Verify: Keepalived IP Failover Working Or Not With tcpdump Command</a></li>
+<li><a href="https://manpages.debian.org/unstable/keepalived/keepalived.conf.5.en.html">man keepalived.conf</a></li>
+</ul>
+<p><strong><a href="https://www.keepalived.org/index.html">Keepalived</a> 是一套由 C 語言撰寫的路由軟體 (Routing software)，主要目的是提供 Linux 設施簡單的高可用 (High-Availability) 以及平衡負載 (Loadbalancing) 方案。</strong></p>
+<p><strong>HA 的部分使用 VRRP (Virtual Router Redundancy Protocol) 協議進行偵測/票選 (election) 由哪台 Linux 設施成為 Master/Primary node (主節點)</strong></p>
+<p><strong>LB (平衡負載) 的部分是基於 Linux 核心模組 Linux Virtual Server (IPVS) 提供 Layer 4 Load Balance 解決辦法</strong></p>
+<p><strong><span style="color:brown">不過本篇筆記只會使用到 keepalived 高可用的部分，負載平衡會交由 Nginx 負責</span></strong></p>
+<p>2022.12.26 整理更新:</p>
+<p>關於 L4, L7 load blancer 差異可以參考 eBPF 相關文章:</p>
+<ul>
+<li><a href="https://medium.com/starbugs/%E5%88%9D%E6%8E%A2-linux-kernel-%E4%B8%AD%E7%9A%84-bpf-%E8%88%87-xdp-%E6%8A%80%E8%A1%93-%E4%BB%A5-tiny-load-balancer-%E7%82%BA%E4%BE%8B-9428c7c1001b">初探 Linux Kernel 中的 BPF 與 XDP 技術：以 Tiny Load Balancer 為例</a></li>
+<li><a href="https://ithelp.ithome.com.tw/articles/10301633">Linux 網路系統概觀</a></li>
+<li><a href="https://ithelp.ithome.com.tw/articles/10302287">你知道 Linux 如何處理網路封包嗎？ - 以 socket programming 為例</a></li>
+</ul>
+<h2 id="安裝-keepalived-與-nginx">安裝 keepalived 與 Nginx</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">yum install  keepalived.x86_64 -y
+</span></span><span class="line"><span class="cl">yum install nginx -y
+</span></span><span class="line"><span class="cl">systemctl <span class="nb">enable</span> --now  nginx.service
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="nginx-網頁特徵化">Nginx 網頁特徵化</h2>
+<p>此次實驗總共有兩台 VM 分別是:</p>
+<blockquote>
+<ul>
+<li>Eric_Keepalived_1 192.168.207.111</li>
+<li>Eric_Keepalived_2 192.168.207.112</li>
+<li>Eric_Keepalived_VIP 192.168.207.120</li>
+</ul>
+</blockquote>
+<p>特徵化主要目的是要辨識連到哪台 nginx server。預設情況下 nginx 網頁根目錄放在 <code>/usr/share/nginx/html</code> 下面</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">rm /usr/share/nginx/html/index.html  <span class="c1">## remove symbolic link</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s1">&#39;&lt;h1&gt;This is keepalived 11111&lt;/h1&gt;&#39;</span> &gt; /usr/share/nginx/html/index.html 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="sysctl-設定">sysctl 設定</h2>
+<p>這個設定允許 Linux 綁定本機不存在的 IP</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;net.ipv4.ip_nonlocal_bind = 1&#34;</span> &gt;&gt; /etc/sysctl.conf
+</span></span><span class="line"><span class="cl">sysctl -p
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="keepalivedconf">keepalived.conf</h2>
+<p>先行備份原本的設定檔</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cp /etc/keepalived/keepalived.conf  /etc/keepalived/keepalived.conf.org
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>Primary Node keepalived.conf</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">vrrp_script check_nginx {
+</span></span><span class="line"><span class="cl">    script &#34;pidof nginx&#34;
+</span></span><span class="line"><span class="cl">    interval 2
+</span></span><span class="line"><span class="cl">    weight -30
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">vrrp_instance VI_1 {
+</span></span><span class="line"><span class="cl">    state MASTER
+</span></span><span class="line"><span class="cl">    interface eth0
+</span></span><span class="line"><span class="cl">    virtual_router_id 19
+</span></span><span class="line"><span class="cl">    priority 200
+</span></span><span class="line"><span class="cl">    advert_int 1
+</span></span><span class="line"><span class="cl">    authentication {
+</span></span><span class="line"><span class="cl">        auth_type PASS
+</span></span><span class="line"><span class="cl">        auth_pass 207207
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">    track_script {
+</span></span><span class="line"><span class="cl">        check_nginx
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">    virtual_ipaddress {
+</span></span><span class="line"><span class="cl">        192.168.207.120/24
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>Secondary/BACKUP Node</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">vrrp_script check_nginx {
+</span></span><span class="line"><span class="cl">    script &#34;pidof nginx&#34;
+</span></span><span class="line"><span class="cl">    interval 2
+</span></span><span class="line"><span class="cl">    weight -30
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">vrrp_instance VI_1 {
+</span></span><span class="line"><span class="cl">    state MASTER
+</span></span><span class="line"><span class="cl">    interface eth0
+</span></span><span class="line"><span class="cl">    virtual_router_id 19
+</span></span><span class="line"><span class="cl">    priority 190
+</span></span><span class="line"><span class="cl">    advert_int 1
+</span></span><span class="line"><span class="cl">    authentication {
+</span></span><span class="line"><span class="cl">        auth_type PASS
+</span></span><span class="line"><span class="cl">        auth_pass 207207
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">    track_script {
+</span></span><span class="line"><span class="cl">        check_nginx
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">    virtual_ipaddress {
+</span></span><span class="line"><span class="cl">        192.168.207.120/24
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="vrrp_script-script_name">vrrp_script &lt;SCRIPT_NAME&gt;</h2>
+<p><a href="https://manpages.debian.org/unstable/keepalived/keepalived.conf.5.en.html#VRRP_script(s)">#VRRP_script</a></p>
+<p>定義要被 <code>vrrp_instance</code> 執行的腳本內容，通常是檢測服務健康 (service health)。<br>
+<code>script</code> 後面可以直接接 <code>&lt;STRING&gt;</code> 或者 <code>&lt;QUOTED-STRING&gt;</code>，都用來表示腳本路徑 (path of script to execute)<br>
+以上面的範例就是去執行 <code>/usr/sbin/pidof nginx</code>。當 <code>nginx</code> 執行中的話 <code>pidof</code> 會 echo 出所有 pid (process id) <strong><span style="color:red">並且回傳值為 0</span></strong><br>
+確認命令執行是否有錯誤都可以用回傳值判斷。當命令成功執行 <code>return code=0</code>，若失敗則為其它值</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">pidof nginx <span class="o">||</span> <span class="nb">echo</span> <span class="nv">$?</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>interval</code> 定義幾秒執行腳本一次，預設是一秒鐘 (default: 1 second)<br>
+<code>weight</code> 定義腳本權重。<strong>範圍從 -253 ~ 253</strong></p>
+<p><strong><span style="color:blue">當 weight 為 &ldquo;正&rdquo; 數</span>:</strong></p>
+<p>(1) <code>return code=0</code>，則增加 instance 當中的優先權 (priority)。 priority = priority + weight<br>
+(2) <code>return code !=0</code>，則 <strong><span style="color:red">優先權 (priority) 保持不變</span></strong></p>
+<p><strong><span style="color:blue">當 weight 為 &ldquo;負&rdquo; 數</span>:</strong></p>
+<p>(1) <code>return code=0</code>，則優先權 (priority) 保持不變<br>
+(2) ``return code !=0`，則 <strong><span style="color:red">減少 instance 當中的優先權 (priority)。 priority = priority + weight</span></strong> (註: weight 為負數)</p>
+<p>另外還有其它比較常用的參數:</p>
+<p><code>rise &lt;INTEGER&gt;</code> 腳本回傳 <strong>成功 (return code=0)</strong> 達到 <code>&lt;INTEGER&gt;</code> 次才將狀態轉成 OK。(required number of successes for OK transition)<br>
+<code>fall &lt;INTEGER&gt;</code> 腳本回傳 <strong>失敗 (return code!=0)</strong> 達到 <code>&lt;INTEGER&gt;</code> 次才將狀態轉成 KO。(required number of successes for KO transition)<br>
+<code>user</code> 以哪個使用者/群組 執行該腳本。其中群組為非必要選項 (user USERNAME [GROUPNAME])<br>
+<code>timeout &lt;INTEGER&gt;</code> 設定腳本執行 <code>&lt;INTEGER&gt;</code> 秒後沒有結束，直接判定失敗。<br>
+<code>init_fail</code> 預設腳本是失敗狀態。<br>
+<del>好像把所有參數說完了 XD</del></p>
+<h2 id="vrrp_instance-string">vrrp_instance <STRING></h2>
+<p><a href="https://manpages.debian.org/unstable/keepalived/keepalived.conf.5.en.html#VRRP_instance(s)">#VRRP_instance</a></p>
+<p><code>state</code> 可以是 <code>MASTER</code> or <code>BACKUP</code>。也可以選擇不設定，因為當其他候選人 (在同個廣播域、設定相同 <code>virtual_router_id</code>) 上線後，就會舉辦選舉優先權最高者勝出成為 Master 拿到 VIP 使用權<br>
+<code>interface</code> 設定已取得內部 IP 的網卡，也是 VIP 綁定的目標網卡 (除非有另外設定)。<br>
+這張網卡同時也是 vrrp 綁定的對象。如果省略此設定，所有的 VIPs 與 eVIPs 就必須被指派使用哪張網卡。<br>
+<code>virtual_router_id</code> 同一個廣播域中用來辨識 (封包 vrid)。同一個 HA Cluster 內設定的值必須相同，設定的範圍從 1~255<br>
+<code>priority</code> 優先權。<br>
+<code>advert_int</code> VRRP 廣播間隔，單位是秒<br>
+<code>authentication (區塊)</code> auth_pass 使用密碼驗證 vrrp 封包真偽，keepalive 取前八位字元使用。</p>
+<p>感覺沒什麼路用&hellip; 因為如果 <code>auth_type PASS</code> 的情況下，密碼是明文&hellip;<br>
+<a href="https://louwrentius.com/configuring-attacking-and-securing-vrrp-on-linux.html">Louwrentius-Configuring, Attacking and Securing VRRP on Linux</a></p>
+<p><code>track_script (區塊)</code> SCRIPT_NAME 後面一樣可以設定權重 -253~253。預設值是 <code>0</code><br>
+<code>virtual_ipaddress (區塊)</code> 設定 VIP 為何。<br>
+<strong><span style="color:red"><code>nopreempt</code> 當 Master Node 恢復後不接受剝奪 VIP 使用權。若要使用 state 必須設定成 MASTER</span></strong></p>
+<p>其他參數:</p>
+<p><code>track_interface (區塊)</code> 可以對每個 interface 設定不同權重。當偵測到 interface down 就會由其他 interface 接手。<br>
+<code>version &lt;2 or 3&gt;</code> 使用的 VRRP 版本，預設值 ver.2。 IPv6 必定使用 ver.3</p>
+<h2 id="觀察-vrrp-封包-可看優先權">觀察 VRRP 封包 (可看優先權)</h2>
+<p><a href="https://tools.ietf.org/html/rfc3768">RFC 3768 - Virtual Router Redundancy Protocol (VRRP)</a><br>
+<a href="https://www.cyberciti.biz/faq/linux-unix-verify-keepalived-working-or-not/">nixCraft-Verify: Keepalived IP Failover Working Or Not With tcpdump Command</a></p>
+<p>VRRP 預設使用 <code>224.0.0.18</code> 做為群播地址。透過 <code>tcpdump</code> 可以觀察</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">tcpdump -vvv -n -i eth0 host 224.0.0.18
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a href="https://cdn.comparitech.com/wp-content/uploads/2019/06/tcpdump-cheat-sheet.jpg">tcpdump Cheat Sheet</a></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2021-04-19
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/keepalived/">keepalived</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/20210503-minio-introduce/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">MinIO 簡單介紹</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/20210401-bookstack-fronts-customising/">
+            <span class="next-text nav-default">Bookstack 自訂字形與樣式 Customising Visuals</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

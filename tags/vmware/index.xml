@@ -34,5 +34,14 @@
       <description>這標題有夠長 中文警報標題全文: 位於主機上，且 BIOS 電源管理未設定為 [由作業系統控制] 的虛擬機器面臨 CPU 爭用 先講結論，未來在上機時應該考慮把 BIOS Power Management 設</description>
     </item>
     
+    <item>
+      <title>淺談 vDS (網路虛擬化 NSX-T 功能之一)</title>
+      <link>https://blog.xxzk.me/post/20201026-introduce-vmware-vds/</link>
+      <pubDate>Mon, 26 Oct 2020 14:05:21 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20201026-introduce-vmware-vds/</guid>
+      <description>vDS 是什麼 ? 為什麼要用它 ? vDS 全名 vSphere Distributed Switch 是 VMWare vSphere 產品線下 SDN (Software Defined Networking) 的產物，在 vDS 出來之前也有一款叫做 vSS (vSphere Standard Switch) 的產品。 比起 vSS 需要部屬在每一台 ESXi host ， vDS 統一</description>
+    </item>
+    
   </channel>
 </rss>

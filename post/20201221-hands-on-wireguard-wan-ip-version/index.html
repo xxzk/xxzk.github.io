@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Wireguard 實作 (WAN IP version) - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="介紹 WireGuard 是一款開放原始碼的 VPN 程式，主打簡單快速 (任何設備) 並且效能比 IPSec、OpenVPN 更快，安全性方面更是強調 &amp;ldquo;state of the art&amp;rdquo; (最先進的) 安全" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.108.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20201221-hands-on-wireguard-wan-ip-version/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Wireguard 實作 (WAN IP version)" />
+<meta property="og:description" content="介紹 WireGuard 是一款開放原始碼的 VPN 程式，主打簡單快速 (任何設備) 並且效能比 IPSec、OpenVPN 更快，安全性方面更是強調 &ldquo;state of the art&rdquo; (最先進的) 安全" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.xxzk.me/post/20201221-hands-on-wireguard-wan-ip-version/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2020-12-21T10:26:39+00:00" />
+<meta property="article:modified_time" content="2020-12-21T10:26:39+00:00" />
+<meta itemprop="name" content="Wireguard 實作 (WAN IP version)">
+<meta itemprop="description" content="介紹 WireGuard 是一款開放原始碼的 VPN 程式，主打簡單快速 (任何設備) 並且效能比 IPSec、OpenVPN 更快，安全性方面更是強調 &ldquo;state of the art&rdquo; (最先進的) 安全"><meta itemprop="datePublished" content="2020-12-21T10:26:39+00:00" />
+<meta itemprop="dateModified" content="2020-12-21T10:26:39+00:00" />
+<meta itemprop="wordCount" content="3171">
+<meta itemprop="keywords" content="vpn,wireguard," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Wireguard 實作 (WAN IP version)"/>
+<meta name="twitter:description" content="介紹 WireGuard 是一款開放原始碼的 VPN 程式，主打簡單快速 (任何設備) 並且效能比 IPSec、OpenVPN 更快，安全性方面更是強調 &ldquo;state of the art&rdquo; (最先進的) 安全"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Wireguard 實作 (WAN IP version)</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-12-21 </span>
+        <div class="post-category">
+            <a href="/categories/network/"> network </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#介紹">介紹</a></li>
+        <li><a href="#安裝">安裝</a>
+          <ul>
+            <li><a href="#method-1-將已簽章模組丟入-kernel-centos-另外一個核心版本已經自帶我們直接替換">Method 1. 將已簽章模組丟入 kernel (CentOS 另外一個核心版本已經自帶，我們直接替換)</a></li>
+            <li><a href="#method-2-掛載其他模組-為了使用原廠核心-不須-reboot-推薦使用">Method 2. 掛載其他模組 (為了使用原廠核心) 不須 reboot 推薦使用</a></li>
+            <li><a href="#method-3-若使用有修改過的-kernel-可以使用-dkms-來安裝">Method 3. 若使用有修改過的 kernel 可以使用 DKMS 來安裝</a></li>
+            <li><a href="#server-設定">Server 設定</a></li>
+          </ul>
+        </li>
+        <li><a href="#client-設定">Client 設定</a>
+          <ul>
+            <li><a href="#測試">測試</a></li>
+          </ul>
+        </li>
+        <li><a href="#wan-ip-設定">WAN IP 設定</a>
+          <ul>
+            <li><a href="#設定-forti-port-forwarding-的部分">設定 Forti port-forwarding 的部分</a></li>
+            <li><a href="#沒有設定-nat-導致封包被丟棄">沒有設定 NAT 導致封包被丟棄</a></li>
+          </ul>
+        </li>
+        <li><a href="#wan-ip-設定檔-server-side">WAN IP 設定檔 (Server side)</a></li>
+        <li><a href="#自動產生-peer-設定檔並顯示-qrcode">自動產生 peer 設定檔並顯示 QRCode</a></li>
+        <li><a href="#移動設備連接示範">移動設備連接示範</a>
+          <ul>
+            <li><a href="#方法一-直接掃描-qr-code">方法一. 直接掃描 QR Code</a></li>
+            <li><a href="#方法二-從-qr-code-圖片匯入">方法二. 從 QR Code 圖片匯入</a></li>
+          </ul>
+        </li>
+        <li><a href="#windows-10-設備連結示範">Windows 10 設備連結示範</a>
+          <ul>
+            <li><a href="#參考資料">參考資料</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p><img src="https://www.wireguard.com/img/wireguard.svg" alt="logo"></p>
+<h2 id="介紹">介紹</h2>
+<p>WireGuard 是一款開放原始碼的 VPN 程式，主打簡單快速 (任何設備) 並且效能比 IPSec、OpenVPN 更快，安全性方面更是強調 &ldquo;state of the art&rdquo; (最先進的) 安全協議包括但不限於:  Noise protocol framework, Curve25519, ChaCha20, Poly1305, BLAKE2, SipHash24, HKDF <a href="https://www.wireguard.com/protocol/">Protocol &amp; Cryptography - WireGuard</a>。 Source Code 也僅僅約 4000 行，相比其他 VPN 軟體更容易維護以及稽查安全漏洞</p>
+<p>WireGuard 希望把連線 VPN 這件事情弄得跟 SSH 一樣容易設定、部屬簡單，透過 WireGuard 建立 VPN 只需要簡單的幾把公鑰。 WireGuard 甚至可以在不同 IP 間漫遊，用戶不必管理連線、deamon 或其他複雜的設定。</p>
+<p>基於以上種種優點， WireGuard 正式版 <code>v1.0.0</code> 正式加入 <code>linux kernel 5.6.x</code> <a href="https://www.ithome.com.tw/news/136664">ITHOME 詳細報導</a></p>
+<h2 id="安裝">安裝</h2>
+<p><strong><span style='color:red'>WireGuard 軟體上並沒有 server client 之分，差別只在於設定檔</span></strong></p>
+<p><a href="https://www.wireguard.com/install/">WireGuard Install</a></p>
+<p>以 CentOS 7 來說官方提供三種不同的安裝方式</p>
+<h3 id="method-1-將已簽章模組丟入-kernel-centos-另外一個核心版本已經自帶我們直接替換">Method 1. 將已簽章模組丟入 kernel (CentOS 另外一個核心版本已經自帶，我們直接替換)</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo yum install yum-utils epel-release
+</span></span><span class="line"><span class="cl">sudo yum-config-manager --setopt<span class="o">=</span>centosplus.includepkgs<span class="o">=</span>kernel-plus --enablerepo<span class="o">=</span>centosplus --save
+</span></span><span class="line"><span class="cl">sudo sed -e <span class="s1">&#39;s/^DEFAULTKERNEL=kernel$/DEFAULTKERNEL=kernel-plus/&#39;</span> -i /etc/sysconfig/kernel
+</span></span><span class="line"><span class="cl">sudo yum install kernel-plus wireguard-tools
+</span></span><span class="line"><span class="cl">sudo reboot
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="method-2-掛載其他模組-為了使用原廠核心-不須-reboot-推薦使用">Method 2. 掛載其他模組 (為了使用原廠核心) 不須 reboot 推薦使用</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">yum install epel-release elrepo-release
+</span></span><span class="line"><span class="cl">sudo yum install yum-plugin-elrepo
+</span></span><span class="line"><span class="cl">sudo yum install kmod-wireguard wireguard-tools
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="method-3-若使用有修改過的-kernel-可以使用-dkms-來安裝">Method 3. 若使用有修改過的 kernel 可以使用 DKMS 來安裝</h3>
+<p>通常 for 公有雲有自行修改 Linux kernel  的情況</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+</span></span><span class="line"><span class="cl">sudo curl -o /etc/yum.repos.d/jdoss-wireguard-epel-7.repo https://copr.fedorainfracloud.org/coprs/jdoss/wireguard/repo/epel-7/jdoss-wireguard-epel-7.repo
+</span></span><span class="line"><span class="cl">sudo yum install wireguard-dkms wireguard-tools
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="server-設定">Server 設定</h3>
+<blockquote>
+<p>設定環境:</p>
+<ul>
+<li>OS: CentOS 7</li>
+<li>網路: behind NAT</li>
+<li>hostname: jumpserver</li>
+</ul>
+</blockquote>
+<p>開啟 IPv4 封包轉發 <a href="https://www.eukhost.com/kb/how-to-enable-ip-forwarding-on-linux-ipv4-ipv6/">How to enable IP forwarding on Linux (IPv4 / IPv6)?</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sysctl -w net.ipv4.ip_forward<span class="o">=</span><span class="m">1</span> <span class="c1">## reboot 後失效</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>永久開啟 (寫入設定檔 <code>/etc/sysctl.conf</code> )</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">net.ipv4.ip_forward <span class="o">=</span> <span class="m">1</span>
+</span></span><span class="line"><span class="cl">net.ipv6.conf.all.forwarding<span class="o">=</span><span class="m">1</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>立即生效請執行 <code>sysctl -p /etc/sysctl.conf</code></p>
+<p>切換到 <code>/etc/wireguard</code> 下設定與產生金鑰<br>
+註: <code>v1.0.0</code> 之後安裝過程即會創建該目錄，不必手動新增</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> /etc/wireguard
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>產生公私金鑰對</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">wg genkey <span class="p">|</span> tee privatekey <span class="p">|</span> wg pubkey &gt; publickey
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>建立設定檔，檔名 (不包含.conf) 即會是啟動之後網路卡名稱</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim wg0.conf
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>包含以下內容</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl"># 掌管 host 網卡
+</span></span><span class="line"><span class="cl">[Interface]
+</span></span><span class="line"><span class="cl">Address = 10.0.0.1/8  # server 內部 IP
+</span></span><span class="line"><span class="cl">SaveConfig = true
+</span></span><span class="line"><span class="cl">ListenPort = 51820  #監聽埠號，可以自行修改
+</span></span><span class="line"><span class="cl">PrivateKey = &lt;填入 Privatekey&gt;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">#用戶端，每一個用戶均需要一組 [peer]
+</span></span><span class="line"><span class="cl"># Peer 的設定就是看跟 &#34;誰&#34; 連
+</span></span><span class="line"><span class="cl">[Peer]
+</span></span><span class="line"><span class="cl">PublicKey = &lt;Client 端公鑰&gt;
+</span></span><span class="line"><span class="cl">PresharedKey = &lt;增加安全性的 PSK&gt;
+</span></span><span class="line"><span class="cl">AllowedIPs = 10.0.0.2/32  # Client 端 IP，Mask 必須為 /32
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p>PSK 可以透過 <code>wg genpsk</code> 指令產生</p>
+<p>如果想讓 <code>firewalld</code> 在啟動 WireGuard 後同時放行 port number 可以在 <code>[interface]</code> 下新增兩個參數。通常 <code>PostUp</code> 與 <code>PostDown</code> 會設定一樣，畢竟啟動開了什麼關閉就要關</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">PostUp</span>     <span class="o">=</span> firewall-cmd --zone<span class="o">=</span>public --add-port 51820/udp <span class="o">&amp;&amp;</span> firewall-cmd --zone<span class="o">=</span>public --add-masquerade
+</span></span><span class="line"><span class="cl"><span class="nv">PostDown</span>   <span class="o">=</span> firewall-cmd --zone<span class="o">=</span>public --remove-port 51820/udp <span class="o">&amp;&amp;</span> firewall-cmd --zone<span class="o">=</span>public --remove-masquerade
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>金鑰、設定檔權限限制，有兩種方式</p>
+<ol>
+<li>在施作之前設定 <code>umask 077 </code> 預設值是 022</li>
+<li>施作後執行 <code>chmod 600 -R ./</code></li>
+</ol>
+<p><img src="gen_key_pair.jpg" alt="gen_key_pair"></p>
+<p>最後 Start/Enable WireGuard，其中 &ldquo;@&rdquo; 後面接的是設定檔名稱</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">systemctl start --now wg-quick@wg0
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="client-設定">Client 設定</h2>
+<blockquote>
+<p>設定環境:</p>
+<ul>
+<li>OS: CentOS 7</li>
+<li>網路: behind NAT</li>
+<li>hostname: board</li>
+</ul>
+</blockquote>
+<p>切換到 <code>/etc/wireguard</code> 下設定與產生金鑰</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> /etc/wireguard
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>產生公私金鑰對</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">wg genkey <span class="p">|</span> tee client_privatekey <span class="p">|</span> wg pubkey &gt; client_publickey
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>建立設定檔，檔名 (不包含.conf) 即會是啟動之後網路卡名稱</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim wg0.conf
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>包含以下內容</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">[Interface]
+</span></span><span class="line"><span class="cl">Address    = 10.0.0.2/8  # Clinet IP 必須與 server 端 AllowedIPs 相符 (注意遮罩)
+</span></span><span class="line"><span class="cl">ListenPort = 51820 # 必須與 server 端相符
+</span></span><span class="line"><span class="cl">PrivateKey = &lt;Client_Privatekey&gt;
+</span></span><span class="line"><span class="cl">DNS = 8.8.8.8 # 建議設定
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">## 這邊的 peer 是設定 server 的部分
+</span></span><span class="line"><span class="cl">## 因為 peer 就是看跟 &#34;誰&#34; 連線
+</span></span><span class="line"><span class="cl">[Peer]
+</span></span><span class="line"><span class="cl">PublicKey    = &lt;server Public key&gt;
+</span></span><span class="line"><span class="cl">PresharedKey = &lt;server 產生給用戶的專屬 PSK，必須與 server 端相符&gt;
+</span></span><span class="line"><span class="cl">AllowedIPs   = 0.0.0.0/0 # 表示所有連線均透過 VPN，亦可自行設定特定連線才走 VPN
+</span></span><span class="line"><span class="cl">Endpoint     = 192.168.207.117:51820 # Server 外部 IP
+</span></span><span class="line"><span class="cl">PersistentKeepalive = 30 # 讓 WireGuard Client 每 30 秒就檢查一次連線，保持不斷線
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>金鑰、設定檔權限限制，有兩種方式</p>
+<ol>
+<li>在施作之前設定 <code>umask 077 </code> 預設值是 022</li>
+<li>施作後執行 <code>chmod 600 -R ./</code></li>
+</ol>
+<p>最後 Start WireGuard</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">systemctl start wg-quick@wg0
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="測試">測試</h3>
+<ol>
+<li><code>ping 10.0.0.1</code> 有通大致上就沒有問題</li>
+<li>透過 VPN 使用 ssh 登入 server 主機</li>
+</ol>
+<p><code>ssh root@10.0.0.1</code></p>
+<p><img src="ssh_login_test.jpg" alt="ssh_login_test"></p>
+<p>透過 graylog 也可以看到是從 <code>10.0.0.2</code> 登入</p>
+<p><img src="graylog_sshd_log.jpg" alt="graylog_sshd_log"></p>
+<h2 id="wan-ip-設定">WAN IP 設定</h2>
+<p>上面先前的介紹只有單純 private IP 的環境。以下是以公司網路環境將 WireGuard 上外網的教學。</p>
+<blockquote>
+<p>Server 環境:</p>
+<ul>
+<li>OS: CentOS Linux release 7.9.2009 (Core)</li>
+<li>網路: Behind NAT，不過上層 Forti 有幫我們做 <strong>port-forwarding</strong></li>
+</ul>
+</blockquote>
+<h3 id="設定-forti-port-forwarding-的部分">設定 Forti port-forwarding 的部分</h3>
+<p>WAN IP: <code>106.104.x.z:51820</code> 轉 <code>192.168.207.40:51820</code></p>
+<p>這邊要注意的是 <strong>WireGuard 使用的是 UDP</strong>，需要特別告知網路組留意<br>
+像這次就發生雖然 Forti 上 IPv4 虛擬 IP 裡面 TCP 與 UDP 都有開啟 port-forwarding 但是 IPv4 政策路由 (routing policy) 卻設定成 TCP</p>
+<p><img src="forti_207_ipv4_virtual_ip.png" alt="forti_207_ipv4_virtual_ip"></p>
+<p>▲ Forti IPv4 虛擬 IP 正確設定</p>
+<p><img src="forti_207_ipv4_policy_routing.png" alt="forti_207_ipv4_policy_routing"></p>
+<p>▲ Forti IPv4 政策路由 (routing policy) 錯誤設定</p>
+<p>導致以 <code>wg</code> 指令一直沒有出現 <code>latest handshake</code> 與 <code>transfer</code> 的欄位，<strong>這是用來判斷裝置是否有連上 WireGuard Server 的方法</strong></p>
+<p><img src="wireguard_last_handshake.jpg" alt="wireguard_last_handshake"></p>
+<p>▲ 以 latest handshake 判斷裝置是否連接成功</p>
+<p><img src="wireguard_last_handshake_success.jpg" alt="wireguard_last_handshake_success"></p>
+<p>▲ 連線成功</p>
+<p>確認裝置連線成功後使用瀏覽器開啟網頁測試，卻發生網頁無法連線的情況<br>
+BTW，我的 iPad 居然在這個情況還能收到 APP 推播通知，假 VPN 阿 Apple Orz<br>
+<a href="https://www.ithome.com.tw/news/141175">研究人員指控：蘋果在macOS Big Sur中的VPN與防火牆擴充框架排除了逾50款自家程式</a></p>
+<h3 id="沒有設定-nat-導致封包被丟棄">沒有設定 NAT 導致封包被丟棄</h3>
+<p>使用</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">tcpdump udp
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>列出 host 上所有 UDP 封包</p>
+<blockquote>
+<p>src: Client 端 <code>10.10.207.2</code><br>
+dst: one.one.one.one (CloudFlare Public DNS resolver)</p>
+</blockquote>
+<p>發現問題了嗎? 來自 <code>10.10.207.2</code> 的封包沒有做 NAT，<code>Eric_WireGuard_Demo</code> 這台主機看到 dst 是 <code>1.1.1.1</code> 便把這個 <code>src 10.10.207.2</code> 的封包送到 default gateway 也就是上層 Forti 那邊。<br>
+Forti 看到 dst 並不是自己的網域，也把這個封包送到 default gateway 就這樣跑到 ISP Router 那邊。<br>
+但是封包很有可能不會成功送到 <code>1.1.1.1</code> 那邊，原因是這種封包是洪流攻擊手法之一，路徑上的 router 會針對 src 去做判斷/過濾。<br>
+就算封包成功送到 <code>1.1.1.1</code> 手上， DNS Answer 封包也不可能會回到我們手上。</p>
+<p>在這邊再次感謝社群幫忙</p>
+<p><img src="before_masquerade.jpg" alt="before_masquerade"></p>
+<p>▲ 封包 src 是 10.10.207.2</p>
+<p>所以我們在 <code>wg0.conf</code> 中增加兩行指令，請 <code>iptables</code> 幫我們把所有要走 default gateway 的封包全部做 <strong>MASQUERADE</strong> 也就是 NAT<br>
+這邊要提醒，不要把整個 <code>iptables-service</code> 裝回來 / running / enable，不然整個封包繞送又會有問題了。
+另外網路上也有用 <code>/etc/rc.local</code> 在開機啟動的時候做 <code>iptables-restore &lt;iptables-save 產生的檔案路徑&gt;</code>，經過嘗試後並沒有成功<br>
+WireGuard 有提供 PostUP / PostDown 就用它的吧!</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">PostUp</span>  <span class="o">=</span> iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+</span></span><span class="line"><span class="cl"><span class="nv">PostDown</span> <span class="o">=</span> iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>經過 <code>iptables</code> 幫我們做 NAT 後再度觀察所有 UDP 的封包，可以看到 src <code>10.10.207.2</code> 全部消失了!<br>
+通通變成 <code>Eric_WireGuard_Demo</code></p>
+<p><img src="after_masquerade.jpg" alt="after_masquerade"></p>
+<p>▲ 經過 NAT 後的 UDP 封包觀察</p>
+<p>我們也可以使用</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">iptables -t nat -L -n
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>查看 <code>iptables</code> 列表</p>
+<h2 id="wan-ip-設定檔-server-side">WAN IP 設定檔 (Server side)</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>Interface<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">Address</span> <span class="o">=</span> 10.10.207.1/24
+</span></span><span class="line"><span class="cl"><span class="nv">ListenPort</span> <span class="o">=</span> <span class="m">51820</span>
+</span></span><span class="line"><span class="cl"><span class="nv">PrivateKey</span> <span class="o">=</span> 0G6hcI3j+qNNPPg3VdkhQO5WEzZ+Gt5UDl87aoZOSnU<span class="o">=</span>
+</span></span><span class="line"><span class="cl"><span class="nv">PostUp</span>     <span class="o">=</span> iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+</span></span><span class="line"><span class="cl"><span class="nv">PostDown</span>     <span class="o">=</span> iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>peer<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">PublicKey</span> <span class="o">=</span> lVBgg1/DkIRglKbW9Kh2gXivIIIIIIIIIIIIIIIIIII<span class="o">=</span>
+</span></span><span class="line"><span class="cl"><span class="nv">AllowedIPs</span> <span class="o">=</span> 10.10.207.2/32
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="自動產生-peer-設定檔並顯示-qrcode">自動產生 peer 設定檔並顯示 QRCode</h2>
+<p>script 改自  <a href="https://gist.github.com/robinlandstrom/b111240cd74ecab4d358f28b2d4fd8de">robinlandstrom/new-wireguard-peer.sh </a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="nb">read</span> -p <span class="s1">&#39;請輸入裝置名稱: &#39;</span> DEVICE_NAME
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">readonly</span> <span class="nv">INTERFACE</span><span class="o">=</span><span class="s2">&#34;wg0&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Generate peer keys</span>
+</span></span><span class="line"><span class="cl"><span class="nb">readonly</span> <span class="nv">PRIVATE_KEY</span><span class="o">=</span><span class="k">$(</span>wg genkey<span class="k">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">readonly</span> <span class="nv">PUBLIC_KEY</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span> <span class="si">${</span><span class="nv">PRIVATE_KEY</span><span class="si">}</span> <span class="p">|</span> wg pubkey<span class="k">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">readonly</span> <span class="nv">PRESHARED_KEY</span><span class="o">=</span><span class="k">$(</span>wg genpsk<span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Read server key from interface</span>
+</span></span><span class="line"><span class="cl"><span class="nb">readonly</span> <span class="nv">SERVER_PUBLIC_KEY</span><span class="o">=</span><span class="k">$(</span>wg show <span class="si">${</span><span class="nv">INTERFACE</span><span class="si">}</span> public-key<span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Get next free peer IP (This will break after x.x.x.255)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">readonly</span> <span class="nv">PEER_ADDRESS</span><span class="o">=</span><span class="k">$(</span>wg show <span class="si">${</span><span class="nv">INTERFACE</span><span class="si">}</span> allowed-ips <span class="p">|</span> cut -f <span class="m">2</span> <span class="p">|</span> awk -F<span class="s1">&#39;[./]&#39;</span> <span class="s1">&#39;{print $1&#34;.&#34;$2&#34;.&#34;$3&#34;.&#34;1+$4&#34;/&#34;$5}&#39;</span> <span class="p">|</span> sort -t <span class="s1">&#39;.&#39;</span> -k 1,1 -k 2,2 -k 3,3 -k 4,4 -n <span class="p">|</span> tail -n1<span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Add peer</span>
+</span></span><span class="line"><span class="cl">wg <span class="nb">set</span> <span class="si">${</span><span class="nv">INTERFACE</span><span class="si">}</span> peer <span class="si">${</span><span class="nv">PUBLIC_KEY</span><span class="si">}</span> preshared-key &lt;<span class="o">(</span><span class="nb">echo</span> <span class="si">${</span><span class="nv">PRESHARED_KEY</span><span class="si">}</span><span class="o">)</span> allowed-ips <span class="si">${</span><span class="nv">PEER_ADDRESS</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Logging</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;Added peer </span><span class="si">${</span><span class="nv">PEER_ADDRESS</span><span class="si">}</span><span class="s2"> with public key </span><span class="si">${</span><span class="nv">PUBLIC_KEY</span><span class="si">}</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Gen Device List to wg0.conf</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">cat &gt;&gt; /etc/wireguard/wg0.conf <span class="s">&lt;&lt; END_OF_CONFIG 
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">## ${DEVICE_NAME}
+</span></span></span><span class="line"><span class="cl"><span class="s">[Peer]
+</span></span></span><span class="line"><span class="cl"><span class="s">PublicKey = ${PUBLIC_KEY}
+</span></span></span><span class="line"><span class="cl"><span class="s">PresharedKey = ${PRESHARED_KEY}
+</span></span></span><span class="line"><span class="cl"><span class="s">AllowedIPs = ${PEER_ADDRESS}
+</span></span></span><span class="line"><span class="cl"><span class="s">END_OF_CONFIG</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Generate peer config QR code</span>
+</span></span><span class="line"><span class="cl">cat <span class="s">&lt;&lt; END_OF_CONFIG | qrencode -t ANSIUTF8
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">[Interface]
+</span></span></span><span class="line"><span class="cl"><span class="s">Address = ${PEER_ADDRESS}
+</span></span></span><span class="line"><span class="cl"><span class="s">PrivateKey = ${PRIVATE_KEY}
+</span></span></span><span class="line"><span class="cl"><span class="s">DNS = 1.1.1.1
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">[Peer]
+</span></span></span><span class="line"><span class="cl"><span class="s">PublicKey = ${SERVER_PUBLIC_KEY}
+</span></span></span><span class="line"><span class="cl"><span class="s">PresharedKey = ${PRESHARED_KEY}
+</span></span></span><span class="line"><span class="cl"><span class="s">AllowedIPs = 0.0.0.0/0
+</span></span></span><span class="line"><span class="cl"><span class="s">Endpoint = 106.104.175.230:51820
+</span></span></span><span class="line"><span class="cl"><span class="s">END_OF_CONFIG</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Generate peer config file to config.conf</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">cat <span class="s">&lt;&lt; END_OF_CONFIG &gt; config.conf
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">[Interface]
+</span></span></span><span class="line"><span class="cl"><span class="s">Address = ${PEER_ADDRESS}
+</span></span></span><span class="line"><span class="cl"><span class="s">PrivateKey = ${PRIVATE_KEY}
+</span></span></span><span class="line"><span class="cl"><span class="s">DNS = 1.1.1.1
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">[Peer]
+</span></span></span><span class="line"><span class="cl"><span class="s">PublicKey = ${SERVER_PUBLIC_KEY}
+</span></span></span><span class="line"><span class="cl"><span class="s">PresharedKey = ${PRESHARED_KEY}
+</span></span></span><span class="line"><span class="cl"><span class="s">AllowedIPs = 0.0.0.0/0
+</span></span></span><span class="line"><span class="cl"><span class="s">Endpoint = 106.104.175.230:51820
+</span></span></span><span class="line"><span class="cl"><span class="s">END_OF_CONFIG</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>腳本功能:<br>
+1.自動產生 peer 設定檔 (Public key、IP)<br>
+2.寫入 <code>/etc/wireguard/wg0.conf</code> (設定檔永久保存，服務啟動會從這邊讀取)<br>
+3.產生 <code>config.conf</code> 設定檔 (for Windows)</p>
+</blockquote>
+<p><strong>使用方式</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">/etc/wireguard/auto_add_peer_qrcode.sh
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>特別注意，腳本需要設定檔內至少要有一組 Peer 才能夠抓取正確 <code>AllowedIPs</code></strong><br>
+<strong>公鑰長度、格式必須符合，中間字元可以任意輸入</strong><br>
+範例:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## Init first allowed ips</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>peer<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">PublicKey</span> <span class="o">=</span> lVBgg1/DkIRglKbW9Kh2gXivIIIIIIIIIIIIIIIIIII<span class="o">=</span>
+</span></span><span class="line"><span class="cl"><span class="nv">AllowedIPs</span> <span class="o">=</span> 10.10.207.2/32
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>依照提示輸入名稱亦可是使用者，這個只是幫助標示這個 peer 是誰在使用</p>
+<p><img src="wg_enter_device_name.jpg" alt="wg_enter_device_name"></p>
+<h2 id="移動設備連接示範">移動設備連接示範</h2>
+<p>雖然 WireGuard 在未來會成為 Linux VPN 協議主流，但目前無不論 Apple iOS 或者 Google Android 都需要另外安裝 Client App 才能順利連接。</p>
+<p><a href="https://play.google.com/store/apps/details?id=com.wireguard.android&amp;hl=zh_TW&amp;gl=US">Google Android WireGuard on Play Store</a><br>
+<a href="https://f-droid.org/en/packages/com.wireguard.android/">Google Android WireGuard on F-Droid</a><br>
+<a href="https://apps.apple.com/tw/app/wireguard/id1441195209">Apple iOS WireGuard on App Store</a></p>
+<h3 id="方法一-直接掃描-qr-code">方法一. 直接掃描 QR Code</h3>
+<p>這是最簡單的方法，不過必須要有第二個螢幕才能順利掃描。</p>
+<p><img src="wg_scan_from_qrcode.jpg" alt="wg_scan_from_qrcode"></p>
+<p>▲ 點選右下角加號，選擇 SCAN FROM QR CODE</p>
+<p>掃描成功後會跳出式窗要求為這個通道命名，使用者自行輸入。</p>
+<p><img src="wg_tunnel_name.png" alt="wg_tunnel_name"></p>
+<p>▲ 輸入 Tunnel name</p>
+<h3 id="方法二-從-qr-code-圖片匯入">方法二. 從 QR Code 圖片匯入</h3>
+<p>這個方法適合沒有第二個螢幕的使用者。利用 LINE 或其他 QR Code 掃描工具能夠取得設定檔內容。<br>
+取得內容後可以選擇<br>
+(1) 按照內容手動新增<br>
+(2) 存成 <code>.conf</code> 檔匯入</p>
+<p>這邊以最常出現在手機的 LINE 示範</p>
+<p><img src="wg_qr_scan_with_line.png" alt="wg_qr_scan_with_line"></p>
+<p>▲ 利用 LINE 掃描 QR Code</p>
+<p><img src="wg_qr_input_with_line.png" alt="wg_qr_input_with_line"></p>
+<p>▲ 選擇從圖片檔匯入</p>
+<p><img src="wg_qr_to_text.png" alt="wg_qr_to_text"></p>
+<p>▲ 成功將 QR Code 轉成文字</p>
+<p>連線成功後使用 <code>ip.sb</code> 查看當前 WAN IP 為何，成功拿到 WireGuard VPN Server 的 Public IP</p>
+<p><img src="wg_ip_sb.png" alt="wg_ip_sb"></p>
+<p>▲ 成功拿到 WireGuard VPN Server 的 Public IP</p>
+<p>可以從畫面下方看到內部 IP 是我們設定的 <code>10.10.207.3</code>，外部 IP 同樣顯示 WireGuard VPN Server 的 Public IP</p>
+<p><img src="wg_speedtest.png" alt="wg_speedtest"></p>
+<p>▲ 使用 Speedtest.net 測速</p>
+<p><img src="wg_nextcloud_access.png" alt="wg_nextcloud_access"></p>
+<p>▲ 成功訪問到公司內部服務</p>
+<h2 id="windows-10-設備連結示範">Windows 10 設備連結示範</h2>
+<blockquote>
+<p>Windows 10 Enterprice<br>
+version 2004<br>
+OS build 19041.685</p>
+</blockquote>
+<p><a href="https://www.wireguard.com/install/">Download Windows Installer</a></p>
+<p>系統操作人員可以使用 <code>sz</code> 將 <code>config.conf</code> 檔案傳送到 localhost (註:如果經過跳板不試用)<br>
+或者直接 <code>cat config.conf</code> 複製貼上</p>
+<p><img src="wg_generate_config_file.jpg" alt="wg_generate_config_file"></p>
+<p><img src="wg_import_config_for_windows_0.jpg" alt="wg_import_config_for_windows_0"></p>
+<p>▲ 匯入設定檔</p>
+<p><img src="wg_generate_config_file_1.jpg" alt="wg_generate_config_file_1"></p>
+<p>▲ 按下連線後即可使用</p>
+<h3 id="參考資料">參考資料</h3>
+<ul>
+<li><a href="https://notes.wadeism.net/linux/680/">【註: psk 認知有錯】WireGuard VPN 設定與使用教學 – Nothing but..</a></li>
+<li><a href="https://wiki.turris.cz/doc/en/public/wireguard">【psk 正確說明】WireGuard setup [Turris wiki]</a></li>
+<li><a href="https://www.cyberciti.biz/faq/centos-8-set-up-wireguard-vpn-server/">CentOS 8 set up WireGuard VPN server - nixCraft</a></li>
+<li><a href="https://www.ithome.com.tw/news/136664">WireGuard VPN 1.0.0隨同Linux 5.6正式出爐 | iThome</a></li>
+<li><a href="https://www.wireguard.com/install/">【官方安裝文件】Installation - WireGuard</a></li>
+<li><a href="https://www.wireguard.com/quickstart/">【官方快速指南】Quick Start - WireGuard</a></li>
+<li><a href="https://gist.github.com/robinlandstrom/b111240cd74ecab4d358f28b2d4fd8de">【自動產生 peer】Script to automatically add configration for a new peer to a wireguard server. It will then print a QR code to the console that can be used to add the config to the Android or OS X wireguard client.</a></li>
+</ul>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2020-12-21
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/vpn/">vpn</a>
+          <a href="/tags/wireguard/">wireguard</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/20201224-simply-introduce-vmware-nsxt/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">簡單介紹 VMWare NSX Network Virtualization Platform</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/20201210-about-dnssec-using-dig/">
+            <span class="next-text nav-default">淺談 DNSSEC 使用 dig</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

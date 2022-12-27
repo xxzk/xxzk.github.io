@@ -26,6 +26,15 @@
     </item>
     
     <item>
+      <title>Wireguard 實作 (WAN IP version)</title>
+      <link>https://blog.xxzk.me/post/20201221-hands-on-wireguard-wan-ip-version/</link>
+      <pubDate>Mon, 21 Dec 2020 10:26:39 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20201221-hands-on-wireguard-wan-ip-version/</guid>
+      <description>介紹 WireGuard 是一款開放原始碼的 VPN 程式，主打簡單快速 (任何設備) 並且效能比 IPSec、OpenVPN 更快，安全性方面更是強調 &amp;ldquo;state of the art&amp;rdquo; (最先進的) 安全</description>
+    </item>
+    
+    <item>
       <title>淺談 vDS (網路虛擬化 NSX-T 功能之一)</title>
       <link>https://blog.xxzk.me/post/20201026-introduce-vmware-vds/</link>
       <pubDate>Mon, 26 Oct 2020 14:05:21 +0000</pubDate>

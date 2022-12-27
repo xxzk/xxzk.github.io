@@ -856,6 +856,27 @@
   </url>
   
   <url>
+    <loc>https://blog.xxzk.me/tags/vpn/</loc>
+    <lastmod>2020-12-21T10:26:39+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/tags/wireguard/</loc>
+    <lastmod>2020-12-21T10:26:39+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/post/20201221-hands-on-wireguard-wan-ip-version/</loc>
+    <lastmod>2020-12-21T10:26:39+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.xxzk.me/tags/dig/</loc>
     <lastmod>2020-12-10T11:46:20+00:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -920,13 +941,6 @@
   
   <url>
     <loc>https://blog.xxzk.me/post/20201112-forti-split-tunneling/</loc>
-    <lastmod>2020-11-12T17:34:41+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.xxzk.me/tags/vpn/</loc>
     <lastmod>2020-11-12T17:34:41+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>

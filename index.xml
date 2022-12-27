@@ -458,6 +458,15 @@
     </item>
     
     <item>
+      <title>Wireguard 實作 (WAN IP version)</title>
+      <link>https://blog.xxzk.me/post/20201221-hands-on-wireguard-wan-ip-version/</link>
+      <pubDate>Mon, 21 Dec 2020 10:26:39 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20201221-hands-on-wireguard-wan-ip-version/</guid>
+      <description>介紹 WireGuard 是一款開放原始碼的 VPN 程式，主打簡單快速 (任何設備) 並且效能比 IPSec、OpenVPN 更快，安全性方面更是強調 &amp;ldquo;state of the art&amp;rdquo; (最先進的) 安全</description>
+    </item>
+    
+    <item>
       <title>淺談 DNSSEC 使用 dig</title>
       <link>https://blog.xxzk.me/post/20201210-about-dnssec-using-dig/</link>
       <pubDate>Thu, 10 Dec 2020 11:46:20 +0000</pubDate>

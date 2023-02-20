@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Udemy AWS SAA-C03 課程筆記 - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="Intro 這篇筆記會記錄 Udemy Ultimate AWS Certified Solutions Architect Associate SAA-C03 隨堂筆記。 !! 目前施工中~~~ !! AWS Free Tier 說明 ▲ Control Your AWS Costs，設定警告避免帳單爆炸。 Slides and Code Download Section 4 IAM and AWS CLI IAM Groups 只" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.110.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20230220-udemy-aws-saa-c03-note/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Udemy AWS SAA-C03 課程筆記" />
+<meta property="og:description" content="Intro 這篇筆記會記錄 Udemy Ultimate AWS Certified Solutions Architect Associate SAA-C03 隨堂筆記。 !! 目前施工中~~~ !! AWS Free Tier 說明 ▲ Control Your AWS Costs，設定警告避免帳單爆炸。 Slides and Code Download Section 4 IAM and AWS CLI IAM Groups 只" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.xxzk.me/post/20230220-udemy-aws-saa-c03-note/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2023-02-13T15:30:50+00:00" />
+<meta property="article:modified_time" content="2023-02-13T15:30:50+00:00" />
+<meta itemprop="name" content="Udemy AWS SAA-C03 課程筆記">
+<meta itemprop="description" content="Intro 這篇筆記會記錄 Udemy Ultimate AWS Certified Solutions Architect Associate SAA-C03 隨堂筆記。 !! 目前施工中~~~ !! AWS Free Tier 說明 ▲ Control Your AWS Costs，設定警告避免帳單爆炸。 Slides and Code Download Section 4 IAM and AWS CLI IAM Groups 只"><meta itemprop="datePublished" content="2023-02-13T15:30:50+00:00" />
+<meta itemprop="dateModified" content="2023-02-13T15:30:50+00:00" />
+<meta itemprop="wordCount" content="1635">
+<meta itemprop="keywords" content="aws,cloud," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Udemy AWS SAA-C03 課程筆記"/>
+<meta name="twitter:description" content="Intro 這篇筆記會記錄 Udemy Ultimate AWS Certified Solutions Architect Associate SAA-C03 隨堂筆記。 !! 目前施工中~~~ !! AWS Free Tier 說明 ▲ Control Your AWS Costs，設定警告避免帳單爆炸。 Slides and Code Download Section 4 IAM and AWS CLI IAM Groups 只"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Udemy AWS SAA-C03 課程筆記</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2023-02-13 </span>
+        <div class="post-category">
+            <a href="/categories/aws/"> aws </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#intro">Intro</a></li>
+        <li><a href="#aws-free-tier-說明httpsawsamazoncomfree"><a href="https://aws.amazon.com/free/">AWS Free Tier 說明</a></a></li>
+        <li><a href="#section-4-iam-and-aws-cli">Section 4 IAM and AWS CLI</a>
+          <ul>
+            <li><a href="#iam">IAM</a></li>
+            <li><a href="#cli">CLI</a></li>
+          </ul>
+        </li>
+        <li><a href="#section-5-ec2-fundamentals">Section 5 EC2 Fundamentals</a>
+          <ul>
+            <li><a href="#ec2-允許-web-shell-instance-connect-連線security-group-設定方式">EC2 允許 Web Shell (Instance Connect) 連線，security group 設定方式</a></li>
+          </ul>
+        </li>
+        <li><a href="#section-6-ec2-solutions-architect-associate-level">Section 6 EC2 Solutions Architect Associate Level</a>
+          <ul>
+            <li><a href="#placement-grouphttpsdocsawsamazoncomawsec2latestuserguideplacement-groupshtml-放置群組"><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-groups.html">Placement Group</a> 放置群組</a></li>
+            <li><a href="#elastic-network-interfaces-enihttpsdocsawsamazoncomawsec2latestuserguideusing-enihtml">Elastic network interfaces (<a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-eni.html">ENI</a>)</a></li>
+          </ul>
+        </li>
+        <li><a href="#section-7-ec2-instance-storage">Section 7 EC2 Instance Storage</a>
+          <ul>
+            <li><a href="#ebshttpsdocsawsamazoncomawsec2latestuserguideebs-volumeshtml"><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volumes.html">EBS</a></a></li>
+            <li><a href="#ebs-volume-typeshttpsdocsawsamazoncomawsec2latestuserguideebs-volume-typeshtml"><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html">EBS volume types</a></a></li>
+            <li><a href="#ebs-snapshothttpsdocsawsamazoncomawsec2latestuserguideebssnapshotshtml"><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSSnapshots.html">EBS Snapshot</a></a></li>
+            <li><a href="#ebs-encryptionhttpsdocsawsamazoncomawsec2latestuserguideebsencryptionhtml"><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html">EBS encryption</a></a></li>
+            <li><a href="#ec2-instance-storehttpsdocsawsamazoncomawsec2latestuserguideinstancestoragehtml"><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/InstanceStorage.html">EC2 instance store</a></a></li>
+            <li><a href="#ami-amazon-machine-imageshttpsdocsawsamazoncomawsec2latestuserguideamishtml"><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AMIs.html">AMI Amazon Machine Images</a></a></li>
+            <li><a href="#efs-amazon-elastic-file-systemhttpsdocsawsamazoncomefslatestugwhatisefshtml"><a href="https://docs.aws.amazon.com/efs/latest/ug/whatisefs.html">EFS, Amazon Elastic File System</a></a></li>
+          </ul>
+        </li>
+        <li><a href="#section-8-high-availability-and-scalabilityelb--asg">Section 8 High Availability and Scalability:ELB &amp; ASG</a>
+          <ul>
+            <li><a href="#elb---alb">ELB - ALB</a></li>
+            <li><a href="#elb---nlb">ELB - NLB</a></li>
+            <li><a href="#elb---gwlb">ELB - GWLB</a></li>
+            <li><a href="#cross-zone-lb">Cross Zone LB</a></li>
+          </ul>
+        </li>
+        <li><a href="#section-9-rds--aurora--elasticache">Section 9 RDS + Aurora + ElastiCache</a>
+          <ul>
+            <li><a href="#rds-amazon-relational-database-servicehttpsdocsawsamazoncomamazonrdslatestuserguidewelcomehtml"><a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Welcome.html">RDS, Amazon Relational Database Service</a></a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="intro">Intro</h2>
+<p>這篇筆記會記錄 <a href="https://www.udemy.com/course/aws-certified-solutions-architect-associate-saa-c03/">Udemy Ultimate AWS Certified Solutions Architect Associate SAA-C03</a> 隨堂筆記。</p>
+<p><strong><span style='color:red'>!! 目前施工中~~~ !!</span></strong></p>
+<h2 id="aws-free-tier-說明httpsawsamazoncomfree"><a href="https://aws.amazon.com/free/">AWS Free Tier 說明</a></h2>
+<p><img src="aws_zero_spend_budget_setting.jpg" alt="aws_zero_spend_budget_setting"></p>
+<p>▲ <a href="https://aws.amazon.com/getting-started/hands-on/control-your-costs-free-tier-budgets/">Control Your AWS Costs</a>，設定警告避免帳單爆炸。</p>
+<p><a href="https://courses.datacumulus.com/downloads/certified-solutions-architect-pn9/">Slides and Code Download</a></p>
+<h2 id="section-4-iam-and-aws-cli">Section 4 IAM and AWS CLI</h2>
+<h3 id="iam">IAM</h3>
+<ul>
+<li>Groups 只能包含 users， <strong><span style='color:red'>不能包含另一個 group</span></strong></li>
+<li>Policy 除了可以加在 groups 以外， <strong>inline policy</strong> 可以直接對 user 賦予權限</li>
+</ul>
+<p><img src="add_inline_policy_to_user.jpg" alt="add_inline_policy_to_user"></p>
+<p>▲ IAM inline policy</p>
+<ul>
+<li>IAM Role 與 IAM Policy 的差別:</li>
+</ul>
+<blockquote>
+<p>IAM Roles vs. Policies. IAM Roles manage who has access to your AWS resources, whereas IAM policies control their permissions. A Role with no Policy attached to it won&rsquo;t have to access any AWS resources.</p>
+</blockquote>
+<p><a href="https://www.learnaws.org/2022/03/03/iam-roles-policies/">ref</a></p>
+<h3 id="cli">CLI</h3>
+<p><a href="https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html">Installing or updating the latest version of the AWS CLI</a></p>
+<p><a href="https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-completion.html#cli-command-completion-linux">AWS bash complete - Command completion</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim ~/.bashrc
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## add this to bashrc</span>
+</span></span><span class="line"><span class="cl"><span class="nb">complete</span> -C <span class="s1">&#39;/usr/local/bin/aws_completer&#39;</span> aws
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">source</span> ~/.bashrc
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a href="https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html">設定 AWS cli - Configuration and credential file settings</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ aws configure
+</span></span><span class="line"><span class="cl">AWS Access Key ID <span class="o">[</span>None<span class="o">]</span>: 
+</span></span><span class="line"><span class="cl">AWS Secret Access Key <span class="o">[</span>None<span class="o">]</span>: 
+</span></span><span class="line"><span class="cl">Default region name <span class="o">[</span>None<span class="o">]</span>: ap-southeast-1
+</span></span><span class="line"><span class="cl">Default output format <span class="o">[</span>None<span class="o">]</span>: json
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>config file 會在 <code>~/.aws/credentials</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## List all profiles</span>
+</span></span><span class="line"><span class="cl">aws configure list-profiles
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="section-5-ec2-fundamentals">Section 5 EC2 Fundamentals</h2>
+<ul>
+<li>EC2 stop and start 會改變 Public IP 但是 Private IP 不會改變。</li>
+<li>EC2 security group 是有 region/VPC 區分的 (不可跨)。</li>
+<li>EC2 Spot Request 分成 (1) one-time (2) persistent， <strong><span style='color:red'>但不論 spot request 是否存在 instance 都必須手動被關閉 (假設是 running 狀態，且沒有被競價而關閉)</span></strong></li>
+</ul>
+<p>秉持最小權限原則，我將 EC2 設定 Inbound <code>TCP/80</code> <code>TCP/22</code> 只允許被家裡固定 IP 訪問，但會造成 Web shell 沒辦法連線，解法請參考下方。</p>
+<h3 id="ec2-允許-web-shell-instance-connect-連線security-group-設定方式">EC2 允許 Web Shell (Instance Connect) 連線，security group 設定方式</h3>
+<ul>
+<li><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-connect-set-up.html#ec2-instance-connect-setup-security-group">Set up EC2 Instance Connect#Task 1: Configure network access to an instance-(Amazon EC2 console) </a></li>
+<li><a href="https://docs.aws.amazon.com/general/latest/gr/aws-ip-ranges.html">AWS IP address ranges</a></li>
+</ul>
+<p><img src="singapore_ec2_instance_connect_ip_range.jpg" alt="singapore_ec2_instance_connect_ip_range"></p>
+<p>▲ 以 Singapore (<code>ap-southeast-1</code>) 來說就是這段。</p>
+<p><img src="ec2_instance_type_named_rule.jpg" alt="ec2_instance_type_named_rule"></p>
+<p>▲ EC2 命名規則。</p>
+<p><img src="ec2_price_type.jpg" alt="ec2_price_type"></p>
+<p>▲ EC2 Price type.</p>
+<p><img src="https://docs.aws.amazon.com/images/AWSEC2/latest/UserGuide/images/spot_lifecycle.png" alt="spot_lifecycle.png"></p>
+<p>▲ spot request lifecycle. <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-requests.html">ref</a> <strong><span style='color:blue'>假設 sport request 是 persistent，想要關閉由 sport request 建立的 instance 的話，必須要先關閉 spot request </span></strong></p>
+<h2 id="section-6-ec2-solutions-architect-associate-level">Section 6 EC2 Solutions Architect Associate Level</h2>
+<ul>
+<li>Elastic IP 如果申請後不使用會被收錢。</li>
+</ul>
+<h3 id="placement-grouphttpsdocsawsamazoncomawsec2latestuserguideplacement-groupshtml-放置群組"><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-groups.html">Placement Group</a> 放置群組</h3>
+<p>這有點像 VMware 的 DRS (Distributed Resource Schedler)</p>
+<ul>
+<li>Cluster placement groups
+<ul>
+<li>EC2 會被放在 <strong><span style='color:blue'>the same AZ and the same rack</span></strong> ，讓 instance <strong><span style='color:blue'>擁有高速/低延遲網路</span></strong></li>
+</ul>
+</li>
+<li>Partition placement groups
+<ul>
+<li>假設有 partition 1~3，每個 partition 都可以有多個 instance</li>
+<li>每個 partition 內的 instance 會被限制在同一個 AZ 中特定一組機櫃。(Amazon EC2 ensures that <strong><span style='color:blue'>each partition within a placement group has its own set of racks</span></strong> )</li>
+<li>不同 partition 內的 instance 不會共用機櫃。 <strong><span style='color:blue'>The instances in a partition do not share racks with the instances in the other partitions</span></strong></li>
+<li><strong><span style='color:red'>每個 partition 可以在不同 AZ，一個 AZ 至多有 7 個 partition (但要是在同一個 region) </span></strong></li>
+</ul>
+</li>
+<li>Spread placement groups
+<ul>
+<li><strong><span style='color:red'>群組內至多只能有 7 個 instance</span></strong></li>
+<li>群組內的 instance 都會被放置在不同機櫃。 <strong><span style='color:red'>The seven instances are placed on seven different racks</span></strong></li>
+</ul>
+</li>
+</ul>
+<p><img src="https://d2908q01vomqb2.cloudfront.net/1b6453892473a467d07372d45eb05abc2031647a/2019/04/22/PPG1-1.png" alt="partition placement diagram"></p>
+<p>▲ 圖片來源: <a href="https://aws.amazon.com/tw/blogs/compute/using-partition-placement-groups-for-large-distributed-and-replicated-workloads-in-amazon-ec2/">Using partition placement groups for large distributed and replicated workloads in Amazon EC2</a></p>
+<h3 id="elastic-network-interfaces-enihttpsdocsawsamazoncomawsec2latestuserguideusing-enihtml">Elastic network interfaces (<a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-eni.html">ENI</a>)</h3>
+<p><strong>An ENI is a logical networking component in a VPC that represents a virtual network card</strong></p>
+<h2 id="section-7-ec2-instance-storage">Section 7 EC2 Instance Storage</h2>
+<h3 id="ebshttpsdocsawsamazoncomawsec2latestuserguideebs-volumeshtml"><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volumes.html">EBS</a></h3>
+<ul>
+<li>A network drive</li>
+<li>Locked to AZ. (Snapshot 後可搬遷)</li>
+<li>Each EBS attach <strong>ONLY 1</strong> EC2 instance ( <strong><span style='color:red'>1:1，但是 io1 / io2 除外!</span></strong> )</li>
+</ul>
+<h3 id="ebs-volume-typeshttpsdocsawsamazoncomawsec2latestuserguideebs-volume-typeshtml"><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html">EBS volume types</a></h3>
+<ul>
+<li><strong><span style='color:red'>gp2 效能與硬碟大小有正相關性</span></strong></li>
+<li>gp2 要開到 5334 GB才能獲得最高 IOPS 16,000。(3 IOPS per GB)</li>
+<li><strong><span style='color:blue'>gp3</span></strong> 最低效能有 3000 IOPS + 125MiB/s，可以自行調整</li>
+</ul>
+<p><strong>以上都是 SSD 可開範圍從 1 GiB ~ 16 TiB</strong></p>
+<p><img src="ec2_t2_micro_with_30gb_gp2.jpg" alt="ec2_t2_micro_with_30gb_gp2"></p>
+<p>▲ 上圖是 EC2 <code>t2.micro</code> with 30GB gp2 EBS 的笑能。測試使用 <a href="https://github.com/masonr/yet-another-bench-script">Yet-Another-Bench-Script</a></p>
+<ul>
+<li><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/provisioned-iops.html">Provisioned IOPS SSD volumes</a>: io1 / io2 / io2 Block Express volumes</li>
+<li><strong><span style='color:purple'>極致效能</span></strong></li>
+</ul>
+<p><img src="ebs_volume_type_piops.jpg" alt="ebs_volume_type_piops"></p>
+<p>▲ Provisioned IOPS SSD volumes</p>
+<ul>
+<li><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html#vol-type-hdd">Hard disk drive (HDD) volumes</a>: st1 / sc1 (cold HDD)</li>
+</ul>
+<h3 id="ebs-snapshothttpsdocsawsamazoncomawsec2latestuserguideebssnapshotshtml"><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSSnapshots.html">EBS Snapshot</a></h3>
+<ul>
+<li>EBS snapshot -&gt; EBS archive，可以節省 75% 的花費，但可能會花費 72 小時 restore (講師是說 24-72 啦)</li>
+<li>Fast Snapshot Restore (FSR) 能夠快速復原到 EBS，但是要花錢。</li>
+</ul>
+<h3 id="ebs-encryptionhttpsdocsawsamazoncomawsec2latestuserguideebsencryptionhtml"><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html">EBS encryption</a></h3>
+<ul>
+<li>想對 未加密 EBS 加密的話，步驟如下: snapshot -&gt; <strong><span style='color:red'>copy snapshot with encrypted</span></strong> -&gt; create EBS from encrypted snapshot</li>
+</ul>
+<h3 id="ec2-instance-storehttpsdocsawsamazoncomawsec2latestuserguideinstancestoragehtml"><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/InstanceStorage.html">EC2 instance store</a></h3>
+<ul>
+<li>有鑑於 EBS 是 network drive， <strong><span style='color:red'>EC2 instance store 是使用 server 身上的硬碟</span></strong></li>
+<li>有較好的 I/O performance</li>
+<li>缺點: 要錢 <del>這是使用者的缺點</del></li>
+<li>缺點: <strong><span style='color:red'>EC2 instance stop 之後 instance store 就會消失! 所以又被稱為 ephemeral store</span></strong></li>
+<li>缺點: server hardware failed 在上面的資料也跟著 failed (不知道有沒有做 RAID)</li>
+</ul>
+<h3 id="ami-amazon-machine-imageshttpsdocsawsamazoncomawsec2latestuserguideamishtml"><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AMIs.html">AMI Amazon Machine Images</a></h3>
+<ul>
+<li>能夠客製化 OS image (預裝所需套件、監控)</li>
+<li>region level，可以被複製到其他區域</li>
+<li><a href="https://aws.amazon.com/marketplace">AMI Marketplace</a> 歡迎參觀選購</li>
+<li>製作方式跟 VMware Template 很像， VM 開機 -&gt; 裝飾 -&gt; 關機 (EC2 利用 snapshot，無須關機) -&gt; 製作範本</li>
+</ul>
+<h3 id="efs-amazon-elastic-file-systemhttpsdocsawsamazoncomefslatestugwhatisefshtml"><a href="https://docs.aws.amazon.com/efs/latest/ug/whatisefs.html">EFS, Amazon Elastic File System</a></h3>
+<ul>
+<li>NFS drive，只支援 Linux base AMI</li>
+<li>Region base == cross AZ</li>
+<li>價格是 3x gp2</li>
+<li>效能可設定</li>
+<li>能設定 policy 自動把不常存取的 file 丟進 EFS-IA (<a href="https://aws.amazon.com/efs/features/infrequent-access/">Amazon EFS Infrequent Access</a>) 減少花費</li>
+<li><strong><span style='color:red'>Support multi attache</span></strong></li>
+</ul>
+<h2 id="section-8-high-availability-and-scalabilityelb--asg">Section 8 High Availability and Scalability:ELB &amp; ASG</h2>
+<h3 id="elb---alb">ELB - ALB</h3>
+<p><a href="https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html">Application Load Balancer</a></p>
+<ul>
+<li>AWS managed LB</li>
+<li>ALB 的 security group 要建立兩個:</li>
+<li>(1) HTTP-allow-all <strong><span style='color:blue'>允許 TCP 80 port in/out bound，綁在 ELB 身上</span></strong></li>
+<li>(2) allow-my-ELB-visit <strong><span style='color:brown'>允許 TCP 80 port Inbound，綁在 EC2 身上， source 是 HTTP-allow-all 這個 SG</span></strong></li>
+<li>target group 內的 targets 若有 health check failed 建議一律 Deregister -&gt; regist (重新註冊)</li>
+</ul>
+<p><img src="elb_type.jpg" alt="elb_type"></p>
+<p>▲ ELB 歷史種類。</p>
+<h3 id="elb---nlb">ELB - NLB</h3>
+<p><a href="https://docs.aws.amazon.com/elasticloadbalancing/latest/network/introduction.html#network-load-balancer-overview">Network Load Balancer overview</a></p>
+<ul>
+<li>OSI layer 4 level LB</li>
+</ul>
+<h3 id="elb---gwlb">ELB - GWLB</h3>
+<p><img src="gateway_lb.jpg" alt="gateway_lb"></p>
+<p>▲ Gatwway load blancer 屬於 Layer 3 層級的 LB，講師以流量清洗 (firewall) 作為例子。流量會透過 GWLB 打在 target group 清洗完之後才會打到 App</p>
+<h3 id="cross-zone-lb">Cross Zone LB</h3>
+<ul>
+<li>ALB 預設會跨 AZ，從 ELB, target group 可以關閉 (兩個地方)</li>
+<li><strong><span style='color:red'>ALB 跨 AZ 流量不收費。NLB, GWLB 要收!</span></strong></li>
+<li><strong>NLB and GWLB 的 cross zone 預設是關閉的</strong></li>
+</ul>
+<p><img src="cross_zone_lb_diagram.jpg" alt="cross_zone_lb_diagram"></p>
+<p>▲ ELB cross zone V.S without cross zone</p>
+<h2 id="section-9-rds--aurora--elasticache">Section 9 RDS + Aurora + ElastiCache</h2>
+<h3 id="rds-amazon-relational-database-servicehttpsdocsawsamazoncomamazonrdslatestuserguidewelcomehtml"><a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Welcome.html">RDS, Amazon Relational Database Service</a></h3>
+<ul>
+<li>AWS 代管 DB 服務， <strong><span style='color:red'>使用者沒有 EC2 SSH 訪問權限。</span></strong></li>
+<li>可跨 AZ， (可選) AWS 會自動幫你在不同 AZ 產一個 standby instance + maintain</li>
+<li>硬碟空間可視為無限大，使用者可以設定最高容量避免 auto scaling 導致費用爆炸</li>
+<li>DB Engine 支援: MariaDB, MySQL, PostgreSQL, MSSQL, Oracle</li>
+<li>在相同 region 的 read replicaset instances 同步 (Async) 流量不計費。</li>
+</ul>
+<p><img src="rds_read_replica_architect.jpg" alt="rds_read_replica_architect"></p>
+<p>▲ RDS 多讀架構。<a href="https://mariadb.com/kb/en/standard-replication/">延伸閱讀: MariaDB Replication</a></p>
+<p><img src="rds_dr.jpg" alt="rds_dr"></p>
+<p>▲ DNS domain name 能夠達成 automatic failed over</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2023-02-13
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/aws/">aws</a>
+          <a href="/tags/cloud/">cloud</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/20221108-linux-process-monitoring-command-usage/">
+            <span class="next-text nav-default">Linux 系統監控命令使用筆記 (ps,top,htop)</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022 - 
+    2023<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

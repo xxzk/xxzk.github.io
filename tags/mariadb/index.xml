@@ -6,11 +6,11 @@
     <description>Recent content in MariaDB on 老柯的學習筆記</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 24 Apr 2021 11:55:50 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/tags/mariadb/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 24 Mar 2021 11:55:50 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/tags/mariadb/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>MariaDB Galera Cluster 建置</title>
       <link>https://blog.xxzk.me/post/20210324-mariadb-galera-cluster/</link>
-      <pubDate>Sat, 24 Apr 2021 11:55:50 +0000</pubDate>
+      <pubDate>Wed, 24 Mar 2021 11:55:50 +0000</pubDate>
       
       <guid>https://blog.xxzk.me/post/20210324-mariadb-galera-cluster/</guid>
       <description>Galera Cluster 是 MariaDB 多主架構 (Multi-Master) 的解決方案。 公司目前常用的主從架構 (Master-Slave) 沒辦法做到各個結點 (node) 均可讀寫，並且確保資料一致性，因此不適合做為 HA (高可用) 的解決方案</description>

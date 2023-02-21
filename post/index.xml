@@ -377,15 +377,6 @@
     </item>
     
     <item>
-      <title>MariaDB Galera Cluster 建置</title>
-      <link>https://blog.xxzk.me/post/20210324-mariadb-galera-cluster/</link>
-      <pubDate>Sat, 24 Apr 2021 11:55:50 +0000</pubDate>
-      
-      <guid>https://blog.xxzk.me/post/20210324-mariadb-galera-cluster/</guid>
-      <description>Galera Cluster 是 MariaDB 多主架構 (Multi-Master) 的解決方案。 公司目前常用的主從架構 (Master-Slave) 沒辦法做到各個結點 (node) 均可讀寫，並且確保資料一致性，因此不適合做為 HA (高可用) 的解決方案</description>
-    </item>
-    
-    <item>
       <title>Nginx Keepalived (HA) 設定</title>
       <link>https://blog.xxzk.me/post/20210419-introduce-keepalived/</link>
       <pubDate>Mon, 19 Apr 2021 15:40:55 +0000</pubDate>
@@ -401,6 +392,15 @@
       
       <guid>https://blog.xxzk.me/post/20210401-bookstack-fronts-customising/</guid>
       <description>Bookstack Customising Visuals Bookstack 可以針對外觀做客製化，也就是修改 css 目前使用的是 Google 與 Adobe 合作釋出的開源字體 &amp;ldquo;Noto Sans&amp;rdquo; 若要使用其它 Google Fonts 提供的字體可以訪問: Google Fonts 1 2 3 4 5 6 7 8 9</description>
+    </item>
+    
+    <item>
+      <title>MariaDB Galera Cluster 建置</title>
+      <link>https://blog.xxzk.me/post/20210324-mariadb-galera-cluster/</link>
+      <pubDate>Wed, 24 Mar 2021 11:55:50 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20210324-mariadb-galera-cluster/</guid>
+      <description>Galera Cluster 是 MariaDB 多主架構 (Multi-Master) 的解決方案。 公司目前常用的主從架構 (Master-Slave) 沒辦法做到各個結點 (node) 均可讀寫，並且確保資料一致性，因此不適合做為 HA (高可用) 的解決方案</description>
     </item>
     
     <item>

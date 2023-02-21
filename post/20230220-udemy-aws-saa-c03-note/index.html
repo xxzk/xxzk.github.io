@@ -48,7 +48,7 @@
 <meta itemprop="name" content="Udemy AWS SAA-C03 課程筆記">
 <meta itemprop="description" content="Intro 這篇筆記會記錄 Udemy Ultimate AWS Certified Solutions Architect Associate SAA-C03 隨堂筆記。 !! 目前施工中~~~ !! AWS Free Tier 說明 ▲ Control Your AWS Costs，設定警告避免帳單爆炸。 Slides and Code Download Section 4 IAM and AWS CLI IAM Groups 只"><meta itemprop="datePublished" content="2023-02-13T15:30:50+00:00" />
 <meta itemprop="dateModified" content="2023-02-13T15:30:50+00:00" />
-<meta itemprop="wordCount" content="1635">
+<meta itemprop="wordCount" content="2007">
 <meta itemprop="keywords" content="aws,cloud," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Udemy AWS SAA-C03 課程筆記"/>
 <meta name="twitter:description" content="Intro 這篇筆記會記錄 Udemy Ultimate AWS Certified Solutions Architect Associate SAA-C03 隨堂筆記。 !! 目前施工中~~~ !! AWS Free Tier 說明 ▲ Control Your AWS Costs，設定警告避免帳單爆炸。 Slides and Code Download Section 4 IAM and AWS CLI IAM Groups 只"/>
@@ -183,6 +183,9 @@
         <li><a href="#section-9-rds--aurora--elasticache">Section 9 RDS + Aurora + ElastiCache</a>
           <ul>
             <li><a href="#rds-amazon-relational-database-servicehttpsdocsawsamazoncomamazonrdslatestuserguidewelcomehtml"><a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Welcome.html">RDS, Amazon Relational Database Service</a></a></li>
+            <li><a href="#aurorahttpsdocsawsamazoncomamazonrdslatestaurorauserguidechap_auroraoverviewhtml"><a href="https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/CHAP_AuroraOverview.html">Aurora</a></a></li>
+            <li><a href="#aurora-cloninghttpsdocsawsamazoncomamazonrdslatestaurorauserguideauroramanagingclonehtml"><a href="https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.Managing.Clone.html">Aurora Cloning</a></a></li>
+            <li><a href="#elastic-cachehttpsdocsawsamazoncomelasticacheindexhtml"><a href="https://docs.aws.amazon.com/elasticache/index.html">Elastic Cache</a></a></li>
           </ul>
         </li>
       </ul>
@@ -407,12 +410,45 @@
 <li>可跨 AZ， (可選) AWS 會自動幫你在不同 AZ 產一個 standby instance + maintain</li>
 <li>硬碟空間可視為無限大，使用者可以設定最高容量避免 auto scaling 導致費用爆炸</li>
 <li>DB Engine 支援: MariaDB, MySQL, PostgreSQL, MSSQL, Oracle</li>
+<li>MSSQL, Oracle，兩個不推薦的 DB <strong><span style='color:red'>使用 RDS custom，使用者能夠碰到 OS 底層並且 SSH</span></strong></li>
 <li>在相同 region 的 read replicaset instances 同步 (Async) 流量不計費。</li>
+<li>自動備份 (Auto backup) 功能能做到:</li>
+<li>(1) Daily full backup of the database (during the backup window)</li>
+<li>(2) 每 5 分鐘備份 transaction log</li>
+<li>(3) 備份檔案保留 1~35 天 (如果設定 <code>0</code> 即關閉自動備份)</li>
+<li>可以從 AWS S3 拉檔案 restore</li>
 </ul>
+<p>Tips: 如果測試環境要省錢的話，可以 snapshot RDS instance，要使用時再從這個快照 restore。這樣只要付 snapshot storage 的錢</p>
 <p><img src="rds_read_replica_architect.jpg" alt="rds_read_replica_architect"></p>
 <p>▲ RDS 多讀架構。<a href="https://mariadb.com/kb/en/standard-replication/">延伸閱讀: MariaDB Replication</a></p>
+<p><strong><span style='color:red'>2023.02.21 更新 現在 RDS with MySQL, MariaDB and PostgreSQL 每個 instance 都可以擁有 15 個 read replicas (包含 5 個 cross region read replicas)</span></strong></p>
+<p>ref: <a href="https://aws.amazon.com/about-aws/whats-new/2022/10/amazon-rds-mysql-mariadb-postgre-sql-support-15-read-replicas-3x-read-capacity/">Amazon RDS for MySQL, MariaDB and PostgreSQL now support up to 15 read replicas for 3X read capacity</a></p>
 <p><img src="rds_dr.jpg" alt="rds_dr"></p>
 <p>▲ DNS domain name 能夠達成 automatic failed over</p>
+<p><img src="rds_proxy.jpg" alt="rds_proxy"></p>
+<p>▲ RDS proxy， <strong><span style='color:blue'>reverse proxy for DB，而且是 serverless &amp; auto scaling</span></strong></p>
+<h3 id="aurorahttpsdocsawsamazoncomamazonrdslatestaurorauserguidechap_auroraoverviewhtml"><a href="https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/CHAP_AuroraOverview.html">Aurora</a></h3>
+<ul>
+<li>AWS 代管更強大的 DB 服務， DB Engine 提供 MySQL 與 PostgreSQL</li>
+<li><strong><span style='color:red'>Master node (Write)</span></strong> 能夠建立 <strong><span style='color:red'>cross region</span></strong></li>
+<li>有 Multi-Master 提供 multi write 的功能。(延伸閱讀: <a href="https://blog.xxzk.me/post/20210324-mariadb-galera-cluster/">MariaDB Galera Cluster 建置 </a>)</li>
+<li>可以接 AWS 的 AI 功能 (SageMaker, Comprehend)</li>
+<li><strong><span style='color:red'>自動備份 (Auto backup) 功能無法關閉!</span></strong> 檔案可選擇保留 1~35 天</li>
+</ul>
+<p><img src="aurora_architect.jpg" alt="aurora_architect"></p>
+<p>▲ Aurora 讀寫分離 (提供兩組 DNS domain name)</p>
+<p><img src="aurora_custom_endpoint.jpg" alt="aurora_custom_endpoint"></p>
+<p>▲ Aurora 可以創造 custom endpoint</p>
+<h3 id="aurora-cloninghttpsdocsawsamazoncomamazonrdslatestaurorauserguideauroramanagingclonehtml"><a href="https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.Managing.Clone.html">Aurora Cloning</a></h3>
+<ul>
+<li>使用 CoW (Copy-on-Write) 節省使用空間 ($$)</li>
+<li>適合用於測試環境</li>
+</ul>
+<p><img src="https://www.sqlshack.com/wp-content/uploads/2021/01/stores-the-content-on-a-new-page.png" alt="stores-the-content-on-a-new-page"></p>
+<p>▲ CoW 機制。ref: <a href="https://www.sqlshack.com/database-cloning-in-amazon-aurora/">Database Cloning in Amazon Aurora</a></p>
+<h3 id="elastic-cachehttpsdocsawsamazoncomelasticacheindexhtml"><a href="https://docs.aws.amazon.com/elasticache/index.html">Elastic Cache</a></h3>
+<p><img src="elastic_cache.jpg" alt="elastic_cache"></p>
+<p>▲ redis V.S memcached</p>
 
     </div>
 

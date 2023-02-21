@@ -377,6 +377,15 @@
     </item>
     
     <item>
+      <title>MariaDB Galera Cluster 建置</title>
+      <link>https://blog.xxzk.me/post/20210324-mariadb-galera-cluster/</link>
+      <pubDate>Sat, 24 Apr 2021 11:55:50 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20210324-mariadb-galera-cluster/</guid>
+      <description>Galera Cluster 是 MariaDB 多主架構 (Multi-Master) 的解決方案。 公司目前常用的主從架構 (Master-Slave) 沒辦法做到各個結點 (node) 均可讀寫，並且確保資料一致性，因此不適合做為 HA (高可用) 的解決方案</description>
+    </item>
+    
+    <item>
       <title>Nginx Keepalived (HA) 設定</title>
       <link>https://blog.xxzk.me/post/20210419-introduce-keepalived/</link>
       <pubDate>Mon, 19 Apr 2021 15:40:55 +0000</pubDate>

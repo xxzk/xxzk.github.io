@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>MariaDB Galera Cluster 建置 - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="Galera Cluster 是 MariaDB 多主架構 (Multi-Master) 的解決方案。 公司目前常用的主從架構 (Master-Slave) 沒辦法做到各個結點 (node) 均可讀寫，並且確保資料一致性，因此不適合做為 HA (高可用) 的解決方案" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.110.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20210324-mariadb-galera-cluster/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="MariaDB Galera Cluster 建置" />
+<meta property="og:description" content="Galera Cluster 是 MariaDB 多主架構 (Multi-Master) 的解決方案。 公司目前常用的主從架構 (Master-Slave) 沒辦法做到各個結點 (node) 均可讀寫，並且確保資料一致性，因此不適合做為 HA (高可用) 的解決方案" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.xxzk.me/post/20210324-mariadb-galera-cluster/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-04-24T11:55:50+00:00" />
+<meta property="article:modified_time" content="2021-04-24T11:55:50+00:00" />
+<meta itemprop="name" content="MariaDB Galera Cluster 建置">
+<meta itemprop="description" content="Galera Cluster 是 MariaDB 多主架構 (Multi-Master) 的解決方案。 公司目前常用的主從架構 (Master-Slave) 沒辦法做到各個結點 (node) 均可讀寫，並且確保資料一致性，因此不適合做為 HA (高可用) 的解決方案"><meta itemprop="datePublished" content="2021-04-24T11:55:50+00:00" />
+<meta itemprop="dateModified" content="2021-04-24T11:55:50+00:00" />
+<meta itemprop="wordCount" content="1828">
+<meta itemprop="keywords" content="MariaDB,DB," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="MariaDB Galera Cluster 建置"/>
+<meta name="twitter:description" content="Galera Cluster 是 MariaDB 多主架構 (Multi-Master) 的解決方案。 公司目前常用的主從架構 (Master-Slave) 沒辦法做到各個結點 (node) 均可讀寫，並且確保資料一致性，因此不適合做為 HA (高可用) 的解決方案"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">MariaDB Galera Cluster 建置</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-04-24 </span>
+        <div class="post-category">
+            <a href="/categories/db/"> DB </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#比較-master-slave-replication-vs-galera-cluster-multi-master">比較 Master-Slave Replication V.S Galera Cluster (Multi-Master)</a>
+          <ul>
+            <li><a href="#master-slave-replication">Master-Slave Replication</a></li>
+            <li><a href="#galera-cluster-multi-master">Galera Cluster (Multi-Master)</a></li>
+          </ul>
+        </li>
+        <li><a href="#開始之前">開始之前</a></li>
+        <li><a href="#新增-mariadb-repo-and-install">新增 MariaDB repo and Install</a></li>
+        <li><a href="#設定-mariadb-root-密碼">設定 MariaDB root 密碼</a></li>
+        <li><a href="#設定-galera-cluster">設定 Galera Cluster</a></li>
+        <li><a href="#啟動叢集-staring-the-cluster">啟動叢集 Staring the Cluster</a>
+          <ul>
+            <li><a href="#bring-up-the-first-node">Bring Up the First Node</a></li>
+          </ul>
+        </li>
+        <li><a href="#測試節點同步狀況">測試節點同步狀況</a></li>
+        <li><a href="#參考資料">參考資料</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p><img src="https://galeracluster.com/wp-content/uploads/2014/05/Galera-Cluster-logo.jpg" alt="Galera-Cluster-logo.jpg"></p>
+<p><strong>Galera Cluster 是 MariaDB 多主架構 (Multi-Master) 的解決方案。</strong><br>
+<strong>公司目前常用的主從架構 (Master-Slave) <span style="color:red">沒辦法做到各個結點 (node) 均可讀寫，並且確保資料一致性，因此不適合做為 HA (高可用) 的解決方案</span></strong></p>
+<h2 id="比較-master-slave-replication-vs-galera-cluster-multi-master">比較 Master-Slave Replication V.S Galera Cluster (Multi-Master)</h2>
+<h3 id="master-slave-replication">Master-Slave Replication</h3>
+<p><img src="replicationnew.png" alt="replicationnew.jpg"></p>
+<p>▲ MySQL Standard asynchronous replication <a href="https://www.percona.com/blog/2017/02/07/overview-of-different-mysql-replication-solutions/">圖片來源:Different Types of MySQL Replication Solutions</a></p>
+<p><strong><span style="color:green">優點 (Benefits):</strong></p>
+<ol>
+<li>能夠做到讀寫分離。Master node 負責寫入，其餘 Slave 當作讀取結點。</li>
+<li>可以將某一 Slave 中斷跟隨，方便備份資料庫而不影響寫入。(在 Master node 執行 backup/dump 會 Locking Tables 造成寫入壅塞、暫時無法寫入)</li>
+<li>歷史悠久，設定簡單。</li>
+</ol>
+<p><strong><span style="color:brown">缺點 (Disadvantage):</strong></p>
+<ol>
+<li>一旦 Master node 離線，必須手動將任一 Slave 變成 Master 才能恢復寫入能力。</li>
+</ol>
+<h3 id="galera-cluster-multi-master">Galera Cluster (Multi-Master)</h3>
+<p><img src="galera_small.png" alt="galera_small"></p>
+<p>▲ cluster 內所有 node 互相同步。 <a href="https://mariadb.com/kb/en/what-is-mariadb-galera-cluster/">圖片來源:【MariaDB.com】 What is MariaDB Galera Cluster?</a></p>
+<p><img src="mariadb_galera_cluster_basic_architecture.png" alt="mariadb_galera_cluster_basic_architecture"></p>
+<p>▲ 透過 wsrep (write set replication) 達到同步目的。<a href="https://medium.com/@azsecured/mariadb-galera-cluster-on-centos-7-46fced6306bc">圖片來源:İlham Bayramov-MariaDB Galera Cluster on CentOS 7 </a></p>
+<p><strong><span style="color:green">優點 (Benefits):</strong></p>
+<ol>
+<li>Cluster 內任一結點均可讀寫 (Read/Write)</li>
+<li>自動腳色控制，失效的結點會自動從 Cluster 移除。(<del>很難翻譯啦，跨謀改看英文拜託</del> Automatic membership control, failed nodes drop from the cluster)</li>
+<li>不會有 Slave 落後情形</li>
+<li>Transaction 不會遺失</li>
+</ol>
+<p><a href="https://mariadb.com/kb/en/what-is-mariadb-galera-cluster/#features">What is MariaDB Galera Cluster?#features</a></p>
+<h2 id="開始之前">開始之前</h2>
+<p><strong>Galera 版本說明</strong></p>
+<p><a href="https://mariadb.com/kb/en/what-is-mariadb-galera-cluster/#galera-versions">【MariaDB.com】 What is MariaDB Galera Cluster?#galera-versions</a></p>
+<ul>
+<li>MariaDB 10.1 and later 預設自帶 MySQL-wsrep</li>
+<li>MariaDB 10.3 and before 使用 Galera 3，MariaDB 10.4 and later 使用 Galera 4</li>
+<li>Galera 3: MySQL-wsrep 使用版本 25、 Galera wsrep provider library 使用版本 3</li>
+<li>Galera 4: MySQL-wsrep 使用版本 26、 Galera wsrep provider library 使用版本 4</li>
+</ul>
+<p><strong>Firewall Setting</strong></p>
+<p><a href="https://galeracluster.com/library/documentation/firewall-settings.html">Galera Cluster.com-Firewall Settings</a></p>
+<blockquote>
+<p>3306: mysqld 預設使用<br>
+4567: Galera Cluster 同步流量。TCP 與 UDP 均要使用<br>
+4568: Incremental State Transfer<br>
+4444: State Snapshot Transfer</p>
+</blockquote>
+<p><strong>以下 安裝/設定 參考 <a href="https://www.digitalocean.com/community/tutorials/how-to-configure-a-galera-cluster-with-mariadb-on-centos-7-servers">DigitalOcean-How To Configure a Galera Cluster with MariaDB on CentOS 7 Servers</a></strong></p>
+<p>此次實驗總共有兩台 VM 分別是:</p>
+<blockquote>
+<p>Eric_Keepalived_1 192.168.207.111<br>
+Eric_Keepalived_2 192.168.207.112</p>
+</blockquote>
+<h2 id="新增-mariadb-repo-and-install">新增 MariaDB repo and Install</h2>
+<p><a href="https://downloads.mariadb.org/mariadb/repositories/">MariaDB.org 提供常見 Linux Distrobution 如何設定 MariaDB repository</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim /etc/yum.repos.d/mariadb_10_4.repo
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>CentOS 7 (x86_64) with MariaDB v10.4[old Stable]</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># MariaDB 10.4 CentOS repository list - created 2021-03-24 01:42 UTC</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># http://downloads.mariadb.org/mariadb/repositories/</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>mariadb<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">name</span> <span class="o">=</span> MariaDB
+</span></span><span class="line"><span class="cl"><span class="nv">baseurl</span> <span class="o">=</span> http://yum.mariadb.org/10.4/centos7-amd64
+</span></span><span class="line"><span class="cl"><span class="nv">gpgkey</span><span class="o">=</span>https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
+</span></span><span class="line"><span class="cl"><span class="nv">gpgcheck</span><span class="o">=</span><span class="m">1</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>接著啟用 <code>mariadb</code> 這個 repo。 <strong>yum makecache</strong> 這個指令是將軟體庫的元數據 (META-DATA) 快取一份到 local，加速在安裝時查找時間。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo yum makecache --disablerepo<span class="o">=</span><span class="s1">&#39;*&#39;</span> --enablerepo<span class="o">=</span><span class="s1">&#39;mariadb&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>輸出結果如下:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">Loaded plugins: fastestmirror
+</span></span><span class="line"><span class="cl">Loading mirror speeds from cached hostfile
+</span></span><span class="line"><span class="cl">mariadb                                                                                                                 | 2.9 kB  00:00:00     
+</span></span><span class="line"><span class="cl">(1/3): mariadb/primary_db                                                                                               |  60 kB  00:00:00     
+</span></span><span class="line"><span class="cl">(2/3): mariadb/other_db                                                                                                 |  10 kB  00:00:00     
+</span></span><span class="line"><span class="cl">(3/3): mariadb/filelists_db                                                                                             | 328 kB  00:00:03     
+</span></span><span class="line"><span class="cl">Metadata Cache Created
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>順帶一提，如果想要關閉 <code>yum</code> 的外掛插件 (Plug-in) <strong>Fastestmirror</strong> 的話可以編輯設定檔，將 <strong><code>enable=1</code> 改成 <code>enable=0</code></strong><br>
+希望關閉的原因是假設該機在部屬完成後將關閉對外連線能力，直接使用 <code>yum</code> 安裝套件時 Fastestmirror 會卡住，即使按下 <code>Control-C</code> 也必須等待一段時間。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim /etc/yum/pluginconf.d/fastestmirror.conf
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>安裝 MariaDB Server &amp; Client</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo yum install MariaDB-server MariaDB-client
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>接著 Enable/Start MariaDB，待會要更改 MariaDB root 的密碼。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo systemctl <span class="nb">enable</span> --now mariadb
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="設定-mariadb-root-密碼">設定 MariaDB root 密碼</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo mysql -uroot
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="n">MariaDB</span><span class="p">[(</span><span class="k">none</span><span class="p">)]</span><span class="o">&gt;</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="n">password</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">password</span><span class="p">(</span><span class="s2">&#34;your_password&#34;</span><span class="p">);</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>成功的話會輸出:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="n">Query</span><span class="w"> </span><span class="n">OK</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="n">affected</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">001</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>離開 MariaDB</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="n">MariaDB</span><span class="p">[(</span><span class="k">none</span><span class="p">)]</span><span class="o">&gt;</span><span class="w"> </span><span class="n">quit</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="設定-galera-cluster">設定 Galera Cluster</h2>
+<p>MariaDB 預設會去 <code>/etc/mysql/conf.d</code> 底下抓取設定檔。有點類似 <code>httpd</code> 主 conf 只是帶預設值，<code>conf.d</code> 底下可以覆蓋 (override) 過去~<br>
+設定檔的副檔名都必須以 <strong><code>.cnf</code></strong> 當作結尾。Cluster 內所有 node 設定檔都大同小異</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo vim /etc/my.cnf.d/galera.cnf
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">[mysqld]
+</span></span><span class="line"><span class="cl">binlog_format=ROW
+</span></span><span class="line"><span class="cl">default-storage-engine=innodb
+</span></span><span class="line"><span class="cl">innodb_autoinc_lock_mode=2
+</span></span><span class="line"><span class="cl">bind-address=0.0.0.0
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># Galera Provider Configuration
+</span></span><span class="line"><span class="cl">wsrep_on=ON
+</span></span><span class="line"><span class="cl">wsrep_provider=/usr/lib64/galera-4/libgalera_smm.so
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># Galera Cluster Configuration
+</span></span><span class="line"><span class="cl">wsrep_cluster_name=&#34;test_cluster&#34;
+</span></span><span class="line"><span class="cl">wsrep_cluster_address=&#34;gcomm://First_Node_IP,Second_Node_IP,Third_Node_IP&#34;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># Galera Synchronization Configuration
+</span></span><span class="line"><span class="cl">wsrep_sst_method=rsync
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># Galera Node Configuration
+</span></span><span class="line"><span class="cl">wsrep_node_address=&#34;This_Node_IP&#34;
+</span></span><span class="line"><span class="cl">wsrep_node_name=&#34;This_Node_Name&#34;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>需要修改的項目</strong></p>
+<blockquote>
+<p>wsrep_cluster_name=&ldquo;galera_cluster&rdquo;<br>
+First_Node_IP,Second_Node_IP,Third_Node_IP #依照節點設定<br>
+wsrep_node_address=&ldquo;This_Node_IP&rdquo; #使用該節點 Private IP<br>
+wsrep_node_name=&ldquo;This_Node_Name&rdquo; #建議使用 hostname</p>
+</blockquote>
+<h2 id="啟動叢集-staring-the-cluster">啟動叢集 Staring the Cluster</h2>
+<p><strong><span style="color:red">在這個步驟中，必須將所有節點的 MariaDB 停止。初始化 Cluster 只需要做一次，之後有新節點加入並不需要在做一次</span></strong><br>
+<strong><span style="color:red">在這個步驟中，必須將所有節點的 MariaDB 停止。初始化 Cluster 只需要做一次，之後有新節點加入並不需要在做一次</span></strong><br>
+<strong><span style="color:red">在這個步驟中，必須將所有節點的 MariaDB 停止。初始化 Cluster 只需要做一次，之後有新節點加入並不需要在做一次</span></strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo systemctl stop mariadb
+</span></span><span class="line"><span class="cl">systemctl status mariadb
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="bring-up-the-first-node">Bring Up the First Node</h3>
+<p><strong><span style="color:blue">告知第一個節點: 你是創世節點，並不是加入其他 Cluster 喔! 請產生出一個 Cluster 的 UUID</span></strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo galera_new_cluster
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong><span style="color:red">執行後沒有任何輸出即是成功<span></strong></p>
+<p><code>galera_new_cluster</code> 這支腳本會將參數 <code>--wsrep-new-cluster</code> 傳送到 systemd。<br>
+官方文件 <a href="https://mariadb.com/kb/en/getting-started-with-mariadb-galera-cluster/#bootstrapping-a-new-cluster">Getting Started with MariaDB Galera Cluster#bootstrapping-a-new-cluster</a> 有說明幾種方式，不過還是建議直接使用 <code>galera_new_cluster</code> 以 systemd 啟動。</p>
+<p>這時候查看 <code>mariadb.service</code> 的狀態可以看到服務已經是 <strong><span style="color:green">running</span></strong> 狀態</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">systemctl status mariadb.service
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>查看 Cluster 內節點數量</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mysql -u root -p -e <span class="s2">&#34;SHOW STATUS LIKE &#39;wsrep_cluster_size&#39;&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>查詢結果:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="o">+</span><span class="c1">--------------------+-------+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">|</span><span class="w"> </span><span class="n">Variable_name</span><span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="n">Value</span><span class="w"> </span><span class="o">|</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">+</span><span class="c1">--------------------+-------+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">|</span><span class="w"> </span><span class="n">wsrep_cluster_size</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">1</span><span class="w">     </span><span class="o">|</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">+</span><span class="c1">--------------------+-------+
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>啟用第二節點</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo systemctl start mariadb
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>在第二節點查詢 Cluster 內節點數量</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mysql -u root -p -e <span class="s2">&#34;SHOW STATUS LIKE &#39;wsrep_cluster_size&#39;&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>查詢結果:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="o">+</span><span class="c1">--------------------+-------+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">|</span><span class="w"> </span><span class="n">Variable_name</span><span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="n">Value</span><span class="w"> </span><span class="o">|</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">+</span><span class="c1">--------------------+-------+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">|</span><span class="w"> </span><span class="n">wsrep_cluster_size</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">2</span><span class="w">     </span><span class="o">|</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">+</span><span class="c1">--------------------+-------+
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="測試節點同步狀況">測試節點同步狀況</h2>
+<p>在任一節點建立 Database:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mysql -u root  -e <span class="s2">&#34;CREATE DATABASE galera_sync_test&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>這個時候去其他節點:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mysql -u root  -e <span class="s2">&#34;SHOW DATABASES&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>也應該看到相同資料庫</p>
+<p><strong>建立資料表:</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="n">USE</span><span class="w"> </span><span class="n">galera_sync_test</span><span class="p">;</span><span class="w"> </span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="p">(</span><span class="n">id</span><span class="w"> </span><span class="nb">INT</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="n">AUTO_INCREMENT</span><span class="p">,</span><span class="n">name</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span><span class="nb">date</span><span class="w"> </span><span class="k">TIMESTAMP</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">CURRENT_TIMESTAMP</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">CURRENT_TIMESTAMP</span><span class="p">,</span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">(</span><span class="n">id</span><span class="p">));</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><a href="https://dev.mysql.com/doc/refman/8.0/en/timestamp-initialization.html">11.2.5 Automatic Initialization and Updating for TIMESTAMP and DATETIME</a></p>
+<p><strong>看一下結構:</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">desc</span><span class="w"> </span><span class="n">test</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="o">+</span><span class="c1">-------+-------------+------+-----+---------------------+-------------------------------+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">|</span><span class="w"> </span><span class="n">Field</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">Type</span><span class="w">        </span><span class="o">|</span><span class="w"> </span><span class="k">Null</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">Key</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">Default</span><span class="w">             </span><span class="o">|</span><span class="w"> </span><span class="n">Extra</span><span class="w">                         </span><span class="o">|</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">+</span><span class="c1">-------+-------------+------+-----+---------------------+-------------------------------+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="nb">int</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span><span class="w">     </span><span class="o">|</span><span class="w"> </span><span class="k">NO</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">PRI</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">NULL</span><span class="w">                </span><span class="o">|</span><span class="w"> </span><span class="n">auto_increment</span><span class="w">                </span><span class="o">|</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">|</span><span class="w"> </span><span class="n">name</span><span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">YES</span><span class="w">  </span><span class="o">|</span><span class="w">     </span><span class="o">|</span><span class="w"> </span><span class="k">NULL</span><span class="w">                </span><span class="o">|</span><span class="w">                               </span><span class="o">|</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">|</span><span class="w"> </span><span class="nb">date</span><span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="k">timestamp</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="k">NO</span><span class="w">   </span><span class="o">|</span><span class="w">     </span><span class="o">|</span><span class="w"> </span><span class="k">current_timestamp</span><span class="p">()</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="k">update</span><span class="w"> </span><span class="k">current_timestamp</span><span class="p">()</span><span class="w"> </span><span class="o">|</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">+</span><span class="c1">-------+-------------+------+-----+---------------------+-------------------------------+
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="mi">3</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">002</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>寫入資料:</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">galera_sync_test</span><span class="p">.</span><span class="n">test</span><span class="w"> </span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="s2">&#34;Eric_xzk&#34;</span><span class="p">);</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>bash 版本可以搭配 <code>watch -n1</code>，每一秒寫入資料庫一次。<br>
+P.S 寫成 <code>.sh</code> 檔案在給 <code>watch</code> 執行會比較方便</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mysql -u root  -e <span class="s1">&#39;INSERT INTO galera_sync_test.test (name) VALUES (&#34;Eric_xzk_node2&#34;);&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>在任一節點查看資料:</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">galera_sync_test</span><span class="p">.</span><span class="n">test</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mysql -u root  -e <span class="s1">&#39;SELECT * from galera_sync_test.test;&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>刪除 Table</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">DROP</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">galera_sync_test</span><span class="p">.</span><span class="n">test</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong><span style="color:red">將其中一台 node 關機 或者 stop mariadb.service 之後在其他節點對 DB 寫入資料，接著 開機/start mariadb.service</span></strong><br>
+<strong><span style="color:red">在關機期間的資料都會被補回，達成完全同步</span></strong></p>
+<h2 id="參考資料">參考資料</h2>
+<p><a href="https://www.cnblogs.com/lgx211/p/12456859.html#1%EF%BC%8Cmysql-replication">【mysql Replication 方案優缺比較】多图文，详细介绍mysql各个集群方案</a></p>
+<p><a href="https://mariadb.com/kb/en/what-is-mariadb-galera-cluster/#features">What is MariaDB Galera Cluster?#features</a></p>
+<p><a href="https://mariadb.com/kb/en/getting-started-with-mariadb-galera-cluster/">Getting Started with MariaDB Galera Cluster</a></p>
+<p><a href="https://www.percona.com/blog/2017/02/07/overview-of-different-mysql-replication-solutions/">【Replication 方案比較 圖較好看】Different Types of MySQL Replication Solutions</a></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2021-04-24
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/mariadb/">MariaDB</a>
+          <a href="/tags/db/">DB</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/20210503-minio-introduce/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">MinIO 簡單介紹</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/20210419-introduce-keepalived/">
+            <span class="next-text nav-default">Nginx Keepalived (HA) 設定</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022 - 
+    2023<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

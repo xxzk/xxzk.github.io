@@ -121,72 +121,9 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/20201015-ubuntu-rdp-client-remmina/">在 Ubuntu 使用 Windows 遠端桌面 (RDP)</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/20200923-how-to-search-in-graylog/">Graylog 搜尋語法</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2020-10-15 </span>
-      <div class="post-category">
-          <a href="/categories/ubuntu/"> ubuntu </a>
-          </div>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      20201016 更新 公司架構圖的 IPsec 是 Site to Site VPN 啦! 一般使用者用的是 Remote access VPN 採用 SSL VPN FortiClient for Linux 可以正常使用喔~ 自己雷自己 這篇會出產的原因是因為&hellip;. FortiClient Linux
-    </div>
-    <div class="read-more">
-      <a href="/post/20201015-ubuntu-rdp-client-remmina/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/20201012-encfs-rclone/">EncFS &#43; Rclone 公有雲變私有雲，還能掛載串流!</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2020-10-12 </span>
-      <div class="post-category">
-          <a href="/categories/rclone/"> rclone </a>
-          </div>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      前幾天看到 G Suite 改版的消息，雖然 Education 與 Business 往後都沒有 看似 10T 實際上有無限儲存空間 的雲端硬碟能用了，不過 5TB 的空間對於一般用戶 (冷儲存) 來說已經非常夠用
-    </div>
-    <div class="read-more">
-      <a href="/post/20201012-encfs-rclone/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/20200929-intro-hinet-gpon-modem-to-otl/">數據機到機房 淺談 GPON 以 HiNet FTTH 為例</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2020-09-29 </span>
-      <div class="post-category">
-          <a href="/categories/hinet/"> hinet </a>
-          </div>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      圖片來源 Spectra TEch 在開始之前先大致介紹一下台灣目前光纖網路接取技術使採用 GPON (Gigabit Passive Optical Network) 千兆級無源光網路，簡單架構如上圖 不知道大家有沒有曾經好奇過從數據
-    </div>
-    <div class="read-more">
-      <a href="/post/20200929-intro-hinet-gpon-modem-to-otl/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/20200924-httpd-log-to-graylog-with-rsyslog/">將 Apache access,error log 透過 rsyslog 發至 Graylog</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2020-09-24 </span>
+      <span class="post-time"> 2020-09-23 </span>
       <div class="post-category">
           <a href="/categories/graylog/"> graylog </a>
           </div>
@@ -195,31 +132,10 @@
   
   <div class="post-content">
     <div class="post-summary">
-      由於 httpd 預設沒有將 access/error log 丟到 syslog 做處理，要需手動新增 新增方式有兩種 直接編輯 httpd.conf 將 log file 導向到 syslog 編輯 rsyslog.conf 叫 rsyslog 去撈本來存放在 /var/log/httpd/(access|error).log 第一種方式會需要做 systemctl reload httpd.service ，對於
+      參考文件 Official Searching Doc 在開始之前可以將設定檔內的 allow_highlighting = true 打開，獲得螢光筆功能 Enabling/Disabling search result highlighting 基礎搜尋語法 Syntax Graylog 語法支援正規表示法 (RegEXP) 搜尋 Message 包含 ssh 的 log 1 ssh 搜尋 Message 包含
     </div>
     <div class="read-more">
-      <a href="/post/20200924-httpd-log-to-graylog-with-rsyslog/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/20200924-graylog-installation-use-centos77/">Gralylog 安裝紀錄 (使用 Default CentOS 7.7)</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2020-09-24 </span>
-      <div class="post-category">
-          <a href="/categories//">  </a>
-          </div>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      本篇參考資料 How to install and configure Graylog on CentOS 7 執行系統更新 1 yum update -y 安裝 EPEL 1 yum install epel-release -y 安裝所需項目，其中 pwgen 套件是等等要用來產生 graylog server 設定檔的密鑰 1 yum install pwgen vim -y 安裝 java
-    </div>
-    <div class="read-more">
-      <a href="/post/20200924-graylog-installation-use-centos77/" class="read-more-link">Read more...</a>
+      <a href="/post/20200923-how-to-search-in-graylog/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>
@@ -227,14 +143,11 @@
     </section>
   
   <nav class="pagination">
-    <a class="prev" href="/page/12/">
+    <a class="prev" href="/page/13/">
         <i class="iconfont icon-left"></i>
         <span class="prev-text">Prev</span>
       </a>
-    <a class="next" href="/page/14/">
-        <span class="next-text">Next</span>
-        <i class="iconfont icon-right"></i>
-      </a>
+    
   </nav>
         </div>
         

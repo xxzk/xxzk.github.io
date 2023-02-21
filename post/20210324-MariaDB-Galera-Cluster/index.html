@@ -171,7 +171,7 @@
 <strong>公司目前常用的主從架構 (Master-Slave) <span style="color:red">沒辦法做到各個結點 (node) 均可讀寫，並且確保資料一致性，因此不適合做為 HA (高可用) 的解決方案</span></strong></p>
 <h2 id="比較-master-slave-replication-vs-galera-cluster-multi-master">比較 Master-Slave Replication V.S Galera Cluster (Multi-Master)</h2>
 <h3 id="master-slave-replication">Master-Slave Replication</h3>
-<p><img src="replicationnew.png" alt="replicationnew.jpg"></p>
+<p><img src="replicationnew.jpg" alt="replicationnew.jpg"></p>
 <p>▲ MySQL Standard asynchronous replication <a href="https://www.percona.com/blog/2017/02/07/overview-of-different-mysql-replication-solutions/">圖片來源:Different Types of MySQL Replication Solutions</a></p>
 <p><strong><span style="color:green">優點 (Benefits):</strong></p>
 <ol>
@@ -184,9 +184,9 @@
 <li>一旦 Master node 離線，必須手動將任一 Slave 變成 Master 才能恢復寫入能力。</li>
 </ol>
 <h3 id="galera-cluster-multi-master">Galera Cluster (Multi-Master)</h3>
-<p><img src="galera_small.png" alt="galera_small"></p>
+<p><img src="galera_small.jpg" alt="galera_small"></p>
 <p>▲ cluster 內所有 node 互相同步。 <a href="https://mariadb.com/kb/en/what-is-mariadb-galera-cluster/">圖片來源:【MariaDB.com】 What is MariaDB Galera Cluster?</a></p>
-<p><img src="mariadb_galera_cluster_basic_architecture.png" alt="mariadb_galera_cluster_basic_architecture"></p>
+<p><img src="mariadb_galera_cluster_basic_architecture.jpg" alt="mariadb_galera_cluster_basic_architecture"></p>
 <p>▲ 透過 wsrep (write set replication) 達到同步目的。<a href="https://medium.com/@azsecured/mariadb-galera-cluster-on-centos-7-46fced6306bc">圖片來源:İlham Bayramov-MariaDB Galera Cluster on CentOS 7 </a></p>
 <p><strong><span style="color:green">優點 (Benefits):</strong></p>
 <ol>

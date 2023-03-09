@@ -48,7 +48,7 @@
 <meta itemprop="name" content="Udemy AWS SAA-C03 課程筆記">
 <meta itemprop="description" content="Intro 這篇筆記會記錄 Udemy Ultimate AWS Certified Solutions Architect Associate SAA-C03 隨堂筆記。 !! 目前施工中~~~ !! AWS Free Tier 說明 ▲ Control Your AWS Costs，設定警告避免帳單爆炸。 Slides and Code Download Section 4 IAM and AWS CLI IAM Groups 只"><meta itemprop="datePublished" content="2023-02-13T15:30:50+00:00" />
 <meta itemprop="dateModified" content="2023-02-13T15:30:50+00:00" />
-<meta itemprop="wordCount" content="2007">
+<meta itemprop="wordCount" content="2282">
 <meta itemprop="keywords" content="aws,cloud," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Udemy AWS SAA-C03 課程筆記"/>
 <meta name="twitter:description" content="Intro 這篇筆記會記錄 Udemy Ultimate AWS Certified Solutions Architect Associate SAA-C03 隨堂筆記。 !! 目前施工中~~~ !! AWS Free Tier 說明 ▲ Control Your AWS Costs，設定警告避免帳單爆炸。 Slides and Code Download Section 4 IAM and AWS CLI IAM Groups 只"/>
@@ -188,6 +188,7 @@
             <li><a href="#elastic-cachehttpsdocsawsamazoncomelasticacheindexhtml"><a href="https://docs.aws.amazon.com/elasticache/index.html">Elastic Cache</a></a></li>
           </ul>
         </li>
+        <li><a href="#section-10-route-53httpsawsamazoncomroute53">Section 10 <a href="https://aws.amazon.com/route53/">Route 53</a></a></li>
       </ul>
     </li>
   </ul>
@@ -411,7 +412,8 @@
 <li>硬碟空間可視為無限大，使用者可以設定最高容量避免 auto scaling 導致費用爆炸</li>
 <li>DB Engine 支援: MariaDB, MySQL, PostgreSQL, MSSQL, Oracle</li>
 <li>MSSQL, Oracle，兩個不推薦的 DB <strong><span style='color:red'>使用 RDS custom，使用者能夠碰到 OS 底層並且 SSH</span></strong></li>
-<li>在相同 region 的 read replicaset instances 同步 (Async) 流量不計費。</li>
+<li>在相同 region 的 read replicaset instances 異步 (Asynchronous) 流量不計費。</li>
+<li><strong><span style='color:blue'>Read replica 使用異步同步 (Asynchronous)， multi-AZ 使用同步同步 (synchronous)。</span></strong></li>
 <li>自動備份 (Auto backup) 功能能做到:</li>
 <li>(1) Daily full backup of the database (during the backup window)</li>
 <li>(2) 每 5 分鐘備份 transaction log</li>
@@ -434,6 +436,7 @@
 <li>有 Multi-Master 提供 multi write 的功能。(延伸閱讀: <a href="https://blog.xxzk.me/post/20210324-mariadb-galera-cluster/">MariaDB Galera Cluster 建置 </a>)</li>
 <li>可以接 AWS 的 AI 功能 (SageMaker, Comprehend)</li>
 <li><strong><span style='color:red'>自動備份 (Auto backup) 功能無法關閉!</span></strong> 檔案可選擇保留 1~35 天</li>
+<li><strong><span style='color:blue'>支援 serverless</span></strong> ， <a href="https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless-v2.html">Using Aurora Serverless v2</a>, <a href="https://aws.amazon.com/rds/aurora/serverless/">Amazon Aurora Serverless</a></li>
 </ul>
 <p><img src="aurora_architect.jpg" alt="aurora_architect"></p>
 <p>▲ Aurora 讀寫分離 (提供兩組 DNS domain name)</p>
@@ -449,6 +452,19 @@
 <h3 id="elastic-cachehttpsdocsawsamazoncomelasticacheindexhtml"><a href="https://docs.aws.amazon.com/elasticache/index.html">Elastic Cache</a></h3>
 <p><img src="elastic_cache.jpg" alt="elastic_cache"></p>
 <p>▲ redis V.S memcached</p>
+<h2 id="section-10-route-53httpsawsamazoncomroute53">Section 10 <a href="https://aws.amazon.com/route53/">Route 53</a></h2>
+<ul>
+<li>AWS managed 的 HA DNS hosting 服務，AWS 承諾 100% SLA</li>
+<li>sub-domain 才能有 CNAME record</li>
+<li>跟自架 DNS server 一樣，有 Public zone 與 Private Zone</li>
+<li><strong><span style='color:red'>alias record 只能指向 AWS resources，但可以導向 root domain name 例如: <code>mydomain.tw =&gt; xxx.elb.amazonaws.com</code></span></strong></li>
+<li>(承上) 免費、自帶 health check，但因為是 DNS 廠商擴充功能，非 RFC 規格，因此沒辦法設定 TTL (個人結論)</li>
+<li><a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/routing-policy.html">routing policy</a> 可以針對 IP-based, Latency-based, Weighted 等去做 DNS reply</li>
+<li><a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/routing-policy-geoproximity.html">Route 53 routing policy - Geoproximity (有圖)</a> 可以讓流量就近被服務 (例如: 日本 client 就去找我在日本部屬的 AWS ELB)，使用者可以設定距離</li>
+<li>(承上) 需開啟 <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/traffic-flow.html">Route 53 traffic flow</a> 功能方能使用</li>
+</ul>
+<p><img src="route53_alias_record_targets.jpg" alt="route53_alias_record_targets"></p>
+<p>▲ Alias target (value) 可以是這些， <strong><span style='color:red'>但不可以是 EC2 instance DNS name</span></strong></p>
 
     </div>
 

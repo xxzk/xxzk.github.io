@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.110.0 with theme even" />
+<meta name="generator" content="Hugo 0.111.3 with theme even" />
 
 
 <link rel="canonical" href="https://blog.xxzk.me/post/20230220-udemy-aws-saa-c03-note/" />
@@ -44,11 +44,11 @@
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.xxzk.me/post/20230220-udemy-aws-saa-c03-note/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2023-02-13T15:30:50+00:00" />
-<meta property="article:modified_time" content="2023-03-09T16:13:04+08:00" />
+<meta property="article:modified_time" content="2023-04-18T10:24:14+08:00" />
 <meta itemprop="name" content="Udemy AWS SAA-C03 課程筆記">
 <meta itemprop="description" content="Intro 這篇筆記會記錄 Udemy Ultimate AWS Certified Solutions Architect Associate SAA-C03 隨堂筆記。 !! 目前施工中~~~ !! AWS Free Tier 說明 ▲ Control Your AWS Costs，設定警告避免帳單爆炸。 Slides and Code Download Section 4 IAM and AWS CLI IAM Groups 只"><meta itemprop="datePublished" content="2023-02-13T15:30:50+00:00" />
-<meta itemprop="dateModified" content="2023-03-09T16:13:04+08:00" />
-<meta itemprop="wordCount" content="2282">
+<meta itemprop="dateModified" content="2023-04-18T10:24:14+08:00" />
+<meta itemprop="wordCount" content="2694">
 <meta itemprop="keywords" content="aws,cloud," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Udemy AWS SAA-C03 課程筆記"/>
 <meta name="twitter:description" content="Intro 這篇筆記會記錄 Udemy Ultimate AWS Certified Solutions Architect Associate SAA-C03 隨堂筆記。 !! 目前施工中~~~ !! AWS Free Tier 說明 ▲ Control Your AWS Costs，設定警告避免帳單爆炸。 Slides and Code Download Section 4 IAM and AWS CLI IAM Groups 只"/>
@@ -189,6 +189,11 @@
           </ul>
         </li>
         <li><a href="#section-10-route-53httpsawsamazoncomroute53">Section 10 <a href="https://aws.amazon.com/route53/">Route 53</a></a></li>
+        <li><a href="#section-11-classic-solutions-architecture-discussions">Section 11 Classic Solutions Architecture Discussions</a>
+          <ul>
+            <li><a href="#elastic-beanstalk">Elastic Beanstalk</a></li>
+          </ul>
+        </li>
       </ul>
     </li>
   </ul>
@@ -267,7 +272,8 @@
 </span></span><span class="line"><span class="cl">aws configure list-profiles
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="section-5-ec2-fundamentals">Section 5 EC2 Fundamentals</h2>
+</div><p>2023.04.18 更新：如果使用 <code>zsh</code> + 有切換 aws profile 需求的話可以開啟 <code>zsh</code> aws plugin 功能。<a href="https://www.hwchiu.com/aws-profile.html">Management AWS Profiles | Hwchiu Learning Note</a></p>
+<h2 id="section-5-ec2-fundamentals">Section 5 EC2 Fundamentals</h2>
 <ul>
 <li>EC2 stop and start 會改變 Public IP 但是 Private IP 不會改變。</li>
 <li>EC2 security group 是有 region/VPC 區分的 (不可跨)。</li>
@@ -381,6 +387,7 @@
 <p><a href="https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html">Application Load Balancer</a></p>
 <ul>
 <li>AWS managed LB</li>
+<li><strong><span style='color:red'>不可</span></strong> 綁定 Elastic IP (AWS 固定 IP)，歡迎使用 Route53 alias record 託管域名。</li>
 <li>ALB 的 security group 要建立兩個:</li>
 <li>(1) HTTP-allow-all <strong><span style='color:blue'>允許 TCP 80 port in/out bound，綁在 ELB 身上</span></strong></li>
 <li>(2) allow-my-ELB-visit <strong><span style='color:brown'>允許 TCP 80 port Inbound，綁在 EC2 身上， source 是 HTTP-allow-all 這個 SG</span></strong></li>
@@ -392,6 +399,7 @@
 <p><a href="https://docs.aws.amazon.com/elasticloadbalancing/latest/network/introduction.html#network-load-balancer-overview">Network Load Balancer overview</a></p>
 <ul>
 <li>OSI layer 4 level LB</li>
+<li><strong><span style='color:blue'>可</span></strong> 綁定 Elastic IP (AWS 固定 IP)</li>
 </ul>
 <h3 id="elb---gwlb">ELB - GWLB</h3>
 <p><img src="gateway_lb.jpg" alt="gateway_lb"></p>
@@ -465,6 +473,24 @@
 </ul>
 <p><img src="route53_alias_record_targets.jpg" alt="route53_alias_record_targets"></p>
 <p>▲ Alias target (value) 可以是這些， <strong><span style='color:red'>但不可以是 EC2 instance DNS name</span></strong></p>
+<h2 id="section-11-classic-solutions-architecture-discussions">Section 11 Classic Solutions Architecture Discussions</h2>
+<p>這個章節會利用前面所學，探討一些常見架構。</p>
+<p><img src="stateful_web_app_client_send_cart_data_via_cookie.jpg" alt="stateful_web_app_client_send_cart_data_via_cookie"></p>
+<p>▲ Front-end 框架可以將購物車資料儲存在 cookie 裡面達成 state-less，但這不是一個好作法，原因如下:</p>
+<ol>
+<li>HTTP request 負擔會變重 (每次請求都會夾帶 cookie data)</li>
+<li>cookie data 最高只有 4096 bytes 的容量 (RFC 2109 #6.3, RFC 2965 #5.3, and RFC 6265)</li>
+<li>cookie 可以被偽造，Back-end 必須驗證</li>
+</ol>
+<p><img src="stateful_web_app_redis.jpg" alt="stateful_web_app_redis"></p>
+<p>▲ Elastic Cache (redis) 除了可以儲存 session ID 讓 EC2 變成 state-less 以外，也能作為快取使用 (減少從 DB query 的耗能、耗時)</p>
+<p><img src="stateful_web_app_efs.jpg" alt="stateful_web_app_efs"></p>
+<p>▲ 透過 EFS 實現 shared storage</p>
+<h3 id="elastic-beanstalk">Elastic Beanstalk</h3>
+<p>這是一個 AWS 提供 Developer 專注在業務邏輯 code 的服務，開發者只要上傳 code Elastic Beanstalk 就能幫你自動生成 EC2, LB, Auto scaling group &hellip;等與監控，對於小型團隊或者 beta environment 來說幫助很大。</p>
+<p>不過個人還是會推薦使用 Terraform 這類的 IaC 工具。<a href="https://blog.pichuang.com.tw/20230301-iac-personal-experiences.html">[Phil 小飛機] 選擇 IaC 工具是多選題，而不是單選題</a></p>
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/SrwxAScdyT0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<p><a href="https://ithelp.ithome.com.tw/articles/10192427">30天鐵人賽介紹 AWS 雲端世界 - 18: 讓程式開發人員能更專注開發的上線環境 Elastic Beanstalk</a></p>
 
     </div>
 
@@ -476,8 +502,8 @@
   <p class="copyright-item">
     <span class="item-title">LastMod</span>
     <span class="item-content">
-        2023-03-09
-        <a href="/commit/8ec2df40d2ce93e88b7067c061c2b4753b09759b" title="update.">(8ec2df4)</a>
+        2023-04-18
+        <a href="/commit/6ddc120910301ec0c31fabae7aa1a7ace2ffbc9d" title="update. (MacOS)">(6ddc120)</a>
     </span>
   </p>
   

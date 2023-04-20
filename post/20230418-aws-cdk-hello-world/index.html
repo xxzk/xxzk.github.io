@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>AWS CDK Hello World - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="Getting started with the AWS CDK 這篇筆記會紀錄我認識 AWS CDK (Cloud Development Kit) 的過程。 AWS CDK 作為官方提供搭建基礎設施 (infra) 的 IaC 解決方案，支援多種語言撰寫 例如： NodeJS, TypeScript, JavaScript, Python, Java, C#, Go 。 值得一提" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.111.3 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20230418-aws-cdk-hello-world/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="AWS CDK Hello World" />
+<meta property="og:description" content="Getting started with the AWS CDK 這篇筆記會紀錄我認識 AWS CDK (Cloud Development Kit) 的過程。 AWS CDK 作為官方提供搭建基礎設施 (infra) 的 IaC 解決方案，支援多種語言撰寫 例如： NodeJS, TypeScript, JavaScript, Python, Java, C#, Go 。 值得一提" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.xxzk.me/post/20230418-aws-cdk-hello-world/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2023-04-18T14:32:50+00:00" />
+<meta property="article:modified_time" content="2023-04-18T14:32:50+00:00" />
+<meta itemprop="name" content="AWS CDK Hello World">
+<meta itemprop="description" content="Getting started with the AWS CDK 這篇筆記會紀錄我認識 AWS CDK (Cloud Development Kit) 的過程。 AWS CDK 作為官方提供搭建基礎設施 (infra) 的 IaC 解決方案，支援多種語言撰寫 例如： NodeJS, TypeScript, JavaScript, Python, Java, C#, Go 。 值得一提"><meta itemprop="datePublished" content="2023-04-18T14:32:50+00:00" />
+<meta itemprop="dateModified" content="2023-04-18T14:32:50+00:00" />
+<meta itemprop="wordCount" content="1983">
+<meta itemprop="keywords" content="AWS," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="AWS CDK Hello World"/>
+<meta name="twitter:description" content="Getting started with the AWS CDK 這篇筆記會紀錄我認識 AWS CDK (Cloud Development Kit) 的過程。 AWS CDK 作為官方提供搭建基礎設施 (infra) 的 IaC 解決方案，支援多種語言撰寫 例如： NodeJS, TypeScript, JavaScript, Python, Java, C#, Go 。 值得一提"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">AWS CDK Hello World</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2023-04-18 </span>
+        <div class="post-category">
+            <a href="/categories/aws/"> AWS </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#getting-started-with-the-aws-cdkhttpsdocsawsamazoncomcdkv2guidegetting_startedhtml"><a href="https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html">Getting started with the AWS CDK</a></a></li>
+        <li><a href="#install-aws-cdk">Install AWS CDK</a>
+          <ul>
+            <li><a href="#自動補齊">自動補齊</a></li>
+          </ul>
+        </li>
+        <li><a href="#主要觀念">主要觀念</a>
+          <ul>
+            <li><a href="#layer-1-aws-cloudformation-only">Layer 1: AWS CloudFormation-only</a></li>
+            <li><a href="#layer-2-curated">Layer 2: Curated</a></li>
+            <li><a href="#layer-3-patterns">Layer 3: Patterns</a></li>
+          </ul>
+        </li>
+        <li><a href="#init-with-python">init with Python</a></li>
+        <li><a href="#常用指令">常用指令</a>
+          <ul>
+            <li><a href="#bootstraphttpsdocsawsamazoncomcdkv2guidegetting_startedhtmlgetting_started_bootstrap"><a href="https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_bootstrap">bootstrap</a></a></li>
+            <li><a href="#產生-cloudformation-template">產生 CloudFormation template</a></li>
+            <li><a href="#others">others</a></li>
+          </ul>
+        </li>
+        <li><a href="#authentication-認證">Authentication 認證</a></li>
+        <li><a href="#hello-world---s3">Hello World - S3</a>
+          <ul>
+            <li><a href="#建立">建立</a></li>
+            <li><a href="#修改">修改</a></li>
+            <li><a href="#刪除">刪除</a></li>
+          </ul>
+        </li>
+        <li><a href="#更多資源">更多資源</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="getting-started-with-the-aws-cdkhttpsdocsawsamazoncomcdkv2guidegetting_startedhtml"><a href="https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html">Getting started with the AWS CDK</a></h2>
+<p>這篇筆記會紀錄我認識 AWS CDK (Cloud Development Kit) 的過程。 AWS CDK 作為官方提供搭建基礎設施 (infra) 的 IaC 解決方案，支援多種語言撰寫 例如： NodeJS, TypeScript, JavaScript, Python, Java, C#, Go 。</p>
+<p><strong><span style='color:red'>值得一提的是，不論使用何種語言，後端都會是 NodeJS</span></strong></p>
+<blockquote>
+<p>All supported languages use the same backend, which runs on Node.js</p>
+</blockquote>
+<h2 id="install-aws-cdk">Install AWS CDK</h2>
+<p><a href="https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_install">Install the AWS CDK</a></p>
+<p><a href="https://docs.aws.amazon.com/cdk/v2/guide/cli.html">AWS CDK Toolkit (cdk command)</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">brew install npm
+</span></span><span class="line"><span class="cl">npm install -g aws-cdk
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="自動補齊">自動補齊</h3>
+<p><a href="https://github.com/aws/aws-cdk/issues/5199">CDK command shall have autocomplete feature</a></p>
+<p><strong>ZSH</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-zsh" data-lang="zsh"><span class="line"><span class="cl"><span class="c1">###-begin-cdk-completions-###</span>
+</span></span><span class="line"><span class="cl">_cdk_yargs_completions<span class="o">()</span>
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">local</span> reply
+</span></span><span class="line"><span class="cl">  <span class="nb">local</span> <span class="nv">si</span><span class="o">=</span><span class="nv">$IFS</span>
+</span></span><span class="line"><span class="cl">  <span class="nv">IFS</span><span class="o">=</span><span class="s1">$&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s1">&#39;</span> <span class="nv">reply</span><span class="o">=(</span><span class="k">$(</span><span class="nv">COMP_CWORD</span><span class="o">=</span><span class="s2">&#34;</span><span class="k">$((</span>CURRENT-1<span class="k">))</span><span class="s2">&#34;</span> <span class="nv">COMP_LINE</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$BUFFER</span><span class="s2">&#34;</span> <span class="nv">COMP_POINT</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$CURSOR</span><span class="s2">&#34;</span> cdk --get-yargs-completions <span class="s2">&#34;</span><span class="si">${</span><span class="nv">words</span><span class="p">[@]</span><span class="si">}</span><span class="s2">&#34;</span><span class="k">)</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">  <span class="nv">IFS</span><span class="o">=</span><span class="nv">$si</span>
+</span></span><span class="line"><span class="cl">  _describe <span class="s1">&#39;values&#39;</span> reply
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">compdef _cdk_yargs_completions cdk
+</span></span><span class="line"><span class="cl"><span class="c1">###-end-cdk-completions-###</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>Bash</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">###-begin-cdk-completions-###</span>
+</span></span><span class="line"><span class="cl">_cdk_yargs_completions<span class="o">()</span>
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">local</span> cur_word args type_list
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nv">cur_word</span><span class="o">=</span><span class="s2">&#34;</span><span class="si">${</span><span class="nv">COMP_WORDS</span><span class="p">[COMP_CWORD]</span><span class="si">}</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">args</span><span class="o">=(</span><span class="s2">&#34;</span><span class="si">${</span><span class="nv">COMP_WORDS</span><span class="p">[@]</span><span class="si">}</span><span class="s2">&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># ask yargs to generate completions.</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">type_list</span><span class="o">=</span><span class="k">$(</span>cdk --get-yargs-completions <span class="s2">&#34;</span><span class="si">${</span><span class="nv">args</span><span class="p">[@]</span><span class="si">}</span><span class="s2">&#34;</span><span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nv">COMPREPLY</span><span class="o">=(</span> <span class="k">$(</span><span class="nb">compgen</span> -W <span class="s2">&#34;</span><span class="si">${</span><span class="nv">type_list</span><span class="si">}</span><span class="s2">&#34;</span> -- <span class="si">${</span><span class="nv">cur_word</span><span class="si">}</span><span class="k">)</span> <span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># if no match was found, fall back to filename completion</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="o">[</span> <span class="si">${#</span><span class="nv">COMPREPLY</span><span class="p">[@]</span><span class="si">}</span> -eq <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">      <span class="nv">COMPREPLY</span><span class="o">=()</span>
+</span></span><span class="line"><span class="cl">    <span class="k">fi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="nb">complete</span> -o default -F _cdk_yargs_completions cdk
+</span></span><span class="line"><span class="cl"><span class="c1">###-end-cdk-completions-###</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="主要觀念">主要觀念</h2>
+<ul>
+<li>我們透過 Python, NodeJS &hellip; 寫出來的 IaC 被稱作 CDK app</li>
+<li>每個 CDK app 都包含一個或多個 <a href="https://docs.aws.amazon.com/cdk/v2/guide/stacks.html">stack</a> (其實就是 CloudFormation 的 stack)</li>
+<li>Stack 包含 constructs，每個 construct 包含一至多個 AWS resources。例如：Amazon S3 buckets, Lambda functions, or Amazon DynamoDB tables</li>
+</ul>
+<p>其中 constructs 又分為三層：</p>
+<h3 id="layer-1-aws-cloudformation-only">Layer 1: AWS CloudFormation-only</h3>
+<ul>
+<li>其實就是直接使用 CloudFormation 來創建 infra，當 AWS 有新服務時也會在短時間內支援</li>
+<li>名字開頭都是 <code>Cfn</code>，例如： <code>CfnBucket</code> 就是 Amazon S3 bucket</li>
+<li>所有 L1 資源都會定義在 <code>aws-cdk-lib</code> 當中。</li>
+</ul>
+<h3 id="layer-2-curated">Layer 2: Curated</h3>
+<ul>
+<li>這類 constructs 由 AWS 團隊精心提供，內容包含 L1 並且搭配 最佳實踐 或 推薦安全性設定</li>
+<li>例如： <code>Bucket</code> 是 Amazon S3 bucket 的 L2 construct</li>
+<li><code>aws-cdk-lib</code> 支援多數穩定的 L2 constructs</li>
+</ul>
+<h3 id="layer-3-patterns">Layer 3: Patterns</h3>
+<ul>
+<li>Patterns 結合多個 AWS resources 來創建架構 (architecture)</li>
+<li><code>aws-cdk-lib</code> 支援多數穩定的 L3 constructs</li>
+</ul>
+<h2 id="init-with-python">init with Python</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mkdir aws-cdk-hello-world
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> aws-cdk-hello-world
+</span></span><span class="line"><span class="cl">cdk init --language python
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="cdk-init-with-python.jpg" alt="cdk-init-with-python"></p>
+<p>▲ 使用 <code>cdk init</code> 初始化</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">total 56
+</span></span><span class="line"><span class="cl">drwxr-xr-x@ 14 eric.ke  staff   448B Apr 18 17:04 .
+</span></span><span class="line"><span class="cl">drwxr-x---+ 49 eric.ke  staff   1.5K Apr 19 10:29 ..
+</span></span><span class="line"><span class="cl">drwxr-xr-x@ 12 eric.ke  staff   384B Apr 19 10:12 .git
+</span></span><span class="line"><span class="cl">-rw-r--r--@  1 eric.ke  staff   119B Apr 18 16:48 .gitignore
+</span></span><span class="line"><span class="cl">drwxr-xr-x@  6 eric.ke  staff   192B Apr 18 16:48 .venv
+</span></span><span class="line"><span class="cl">-rw-r--r--@  1 eric.ke  staff   1.6K Apr 18 16:48 README.md
+</span></span><span class="line"><span class="cl">-rw-r--r--@  1 eric.ke  staff   979B Apr 18 16:48 app.py
+</span></span><span class="line"><span class="cl">drwxr-xr-x@  5 eric.ke  staff   160B Apr 18 17:04 aws_cdk_hello_world
+</span></span><span class="line"><span class="cl">-rw-r--r--@  1 eric.ke  staff   2.0K Apr 18 16:48 cdk.json
+</span></span><span class="line"><span class="cl">drwxr-xr-x@  7 eric.ke  staff   224B Apr 18 17:04 cdk.out
+</span></span><span class="line"><span class="cl">-rw-r--r--@  1 eric.ke  staff    14B Apr 18 16:48 requirements-dev.txt
+</span></span><span class="line"><span class="cl">-rw-r--r--@  1 eric.ke  staff    47B Apr 18 16:48 requirements.txt
+</span></span><span class="line"><span class="cl">-rw-r--r--@  1 eric.ke  staff   437B Apr 18 16:48 source.bat
+</span></span><span class="line"><span class="cl">drwxr-xr-x@  4 eric.ke  staff   128B Apr 18 16:48 test
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>當我們執行 <code>cdk init --language python</code> 時，預設會幫我們建立 <a href="https://docs.python.org/zh-tw/3/tutorial/venv.html">Python Virtualenv</a>， <strong><span style='color:blue'>使用 <code>source .venv/bin/activate</code> 可以啟動獨立環境。</span></strong></p>
+<p>一但啟用 virtualenv 之後就能透過 <code>pip install -r requirements.txt</code> 安裝相依套件 (當然是在虛擬獨立環境)</p>
+<h2 id="常用指令">常用指令</h2>
+<h3 id="bootstraphttpsdocsawsamazoncomcdkv2guidegetting_startedhtmlgetting_started_bootstrap"><a href="https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_bootstrap">bootstrap</a></h3>
+<p>在使用 <code>cdk deploy</code> 部署 infra 之前，必須要先執行 bootstrap 這個前置動作來產生 cdk 所需環境。通常會創造一個名為 <code>CDKToolkit</code> 的 Amazon Cloudfomation stack。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-zsh" data-lang="zsh"><span class="line"><span class="cl"><span class="c1"># clean profile first</span>
+</span></span><span class="line"><span class="cl">asp
+</span></span><span class="line"><span class="cl">asp &lt;profile-name&gt;
+</span></span><span class="line"><span class="cl">cdk bootstrap
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="產生-cloudformation-template">產生 CloudFormation template</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cdk synth
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## if many stacks</span>
+</span></span><span class="line"><span class="cl">cdk synth MyStack
+</span></span><span class="line"><span class="cl">cdk synth Stack1 Stack2
+</span></span><span class="line"><span class="cl">cdk synth <span class="s2">&#34;*&#34;</span>     <span class="c1"># all stacks in app</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="others">others</h3>
+<ul>
+<li><code>dk ls</code> 列出 app 內所有 stack</li>
+<li><code>cdk diff</code> 列出當前 IaC 與已部署的 app 差異</li>
+<li><code>cdk docs</code> 打開瀏覽器查閱 docs</li>
+</ul>
+<h2 id="authentication-認證">Authentication 認證</h2>
+<p>以 <code>~/.aws/config</code> 來說分為兩種類型:</p>
+<ol>
+<li>一般帳號</li>
+<li>SSO 帳號  <a href="https://aws.amazon.com/tw/iam/identity-center/">AWS IAM Identity Center (AWS Single Sign-On 的後繼者) － 集中管理人力對多個 AWS 帳戶和應用程式的存取權</a></li>
+</ol>
+<p><a href="https://docs.aws.amazon.com/sdkref/latest/guide/file-format.html#section-session">範例</a>如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">[profile dev]
+</span></span><span class="line"><span class="cl">sso_session = my-sso
+</span></span><span class="line"><span class="cl">sso_account_id = 111122223333
+</span></span><span class="line"><span class="cl">sso_role_name = SampleRole
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">[sso-session my-sso]
+</span></span><span class="line"><span class="cl">sso_region = us-east-1
+</span></span><span class="line"><span class="cl">sso_start_url = https://my-sso-portal.awsapps.com/start
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong><span style='color:blue'>查詢當前的令牌 (active session) 可以使用：</span></strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">aws sts get-caller-identity
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>在使用 <code>cdk bootstrap</code> 之前必須先：</p>
+<ul>
+<li>(推薦) 使用 <code>asp &lt;profile&gt;</code> 指定 profile 並且使用 <code>aws sts get-caller-identity</code> 確認</li>
+<li>(如果是透過 <code>asp &lt;profile&gt;</code> 切換 active session 的) 即便指定的 profile 內已經有設定 region 也必須 <a href="https://docs.aws.amazon.com/cdk/v2/guide/cli.html#cli-environment">Specifying Region and other configuration</a>， <strong><span style='color:red'>或者在 config <code>[default]</code> 設定 region 也可以</span></strong></li>
+<li>(承上) 總之 region 可以被定義在 (1) config default profile (2) 環境變數 <code>AWS_DEFAULT_REGION</code></li>
+<li>CDK 直接指定 profile 使用。<code>cdk bootstrap --profile &lt;profile&gt;</code></li>
+</ul>
+<p><img src="cloudformation-full-access.jpg" alt="cloudformation-full-access"></p>
+<p>▲ CDK bootstrap 需要 cloudformation 權限。</p>
+<p><img src="ssm-full-access.jpg" alt="ssm-full-access"></p>
+<p>▲ CDK bootstrap 需要 <code>ssm:PutParameter</code> 權限。</p>
+<p><img src="ecr-full-access.jpg" alt="ecr-full-access"></p>
+<p>▲ CDK bootstrap 需要 <code>ecr:CreateRepository</code> 權限。</p>
+<p><img src="cdk-bootstrap-success.jpg" alt="cdk-bootstrap-success"></p>
+<p>▲ CDK bootstrap 成功畫面。</p>
+<h2 id="hello-world---s3">Hello World - S3</h2>
+<p>在開始之前想先介紹一下 <code>cdk init</code> 幫我們建立的檔案結構</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">.
+</span></span><span class="line"><span class="cl">├── README.md
+</span></span><span class="line"><span class="cl">├── app.py
+</span></span><span class="line"><span class="cl">├── aws_cdk_hello_world
+</span></span><span class="line"><span class="cl">│   ├....
+</span></span><span class="line"><span class="cl">│   └── aws_cdk_hello_world_stack.py
+</span></span><span class="line"><span class="cl">├── cdk.json
+</span></span><span class="line"><span class="cl">├── cdk.out
+</span></span><span class="line"><span class="cl">│   ├── AwsCdkHelloWorldStack.assets.json
+</span></span><span class="line"><span class="cl">│   ├── AwsCdkHelloWorldStack.template.json
+</span></span><span class="line"><span class="cl">│   ├── ....
+</span></span><span class="line"><span class="cl">├── requirements-dev.txt
+</span></span><span class="line"><span class="cl">├── requirements.txt
+</span></span><span class="line"><span class="cl">├── source.bat
+</span></span><span class="line"><span class="cl">└── tests
+</span></span><span class="line"><span class="cl">    ├── ...
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><code>app.py</code> 基本上 hello world 不會去動它</li>
+<li><strong><span style='color:red'><code>./aws_cdk_hello_world/aws_cdk_hello_world_&quot;stack&quot;.py</code> 是我們寫 code 的地方 </span></strong></li>
+<li>關於更多請參考 <a href="https://cdkworkshop.com/30-python/20-create-project/300-structure.html">Project structure | AWS CDK Workshop</a></li>
+</ul>
+<p><img src="stack-py.jpg" alt="stack-py"></p>
+<ul>
+<li><code>def __init__</code> : 這是一個 Python class 中的 constructor (建構子)，當建立一個新的物件時，會先呼叫這個函數來初始化物件。在 AWS CDK 中，Stack 類別是用來表示一個 CloudFormation stack，因此這個 constructor 是在繼承 Stack 類別的過程中被定義的。</li>
+<li>該 constructor 的第一個參數 <code>self</code> 表示建立的物件本身，後面的 <code>scope</code> 參數則是用來表示建立的這個 Stack 所屬的範疇 (scope)。在 AWS CDK 中，一個 Stack 可能包含其他的 Stack 或資源，因此透過 <code>scope</code> 參數可以指定該 Stack 所屬的父 Stack 或應用程式。第二個參數 <code>construct_id</code> 則是用來表示該 Stack 的唯一識別名稱。</li>
+<li><code>**kwargs</code> 表示接受任意數量的關鍵字參數，用來接收 Stack 相關的其他設定，例如指定該 Stack 所使用的環境 (environment) 等等。</li>
+<li><code>super().__init__(scope, construct_id, **kwargs)</code> 則是呼叫了父類別 Stack 的 constructor，來初始化這個 Stack 物件。在 constructor 中可以使用其他 AWS CDK 提供的 class 來定義該 Stack 所需的資源，例如上述程式碼中被註解掉的 Queue class。</li>
+<li>箭頭符號 <code>-&gt;</code> 被稱為 type hint，用來指定函數返回的型別。例如，<code>-&gt; None</code> 表示函數沒有返回值。</li>
+</ul>
+<p>接下來我將透過 <a href="https://docs.aws.amazon.com/cdk/v2/guide/hello_world.html">Your first AWS CDK app - AWS Cloud Development Kit (AWS CDK) v2</a> 建立一個 S3 的 Hello world</p>
+<p>進入 python virtualenv，並安裝所需套件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">source</span> .venv/bin/activate
+</span></span><span class="line"><span class="cl">python -m pip install -r requirements.txt
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="建立">建立</h3>
+<p><img src="s3-bucket-app.jpg" alt="s3-bucket-app"></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">aws_cdk</span> <span class="kn">import</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Stack</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">constructs</span> <span class="kn">import</span> <span class="n">Construct</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">aws_cdk</span> <span class="k">as</span> <span class="nn">cdk</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">aws_cdk.aws_s3</span> <span class="k">as</span> <span class="nn">s3</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">AwsCdkHelloWorldStack</span><span class="p">(</span><span class="n">Stack</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scope</span><span class="p">:</span> <span class="n">Construct</span><span class="p">,</span> <span class="n">construct_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="n">construct_id</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1"># The code that defines your stack goes here</span>
+</span></span><span class="line"><span class="cl">        <span class="n">bucket</span> <span class="o">=</span> <span class="n">s3</span><span class="o">.</span><span class="n">Bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&#34;EricFirstBucket&#34;</span><span class="p">,</span> <span class="n">versioned</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>開始部署</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cdk synthesize
+</span></span><span class="line"><span class="cl">cdk deploy
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="eric-first-bucket.jpg" alt="eric-first-bucket"></p>
+<p>▲ 透過 CDK 建立的 S3 bucket</p>
+<p><img src="cloudformation-helloworld-stack.jpg" alt="cloudformation-helloworld-stack"></p>
+<p>▲ 透過 CDK 建立的 Cloudformation stack resource 列表</p>
+<p><img src="cdk-toolkit-bucket.jpg" alt="cdk-toolkit-bucket"></p>
+<p>▲ 當初 <code>cdk bootstrap</code> 所創造的 S3 bucket 現在裡面有 Cloudformation template 的 json 檔了</p>
+<h3 id="修改">修改</h3>
+<p>建立成功後，我們來修改 IaC code 看看會發生什麼事情～</p>
+<p>對剛才建立的 S3 bucket 新增 <code>removal_policy=cdk.RemovalPolicy.DESTROY</code> 與 <code>auto_delete_objects=True</code> 這兩項屬性。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">aws_cdk</span> <span class="kn">import</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Stack</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">constructs</span> <span class="kn">import</span> <span class="n">Construct</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">aws_cdk</span> <span class="k">as</span> <span class="nn">cdk</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">aws_cdk.aws_s3</span> <span class="k">as</span> <span class="nn">s3</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">AwsCdkHelloWorldStack</span><span class="p">(</span><span class="n">Stack</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scope</span><span class="p">:</span> <span class="n">Construct</span><span class="p">,</span> <span class="n">construct_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="n">construct_id</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1"># The code that defines your stack goes here</span>
+</span></span><span class="line"><span class="cl">        <span class="n">bucket</span> <span class="o">=</span> <span class="n">s3</span><span class="o">.</span><span class="n">Bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&#34;EricFirstBucket&#34;</span><span class="p">,</span> <span class="n">versioned</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                           <span class="n">removal_policy</span><span class="o">=</span><span class="n">aws_cdk</span><span class="o">.</span><span class="n">RemovalPolicy</span><span class="o">.</span><span class="n">DESTROY</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                           <span class="n">auto_delete_objects</span><span class="o">=</span><span class="kc">True</span>
+</span></span><span class="line"><span class="cl">                           <span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="cdk-diff.jpg" alt="cdk-diff"></p>
+<p>▲ <code>cdk diff</code> 顯示異動項目</p>
+<p>最後部署新版</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cdk deploy
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="刪除">刪除</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cdk destory
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="更多資源">更多資源</h2>
+<p><a href="https://docs.aws.amazon.com/cdk/v2/guide/hello_world.html#hello_world_next_steps">Next steps</a></p>
+<ul>
+<li><a href="https://github.com/aws-samples/aws-cdk-examples">[GitHub] aws-cdk-examples</a></li>
+</ul>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2023-04-18
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/aws/">AWS</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/20230220-udemy-aws-saa-c03-note/">
+            <span class="next-text nav-default">Udemy AWS SAA-C03 課程筆記</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022 - 
+    2023<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

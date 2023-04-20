@@ -3,21 +3,49 @@
   
   <url>
     <loc>https://blog.xxzk.me/tags/aws/</loc>
-    <lastmod>2023-04-18T10:24:14+08:00</lastmod>
+    <lastmod>2023-04-18T14:32:50+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://blog.xxzk.me/categories/aws/</loc>
-    <lastmod>2023-04-18T10:24:14+08:00</lastmod>
+    <lastmod>2023-04-18T14:32:50+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/post/20230418-aws-cdk-hello-world/</loc>
+    <lastmod>2023-04-18T14:32:50+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://blog.xxzk.me/categories/</loc>
-    <lastmod>2023-04-18T10:24:14+08:00</lastmod>
+    <lastmod>2023-04-18T14:32:50+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/post/</loc>
+    <lastmod>2023-04-18T14:32:50+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/tags/</loc>
+    <lastmod>2023-04-18T14:32:50+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/</loc>
+    <lastmod>2023-04-18T14:32:50+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -30,28 +58,7 @@
   </url>
   
   <url>
-    <loc>https://blog.xxzk.me/post/</loc>
-    <lastmod>2023-04-18T10:24:14+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.xxzk.me/tags/</loc>
-    <lastmod>2023-04-18T10:24:14+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.xxzk.me/post/20230220-udemy-aws-saa-c03-note/</loc>
-    <lastmod>2023-04-18T10:24:14+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.xxzk.me/</loc>
     <lastmod>2023-04-18T10:24:14+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>

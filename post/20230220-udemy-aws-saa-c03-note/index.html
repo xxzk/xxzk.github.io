@@ -48,7 +48,7 @@
 <meta itemprop="name" content="Udemy AWS SAA-C03 課程筆記">
 <meta itemprop="description" content="Intro 這篇筆記會記錄 Udemy Ultimate AWS Certified Solutions Architect Associate SAA-C03 隨堂筆記。 !! 目前施工中~~~ !! AWS Free Tier 說明 ▲ Control Your AWS Costs，設定警告避免帳單爆炸。 Slides and Code Download Section 4 IAM and AWS CLI IAM Groups 只"><meta itemprop="datePublished" content="2023-02-13T15:30:50+00:00" />
 <meta itemprop="dateModified" content="2023-04-18T10:24:14+08:00" />
-<meta itemprop="wordCount" content="2694">
+<meta itemprop="wordCount" content="3405">
 <meta itemprop="keywords" content="aws,cloud," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Udemy AWS SAA-C03 課程筆記"/>
 <meta name="twitter:description" content="Intro 這篇筆記會記錄 Udemy Ultimate AWS Certified Solutions Architect Associate SAA-C03 隨堂筆記。 !! 目前施工中~~~ !! AWS Free Tier 說明 ▲ Control Your AWS Costs，設定警告避免帳單爆炸。 Slides and Code Download Section 4 IAM and AWS CLI IAM Groups 只"/>
@@ -192,6 +192,13 @@
         <li><a href="#section-11-classic-solutions-architecture-discussions">Section 11 Classic Solutions Architecture Discussions</a>
           <ul>
             <li><a href="#elastic-beanstalk">Elastic Beanstalk</a></li>
+          </ul>
+        </li>
+        <li><a href="#section-12-amazon-s3-introduction">Section 12 Amazon S3 Introduction</a>
+          <ul>
+            <li><a href="#security">Security</a></li>
+            <li><a href="#replication">Replication</a></li>
+            <li><a href="#s3-durability-and-availability">S3 Durability and Availability</a></li>
           </ul>
         </li>
       </ul>
@@ -491,6 +498,124 @@
 <p>不過個人還是會推薦使用 Terraform 這類的 IaC 工具。<a href="https://blog.pichuang.com.tw/20230301-iac-personal-experiences.html">[Phil 小飛機] 選擇 IaC 工具是多選題，而不是單選題</a></p>
 <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/SrwxAScdyT0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 <p><a href="https://ithelp.ithome.com.tw/articles/10192427">30天鐵人賽介紹 AWS 雲端世界 - 18: 讓程式開發人員能更專注開發的上線環境 Elastic Beanstalk</a></p>
+<h2 id="section-12-amazon-s3-introduction">Section 12 Amazon S3 Introduction</h2>
+<ul>
+<li>bucket == directory，且必須是全球唯一 (all region all account)</li>
+<li>但 bucket 本身卻是 region level</li>
+<li>bucket 名稱不能使用：大寫、底線 (underscore)、IP、保留字 (<code>xn--</code>, <code>-s3alias</code>)</li>
+<li>object 最多 5TB (5000GB)，但只要上傳的檔案超過 5GB 就必須使用 &ldquo;multi-part upload&rdquo;</li>
+<li>bucket 如果沒有設定 public，還是能透過 <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/ShareObjectPreSignedURL.html">presigned URLs</a> 來存取 object <strong><span style='color:red'>但有時效性</span></strong></li>
+</ul>
+<p><img src="aws_s3_key.jpg" alt="aws_s3_key"></p>
+<p>▲ 每個 S3 object 都有一個 key (路徑)</p>
+<h3 id="security">Security</h3>
+<p><img src="s3_security_0.jpg" alt="s3_security_0"></p>
+<p>▲ S3 security 主要分成 user-based 與 resource-based 兩種</p>
+<p>S3 bucket policy 範例：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;Version&#34;</span><span class="p">:</span> <span class="s2">&#34;2012-10-17&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;Statement&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;Sid&#34;</span><span class="p">:</span> <span class="s2">&#34;S3 Read IAM example&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;Principal&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;AWS&#34;</span><span class="p">:</span> <span class="s2">&#34;arn:aws:iam::xxxxxx:root&#34;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;Effect&#34;</span><span class="p">:</span> <span class="s2">&#34;Allow&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;Action&#34;</span><span class="p">:</span> <span class="s2">&#34;s3:GetObject&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;Resource&#34;</span><span class="p">:</span> <span class="s2">&#34;arn:aws:s3:::DOC-EXAMPLE-BUCKET1/prefix/AWSLogs/111122223333/*&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>Version: <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_version.html">IAM JSON policy elements: Version</a></li>
+<li>SID: Statement ID, 加了可以方便識別這個 statement 在幹嘛</li>
+<li>Principal: 這個權限要賦予給誰 <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_principal.html">AWS JSON policy elements: Principal</a></li>
+</ul>
+<p><img src="s3_block_public_access.jpg" alt="s3_block_public_access"></p>
+<p>▲ 比較特別的是，為了預防企業資料外洩， <strong><span style='color:red'>即便 bucket policy 開啟 public access 只要這個地方沒有解鎖，依舊沒辦法 public access</span></strong></p>
+<h3 id="replication">Replication</h3>
+<ul>
+<li>開啟 replication 之後只有新檔案會被同步 (舊的檔案可以透過 <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-batch-replication-batch.html">s3 batch replication</a> 複製過去)</li>
+<li><strong><span style='color:red'>replication 不存在連鎖效應</span></strong></li>
+</ul>
+<blockquote>
+<p>If bucket 1 has replication into bucket 2, which has replication into bucket 3<br>
+Then objects created in bucket 1 are not replicated to bucket 3</p>
+</blockquote>
+<p><img src="s3_replication.jpg" alt="s3_replication"></p>
+<p>▲ s3 replication 分成 Cross-Region Replication (CRR) 與 Same-Region Replication (SRR)， <strong><span style='color:red'>而且 sync 是可以跨帳號的</span></strong></p>
+<h3 id="s3-durability-and-availability">S3 Durability and Availability</h3>
+<ul>
+<li>High durability (99.999999999%, 11 9’s) of objects across multiple AZ</li>
+<li>可用性依據不同 storage class 有不一樣的數字，舉例：S3 standard has 99.99% availability = not available 53 minutes a year</li>
+</ul>
+<p>S3 Standard – General Purpose</p>
+<ul>
+<li>SLA 99.99%</li>
+<li>用於經常存取，擁有高吞吐低延遲</li>
+<li>IDC 掛掉兩座 S3 的資料依舊不會遺失 (<a href="https://aws.amazon.com/s3/faqs/">your objects are automatically stored across multiple devices spanning a minimum of three Availability Zones (AZs)</a>)</li>
+</ul>
+<p>對於那些不經常被存取，但 <strong><span style='color:blue'>一經要求需要立即可用的 object</span></strong> 我們可以儲放在 IA (Infrequent Access) 這個 storage class 裡面，費用會低於 S3 Standard</p>
+<ul>
+<li>Amazon S3 Standard-Infrequent Access (S3 Standard-IA)</li>
+<li>
+<ul>
+<li>99.9% Availability</li>
+</ul>
+</li>
+<li>
+<ul>
+<li>Use cases: Disaster Recovery, backups</li>
+</ul>
+</li>
+<li>Amazon S3 One Zone-Infrequent Access (S3 One Zone-IA)</li>
+<li>
+<ul>
+<li>High durability (99.999999999%) in a single AZ; <strong><span style='color:red'>data lost when AZ is destroyed</span></strong></li>
+</ul>
+</li>
+<li>
+<ul>
+<li>99.5% Availability</li>
+</ul>
+</li>
+<li>
+<ul>
+<li>Use Cases: Storing secondary backup copies of on-premises data, or data you can recreate</li>
+</ul>
+</li>
+</ul>
+<p><strong>冰桶 － Amazon S3 Glacier Storage Classes</strong></p>
+<p>用於封存資料，如果需要使用需要支付「解凍費」(object retrieval cost)</p>
+<p><img src="s3_glacier_storage_class.jpg" alt="s3_glacier_storage_class"></p>
+<p>▲ S3 Glacier Storage Class</p>
+<p><img src="amazon-s3-intelligent-tiering-how-it-works-diagram.jpg" alt="amazon-s3-intelligent-tiering-how-it-works-diagram"></p>
+<ul>
+<li>每月支付少量監控費用即可使用 S3 Intelligent-Tiering <a href="https://aws.amazon.com/tw/about-aws/whats-new/2018/11/s3-intelligent-tiering/">中文</a> <a href="https://aws.amazon.com/s3/storage-classes/intelligent-tiering/">英文</a></li>
+<li>服務會自動偵測 object 存取頻率來移動檔案到不同 access tier，達到節省費用的目的</li>
+</ul>
+<p><img src="s3_intelligent_tiering_setting.jpg" alt="s3_intelligent_tiering_setting"></p>
+<p>▲ 建立完 S3 bucket 後即可設定 Intelligent-Tiering。</p>
 
     </div>
 

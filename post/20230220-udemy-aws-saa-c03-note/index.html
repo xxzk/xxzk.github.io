@@ -44,11 +44,11 @@
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.xxzk.me/post/20230220-udemy-aws-saa-c03-note/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2023-02-13T15:30:50+00:00" />
-<meta property="article:modified_time" content="2023-04-24T17:11:43+08:00" />
+<meta property="article:modified_time" content="2023-05-02T16:05:47+08:00" />
 <meta itemprop="name" content="Udemy AWS SAA-C03 課程筆記">
 <meta itemprop="description" content="Intro 這篇筆記會記錄 Udemy Ultimate AWS Certified Solutions Architect Associate SAA-C03 隨堂筆記。 !! 目前施工中~~~ !! AWS Free Tier 說明 ▲ Control Your AWS Costs，設定警告避免帳單爆炸。 Slides and Code Download Section 4 IAM and AWS CLI IAM Groups 只"><meta itemprop="datePublished" content="2023-02-13T15:30:50+00:00" />
-<meta itemprop="dateModified" content="2023-04-24T17:11:43+08:00" />
-<meta itemprop="wordCount" content="3405">
+<meta itemprop="dateModified" content="2023-05-02T16:05:47+08:00" />
+<meta itemprop="wordCount" content="4123">
 <meta itemprop="keywords" content="aws,cloud," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Udemy AWS SAA-C03 課程筆記"/>
 <meta name="twitter:description" content="Intro 這篇筆記會記錄 Udemy Ultimate AWS Certified Solutions Architect Associate SAA-C03 隨堂筆記。 !! 目前施工中~~~ !! AWS Free Tier 說明 ▲ Control Your AWS Costs，設定警告避免帳單爆炸。 Slides and Code Download Section 4 IAM and AWS CLI IAM Groups 只"/>
@@ -199,6 +199,12 @@
             <li><a href="#security">Security</a></li>
             <li><a href="#replication">Replication</a></li>
             <li><a href="#s3-durability-and-availability">S3 Durability and Availability</a></li>
+          </ul>
+        </li>
+        <li><a href="#section-13-advanced-amazon-s3">Section 13 Advanced Amazon S3</a></li>
+        <li><a href="#section-14-amazon-s3-security">Section 14 Amazon S3 Security</a>
+          <ul>
+            <li><a href="#cors">CORS</a></li>
           </ul>
         </li>
       </ul>
@@ -616,6 +622,59 @@ Then objects created in bucket 1 are not replicated to bucket 3</p>
 </ul>
 <p><img src="s3_intelligent_tiering_setting.jpg" alt="s3_intelligent_tiering_setting"></p>
 <p>▲ 建立完 S3 bucket 後即可設定 Intelligent-Tiering。</p>
+<h2 id="section-13-advanced-amazon-s3">Section 13 Advanced Amazon S3</h2>
+<ul>
+<li>Lifecycle rules 可以設定規則。例如：檔案建立超過 60 days =&gt; 搬移到 standard IA class</li>
+<li>Lifecycle rules 本身 config 可以設定 expire day，過期後設定 (rule) 自動刪除</li>
+<li>規則還能依據不同路徑、object tag</li>
+<li>Amazon 提供 <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/analytics-storage-class.html">S3 Analysis</a> 會產出 <code>.csv</code> 建議使用者 Lifecycle rule 怎麼設定會比較好</li>
+<li><a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/transfer-acceleration-examples.html">S3 Transfer Acceleration (S3TA)</a> == 上 CDN，能夠加速上傳下載 (支付 Cloudfront 費用)</li>
+<li>S3 支援多工分段平行下載</li>
+<li>S3 Select &amp; Glacier Select，能夠在 server side 執行篩選，減少傳輸費用、客戶端運算成本</li>
+<li>可以透過 AWS CLI 開啟 bucket MFA，危險操作時只能透過 CLI 帶 MFA code 執行</li>
+<li>Access log， <strong><span style='color:red'>但要小心不能 loop 不然帳單會爆炸</span></strong></li>
+<li>pre-signed URL 可以設定 object 存取限制時效</li>
+</ul>
+<p><img src="s3_event.jpg" alt="s3_event"></p>
+<p>▲ S3 有事件 (event) 驅動與其他 SaaS 連動</p>
+<p><img src="s3_eventbridge.jpg" alt="s3_eventbridge"></p>
+<p>▲ 或者將 event 全部倒到 Event bridge 進行後續連動</p>
+<h2 id="section-14-amazon-s3-security">Section 14 Amazon S3 Security</h2>
+<ul>
+<li>分為 Server-Side Encryption (SSE) 與 Client-Side Encryption (CSE) 兩種</li>
+<li>預設開啟  Server-Side Encryption with Amazon S3-Managed Keys (SSE-S3)</li>
+<li>用戶可以使用 KMS key 或者自行上傳 key 來加密 S3</li>
+</ul>
+<p><img src="sse_s3.jpg" alt="sse_s3"></p>
+<p>▲ S3 預設標準加密，header 的部分現在應該不用強制加上了</p>
+<p><img src="sse_kms.jpg" alt="sse_kms"></p>
+<p>▲ 使用 KMS 會付額外費用 (圖上沒有出現 KMS key 保管費)</p>
+<p><img src="cse_s3.jpg" alt="cse_s3"></p>
+<p>▲ 客戶自帶金鑰，只能使用 HTTPS 並且把 key 存放在 header 裡面</p>
+<p><img src="s3_forced_https_in_transit.jpg" alt="s3_forced_https_in_transit"></p>
+<p>▲ 透過 bucket policy 可以設定檔案傳輸時 (File in transit) 一定要加密，否則不給拉檔</p>
+<h3 id="cors">CORS</h3>
+<p>不了解 CORS 的可以先參考 <a href="https://blog.huli.tw/2021/02/19/cors-guide-1/">CORS 完全手冊（一）：為什麼會發生 CORS 錯誤？ - Huli&rsquo;s blog</a></p>
+<ul>
+<li>Origin = scheme (protocol) + host (domain) + port</li>
+<li><strong><span style='color:red'>注意！ sub-domain 也算不同 domain (非同源)</span></strong></li>
+<li>通常只有 browser 基於安全性會擋掉跨源請求</li>
+</ul>
+<p><img src="s3_cors_example.jpg" alt="s3_cors_example"></p>
+<p>▲ 這是一個 S3 跨源請求的範例，假設 <code>my-bucket-assets</code> 沒有開啟跨源，瀏覽器就會基於安全擋掉回覆 (如果有 preflight request，真實請求就不會傳到 server side)</p>
+<p><img src="s3_object_lock.jpg" alt="s3_object_lock"></p>
+<p>▲ 為了合規我們可能需要一個 WORM (Write Once Read Many) model，避免檔案被誤刪</p>
+<p><img src="s3_access_point.jpg" alt="s3_access_point"></p>
+<p>▲ S3 Access Point</p>
+<ul>
+<li>如果把所有規則丟進同一個 bucket policy 會很混亂</li>
+<li>S3 Access Point 有獨立的 DNS (公開 or 特定 VPC 才能存取)</li>
+<li>每個 S3 Access Point 可以設定自己的 policy (與 bucket policy 一樣)</li>
+</ul>
+<p><img src="s3_ap_vpc_origin.jpg" alt="s3_ap_vpc_origin"></p>
+<p>▲ VPC 內網存取，以上面範例來說必須要有一個 VPC Endpoint 掛上 VPC Endpoint Policy + S3 Acess Point Policy + S3 bucket Policy</p>
+<p><img src="s3_object_lambda.jpg" alt="s3_object_lambda"></p>
+<p>▲ S3 Object Lambda 可以針對 object 預先處理 (例如：客製化) 才交給使用者 (雙向)。例如：個資去識別化、浮水印</p>
 
     </div>
 
@@ -627,8 +686,8 @@ Then objects created in bucket 1 are not replicated to bucket 3</p>
   <p class="copyright-item">
     <span class="item-title">LastMod</span>
     <span class="item-content">
-        2023-04-24
-        <a href="/commit/94fd085cd70550d01500c5d4a9b982bd090cce97" title="update. (MacOS)">(94fd085)</a>
+        2023-05-02
+        <a href="/commit/cd5bab7ba62f959f475d360371185e367229d7f4" title="update. (MacOS)">(cd5bab7)</a>
     </span>
   </p>
   

@@ -48,7 +48,7 @@
 <meta itemprop="name" content="Udemy AWS SAA-C03 課程筆記">
 <meta itemprop="description" content="Intro 這篇筆記會記錄 Udemy Ultimate AWS Certified Solutions Architect Associate SAA-C03 隨堂筆記。 !! 目前施工中~~~ !! AWS Free Tier 說明 ▲ Control Your AWS Costs，設定警告避免帳單爆炸。 Slides and Code Download Section 4 IAM and AWS CLI IAM Groups 只"><meta itemprop="datePublished" content="2023-02-13T15:30:50+00:00" />
 <meta itemprop="dateModified" content="2023-05-02T16:05:47+08:00" />
-<meta itemprop="wordCount" content="4123">
+<meta itemprop="wordCount" content="4875">
 <meta itemprop="keywords" content="aws,cloud," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Udemy AWS SAA-C03 課程筆記"/>
 <meta name="twitter:description" content="Intro 這篇筆記會記錄 Udemy Ultimate AWS Certified Solutions Architect Associate SAA-C03 隨堂筆記。 !! 目前施工中~~~ !! AWS Free Tier 說明 ▲ Control Your AWS Costs，設定警告避免帳單爆炸。 Slides and Code Download Section 4 IAM and AWS CLI IAM Groups 只"/>
@@ -205,6 +205,16 @@
         <li><a href="#section-14-amazon-s3-security">Section 14 Amazon S3 Security</a>
           <ul>
             <li><a href="#cors">CORS</a></li>
+          </ul>
+        </li>
+        <li><a href="#section-15-cloudfront--aws-global-accelerator">Section 15 CloudFront &amp; AWS Global Accelerator</a></li>
+        <li><a href="#section-16-aws-storage-extras">Section 16 AWS Storage Extras</a>
+          <ul>
+            <li><a href="#snow-family">Snow Family</a></li>
+            <li><a href="#amazon-fsx">Amazon FSx</a></li>
+            <li><a href="#aws-storage-gateway">AWS Storage Gateway</a></li>
+            <li><a href="#aws-transfer-family">AWS Transfer Family</a></li>
+            <li><a href="#aws-datasync">AWS DataSync</a></li>
           </ul>
         </li>
       </ul>
@@ -675,6 +685,72 @@ Then objects created in bucket 1 are not replicated to bucket 3</p>
 <p>▲ VPC 內網存取，以上面範例來說必須要有一個 VPC Endpoint 掛上 VPC Endpoint Policy + S3 Acess Point Policy + S3 bucket Policy</p>
 <p><img src="s3_object_lambda.jpg" alt="s3_object_lambda"></p>
 <p>▲ S3 Object Lambda 可以針對 object 預先處理 (例如：客製化) 才交給使用者 (雙向)。例如：個資去識別化、浮水印</p>
+<h2 id="section-15-cloudfront--aws-global-accelerator">Section 15 CloudFront &amp; AWS Global Accelerator</h2>
+<ul>
+<li>CloudFront 就是 CDN，每個 edge location 的計價方式都不同</li>
+<li>使用者可以透過 price classes 來排除太貴的 edge location</li>
+<li>CloudFront 透過 OAC (origin access control) 來存取 AWS 回源資源</li>
+<li>跟其他 CND 一樣，使用者都可以強制刪除 cached，在 CloudFront 稱作 Cache Invalidations</li>
+</ul>
+<p><img src="cloudfront_price_class.jpg" alt="cloudfront_price_class"></p>
+<p>▲ price classes</p>
+<p><img src="cloudfront_oac.jpg" alt="cloudfront_oac"></p>
+<p>▲ cloudfront OAC 機制示意圖，以 S3 來說還需要搭配 S3 bucket policy (web console 會幫你自動產生，使用者只需要複製貼上)</p>
+<p><img src="global_accelerator_vs_cloudFront.jpg" alt="global_accelerator_vs_cloudFront"></p>
+<p>▲ AWS Global Accelerator vs CloudFront，間單來說如果是 HTTP based 的流量可以使用 CloudFront 就好，如果有 TCP/UDP 連線加速需求 Global Accelerator 就能派上用場</p>
+<p><a href="https://blog.gslin.org/archives/2018/11/27/8586/aws-%E6%8E%A8%E5%87%BA-global-accelerator%EF%BC%8C%E7%94%A8-aws-%E7%9A%84%E7%B6%B2%E8%B7%AF%E5%8A%A0%E9%80%9F/">AWS 推出 Global Accelerator，用 AWS 的網路加速 – Gea-Suan Lin&rsquo;s BLOG</a></p>
+<h2 id="section-16-aws-storage-extras">Section 16 AWS Storage Extras</h2>
+<p>這個章節主要介紹 data 進出 AWS 的方式。</p>
+<h3 id="snow-family">Snow Family</h3>
+<ul>
+<li>簡單來說就是 AWS 寄送一個裝置給你，讓你把資料裝進去，透過物流送到 AWS 幫你匯進去 S3 (要進 Glacier 的話必須自己設定 S3 lifecycle policy)</li>
+<li>Snowball 裝置裡面有 CPU, RAM 部分裝置甚至有 GPU</li>
+<li>想要從 AWS 搬移 data 出來也可以申請</li>
+<li><a href="https://docs.aws.amazon.com/snowball/latest/developer-guide/device-differences.html">AWS Snowball Edge Device Differences</a></li>
+<li>資料會被加密、運送過程可以監控 (<a href="https://www.youtube.com/watch?v=0Q7s7JiBCf0">AWS OpsHub</a>)、任務結束後 AWS 也會將裝置內資料確實清理乾淨</li>
+<li>真 ● 邊緣運算，例如: 礦場，貨櫃船。這些地方可能受限網路頻寬，只能透過 Snowball 將資料帶回 AWS 分析</li>
+</ul>
+<h3 id="amazon-fsx">Amazon FSx</h3>
+<ul>
+<li><a href="https://aws.amazon.com/fsx/">AWS 代管的 File Systems</a>，提供：</li>
+<li>FSx for Lustre (Linux + Cluster)：平行分散式檔案系統供 HPC 使用。</li>
+<li>Amazon FSx for Windows：支援 SMB 協議與 NTFS，可與 M$ AD 串接。</li>
+<li>Amazon FSx for NetApp ONTAP： AWS 代管的 NetApp ONTAP 服務，可以跨平台。</li>
+<li>Amazon FSx for OpenZFS： AWS 代管 ZFS 系統。</li>
+</ul>
+<p><img src="aws_storage_cloud_native_options.jpg" alt="aws_storage_cloud_native_options"></p>
+<p>▲ AWS Storage Cloud Native Options</p>
+<h3 id="aws-storage-gateway">AWS Storage Gateway</h3>
+<ul>
+<li><a href="https://aws.amazon.com/storagegateway/">AWS Storage Gateway | Amazon Web Services</a></li>
+<li>適用於： Hybrid Cloud 資料單方向上雲、地端資料異地備份上雲</li>
+</ul>
+<p><img src="storage_gateway.jpg" alt="storage_gateway"></p>
+<p>▲ on-premise 與 Cloud 的橋接裝置，可以部署在 VM 或者 bare-metal 裡面</p>
+<p><img src="s3_storage_gateway.jpg" alt="s3_storage_gateway"></p>
+<p>▲ S3 Storate Gateway，還能 cached 經常存取的檔案在 local</p>
+<p><img src="volume_gateway.jpg" alt="volume_gateway"></p>
+<p>▲ Volume Gateway 透過 iSCSI 模擬網路硬碟，背後是 S3 bucket 當作儲存基底。並且有分兩種: Cached volumes 與 Stored Volume</p>
+<p><img src="storage_gateway_overview.jpg" alt="storage_gateway_overview"></p>
+<p>▲ 整個 Storage Gateway 範例架構</p>
+<h3 id="aws-transfer-family">AWS Transfer Family</h3>
+<ul>
+<li><a href="https://aws.amazon.com/aws-transfer-family/">Secure File Transfer - File Transfer Service - AWS Transfer Family - AWS</a></li>
+<li>把它當作 AWS 使用 FTP, SFTP, FTPS 協議上傳/下載資料的解決方案</li>
+</ul>
+<p><img src="product-page-diagram_AWS-Transfer-Family_HIW-Diagram@2x.094b91ca0bf302762ba627ce47157b1bcc6cc3fe.jpg" alt="product-page-diagram_AWS-Transfer-Family_HIW-Diagram@2x.094b91ca0bf302762ba627ce47157b1bcc6cc3fe"></p>
+<p>▲ AWS Transfer Family</p>
+<h3 id="aws-datasync">AWS DataSync</h3>
+<ul>
+<li><a href="https://aws.amazon.com/datasync/">Data Transfer Service - AWS DataSync - AWS</a></li>
+<li>on-premise 與 cloud 同步的工具</li>
+<li>AWS resources to AWS resources 同步工具</li>
+<li>other cloud to AWS</li>
+</ul>
+<p><img src="aws_data_sync.jpg" alt="aws_data_sync"></p>
+<p>▲ Data Sync overview</p>
+<p><img src="aws2aws_datasync.jpg" alt="aws2aws_datasync"></p>
+<p>▲ AWS 資源互轉也可以利用 Data sync</p>
 
     </div>
 

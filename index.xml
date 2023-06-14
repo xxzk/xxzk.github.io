@@ -6,7 +6,16 @@
     <description>Recent content on 老柯的學習筆記</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 18 Apr 2023 14:32:50 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 13 Jun 2023 15:15:27 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Kubernetes Dashboard 安裝筆記</title>
+      <link>https://blog.xxzk.me/post/20230613-kubernetes-dashboard-install-note/</link>
+      <pubDate>Tue, 13 Jun 2023 15:15:27 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/post/20230613-kubernetes-dashboard-install-note/</guid>
+      <description>介紹 這篇筆記會記錄如何從 metrics server 開始安裝 Kubernetes Dashboard，並且設定 Istio virtual service / gateway，最後產生一組僅有特定 namespace read-only 權限的 token。 大部分的</description>
+    </item>
+    
     <item>
       <title>Pulumi / AWS CDK Hello World</title>
       <link>https://blog.xxzk.me/post/20230418-aws-cdk-hello-world/</link>

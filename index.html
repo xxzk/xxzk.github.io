@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.111.3 with theme even" />
+<meta name="generator" content="Hugo 0.112.4 with theme even" />
 
 
 <link rel="canonical" href="https://blog.xxzk.me/" />
@@ -121,6 +121,27 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/20230613-kubernetes-dashboard-install-note/">Kubernetes Dashboard 安裝筆記</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2023-06-13 </span>
+      <div class="post-category">
+          <a href="/categories/kubernetes/"> kubernetes </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      介紹 這篇筆記會記錄如何從 metrics server 開始安裝 Kubernetes Dashboard，並且設定 Istio virtual service / gateway，最後產生一組僅有特定 namespace read-only 權限的 token。 大部分的
+    </div>
+    <div class="read-more">
+      <a href="/post/20230613-kubernetes-dashboard-install-note/" class="read-more-link">Read more...</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/20230418-aws-cdk-hello-world/">Pulumi / AWS CDK Hello World</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2023-04-18 </span>
@@ -203,27 +224,6 @@
   </div>
 </article>
 
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/20220726-cka_note_section_13_troubleshooting/">CKA Note Section 13 Troubleshooting</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2022-07-26 </span>
-      <div class="post-category">
-          <a href="/categories/cka-note/"> CKA-Note </a>
-          </div>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      235. Application Failure 厚，debug 到眼睛快脫窗 先開 App Web 頁面查看錯誤訊息 (不確定正式考試時網頁是不是也設計成顯示錯誤訊息)，判斷可能出問題的地方 第一題網頁能
-    </div>
-    <div class="read-more">
-      <a href="/post/20220726-cka_note_section_13_troubleshooting/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
     </section>
   
   <nav class="pagination">
@@ -242,7 +242,8 @@
     <footer id="footer" class="footer">
       <div class="social-links">
       <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
-  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+  
+  <link href="https://blog.xxzk.me/index.xml" rel="feed" type="application/rss+xml" class="iconfont icon-rss" title="老柯的學習筆記" />
 </div>
 
 <div class="copyright">

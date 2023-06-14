@@ -6,7 +6,16 @@
     <description>Recent content in Categories on 老柯的學習筆記</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 18 Apr 2023 14:32:50 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/categories/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 13 Jun 2023 15:15:27 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>kubernetes</title>
+      <link>https://blog.xxzk.me/categories/kubernetes/</link>
+      <pubDate>Tue, 13 Jun 2023 15:15:27 +0000</pubDate>
+      
+      <guid>https://blog.xxzk.me/categories/kubernetes/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>aws</title>
       <link>https://blog.xxzk.me/categories/aws/</link>
@@ -157,15 +166,6 @@
       <pubDate>Tue, 29 Jun 2021 17:33:04 +0000</pubDate>
       
       <guid>https://blog.xxzk.me/categories/docker/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>kubernetes</title>
-      <link>https://blog.xxzk.me/categories/kubernetes/</link>
-      <pubDate>Thu, 17 Jun 2021 09:29:55 +0000</pubDate>
-      
-      <guid>https://blog.xxzk.me/categories/kubernetes/</guid>
       <description></description>
     </item>
     

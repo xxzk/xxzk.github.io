@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.111.3 with theme even" />
+<meta name="generator" content="Hugo 0.112.4 with theme even" />
 
 
 <link rel="canonical" href="https://blog.xxzk.me/" />
@@ -121,6 +121,27 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/20201026-introduce-vmware-vds/">淺談 vDS (網路虛擬化 NSX-T 功能之一)</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2020-10-26 </span>
+      <div class="post-category">
+          <a href="/categories/network/"> network </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      vDS 是什麼 ? 為什麼要用它 ? vDS 全名 vSphere Distributed Switch 是 VMWare vSphere 產品線下 SDN (Software Defined Networking) 的產物，在 vDS 出來之前也有一款叫做 vSS (vSphere Standard Switch) 的產品。 比起 vSS 需要部屬在每一台 ESXi host ， vDS 統一
+    </div>
+    <div class="read-more">
+      <a href="/post/20201026-introduce-vmware-vds/" class="read-more-link">Read more...</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/20201023-about-vsphere-vcenter-esxi/">搞懂 vSphere、vCenter 和 ESXi 的關係</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2020-10-23 </span>
@@ -203,27 +224,6 @@
   </div>
 </article>
 
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/20200924-httpd-log-to-graylog-with-rsyslog/">將 Apache access,error log 透過 rsyslog 發至 Graylog</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2020-09-24 </span>
-      <div class="post-category">
-          <a href="/categories/graylog/"> graylog </a>
-          </div>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      由於 httpd 預設沒有將 access/error log 丟到 syslog 做處理，要需手動新增 新增方式有兩種 直接編輯 httpd.conf 將 log file 導向到 syslog 編輯 rsyslog.conf 叫 rsyslog 去撈本來存放在 /var/log/httpd/(access|error).log 第一種方式會需要做 systemctl reload httpd.service ，對於
-    </div>
-    <div class="read-more">
-      <a href="/post/20200924-httpd-log-to-graylog-with-rsyslog/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
     </section>
   
   <nav class="pagination">
@@ -245,7 +245,8 @@
     <footer id="footer" class="footer">
       <div class="social-links">
       <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
-  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+  
+  <link href="https://blog.xxzk.me/index.xml" rel="feed" type="application/rss+xml" class="iconfont icon-rss" title="老柯的學習筆記" />
 </div>
 
 <div class="copyright">

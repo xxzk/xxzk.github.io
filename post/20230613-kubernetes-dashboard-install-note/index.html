@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Kubernetes Dashboard 安裝筆記 - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="介紹 這篇筆記會記錄如何從 metrics server 開始安裝 Kubernetes Dashboard，並且設定 Istio virtual service / gateway，最後產生一組僅有特定 namespace read-only 權限的 token。 大部分的" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.112.4 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20230613-kubernetes-dashboard-install-note/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Kubernetes Dashboard 安裝筆記" />
+<meta property="og:description" content="介紹 這篇筆記會記錄如何從 metrics server 開始安裝 Kubernetes Dashboard，並且設定 Istio virtual service / gateway，最後產生一組僅有特定 namespace read-only 權限的 token。 大部分的" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.xxzk.me/post/20230613-kubernetes-dashboard-install-note/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2023-06-13T15:15:27+00:00" />
+<meta property="article:modified_time" content="2023-06-13T15:15:27+00:00" />
+<meta itemprop="name" content="Kubernetes Dashboard 安裝筆記">
+<meta itemprop="description" content="介紹 這篇筆記會記錄如何從 metrics server 開始安裝 Kubernetes Dashboard，並且設定 Istio virtual service / gateway，最後產生一組僅有特定 namespace read-only 權限的 token。 大部分的"><meta itemprop="datePublished" content="2023-06-13T15:15:27+00:00" />
+<meta itemprop="dateModified" content="2023-06-13T15:15:27+00:00" />
+<meta itemprop="wordCount" content="1368">
+<meta itemprop="keywords" content="kubernetes," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Kubernetes Dashboard 安裝筆記"/>
+<meta name="twitter:description" content="介紹 這篇筆記會記錄如何從 metrics server 開始安裝 Kubernetes Dashboard，並且設定 Istio virtual service / gateway，最後產生一組僅有特定 namespace read-only 權限的 token。 大部分的"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Kubernetes Dashboard 安裝筆記</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2023-06-13 </span>
+        <div class="post-category">
+            <a href="/categories/kubernetes/"> kubernetes </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#介紹">介紹</a></li>
+        <li><a href="#安裝-metrics-server">安裝 metrics server</a></li>
+        <li><a href="#安裝-kubernetes-dashboard">安裝 Kubernetes Dashboard</a></li>
+        <li><a href="#istio-virtual-service--gateway">Istio virtual service / gateway</a>
+          <ul>
+            <li><a href="#istio-traffic-怎麼跑的">Istio Traffic 怎麼跑的？</a></li>
+          </ul>
+        </li>
+        <li><a href="#產生-read-only-token">產生 read-only token</a></li>
+        <li><a href="#參考資料">參考資料</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="介紹">介紹</h2>
+<p>這篇筆記會記錄如何從 <a href="https://github.com/kubernetes-sigs/metrics-server">metrics server</a> 開始安裝 <a href="https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/">Kubernetes Dashboard</a>，並且設定 Istio virtual service / gateway，最後產生一組僅有特定 namespace read-only 權限的 token。</p>
+<p>大部分的使用者可以省去安裝 metrics server 這段，因為自 Kubernetes v1.18 開始 metrics server 已是預設元件。</p>
+<h2 id="安裝-metrics-server">安裝 metrics server</h2>
+<p><a href="https://github.com/kubernetes-sigs/metrics-server">metrics server</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>因為我們 kubelet 身上的 certificate 是自簽的，所以必須在 command 加上 <code>--kubelet-insecure-tls</code> 不然會出現錯誤</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">E0612 02:09:11.062573 1 scraper.go:140] &#34;Failed to scrape node&#34; err=&#34;Get \&#34;https://8.8.8.8:10250/metrics/resource\&#34;: x509 │
+</span></span><span class="line"><span class="cl">│ : cannot validate certificate for 8.8.8.8 because it doesn&#39;t contain any IP SANs&#34; node=&#34;ip-8-8-8-8.ap-taiwan-1.compute.i │
+</span></span><span class="line"><span class="cl">│ nternal&#34;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="安裝-kubernetes-dashboard">安裝 Kubernetes Dashboard</h2>
+<p><a href="https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/">Deploy and Access the Kubernetes Dashboard</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">namespace/kubernetes-dashboard created
+</span></span><span class="line"><span class="cl">serviceaccount/kubernetes-dashboard created
+</span></span><span class="line"><span class="cl">service/kubernetes-dashboard created
+</span></span><span class="line"><span class="cl">secret/kubernetes-dashboard-certs created
+</span></span><span class="line"><span class="cl">secret/kubernetes-dashboard-csrf created
+</span></span><span class="line"><span class="cl">secret/kubernetes-dashboard-key-holder created
+</span></span><span class="line"><span class="cl">configmap/kubernetes-dashboard-settings created
+</span></span><span class="line"><span class="cl">role.rbac.authorization.k8s.io/kubernetes-dashboard created
+</span></span><span class="line"><span class="cl">clusterrole.rbac.authorization.k8s.io/kubernetes-dashboard created
+</span></span><span class="line"><span class="cl">rolebinding.rbac.authorization.k8s.io/kubernetes-dashboard created
+</span></span><span class="line"><span class="cl">clusterrolebinding.rbac.authorization.k8s.io/kubernetes-dashboard created
+</span></span><span class="line"><span class="cl">deployment.apps/kubernetes-dashboard created
+</span></span><span class="line"><span class="cl">service/dashboard-metrics-scraper created
+</span></span><span class="line"><span class="cl">deployment.apps/dashboard-metrics-scraper created
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>部署完成後可以使用 <code>sudo kubectl proxy</code> 建立 tunnel 後，在瀏覽器直接訪問 <a href="http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/">http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/</a>，確認 dashboard 服務是正常的。</p>
+<p>接下來，我們必須修改預設的 <code>deployment</code> 與 <code>service</code>，因為 dashboard 預設使用自簽憑證、使用 HTTPS protocol，目前我們這座 K8s cluster 內 app 的流量都是走 tcp/80 HTTP;前端 AWS ALB 也是設定 tcp/443 轉 tcp/80 (回源)</p>
+<p>如果不修改 dashboard deployment/svc 的話，就會發生 <code>Client sent an HTTP request to an HTTPS server.</code> (status 400) 錯誤</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl edit deployment -n kubernetes-dashboard kubernetes-dashboard
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>在 <code>args</code> 將 <code>--auto-generate-certificates</code> 移除</li>
+<li>新增 <code>--insecure-bind-address=0.0.0.0</code></li>
+<li>新增 <code>--enable-insecure-login</code></li>
+<li>修改 <code>containerPort</code> 8443 -&gt; 9090</li>
+<li>修改 <code>livenessProbe</code></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">livenessProbe</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">httpGet</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">scheme</span><span class="p">:</span><span class="w"> </span><span class="l">HTTP</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l">/</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">9090</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl edit svc -n kubernetes-dashboard kubernetes-dashboard
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><code>targetPort</code> 8443 -&gt; 9090</li>
+</ul>
+<p>修改完成後，依然可以透過 <code>sudo kubectl proxy</code> 訪問，不過 URL 要改成 <a href="http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/http:kubernetes-dashboard:/proxy/">http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/http:kubernetes-dashboard:/proxy/</a></p>
+<h2 id="istio-virtual-service--gateway">Istio virtual service / gateway</h2>
+<p>在這次的環境中，每個 namespace 都需要有對應的 virtual service / gateway，單有 vs 的話會沒辦法用。我想原因應該是 <code>istio-system</code> namespace 下沒有 cluster level 的 gateway 吧～</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl get gateways.networking.istio.io
+</span></span><span class="line"><span class="cl">No resources found in istio-system namespace.
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>virtual service 內可以關聯使用哪個 gateway 作為上游，gateway 則是要指定上游 ingress gateway。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">networking.istio.io/v1alpha3</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">VirtualService</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">k8s-dashboard</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes-dashboard</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">hosts</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="s2">&#34;k8s-dashboard.example.com&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">gateways</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="l">k8s-dashboard-gateway</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">http</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">match</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">uri</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">prefix</span><span class="p">:</span><span class="w"> </span><span class="l">/</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">route</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">destination</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">port</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="m">443</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes-dashboard</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><code>spec.gateways</code> 指定上游 gateway</li>
+<li><code>hosts</code> 設定 domain name</li>
+<li><code>port number</code> 與 <code>host</code> 設定目標 service name,port</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">networking.istio.io/v1alpha3</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Gateway</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">k8s-dashboard-gateway</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes-dashboard</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">selector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">istio</span><span class="p">:</span><span class="w"> </span><span class="l">ingressgateway</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">servers</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">port</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="m">80</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">http</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l">HTTP</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">hosts</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="s1">&#39;*&#39;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><code>spec.selector</code> 透過 label 指定上游 ingress gateway，istio 的 CRD 會去所有 namespace 下找</li>
+<li><code>servers</code> 設定符合 tcp/80 HTTP protocol 的任意 domain 才轉發給與它關聯的 virtual service 處理</li>
+</ul>
+<p>關於 gateway 與 vitual service 的關係可以參考</p>
+<p><img src="https://www.istioworkshop.io/images/istio-ingress-diagram.png" alt="istio-ingress-diagram.png"></p>
+<p>圖片來源: <a href="https://www.istioworkshop.io/09-traffic-management/01-ingress-gateway/">Ingress Gateway :: Istio Service Mesh Workshop</a></p>
+<h3 id="istio-traffic-怎麼跑的">Istio Traffic 怎麼跑的？</h3>
+<p>我們環境當中有安裝 <a href="https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.5/">aws-load-balancer-controller</a>，當我們建立 <code>Ingress</code> resource 時會自動向 AWS 要一個 ELB</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">apiVersion: networking.k8s.io/v1
+</span></span><span class="line"><span class="cl">kind: Ingress
+</span></span><span class="line"><span class="cl">metadata:
+</span></span><span class="line"><span class="cl">  annotations:
+</span></span><span class="line"><span class="cl">    alb.ingress.kubernetes.io/backend-protocol: HTTP
+</span></span><span class="line"><span class="cl">    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-taiwan-1:12345678900:certificate/529e0011-bts00-5566-7788-a9
+</span></span><span class="line"><span class="cl">    alb.ingress.kubernetes.io/healthcheck-path: /healthz/ready
+</span></span><span class="line"><span class="cl">    alb.ingress.kubernetes.io/healthcheck-port: &#34;31222&#34;
+</span></span><span class="line"><span class="cl">    alb.ingress.kubernetes.io/listen-ports: &#39;[{&#34;HTTP&#34;: 80}, {&#34;HTTPS&#34;: 443}]&#39;
+</span></span><span class="line"><span class="cl">    alb.ingress.kubernetes.io/load-balancer-attributes: routing.http2.enabled=false
+</span></span><span class="line"><span class="cl">    alb.ingress.kubernetes.io/scheme: internet-facing
+</span></span><span class="line"><span class="cl">    alb.ingress.kubernetes.io/ssl-redirect: &#34;443&#34;
+</span></span><span class="line"><span class="cl">    alb.ingress.kubernetes.io/subnets: subnet-12345a,subnet-12345b
+</span></span><span class="line"><span class="cl">    alb.ingress.kubernetes.io/success-codes: 200,302
+</span></span><span class="line"><span class="cl">    alb.ingress.kubernetes.io/target-type: instance
+</span></span><span class="line"><span class="cl">...
+</span></span><span class="line"><span class="cl">    kubernetes.io/ingress.class: alb
+</span></span><span class="line"><span class="cl">  generation: 1
+</span></span><span class="line"><span class="cl">  labels:
+</span></span><span class="line"><span class="cl">    app: ingress
+</span></span><span class="line"><span class="cl">  name: ingress
+</span></span><span class="line"><span class="cl">  namespace: istio-system
+</span></span><span class="line"><span class="cl">...
+</span></span><span class="line"><span class="cl">spec:
+</span></span><span class="line"><span class="cl">  rules:
+</span></span><span class="line"><span class="cl">  - http:
+</span></span><span class="line"><span class="cl">      paths:
+</span></span><span class="line"><span class="cl">      - backend:
+</span></span><span class="line"><span class="cl">          service:
+</span></span><span class="line"><span class="cl">            name: istio-ingressgateway
+</span></span><span class="line"><span class="cl">            port:
+</span></span><span class="line"><span class="cl">              number: 80
+</span></span><span class="line"><span class="cl">        path: /*
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><code>annotations</code> 設定是給 AWS ELB 吃的</li>
+<li><code>spec.rule</code> 設定任意 domain, path 全部導流到 <code>istio-ingressgateway</code> 這個 service 內，後端是 <code>deployment/istio-ingressgateway</code>，流量正式進入 Istio service mesh network</li>
+<li>使用 <code>kubectl describe</code> 會比較好看一點</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Rules:
+</span></span><span class="line"><span class="cl">  Host        Path  Backends
+</span></span><span class="line"><span class="cl">  ----        ----  --------
+</span></span><span class="line"><span class="cl">  *
+</span></span><span class="line"><span class="cl">              /*   istio-ingressgateway:80
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>對於 Istio service mesh (sidecar) 如何<del>劫馬車當縣長</del> ，請參考 <a href="https://jimmysong.io/blog/envoy-sidecar-injection-in-istio-service-mesh-deep-dive/">理解 Istio Service Mesh 中 Envoy 代理 Sidecar 注入及流量劫持 · Jimmy Song</a></p>
+<h2 id="產生-read-only-token">產生 read-only token</h2>
+<ul>
+<li>多個 RoleBinding/ClusterRoleBinding 可以附身到同一個 <code>serviceaccount</code></li>
+<li><code>ClusterRole</code> 是為了要讓 dashboard UI 選單中有東西可以選，使用上會比較方便。</li>
+<li><code>serviceaccount</code> 為了方便管理，統一放在 <code>kubernetes-dashboard</code> 下</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">ServiceAccount</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">rd-read-only</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes-dashboard</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nn">---</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">rbac.authorization.k8s.io/v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Role</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes-dashboard-read-only</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">develop</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">rules</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span>- <span class="nt">apiGroups</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;*&#34;</span><span class="p">]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">resources</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;deployments&#34;</span><span class="p">,</span><span class="s2">&#34;replicasets&#34;</span><span class="p">,</span><span class="s2">&#34;pods&#34;</span><span class="p">]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">verbs</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;get&#34;</span><span class="p">,</span><span class="w"> </span><span class="s2">&#34;list&#34;</span><span class="p">,</span><span class="w"> </span><span class="s2">&#34;watch&#34;</span><span class="p">]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nn">---</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">rbac.authorization.k8s.io/v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">RoleBinding</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes-dashboard-read-only</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">develop</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">roleRef</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">apiGroup</span><span class="p">:</span><span class="w"> </span><span class="l">rbac.authorization.k8s.io</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Role</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes-dashboard-read-only</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">subjects</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span>- <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">ServiceAccount</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">rd-read-only</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes-dashboard</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nn">---</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">rbac.authorization.k8s.io/v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">ClusterRole</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes-dashboard-get-namespace</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">rules</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span>- <span class="nt">apiGroups</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;*&#34;</span><span class="p">]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">resources</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;namespaces&#34;</span><span class="p">]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">verbs</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;get&#34;</span><span class="p">,</span><span class="w"> </span><span class="s2">&#34;list&#34;</span><span class="p">]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nn">---</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">rbac.authorization.k8s.io/v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">ClusterRoleBinding</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes-dashboard-get-namespace</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">roleRef</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">apiGroup</span><span class="p">:</span><span class="w"> </span><span class="l">rbac.authorization.k8s.io</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">ClusterRole</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes-dashboard-get-namespace</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">subjects</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span>- <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">ServiceAccount</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">rd-read-only</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes-dashboard</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="參考資料">參考資料</h2>
+<ul>
+<li><a href="https://vividcode.io/disable-authentication-and-https-in-kubernetes-dashboard/">Disable Authentication and HTTPS in Kubernetes Dashboard</a></li>
+</ul>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2023-06-13
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/kubernetes/">kubernetes</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/20230418-aws-cdk-hello-world/">
+            <span class="next-text nav-default">Pulumi / AWS CDK Hello World</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022 - 
+    2023<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

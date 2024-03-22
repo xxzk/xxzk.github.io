@@ -1,29 +1,26 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>ansible on 老柯的學習筆記</title>
+    <title>Ansible on 老柯的學習筆記</title>
     <link>https://blog.xxzk.me/tags/ansible/</link>
-    <description>Recent content in ansible on 老柯的學習筆記</description>
+    <description>Recent content in Ansible on 老柯的學習筆記</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 07 Sep 2021 09:36:54 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/tags/ansible/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 13 Dec 2022 14:51:27 +0800</lastBuildDate>
+    <atom:link href="https://blog.xxzk.me/tags/ansible/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Jumpserver 靜態路由設定 shell script &#43; Ansible Playbook 使用說明</title>
       <link>https://blog.xxzk.me/post/20210907-setting-jumpserver-static-route-with-ansible-playbook/</link>
       <pubDate>Tue, 07 Sep 2021 09:36:54 +0000</pubDate>
-      
       <guid>https://blog.xxzk.me/post/20210907-setting-jumpserver-static-route-with-ansible-playbook/</guid>
       <description>圖片來源 為什麼使用 Jumpserver 要上靜態路由? 公司現有 VM Network 環境只要是 Web server 的， default gateway 都是設定 Private IP Class B (172.x.0.0/16) 網段，也就是 Load Balance 身上。同時該台 VM 也會有 192.168.x.0/23 /24 的網卡 (192.168.x.254 or 253</description>
     </item>
-    
     <item>
       <title>我的第一支 Ansible。 Ansible Hello World</title>
       <link>https://blog.xxzk.me/post/20210128-ansible-hello-world/</link>
       <pubDate>Thu, 28 Jan 2021 16:44:50 +0000</pubDate>
-      
       <guid>https://blog.xxzk.me/post/20210128-ansible-hello-world/</guid>
       <description>更新紀錄 2022.12 刪改原有內容、新增 全域/區域 變數設定方式 新增 playbook 簡介 Ansible 是一種開源配置工具，Linux 系統管理員使用的自動化工具。 Ansible 能讓系統管理員從一</description>
     </item>
-    
   </channel>
 </rss>

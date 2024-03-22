@@ -1,29 +1,26 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>vpn on 老柯的學習筆記</title>
+    <title>Vpn on 老柯的學習筆記</title>
     <link>https://blog.xxzk.me/tags/vpn/</link>
-    <description>Recent content in vpn on 老柯的學習筆記</description>
+    <description>Recent content in Vpn on 老柯的學習筆記</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 21 Dec 2020 10:26:39 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/tags/vpn/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 27 Dec 2022 14:48:53 +0800</lastBuildDate>
+    <atom:link href="https://blog.xxzk.me/tags/vpn/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Wireguard 實作 (WAN IP version)</title>
       <link>https://blog.xxzk.me/post/20201221-hands-on-wireguard-wan-ip-version/</link>
       <pubDate>Mon, 21 Dec 2020 10:26:39 +0000</pubDate>
-      
       <guid>https://blog.xxzk.me/post/20201221-hands-on-wireguard-wan-ip-version/</guid>
       <description>介紹 WireGuard 是一款開放原始碼的 VPN 程式，主打簡單快速 (任何設備) 並且效能比 IPSec、OpenVPN 更快，安全性方面更是強調 &amp;ldquo;state of the art&amp;rdquo; (最先進的) 安全</description>
     </item>
-    
     <item>
       <title>Forti Client SSL-VPN 運作機制原理</title>
       <link>https://blog.xxzk.me/post/20201112-forti-split-tunneling/</link>
       <pubDate>Thu, 12 Nov 2020 17:34:41 +0000</pubDate>
-      
       <guid>https://blog.xxzk.me/post/20201112-forti-split-tunneling/</guid>
       <description>到職以來一直有一個很大的困惑:大家上班都撥 VPN 到 CVT，CVT 流量不會爆炸嗎? 之後又得知 CVT 只拉了一條 30M 的線路&amp;hellip; 那豈不是 10 個人同時</description>
     </item>
-    
   </channel>
 </rss>

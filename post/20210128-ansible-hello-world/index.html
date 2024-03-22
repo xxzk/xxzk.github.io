@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.112.4 with theme even" />
+<meta name="generator" content="Hugo 0.123.8 with theme even" />
 
 
 <link rel="canonical" href="https://blog.xxzk.me/post/20210128-ansible-hello-world/" />
@@ -45,12 +45,12 @@
 <meta property="og:url" content="https://blog.xxzk.me/post/20210128-ansible-hello-world/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2021-01-28T16:44:50+00:00" />
 <meta property="article:modified_time" content="2022-12-13T14:51:27+08:00" />
+
 <meta itemprop="name" content="我的第一支 Ansible。 Ansible Hello World">
 <meta itemprop="description" content="更新紀錄 2022.12 刪改原有內容、新增 全域/區域 變數設定方式 新增 playbook 簡介 Ansible 是一種開源配置工具，Linux 系統管理員使用的自動化工具。 Ansible 能讓系統管理員從一"><meta itemprop="datePublished" content="2021-01-28T16:44:50+00:00" />
 <meta itemprop="dateModified" content="2022-12-13T14:51:27+08:00" />
 <meta itemprop="wordCount" content="1510">
-<meta itemprop="keywords" content="ansible," /><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="我的第一支 Ansible。 Ansible Hello World"/>
+<meta itemprop="keywords" content="ansible," /><meta name="twitter:card" content="summary"/><meta name="twitter:title" content="我的第一支 Ansible。 Ansible Hello World"/>
 <meta name="twitter:description" content="更新紀錄 2022.12 刪改原有內容、新增 全域/區域 變數設定方式 新增 playbook 簡介 Ansible 是一種開源配置工具，Linux 系統管理員使用的自動化工具。 Ansible 能讓系統管理員從一"/>
 
 <!--[if lte IE 9]>
@@ -373,16 +373,16 @@ ansible_sudo_pass: SSH sudo 明文密碼。 <span style="color:red"><strong>不�
 </span><span class="lnt">10
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">[all:vars]
-</span></span><span class="line"><span class="cl">ansible_ssh_user=root
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="p">[</span><span class="n">all</span><span class="p">:</span><span class="n">vars</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">ansible_ssh_user</span><span class="o">=</span><span class="n">root</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">[atlanta]
-</span></span><span class="line"><span class="cl">host1
-</span></span><span class="line"><span class="cl">host2
+</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">atlanta</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">host1</span>
+</span></span><span class="line"><span class="cl"><span class="n">host2</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">[atlanta:vars]
-</span></span><span class="line"><span class="cl">ntp_server=ntp.atlanta.example.com
-</span></span><span class="line"><span class="cl">proxy=proxy.atlanta.example.com
+</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">atlanta</span><span class="p">:</span><span class="n">vars</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">ntp_server</span><span class="o">=</span><span class="n">ntp</span><span class="o">.</span><span class="n">atlanta</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span>
+</span></span><span class="line"><span class="cl"><span class="n">proxy</span><span class="o">=</span><span class="n">proxy</span><span class="o">.</span><span class="n">atlanta</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h2 id="我的-ansiblecfg">我的 ansible.cfg</h2>
@@ -637,7 +637,7 @@ ansible.cfg 讓使用者看到所有可用的組態設定、其預設值、如�
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2023<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
   </span>
 </div>
 

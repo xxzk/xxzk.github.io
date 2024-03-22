@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.112.4 with theme even" />
+<meta name="generator" content="Hugo 0.123.8 with theme even" />
 
 
 <link rel="canonical" href="https://blog.xxzk.me/post/20230613-kubernetes-dashboard-install-note/" />
@@ -45,12 +45,12 @@
 <meta property="og:url" content="https://blog.xxzk.me/post/20230613-kubernetes-dashboard-install-note/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2023-06-13T15:15:27+00:00" />
 <meta property="article:modified_time" content="2023-06-13T15:15:27+00:00" />
+
 <meta itemprop="name" content="Kubernetes Dashboard 安裝筆記">
 <meta itemprop="description" content="介紹 這篇筆記會記錄如何從 metrics server 開始安裝 Kubernetes Dashboard，並且設定 Istio virtual service / gateway，最後產生一組僅有特定 namespace read-only 權限的 token。 大部分的"><meta itemprop="datePublished" content="2023-06-13T15:15:27+00:00" />
 <meta itemprop="dateModified" content="2023-06-13T15:15:27+00:00" />
 <meta itemprop="wordCount" content="1368">
-<meta itemprop="keywords" content="kubernetes," /><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Kubernetes Dashboard 安裝筆記"/>
+<meta itemprop="keywords" content="kubernetes," /><meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Kubernetes Dashboard 安裝筆記"/>
 <meta name="twitter:description" content="介紹 這篇筆記會記錄如何從 metrics server 開始安裝 Kubernetes Dashboard，並且設定 Istio virtual service / gateway，最後產生一組僅有特定 namespace read-only 權限的 token。 大部分的"/>
 
 <!--[if lte IE 9]>
@@ -419,39 +419,39 @@
 </span><span class="lnt">33
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">apiVersion: networking.k8s.io/v1
-</span></span><span class="line"><span class="cl">kind: Ingress
-</span></span><span class="line"><span class="cl">metadata:
-</span></span><span class="line"><span class="cl">  annotations:
-</span></span><span class="line"><span class="cl">    alb.ingress.kubernetes.io/backend-protocol: HTTP
-</span></span><span class="line"><span class="cl">    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-taiwan-1:12345678900:certificate/529e0011-bts00-5566-7788-a9
-</span></span><span class="line"><span class="cl">    alb.ingress.kubernetes.io/healthcheck-path: /healthz/ready
-</span></span><span class="line"><span class="cl">    alb.ingress.kubernetes.io/healthcheck-port: &#34;31222&#34;
-</span></span><span class="line"><span class="cl">    alb.ingress.kubernetes.io/listen-ports: &#39;[{&#34;HTTP&#34;: 80}, {&#34;HTTPS&#34;: 443}]&#39;
-</span></span><span class="line"><span class="cl">    alb.ingress.kubernetes.io/load-balancer-attributes: routing.http2.enabled=false
-</span></span><span class="line"><span class="cl">    alb.ingress.kubernetes.io/scheme: internet-facing
-</span></span><span class="line"><span class="cl">    alb.ingress.kubernetes.io/ssl-redirect: &#34;443&#34;
-</span></span><span class="line"><span class="cl">    alb.ingress.kubernetes.io/subnets: subnet-12345a,subnet-12345b
-</span></span><span class="line"><span class="cl">    alb.ingress.kubernetes.io/success-codes: 200,302
-</span></span><span class="line"><span class="cl">    alb.ingress.kubernetes.io/target-type: instance
-</span></span><span class="line"><span class="cl">...
-</span></span><span class="line"><span class="cl">    kubernetes.io/ingress.class: alb
-</span></span><span class="line"><span class="cl">  generation: 1
-</span></span><span class="line"><span class="cl">  labels:
-</span></span><span class="line"><span class="cl">    app: ingress
-</span></span><span class="line"><span class="cl">  name: ingress
-</span></span><span class="line"><span class="cl">  namespace: istio-system
-</span></span><span class="line"><span class="cl">...
-</span></span><span class="line"><span class="cl">spec:
-</span></span><span class="line"><span class="cl">  rules:
-</span></span><span class="line"><span class="cl">  - http:
-</span></span><span class="line"><span class="cl">      paths:
-</span></span><span class="line"><span class="cl">      - backend:
-</span></span><span class="line"><span class="cl">          service:
-</span></span><span class="line"><span class="cl">            name: istio-ingressgateway
-</span></span><span class="line"><span class="cl">            port:
-</span></span><span class="line"><span class="cl">              number: 80
-</span></span><span class="line"><span class="cl">        path: /*
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">apiVersion</span><span class="p">:</span> <span class="n">networking</span><span class="o">.</span><span class="n">k8s</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">v1</span>
+</span></span><span class="line"><span class="cl"><span class="n">kind</span><span class="p">:</span> <span class="n">Ingress</span>
+</span></span><span class="line"><span class="cl"><span class="n">metadata</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">  <span class="n">annotations</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">alb</span><span class="o">.</span><span class="n">ingress</span><span class="o">.</span><span class="n">kubernetes</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">backend</span><span class="o">-</span><span class="n">protocol</span><span class="p">:</span> <span class="n">HTTP</span>
+</span></span><span class="line"><span class="cl">    <span class="n">alb</span><span class="o">.</span><span class="n">ingress</span><span class="o">.</span><span class="n">kubernetes</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">certificate</span><span class="o">-</span><span class="n">arn</span><span class="p">:</span> <span class="n">arn</span><span class="p">:</span><span class="n">aws</span><span class="p">:</span><span class="n">acm</span><span class="p">:</span><span class="n">ap</span><span class="o">-</span><span class="n">taiwan</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span><span class="mi">12345678900</span><span class="p">:</span><span class="n">certificate</span><span class="o">/</span><span class="mf">529e0011</span><span class="o">-</span><span class="n">bts00</span><span class="o">-</span><span class="mi">5566</span><span class="o">-</span><span class="mi">7788</span><span class="o">-</span><span class="n">a9</span>
+</span></span><span class="line"><span class="cl">    <span class="n">alb</span><span class="o">.</span><span class="n">ingress</span><span class="o">.</span><span class="n">kubernetes</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">healthcheck</span><span class="o">-</span><span class="n">path</span><span class="p">:</span> <span class="o">/</span><span class="n">healthz</span><span class="o">/</span><span class="n">ready</span>
+</span></span><span class="line"><span class="cl">    <span class="n">alb</span><span class="o">.</span><span class="n">ingress</span><span class="o">.</span><span class="n">kubernetes</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">healthcheck</span><span class="o">-</span><span class="n">port</span><span class="p">:</span> <span class="s2">&#34;31222&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">alb</span><span class="o">.</span><span class="n">ingress</span><span class="o">.</span><span class="n">kubernetes</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">listen</span><span class="o">-</span><span class="n">ports</span><span class="p">:</span> <span class="s1">&#39;[{&#34;HTTP&#34;: 80}, {&#34;HTTPS&#34;: 443}]&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">alb</span><span class="o">.</span><span class="n">ingress</span><span class="o">.</span><span class="n">kubernetes</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="nb">load</span><span class="o">-</span><span class="n">balancer</span><span class="o">-</span><span class="n">attributes</span><span class="p">:</span> <span class="n">routing</span><span class="o">.</span><span class="n">http2</span><span class="o">.</span><span class="n">enabled</span><span class="o">=</span><span class="bp">false</span>
+</span></span><span class="line"><span class="cl">    <span class="n">alb</span><span class="o">.</span><span class="n">ingress</span><span class="o">.</span><span class="n">kubernetes</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">scheme</span><span class="p">:</span> <span class="n">internet</span><span class="o">-</span><span class="n">facing</span>
+</span></span><span class="line"><span class="cl">    <span class="n">alb</span><span class="o">.</span><span class="n">ingress</span><span class="o">.</span><span class="n">kubernetes</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">ssl</span><span class="o">-</span><span class="n">redirect</span><span class="p">:</span> <span class="s2">&#34;443&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">alb</span><span class="o">.</span><span class="n">ingress</span><span class="o">.</span><span class="n">kubernetes</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">subnets</span><span class="p">:</span> <span class="n">subnet</span><span class="o">-</span><span class="mi">12345</span><span class="n">a</span><span class="p">,</span><span class="n">subnet</span><span class="o">-</span><span class="mi">12345</span><span class="n">b</span>
+</span></span><span class="line"><span class="cl">    <span class="n">alb</span><span class="o">.</span><span class="n">ingress</span><span class="o">.</span><span class="n">kubernetes</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">success</span><span class="o">-</span><span class="n">codes</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span><span class="mi">302</span>
+</span></span><span class="line"><span class="cl">    <span class="n">alb</span><span class="o">.</span><span class="n">ingress</span><span class="o">.</span><span class="n">kubernetes</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">target</span><span class="o">-</span><span class="n">type</span><span class="p">:</span> <span class="n">instance</span>
+</span></span><span class="line"><span class="cl"><span class="o">...</span>
+</span></span><span class="line"><span class="cl">    <span class="n">kubernetes</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">ingress</span><span class="o">.</span><span class="k">class</span><span class="p">:</span> <span class="n">alb</span>
+</span></span><span class="line"><span class="cl">  <span class="n">generation</span><span class="p">:</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">  <span class="n">labels</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">app</span><span class="p">:</span> <span class="n">ingress</span>
+</span></span><span class="line"><span class="cl">  <span class="n">name</span><span class="p">:</span> <span class="n">ingress</span>
+</span></span><span class="line"><span class="cl">  <span class="n">namespace</span><span class="p">:</span> <span class="n">istio</span><span class="o">-</span><span class="n">system</span>
+</span></span><span class="line"><span class="cl"><span class="o">...</span>
+</span></span><span class="line"><span class="cl"><span class="n">spec</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">  <span class="n">rules</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">  <span class="o">-</span> <span class="n">http</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">      <span class="n">paths</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">      <span class="o">-</span> <span class="n">backend</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">          <span class="n">service</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">name</span><span class="p">:</span> <span class="n">istio</span><span class="o">-</span><span class="n">ingressgateway</span>
+</span></span><span class="line"><span class="cl">            <span class="n">port</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">              <span class="n">number</span><span class="p">:</span> <span class="mi">80</span>
+</span></span><span class="line"><span class="cl">        <span class="n">path</span><span class="p">:</span> <span class="o">/*</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><ul>
@@ -657,7 +657,7 @@
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2023<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
   </span>
 </div>
 

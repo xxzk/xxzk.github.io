@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.112.4 with theme even" />
+<meta name="generator" content="Hugo 0.123.8 with theme even" />
 
 
 <link rel="canonical" href="https://blog.xxzk.me/post/20210220-apache-httpd-main-conf/" />
@@ -45,12 +45,12 @@
 <meta property="og:url" content="https://blog.xxzk.me/post/20210220-apache-httpd-main-conf/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2021-02-20T10:54:58+00:00" />
 <meta property="article:modified_time" content="2022-07-08T17:20:37+08:00" />
+
 <meta itemprop="name" content="httpd.conf 研究筆記">
 <meta itemprop="description" content="httpd 版本資訊 1 2 Server version: Apache/2.4.6 (CentOS) Server built: Nov 16 2020 16:18:20 敬啟者 開頭就一堆屁話，根本沒有人會看的 (愛開玩笑 自己的筆記也屁話一堆還敢說開發者 XD 節錄幾個重點好了 更多資訊"><meta itemprop="datePublished" content="2021-02-20T10:54:58+00:00" />
 <meta itemprop="dateModified" content="2022-07-08T17:20:37+08:00" />
 <meta itemprop="wordCount" content="2890">
-<meta itemprop="keywords" content="httpd,apache," /><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="httpd.conf 研究筆記"/>
+<meta itemprop="keywords" content="httpd,apache," /><meta name="twitter:card" content="summary"/><meta name="twitter:title" content="httpd.conf 研究筆記"/>
 <meta name="twitter:description" content="httpd 版本資訊 1 2 Server version: Apache/2.4.6 (CentOS) Server built: Nov 16 2020 16:18:20 敬啟者 開頭就一堆屁話，根本沒有人會看的 (愛開玩笑 自己的筆記也屁話一堆還敢說開發者 XD 節錄幾個重點好了 更多資訊"/>
 
 <!--[if lte IE 9]>
@@ -245,7 +245,7 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-v" data-lang="v"><span class="line"><span class="cl"><span class="nc">LoadModule</span> <span class="nv">foo_module</span> <span class="nv">modules</span><span class="o">/</span><span class="nv">mod_foo</span><span class="p">.</span><span class="nv">so</span>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">LoadModule foo_module modules/mod_foo.so
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>官方預設出廠 <code>httpd.conf</code> 會使用 Include 將 <code>ServerRoot</code> 下的 <code>conf.modules.d</code> 目錄內所有 <code>.conf</code> 加入</p>
@@ -914,7 +914,7 @@ Rocket 討論串在 <strong>IT-System</strong> 關鍵字: <code>假 404 </code><
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2023<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
   </span>
 </div>
 

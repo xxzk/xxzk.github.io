@@ -6,69 +6,56 @@
     <description>Recent content in CKAD on 老柯的學習筆記</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 10 Nov 2021 11:05:08 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/tags/ckad/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 15 Sep 2022 10:38:30 +0800</lastBuildDate>
+    <atom:link href="https://blog.xxzk.me/tags/ckad/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>CKAD Note Section 9 Updates for Sep 2021 Changes</title>
       <link>https://blog.xxzk.me/post/20211110-ckad-note-section-9-updates-for-sep-2021-changes/</link>
       <pubDate>Wed, 10 Nov 2021 11:05:08 +0000</pubDate>
-      
       <guid>https://blog.xxzk.me/post/20211110-ckad-note-section-9-updates-for-sep-2021-changes/</guid>
       <description>▲ CKAD 新舊版差異 119. Define, build and modify container images 非常基礎的 Docker Image (container image) 介紹，我之前就打過一篇在公司 Bookstack 了~ 《Docker Image 介紹》 使用 docker 與 podman 大部分情況 docker 與 podman syntax 很接近~ 1</description>
     </item>
-    
     <item>
       <title>CKAD Note Section 8 State Persistence</title>
       <link>https://blog.xxzk.me/post/20211105-ckad-note-section-8-state-persistence/</link>
       <pubDate>Fri, 05 Nov 2021 20:54:44 +0000</pubDate>
-      
       <guid>https://blog.xxzk.me/post/20211105-ckad-note-section-8-state-persistence/</guid>
       <description>105. Volumes hostPath 這個範例 mount worker-node 的 /data 進 pod 裡面，並且 mapping 到 container 裡面的 /test-pd。 實際上我們並不會這樣做，因為 worker-node 之間的資料並沒辦法同步，一般來說會使用 shared storage 例</description>
     </item>
-    
     <item>
       <title>CKAD Note Section 7 Service and Networking</title>
       <link>https://blog.xxzk.me/post/20211104-ckad-note-section-7-service-and-networking/</link>
       <pubDate>Thu, 04 Nov 2021 11:32:23 +0000</pubDate>
-      
       <guid>https://blog.xxzk.me/post/20211104-ckad-note-section-7-service-and-networking/</guid>
       <description>90. Service ▲ NodePort type 的 service ▲ service 的種類: NodePort, Cluster IP, LoadBlance ▲ NodePort 總共有三個 port number 分別是: node-port, port, target-port NodePort range: 30000~32767 (option)。 如果沒有給定 targetPort，預設 port == targ</description>
     </item>
-    
     <item>
       <title>CKAD Note Section 6 Pod Design</title>
       <link>https://blog.xxzk.me/post/20211102-ckad-note-section-6-pod-design/</link>
       <pubDate>Tue, 02 Nov 2021 13:56:46 +0000</pubDate>
-      
       <guid>https://blog.xxzk.me/post/20211102-ckad-note-section-6-pod-design/</guid>
       <description>79. Labels, Selectors and Annotations 1 2 3 4 5 6 7 8 9 10 11 12 13 apiVersion: v1 kind: Pod metadata: name: label-demo labels: environment: production app: nginx spec: containers: - name: nginx image: nginx:1.14.2 ports: - containerPort: 80 我們可以在 kubernetes object 上貼上標籤 (labels) 用於分類。使用 kubectl get pod --selector &amp;lt;key&amp;gt;=&amp;lt;value&amp;gt; 可以篩選</description>
     </item>
-    
     <item>
       <title>CKAD Note Section 5 Observability</title>
       <link>https://blog.xxzk.me/post/20211027-ckad-note-section-5-observability/</link>
       <pubDate>Wed, 27 Oct 2021 16:52:37 +0000</pubDate>
-      
       <guid>https://blog.xxzk.me/post/20211027-ckad-note-section-5-observability/</guid>
       <description>70. Readiness and Liveness Probes Readiness Probes 透過前面的章節我們可以得知 Pod 具有狀態 (status) 與 條件 (condition)，前者顯示 lifecycle 階段 (pending, containerCreating, running) pending: scheduler 正在安排 pod 到 worker-node 上，或者有問題 (kubectl describe 可</description>
     </item>
-    
     <item>
       <title>CKAD Note Section 3 Configuration</title>
       <link>https://blog.xxzk.me/post/20210730-ckad-note-section-3-configuration/</link>
       <pubDate>Fri, 30 Jul 2021 11:29:19 +0000</pubDate>
-      
       <guid>https://blog.xxzk.me/post/20210730-ckad-note-section-3-configuration/</guid>
       <description>37. [Pre-Request] Commands and Arguments in Docker 課程一開始就先來複習 Docker File 當中的 CMD 與 ENTRYPOINT，雖然講師說不在 CKAD 的考試範圍，不過 CKAD-2021 (即將在 2021 Q3 改版) 看起來是有被納入的</description>
     </item>
-    
     <item>
       <title>CKAD Note Section 1 Introduction</title>
       <link>https://blog.xxzk.me/post/20210727-ckad-note-section-1-introduction/</link>
       <pubDate>Tue, 27 Jul 2021 09:33:08 +0000</pubDate>
-      
       <guid>https://blog.xxzk.me/post/20210727-ckad-note-section-1-introduction/</guid>
       <description>Kubernetes Series 作者的系列課程總共有三個，分別適合不同職位的三種人。 Absolute Beginners (零經驗初學者，帶你從 container 開始) sysAdmin (想要通過 CKAD) Application Developer (程式開發人員) Certification Details 這邊告知 CKAD 考</description>
     </item>
-    
   </channel>
 </rss>

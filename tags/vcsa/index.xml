@@ -1,29 +1,26 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>VCSA on 老柯的學習筆記</title>
+    <title>Vcsa on 老柯的學習筆記</title>
     <link>https://blog.xxzk.me/tags/vcsa/</link>
-    <description>Recent content in VCSA on 老柯的學習筆記</description>
+    <description>Recent content in Vcsa on 老柯的學習筆記</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 21 Jun 2022 15:46:54 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/tags/vcsa/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 21 Dec 2022 16:39:27 +0800</lastBuildDate>
+    <atom:link href="https://blog.xxzk.me/tags/vcsa/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>離線更新 VCSA (vCenter) 使用 iso</title>
       <link>https://blog.xxzk.me/post/20220621-upgrade-vcsa-using-iso-file/</link>
       <pubDate>Tue, 21 Jun 2022 15:46:54 +0000</pubDate>
-      
       <guid>https://blog.xxzk.me/post/20220621-upgrade-vcsa-using-iso-file/</guid>
       <description>前言 這篇簡單紀錄透過使用 patch iso 映像檔，在沒有外網的情況下去做 upgrade。更新的原因很簡單，原本的 VCSA 7.0U1 還沒有跨 vCenter vMotion (Advanced Cross vCenter Server vMotion, XVM) 移轉的功能，必</description>
     </item>
-    
     <item>
       <title>VCSA 7.0 (vCenter) 安裝教學</title>
       <link>https://blog.xxzk.me/post/20210127-how-to-install-vcsa7-via-ova/</link>
       <pubDate>Wed, 27 Jan 2021 15:13:00 +0000</pubDate>
-      
       <guid>https://blog.xxzk.me/post/20210127-how-to-install-vcsa7-via-ova/</guid>
       <description>先前準備 建議在同一台 ESXi host 上開一台 Windows 10 主機，並將 .iso 丟入這樣在上傳會比較快。 將 .iso 掛載 or 解壓縮後可以看到安裝所需檔案: vcsa-ui-installer: 圖形化安裝精靈 (有 Wind</description>
     </item>
-    
   </channel>
 </rss>

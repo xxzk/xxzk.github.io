@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.112.4 with theme even" />
+<meta name="generator" content="Hugo 0.123.8 with theme even" />
 
 
 <link rel="canonical" href="https://blog.xxzk.me/post/20210922-terraform-hello-world/" />
@@ -45,12 +45,12 @@
 <meta property="og:url" content="https://blog.xxzk.me/post/20210922-terraform-hello-world/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2021-09-22T15:36:09+00:00" />
 <meta property="article:modified_time" content="2022-09-08T14:59:58+08:00" />
+
 <meta itemprop="name" content="我的第一支 Terraform">
 <meta itemprop="description" content="Introduction to Terraform Terraform 是一款 Infrastructure as Code (IaC) 工具，以 code 來 定義 / 建造 (build) / 修改 (change) / 版本控制 (version) 基礎設施，支援地端 (on-prem) 與 雲端 (Cloud)。 安裝 Terraform CLI Install Terraform 1 2 3 4 5 6 sudo yum install -y"><meta itemprop="datePublished" content="2021-09-22T15:36:09+00:00" />
 <meta itemprop="dateModified" content="2022-09-08T14:59:58+08:00" />
 <meta itemprop="wordCount" content="2148">
-<meta itemprop="keywords" content="terraform," /><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="我的第一支 Terraform"/>
+<meta itemprop="keywords" content="terraform," /><meta name="twitter:card" content="summary"/><meta name="twitter:title" content="我的第一支 Terraform"/>
 <meta name="twitter:description" content="Introduction to Terraform Terraform 是一款 Infrastructure as Code (IaC) 工具，以 code 來 定義 / 建造 (build) / 修改 (change) / 版本控制 (version) 基礎設施，支援地端 (on-prem) 與 雲端 (Cloud)。 安裝 Terraform CLI Install Terraform 1 2 3 4 5 6 sudo yum install -y"/>
 
 <!--[if lte IE 9]>
@@ -392,29 +392,29 @@
 </span><span class="lnt">23
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl"># This file is maintained automatically by &#34;terraform init&#34;.
-</span></span><span class="line"><span class="cl"># Manual edits may be lost in future updates.
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="c1"># This file is maintained automatically by &#34;terraform init&#34;.</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Manual edits may be lost in future updates.</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">provider &#34;registry.terraform.io/kreuzwerker/docker&#34; {
-</span></span><span class="line"><span class="cl">  version     = &#34;2.13.0&#34;
-</span></span><span class="line"><span class="cl">  constraints = &#34;~&gt; 2.13.0&#34;
-</span></span><span class="line"><span class="cl">  hashes = [
-</span></span><span class="line"><span class="cl">    &#34;h1:3r/gPhfPCl4mxazpfg0S/qgxmt+QWuvYT3CXTxUz9fs=&#34;,
-</span></span><span class="line"><span class="cl">    &#34;zh:0df685adc7b5740ae0def7235a44e1bce2f71beaf155319c2464ad2fba5cb321&#34;,
-</span></span><span class="line"><span class="cl">    &#34;zh:2cf4b4f840fa84f1b906f4cca58c9782375e9988ad354afcd85b0180cd784205&#34;,
-</span></span><span class="line"><span class="cl">    &#34;zh:347b189655afdc0df1919a26fb64cb745bb02d8fa2006a087cb6679a1b62319d&#34;,
-</span></span><span class="line"><span class="cl">    &#34;zh:441521c85fecad348ca012db7b9d14544cbe0a237012f8a03d5660c73e9a32a6&#34;,
-</span></span><span class="line"><span class="cl">    &#34;zh:462a1f67d26182fbb5ee78bb8d4764a2983804fa5f9971ca006da439e9e97055&#34;,
-</span></span><span class="line"><span class="cl">    &#34;zh:53822eb743cd487cabbed3360221cc0404b80f933b746d80426a4e10fa2f958a&#34;,
-</span></span><span class="line"><span class="cl">    &#34;zh:55c6eda01dd3d3f877aad16de6bf91e84bfa9c93f852869581429640be19d472&#34;,
-</span></span><span class="line"><span class="cl">    &#34;zh:690bb327398f800f7945bab35b1ad2c6ec1c0fa7f8a1e5696b0bc4597540e3af&#34;,
-</span></span><span class="line"><span class="cl">    &#34;zh:6c55a9a761596ca974a9cbaeee3179fb8f50916fad18d2422a2d818c3f4dc241&#34;,
-</span></span><span class="line"><span class="cl">    &#34;zh:6efd9e6ffa4c4c73fd39c856456022aad6a3a0b176c550409345e894475bbf4f&#34;,
-</span></span><span class="line"><span class="cl">    &#34;zh:811a37e3a66d5e99a81e0e66c817363205b030962fcec68bb96ab53b029ffeac&#34;,
-</span></span><span class="line"><span class="cl">    &#34;zh:aacb4ab8dd11e834952877390bc19beabf9fb0591c101e96da559201f4b284ca&#34;,
-</span></span><span class="line"><span class="cl">    &#34;zh:cecdf49f9488a10ac9416be354e7de3ed45114a25235cebc4ec6771696d980e9&#34;,
-</span></span><span class="line"><span class="cl">  ]
-</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl"><span class="n">provider</span> <span class="s2">&#34;registry.terraform.io/kreuzwerker/docker&#34;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">version</span>     <span class="o">=</span> <span class="s2">&#34;2.13.0&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">constraints</span> <span class="o">=</span> <span class="s2">&#34;~&gt; 2.13.0&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">hashes</span> <span class="o">=</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;h1:3r/gPhfPCl4mxazpfg0S/qgxmt+QWuvYT3CXTxUz9fs=&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;zh:0df685adc7b5740ae0def7235a44e1bce2f71beaf155319c2464ad2fba5cb321&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;zh:2cf4b4f840fa84f1b906f4cca58c9782375e9988ad354afcd85b0180cd784205&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;zh:347b189655afdc0df1919a26fb64cb745bb02d8fa2006a087cb6679a1b62319d&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;zh:441521c85fecad348ca012db7b9d14544cbe0a237012f8a03d5660c73e9a32a6&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;zh:462a1f67d26182fbb5ee78bb8d4764a2983804fa5f9971ca006da439e9e97055&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;zh:53822eb743cd487cabbed3360221cc0404b80f933b746d80426a4e10fa2f958a&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;zh:55c6eda01dd3d3f877aad16de6bf91e84bfa9c93f852869581429640be19d472&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;zh:690bb327398f800f7945bab35b1ad2c6ec1c0fa7f8a1e5696b0bc4597540e3af&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;zh:6c55a9a761596ca974a9cbaeee3179fb8f50916fad18d2422a2d818c3f4dc241&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;zh:6efd9e6ffa4c4c73fd39c856456022aad6a3a0b176c550409345e894475bbf4f&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;zh:811a37e3a66d5e99a81e0e66c817363205b030962fcec68bb96ab53b029ffeac&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;zh:aacb4ab8dd11e834952877390bc19beabf9fb0591c101e96da559201f4b284ca&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;zh:cecdf49f9488a10ac9416be354e7de3ed45114a25235cebc4ec6771696d980e9&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h2 id="format-and-validate-the-configuration-正規化驗證-設定檔">Format and validate the configuration 正規化/驗證 設定檔</h2>
@@ -761,7 +761,7 @@
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2023<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
   </span>
 </div>
 

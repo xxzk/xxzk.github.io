@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>wireguard on 老柯的學習筆記</title>
+    <title>Wireguard on 老柯的學習筆記</title>
     <link>https://blog.xxzk.me/tags/wireguard/</link>
-    <description>Recent content in wireguard on 老柯的學習筆記</description>
+    <description>Recent content in Wireguard on 老柯的學習筆記</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 21 Dec 2020 10:26:39 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/tags/wireguard/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 27 Dec 2022 14:48:53 +0800</lastBuildDate>
+    <atom:link href="https://blog.xxzk.me/tags/wireguard/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Wireguard 實作 (WAN IP version)</title>
       <link>https://blog.xxzk.me/post/20201221-hands-on-wireguard-wan-ip-version/</link>
       <pubDate>Mon, 21 Dec 2020 10:26:39 +0000</pubDate>
-      
       <guid>https://blog.xxzk.me/post/20201221-hands-on-wireguard-wan-ip-version/</guid>
       <description>介紹 WireGuard 是一款開放原始碼的 VPN 程式，主打簡單快速 (任何設備) 並且效能比 IPSec、OpenVPN 更快，安全性方面更是強調 &amp;ldquo;state of the art&amp;rdquo; (最先進的) 安全</description>
     </item>
-    
   </channel>
 </rss>

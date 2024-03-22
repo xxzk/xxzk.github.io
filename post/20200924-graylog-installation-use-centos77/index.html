@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.112.4 with theme even" />
+<meta name="generator" content="Hugo 0.123.8 with theme even" />
 
 
 <link rel="canonical" href="https://blog.xxzk.me/post/20200924-graylog-installation-use-centos77/" />
@@ -45,12 +45,12 @@
 <meta property="og:url" content="https://blog.xxzk.me/post/20200924-graylog-installation-use-centos77/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2020-09-24T15:09:16+00:00" />
 <meta property="article:modified_time" content="2022-06-22T14:49:46+08:00" />
+
 <meta itemprop="name" content="Gralylog 安裝紀錄 (使用 Default CentOS 7.7)">
 <meta itemprop="description" content="本篇參考資料 How to install and configure Graylog on CentOS 7 執行系統更新 1 yum update -y 安裝 EPEL 1 yum install epel-release -y 安裝所需項目，其中 pwgen 套件是等等要用來產生 graylog server 設定檔的密鑰 1 yum install pwgen vim -y 安裝 java"><meta itemprop="datePublished" content="2020-09-24T15:09:16+00:00" />
 <meta itemprop="dateModified" content="2022-06-22T14:49:46+08:00" />
 <meta itemprop="wordCount" content="544">
-<meta itemprop="keywords" content="graylog," /><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Gralylog 安裝紀錄 (使用 Default CentOS 7.7)"/>
+<meta itemprop="keywords" content="graylog," /><meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Gralylog 安裝紀錄 (使用 Default CentOS 7.7)"/>
 <meta name="twitter:description" content="本篇參考資料 How to install and configure Graylog on CentOS 7 執行系統更新 1 yum update -y 安裝 EPEL 1 yum install epel-release -y 安裝所需項目，其中 pwgen 套件是等等要用來產生 graylog server 設定檔的密鑰 1 yum install pwgen vim -y 安裝 java"/>
 
 <!--[if lte IE 9]>
@@ -244,9 +244,9 @@
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">netstat -tunlp | grep 27017
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">netstat</span> <span class="o">-</span><span class="n">tunlp</span> <span class="o">|</span> <span class="n">grep</span> <span class="mi">27017</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">若沒有 netstat 請安裝 net-tools
+</span></span><span class="line"><span class="cl"><span class="err">若沒有</span> <span class="n">netstat</span> <span class="err">請安裝</span> <span class="n">net</span><span class="o">-</span><span class="n">tools</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><ol start="6">
@@ -327,7 +327,7 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">tail -f /var/log/elasticsearch/graylog.log
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">tail</span> <span class="o">-</span><span class="n">f</span> <span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="nb">log</span><span class="o">/</span><span class="n">elasticsearch</span><span class="o">/</span><span class="n">graylog</span><span class="o">.</span><span class="n">log</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>(2) 查看網頁</p>
@@ -435,7 +435,7 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">tail -f /var/log/graylog-server/server.log
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">tail</span> <span class="o">-</span><span class="n">f</span> <span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="nb">log</span><span class="o">/</span><span class="n">graylog</span><span class="o">-</span><span class="n">server</span><span class="o">/</span><span class="n">server</span><span class="o">.</span><span class="n">log</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>不過 Graylog server 啟動會花費一點時間，可以先透過 log 確認是否已經啟動完成，再查看網路監聽情況</p>
@@ -513,7 +513,7 @@
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2023<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
   </span>
 </div>
 

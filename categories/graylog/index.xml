@@ -1,29 +1,26 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>graylog on 老柯的學習筆記</title>
+    <title>Graylog on 老柯的學習筆記</title>
     <link>https://blog.xxzk.me/categories/graylog/</link>
-    <description>Recent content in graylog on 老柯的學習筆記</description>
+    <description>Recent content in Graylog on 老柯的學習筆記</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 24 Sep 2020 15:29:12 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/categories/graylog/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 22 Dec 2022 15:28:33 +0800</lastBuildDate>
+    <atom:link href="https://blog.xxzk.me/categories/graylog/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>將 Apache access,error log 透過 rsyslog 發至 Graylog</title>
       <link>https://blog.xxzk.me/post/20200924-httpd-log-to-graylog-with-rsyslog/</link>
       <pubDate>Thu, 24 Sep 2020 15:29:12 +0000</pubDate>
-      
       <guid>https://blog.xxzk.me/post/20200924-httpd-log-to-graylog-with-rsyslog/</guid>
       <description>由於 httpd 預設沒有將 access/error log 丟到 syslog 做處理，要需手動新增 新增方式有兩種 直接編輯 httpd.conf 將 log file 導向到 syslog 編輯 rsyslog.conf 叫 rsyslog 去撈本來存放在 /var/log/httpd/(access|error).log 第一種方式會需要做 systemctl reload httpd.service ，對於</description>
     </item>
-    
     <item>
       <title>Graylog 搜尋語法</title>
       <link>https://blog.xxzk.me/post/20200923-how-to-search-in-graylog/</link>
       <pubDate>Wed, 23 Sep 2020 16:46:52 +0000</pubDate>
-      
       <guid>https://blog.xxzk.me/post/20200923-how-to-search-in-graylog/</guid>
       <description>參考文件 Official Searching Doc 在開始之前可以將設定檔內的 allow_highlighting = true 打開，獲得螢光筆功能 Enabling/Disabling search result highlighting 基礎搜尋語法 Syntax Graylog 語法支援正規表示法 (RegEXP) 搜尋 Message 包含 ssh 的 log 1 ssh 搜尋 Message 包含</description>
     </item>
-    
   </channel>
 </rss>

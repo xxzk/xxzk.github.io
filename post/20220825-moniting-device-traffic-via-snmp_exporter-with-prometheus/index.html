@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.112.4 with theme even" />
+<meta name="generator" content="Hugo 0.123.8 with theme even" />
 
 
 <link rel="canonical" href="https://blog.xxzk.me/post/20220825-moniting-device-traffic-via-snmp_exporter-with-prometheus/" />
@@ -45,12 +45,12 @@
 <meta property="og:url" content="https://blog.xxzk.me/post/20220825-moniting-device-traffic-via-snmp_exporter-with-prometheus/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2022-08-25T11:49:44+00:00" />
 <meta property="article:modified_time" content="2022-09-07T17:20:12+08:00" />
+
 <meta itemprop="name" content="使用 snmp_exporter 抓取設備流量">
 <meta itemprop="description" content="前言 本篇筆記紀錄如何使用 snmp_exporter 搭配 prometheus 與 Grafana 來即時監控網路設備流量。 公司原先使用 LibreNMS 作為即時流量的依據，由於 default polling interval 是 5 分鐘抓取一次，而且一次抓取 (walk) 的 OID"><meta itemprop="datePublished" content="2022-08-25T11:49:44+00:00" />
 <meta itemprop="dateModified" content="2022-09-07T17:20:12+08:00" />
 <meta itemprop="wordCount" content="3438">
-<meta itemprop="keywords" content="snmp,prometheus,grafana," /><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="使用 snmp_exporter 抓取設備流量"/>
+<meta itemprop="keywords" content="snmp,prometheus,grafana," /><meta name="twitter:card" content="summary"/><meta name="twitter:title" content="使用 snmp_exporter 抓取設備流量"/>
 <meta name="twitter:description" content="前言 本篇筆記紀錄如何使用 snmp_exporter 搭配 prometheus 與 Grafana 來即時監控網路設備流量。 公司原先使用 LibreNMS 作為即時流量的依據，由於 default polling interval 是 5 分鐘抓取一次，而且一次抓取 (walk) 的 OID"/>
 
 <!--[if lte IE 9]>
@@ -309,7 +309,7 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">ExecStart=/home/prometheus/snmp_exporter/snmp_exporter --config.file=/home/prometheus/snmp_exporter/snmp.yml
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">ExecStart</span><span class="o">=/</span><span class="n">home</span><span class="o">/</span><span class="n">prometheus</span><span class="o">/</span><span class="n">snmp_exporter</span><span class="o">/</span><span class="n">snmp_exporter</span> <span class="o">--</span><span class="n">config</span><span class="o">.</span><span class="n">file</span><span class="o">=/</span><span class="n">home</span><span class="o">/</span><span class="n">prometheus</span><span class="o">/</span><span class="n">snmp_exporter</span><span class="o">/</span><span class="n">snmp</span><span class="o">.</span><span class="n">yml</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong><span style='color:red'>▲ 官方提供的 <code>systemd</code> config 在 CentOS 7.9 2009 底下會不能運作，必須把 <code>--config.file=</code> 的 <code>''</code> 拿掉才會正常!</span></strong><br>
@@ -327,14 +327,14 @@
 </span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Aug 26 09:43:16 Eric_Prometheus_SNMP systemd[1]: Unit snmp_exporter.service entered failed state.                                    
-</span></span><span class="line"><span class="cl">Aug 26 09:43:16 Eric_Prometheus_SNMP systemd[1]: snmp_exporter.service failed.                                                       
-</span></span><span class="line"><span class="cl">Aug 26 09:43:16 Eric_Prometheus_SNMP systemd[1]: snmp_exporter.service holdoff time over, scheduling restart.                        
-</span></span><span class="line"><span class="cl">Aug 26 09:43:16 Eric_Prometheus_SNMP systemd[1]: Stopped SNMP Exporter.                                                              
-</span></span><span class="line"><span class="cl">Aug 26 09:43:16 Eric_Prometheus_SNMP systemd[1]: start request repeated too quickly for snmp_exporter.service                        
-</span></span><span class="line"><span class="cl">Aug 26 09:43:16 Eric_Prometheus_SNMP systemd[1]: Failed to start SNMP Exporter.                                                      
-</span></span><span class="line"><span class="cl">Aug 26 09:43:16 Eric_Prometheus_SNMP systemd[1]: Unit snmp_exporter.service entered failed state.                                    
-</span></span><span class="line"><span class="cl">Aug 26 09:43:16 Eric_Prometheus_SNMP systemd[1]: snmp_exporter.service failed.           
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">Aug</span> <span class="mi">26</span> <span class="mi">09</span><span class="p">:</span><span class="mi">43</span><span class="p">:</span><span class="mi">16</span> <span class="n">Eric_Prometheus_SNMP</span> <span class="n">systemd</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="n">Unit</span> <span class="n">snmp_exporter</span><span class="o">.</span><span class="n">service</span> <span class="n">entered</span> <span class="n">failed</span> <span class="n">state</span><span class="o">.</span>                                    
+</span></span><span class="line"><span class="cl"><span class="n">Aug</span> <span class="mi">26</span> <span class="mi">09</span><span class="p">:</span><span class="mi">43</span><span class="p">:</span><span class="mi">16</span> <span class="n">Eric_Prometheus_SNMP</span> <span class="n">systemd</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="n">snmp_exporter</span><span class="o">.</span><span class="n">service</span> <span class="n">failed</span><span class="o">.</span>                                                       
+</span></span><span class="line"><span class="cl"><span class="n">Aug</span> <span class="mi">26</span> <span class="mi">09</span><span class="p">:</span><span class="mi">43</span><span class="p">:</span><span class="mi">16</span> <span class="n">Eric_Prometheus_SNMP</span> <span class="n">systemd</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="n">snmp_exporter</span><span class="o">.</span><span class="n">service</span> <span class="n">holdoff</span> <span class="n">time</span> <span class="n">over</span><span class="p">,</span> <span class="n">scheduling</span> <span class="n">restart</span><span class="o">.</span>                        
+</span></span><span class="line"><span class="cl"><span class="n">Aug</span> <span class="mi">26</span> <span class="mi">09</span><span class="p">:</span><span class="mi">43</span><span class="p">:</span><span class="mi">16</span> <span class="n">Eric_Prometheus_SNMP</span> <span class="n">systemd</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="n">Stopped</span> <span class="n">SNMP</span> <span class="n">Exporter</span><span class="o">.</span>                                                              
+</span></span><span class="line"><span class="cl"><span class="n">Aug</span> <span class="mi">26</span> <span class="mi">09</span><span class="p">:</span><span class="mi">43</span><span class="p">:</span><span class="mi">16</span> <span class="n">Eric_Prometheus_SNMP</span> <span class="n">systemd</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="n">start</span> <span class="n">request</span> <span class="n">repeated</span> <span class="n">too</span> <span class="n">quickly</span> <span class="k">for</span> <span class="n">snmp_exporter</span><span class="o">.</span><span class="n">service</span>                        
+</span></span><span class="line"><span class="cl"><span class="n">Aug</span> <span class="mi">26</span> <span class="mi">09</span><span class="p">:</span><span class="mi">43</span><span class="p">:</span><span class="mi">16</span> <span class="n">Eric_Prometheus_SNMP</span> <span class="n">systemd</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="n">Failed</span> <span class="n">to</span> <span class="n">start</span> <span class="n">SNMP</span> <span class="n">Exporter</span><span class="o">.</span>                                                      
+</span></span><span class="line"><span class="cl"><span class="n">Aug</span> <span class="mi">26</span> <span class="mi">09</span><span class="p">:</span><span class="mi">43</span><span class="p">:</span><span class="mi">16</span> <span class="n">Eric_Prometheus_SNMP</span> <span class="n">systemd</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="n">Unit</span> <span class="n">snmp_exporter</span><span class="o">.</span><span class="n">service</span> <span class="n">entered</span> <span class="n">failed</span> <span class="n">state</span><span class="o">.</span>                                    
+</span></span><span class="line"><span class="cl"><span class="n">Aug</span> <span class="mi">26</span> <span class="mi">09</span><span class="p">:</span><span class="mi">43</span><span class="p">:</span><span class="mi">16</span> <span class="n">Eric_Prometheus_SNMP</span> <span class="n">systemd</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="n">snmp_exporter</span><span class="o">.</span><span class="n">service</span> <span class="n">failed</span><span class="o">.</span>           
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h2 id="安裝-prometheus-via-docker-container">安裝 Prometheus via Docker container</h2>
@@ -783,7 +783,7 @@ Scale 的部分則是 x 軸顯示數值的基準 (<del>很難翻啦</del>)</p>
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2023<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
   </span>
 </div>
 

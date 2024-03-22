@@ -1,29 +1,26 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>nsx-t on 老柯的學習筆記</title>
+    <title>Nsx-T on 老柯的學習筆記</title>
     <link>https://blog.xxzk.me/tags/nsx-t/</link>
-    <description>Recent content in nsx-t on 老柯的學習筆記</description>
+    <description>Recent content in Nsx-T on 老柯的學習筆記</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 24 Dec 2020 13:46:50 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/tags/nsx-t/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 26 Dec 2022 16:35:11 +0800</lastBuildDate>
+    <atom:link href="https://blog.xxzk.me/tags/nsx-t/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>簡單介紹 VMWare NSX Network Virtualization Platform</title>
       <link>https://blog.xxzk.me/post/20201224-simply-introduce-vmware-nsxt/</link>
       <pubDate>Thu, 24 Dec 2020 13:46:50 +0000</pubDate>
-      
       <guid>https://blog.xxzk.me/post/20201224-simply-introduce-vmware-nsxt/</guid>
       <description>VMwatre NSX Network Virtualization Platform 是一個涵蓋 L2 ~ L7 的網路虛擬化平台 是 VMWare 併購 Nicira 後的產物 什麼是網路虛擬化 ▲ 圖片來源 The VMware NSX Network Virtualization Platform 白皮書 左邊的 Server Virtualization 是將 Bare-Metal (Hardware,</description>
     </item>
-    
     <item>
       <title>淺談 vDS (網路虛擬化 NSX-T 功能之一)</title>
       <link>https://blog.xxzk.me/post/20201026-introduce-vmware-vds/</link>
       <pubDate>Mon, 26 Oct 2020 14:05:21 +0000</pubDate>
-      
       <guid>https://blog.xxzk.me/post/20201026-introduce-vmware-vds/</guid>
       <description>vDS 是什麼 ? 為什麼要用它 ? vDS 全名 vSphere Distributed Switch 是 VMWare vSphere 產品線下 SDN (Software Defined Networking) 的產物，在 vDS 出來之前也有一款叫做 vSS (vSphere Standard Switch) 的產品。 比起 vSS 需要部屬在每一台 ESXi host ， vDS 統一</description>
     </item>
-    
   </channel>
 </rss>

@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.112.4 with theme even" />
+<meta name="generator" content="Hugo 0.123.8 with theme even" />
 
 
 <link rel="canonical" href="https://blog.xxzk.me/post/20200924-httpd-log-to-graylog-with-rsyslog/" />
@@ -45,12 +45,12 @@
 <meta property="og:url" content="https://blog.xxzk.me/post/20200924-httpd-log-to-graylog-with-rsyslog/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2020-09-24T15:29:12+00:00" />
 <meta property="article:modified_time" content="2022-12-22T15:28:33+08:00" />
+
 <meta itemprop="name" content="將 Apache access,error log 透過 rsyslog 發至 Graylog">
 <meta itemprop="description" content="由於 httpd 預設沒有將 access/error log 丟到 syslog 做處理，要需手動新增 新增方式有兩種 直接編輯 httpd.conf 將 log file 導向到 syslog 編輯 rsyslog.conf 叫 rsyslog 去撈本來存放在 /var/log/httpd/(access|error).log 第一種方式會需要做 systemctl reload httpd.service ，對於"><meta itemprop="datePublished" content="2020-09-24T15:29:12+00:00" />
 <meta itemprop="dateModified" content="2022-12-22T15:28:33+08:00" />
 <meta itemprop="wordCount" content="629">
-<meta itemprop="keywords" content="httpd,apache,log," /><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="將 Apache access,error log 透過 rsyslog 發至 Graylog"/>
+<meta itemprop="keywords" content="httpd,apache,log," /><meta name="twitter:card" content="summary"/><meta name="twitter:title" content="將 Apache access,error log 透過 rsyslog 發至 Graylog"/>
 <meta name="twitter:description" content="由於 httpd 預設沒有將 access/error log 丟到 syslog 做處理，要需手動新增 新增方式有兩種 直接編輯 httpd.conf 將 log file 導向到 syslog 編輯 rsyslog.conf 叫 rsyslog 去撈本來存放在 /var/log/httpd/(access|error).log 第一種方式會需要做 systemctl reload httpd.service ，對於"/>
 
 <!--[if lte IE 9]>
@@ -226,25 +226,25 @@
 </span><span class="lnt">19
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">$ModLoad imfile
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="o">$</span><span class="n">ModLoad</span> <span class="n">imfile</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"># Default Apache Error Log
-</span></span><span class="line"><span class="cl">$InputFileName /var/log/httpd/error_log
-</span></span><span class="line"><span class="cl">$InputFileTag httpd-error-default:
-</span></span><span class="line"><span class="cl">$InputFileStateFile stat-httpd-error
-</span></span><span class="line"><span class="cl">$InputFileSeverity info
-</span></span><span class="line"><span class="cl">$InputFileFacility local3
-</span></span><span class="line"><span class="cl">$InputRunFileMonitor
+</span></span><span class="line"><span class="cl"><span class="c1"># Default Apache Error Log</span>
+</span></span><span class="line"><span class="cl"><span class="o">$</span><span class="n">InputFileName</span> <span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="nb">log</span><span class="o">/</span><span class="n">httpd</span><span class="o">/</span><span class="n">error_log</span>
+</span></span><span class="line"><span class="cl"><span class="o">$</span><span class="n">InputFileTag</span> <span class="n">httpd</span><span class="o">-</span><span class="n">error</span><span class="o">-</span><span class="n">default</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl"><span class="o">$</span><span class="n">InputFileStateFile</span> <span class="n">stat</span><span class="o">-</span><span class="n">httpd</span><span class="o">-</span><span class="n">error</span>
+</span></span><span class="line"><span class="cl"><span class="o">$</span><span class="n">InputFileSeverity</span> <span class="n">info</span>
+</span></span><span class="line"><span class="cl"><span class="o">$</span><span class="n">InputFileFacility</span> <span class="n">local3</span>
+</span></span><span class="line"><span class="cl"><span class="o">$</span><span class="n">InputRunFileMonitor</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"># Default Apache Access Log
-</span></span><span class="line"><span class="cl">$InputFileName /var/log/httpd/access_log
-</span></span><span class="line"><span class="cl">$InputFileTag httpd-access-default:
-</span></span><span class="line"><span class="cl">$InputFileStateFile stat-httpd-access
-</span></span><span class="line"><span class="cl">$InputFileSeverity info
-</span></span><span class="line"><span class="cl">$InputFileFacility local4
-</span></span><span class="line"><span class="cl">$InputRunFileMonitor
+</span></span><span class="line"><span class="cl"><span class="c1"># Default Apache Access Log</span>
+</span></span><span class="line"><span class="cl"><span class="o">$</span><span class="n">InputFileName</span> <span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="nb">log</span><span class="o">/</span><span class="n">httpd</span><span class="o">/</span><span class="n">access_log</span>
+</span></span><span class="line"><span class="cl"><span class="o">$</span><span class="n">InputFileTag</span> <span class="n">httpd</span><span class="o">-</span><span class="n">access</span><span class="o">-</span><span class="n">default</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl"><span class="o">$</span><span class="n">InputFileStateFile</span> <span class="n">stat</span><span class="o">-</span><span class="n">httpd</span><span class="o">-</span><span class="n">access</span>
+</span></span><span class="line"><span class="cl"><span class="o">$</span><span class="n">InputFileSeverity</span> <span class="n">info</span>
+</span></span><span class="line"><span class="cl"><span class="o">$</span><span class="n">InputFileFacility</span> <span class="n">local4</span>
+</span></span><span class="line"><span class="cl"><span class="o">$</span><span class="n">InputRunFileMonitor</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">$InputFilePollInterval 10
+</span></span><span class="line"><span class="cl"><span class="o">$</span><span class="n">InputFilePollInterval</span> <span class="mi">10</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>接著 <code>restart</code> rsyslog</p>
@@ -354,7 +354,7 @@
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2023<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
   </span>
 </div>
 

@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>minikube on 老柯的學習筆記</title>
+    <title>Minikube on 老柯的學習筆記</title>
     <link>https://blog.xxzk.me/tags/minikube/</link>
-    <description>Recent content in minikube on 老柯的學習筆記</description>
+    <description>Recent content in Minikube on 老柯的學習筆記</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 17 Jun 2021 09:29:55 +0000</lastBuildDate><atom:link href="https://blog.xxzk.me/tags/minikube/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 06 Jul 2022 16:16:25 +0800</lastBuildDate>
+    <atom:link href="https://blog.xxzk.me/tags/minikube/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>minikube 安裝指南。 一個精簡、測試環境使用的 k8s 叢集</title>
       <link>https://blog.xxzk.me/post/20210617-minikube-installation/</link>
       <pubDate>Thu, 17 Jun 2021 09:29:55 +0000</pubDate>
-      
       <guid>https://blog.xxzk.me/post/20210617-minikube-installation/</guid>
       <description>minikube 能夠快速在本地 (local) 建立 kubernetes cluster (k8s 叢集)，支援 macOS, Linux, Windows 非常適合新手探索 kubernetes 安裝需求 pre-requirement minikube-Driver ▲ 官方有列出各類型 OS 建議搭建在何種虛擬環境上。本篇筆記選用 CentOS 7.9.2009 +</description>
     </item>
-    
   </channel>
 </rss>

@@ -828,14 +828,14 @@
   </url>
   
   <url>
-    <loc>https://blog.xxzk.me/categories/nginx/</loc>
+    <loc>https://blog.xxzk.me/tags/nginx/</loc>
     <lastmod>2022-06-22T15:05:09+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://blog.xxzk.me/tags/nginx/</loc>
+    <loc>https://blog.xxzk.me/categories/nginx/</loc>
     <lastmod>2022-06-22T15:05:09+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>

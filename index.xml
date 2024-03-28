@@ -2,486 +2,493 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>老柯的學習筆記</title>
-    <link>https://blog.xxzk.me/</link>
+    <link>http://localhost:1313/</link>
     <description>Recent content on 老柯的學習筆記</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 13 Jun 2023 15:15:27 +0000</lastBuildDate>
-    <atom:link href="https://blog.xxzk.me/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 22 Mar 2024 11:10:55 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MacOS 新手筆記</title>
+      <link>http://localhost:1313/post/20240322-macbook-hello-world/</link>
+      <pubDate>Fri, 22 Mar 2024 11:10:55 +0000</pubDate>
+      <guid>http://localhost:1313/post/20240322-macbook-hello-world/</guid>
+      <description>前言 好久沒有打 blog 了 囧，第一篇先用 MacOS 新手筆記 來練筆吧 XD 在 2023.04.10 進公司之前我完全沒有使用過 MacOS，此篇記錄一位 MacOS 新手如何上手的心得還有推薦安裝的</description>
+    </item>
     <item>
       <title>Kubernetes Dashboard 安裝筆記</title>
-      <link>https://blog.xxzk.me/post/20230613-kubernetes-dashboard-install-note/</link>
+      <link>http://localhost:1313/post/20230613-kubernetes-dashboard-install-note/</link>
       <pubDate>Tue, 13 Jun 2023 15:15:27 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20230613-kubernetes-dashboard-install-note/</guid>
+      <guid>http://localhost:1313/post/20230613-kubernetes-dashboard-install-note/</guid>
       <description>介紹 這篇筆記會記錄如何從 metrics server 開始安裝 Kubernetes Dashboard，並且設定 Istio virtual service / gateway，最後產生一組僅有特定 namespace read-only 權限的 token。 大部分的</description>
     </item>
     <item>
       <title>Pulumi / AWS CDK Hello World</title>
-      <link>https://blog.xxzk.me/post/20230418-aws-cdk-hello-world/</link>
+      <link>http://localhost:1313/post/20230418-aws-cdk-hello-world/</link>
       <pubDate>Tue, 18 Apr 2023 14:32:50 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20230418-aws-cdk-hello-world/</guid>
+      <guid>http://localhost:1313/post/20230418-aws-cdk-hello-world/</guid>
       <description>Pulumi Get Started with AWS | Pulumi Docs Pulumi vs. AWS CDK | Pulumi Docs 快速補充 Pulumi Hello World 的部分 1 2 3 4 brew install pulumi/tap/pulumi # or Linux distro curl -fsSL https://get.pulumi.com | sh 如果使用 Python 的話，版本必須高於 3.7 且 pip 也需安裝。 Pulumi 可以使用 aws config</description>
     </item>
     <item>
       <title>Udemy AWS SAA-C03 課程筆記</title>
-      <link>https://blog.xxzk.me/post/20230220-udemy-aws-saa-c03-note/</link>
+      <link>http://localhost:1313/post/20230220-udemy-aws-saa-c03-note/</link>
       <pubDate>Mon, 13 Feb 2023 15:30:50 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20230220-udemy-aws-saa-c03-note/</guid>
+      <guid>http://localhost:1313/post/20230220-udemy-aws-saa-c03-note/</guid>
       <description>Intro 這篇筆記會記錄 Udemy Ultimate AWS Certified Solutions Architect Associate SAA-C03 隨堂筆記。 !! 目前施工中~~~ !! AWS Free Tier 說明 ▲ Control Your AWS Costs，設定警告避免帳單爆炸。 Slides and Code Download Section 4 IAM and AWS CLI IAM Groups 只</description>
     </item>
     <item>
       <title>Linux 系統監控命令使用筆記 (ps,top,htop)</title>
-      <link>https://blog.xxzk.me/post/20221108-linux-process-monitoring-command-usage/</link>
+      <link>http://localhost:1313/post/20221108-linux-process-monitoring-command-usage/</link>
       <pubDate>Tue, 08 Nov 2022 13:49:51 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20221108-linux-process-monitoring-command-usage/</guid>
+      <guid>http://localhost:1313/post/20221108-linux-process-monitoring-command-usage/</guid>
       <description>前言 每次想要查系統資源使用狀況都要 Google 一次 (除了 ps -aux, top, htop 很直覺的以外啦)，不如趁這次偕同 RD team 查找 iowait 高的原因整理一篇自己的筆記節省時間。 【常用指</description>
     </item>
     <item>
       <title>使用 snmp_exporter 抓取設備流量</title>
-      <link>https://blog.xxzk.me/post/20220825-moniting-device-traffic-via-snmp_exporter-with-prometheus/</link>
+      <link>http://localhost:1313/post/20220825-moniting-device-traffic-via-snmp_exporter-with-prometheus/</link>
       <pubDate>Thu, 25 Aug 2022 11:49:44 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20220825-moniting-device-traffic-via-snmp_exporter-with-prometheus/</guid>
+      <guid>http://localhost:1313/post/20220825-moniting-device-traffic-via-snmp_exporter-with-prometheus/</guid>
       <description>前言 本篇筆記紀錄如何使用 snmp_exporter 搭配 prometheus 與 Grafana 來即時監控網路設備流量。 公司原先使用 LibreNMS 作為即時流量的依據，由於 default polling interval 是 5 分鐘抓取一次，而且一次抓取 (walk) 的 OID</description>
     </item>
     <item>
       <title>CKA Note Section 13 Troubleshooting</title>
-      <link>https://blog.xxzk.me/post/20220726-cka_note_section_13_troubleshooting/</link>
+      <link>http://localhost:1313/post/20220726-cka_note_section_13_troubleshooting/</link>
       <pubDate>Tue, 26 Jul 2022 13:55:27 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20220726-cka_note_section_13_troubleshooting/</guid>
+      <guid>http://localhost:1313/post/20220726-cka_note_section_13_troubleshooting/</guid>
       <description>235. Application Failure 厚，debug 到眼睛快脫窗 先開 App Web 頁面查看錯誤訊息 (不確定正式考試時網頁是不是也設計成顯示錯誤訊息)，判斷可能出問題的地方 第一題網頁能</description>
     </item>
     <item>
       <title>CKA Note Section 11 Install K8s the kubeadm way</title>
-      <link>https://blog.xxzk.me/post/20220721-cka_note_section_11_install_k8s_the_kubeadm_way/</link>
+      <link>http://localhost:1313/post/20220721-cka_note_section_11_install_k8s_the_kubeadm_way/</link>
       <pubDate>Thu, 21 Jul 2022 13:53:58 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20220721-cka_note_section_11_install_k8s_the_kubeadm_way/</guid>
+      <guid>http://localhost:1313/post/20220721-cka_note_section_11_install_k8s_the_kubeadm_way/</guid>
       <description>225. Important Update: Kubernetes the Hard Way 這個章節其實是 Section 10 的最後一個 lecture，不過我想擺在這裡應該會比較合適! 講師提供一系列 Youtube 影片來示範如何像個硬漢一樣 Install Kubernetes from Scratch</description>
     </item>
     <item>
       <title>CKA Note Section 10 Design and Install a Kubernetes Cluster</title>
-      <link>https://blog.xxzk.me/post/20220719-cka_note_section_10_design_and_install_a_kubernetes_cluster/</link>
+      <link>http://localhost:1313/post/20220719-cka_note_section_10_design_and_install_a_kubernetes_cluster/</link>
       <pubDate>Tue, 19 Jul 2022 14:43:27 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20220719-cka_note_section_10_design_and_install_a_kubernetes_cluster/</guid>
+      <guid>http://localhost:1313/post/20220719-cka_note_section_10_design_and_install_a_kubernetes_cluster/</guid>
       <description>222. Choosing Kubernetes Infrastructure 這個章節在講如何選擇 K8s 建在哪裡，知道了一個蠻有趣的名詞 Kubernetes Turnkey Cloud Solutions 223. Configure High Availability ▲ api-server 可以是 Active-Active mode，不過 kubectl config 一次只能設定一個 URL，所以建議</description>
     </item>
     <item>
       <title>使用 ClamAV 對 Linux 系統進行掃毒</title>
-      <link>https://blog.xxzk.me/post/20220718-linux-antivirus-tool-clamav-how-to-use/</link>
+      <link>http://localhost:1313/post/20220718-linux-antivirus-tool-clamav-how-to-use/</link>
       <pubDate>Mon, 18 Jul 2022 16:19:40 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20220718-linux-antivirus-tool-clamav-how-to-use/</guid>
+      <guid>http://localhost:1313/post/20220718-linux-antivirus-tool-clamav-how-to-use/</guid>
       <description>前言 這次主要是有放了一千年的老舊服務 VM 疑似被攻擊/入侵的疑慮，才找工具來掃看看~ 一開始是用 開源系統安全稽核工具：Lynis ，但使用後發現 Lynis 比</description>
     </item>
     <item>
       <title>CKA Note Section 9 Networking</title>
-      <link>https://blog.xxzk.me/post/20220704-cka_note_section_9_networking/</link>
+      <link>http://localhost:1313/post/20220704-cka_note_section_9_networking/</link>
       <pubDate>Mon, 04 Jul 2022 13:58:19 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20220704-cka_note_section_9_networking/</guid>
+      <guid>http://localhost:1313/post/20220704-cka_note_section_9_networking/</guid>
       <description>前言 既然這個章節是介紹 Kubernetes Networking 那就先來複習一下之前看過的優質文章吧! [Hwchiu Docker Network - 網路模型 系列] Docker Network - 網路模型 [Day10] Container Network Interface 介紹 188. Prerequisite - Network Namespaces ▲ 使用 ip netns exec &amp;lt;NAMESPACE&amp;gt; ip link</description>
     </item>
     <item>
       <title>CKA Note Section 8 Storage</title>
-      <link>https://blog.xxzk.me/post/20220704-cka_note_section_8_storage/</link>
+      <link>http://localhost:1313/post/20220704-cka_note_section_8_storage/</link>
       <pubDate>Mon, 04 Jul 2022 09:50:26 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20220704-cka_note_section_8_storage/</guid>
+      <guid>http://localhost:1313/post/20220704-cka_note_section_8_storage/</guid>
       <description>169. Storage in Docker 這個章節主要在講 Docker container image/volume 的概念，可以參考我之前打的兩篇文章: Docker Image 介紹 Docker Volumes 介紹 171. Container Storage Interface (CSI) 關於 CRI 的介紹非常推薦 Hwchiu 鐵人賽系列: [Day5] Kubernetes &amp;amp; CRI (Container Runtime Interface)(I)</description>
     </item>
     <item>
       <title>使用 container 快速部屬 LibreNMS</title>
-      <link>https://blog.xxzk.me/post/20220623-install-librenms-with-docker-container/</link>
+      <link>http://localhost:1313/post/20220623-install-librenms-with-docker-container/</link>
       <pubDate>Thu, 23 Jun 2022 14:50:31 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20220623-install-librenms-with-docker-container/</guid>
+      <guid>http://localhost:1313/post/20220623-install-librenms-with-docker-container/</guid>
       <description>前言 本篇文章紀錄如何透過 docker-compose 快速架一個 LibreNMS 起來。這篇會出現的原因是為了要監控/debug IDC 0F iDRAC/ESXi 電口對接 Cisco Switch 的問題~ 安裝 docker-compose 【standalone】</description>
     </item>
     <item>
       <title>離線更新 VCSA (vCenter) 使用 iso</title>
-      <link>https://blog.xxzk.me/post/20220621-upgrade-vcsa-using-iso-file/</link>
+      <link>http://localhost:1313/post/20220621-upgrade-vcsa-using-iso-file/</link>
       <pubDate>Tue, 21 Jun 2022 15:46:54 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20220621-upgrade-vcsa-using-iso-file/</guid>
+      <guid>http://localhost:1313/post/20220621-upgrade-vcsa-using-iso-file/</guid>
       <description>前言 這篇簡單紀錄透過使用 patch iso 映像檔，在沒有外網的情況下去做 upgrade。更新的原因很簡單，原本的 VCSA 7.0U1 還沒有跨 vCenter vMotion (Advanced Cross vCenter Server vMotion, XVM) 移轉的功能，必</description>
     </item>
     <item>
       <title>閱讀 R730XD owner manual 淺析伺服器記憶體</title>
-      <link>https://blog.xxzk.me/post/20220606-read-r730xd-owner-manual-learning-about-server-dimm/</link>
+      <link>http://localhost:1313/post/20220606-read-r730xd-owner-manual-learning-about-server-dimm/</link>
       <pubDate>Mon, 06 Jun 2022 09:19:33 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20220606-read-r730xd-owner-manual-learning-about-server-dimm/</guid>
+      <guid>http://localhost:1313/post/20220606-read-r730xd-owner-manual-learning-about-server-dimm/</guid>
       <description>這篇筆記紀錄閱讀 Dell R730XD owners manual 記憶體 (memory) 學到的東西，藉此還債。 ▲ 主修資工腦袋空空 科普資源 在開始讀 owner manual 之前，有幾個關於 DIMM (Double In-line Memory Module) 的科普資源，建議先看。</description>
     </item>
     <item>
       <title>使用 Hexo 搭配 GitHub Pages 架設靜態網站</title>
-      <link>https://blog.xxzk.me/post/20220503-use-hexo-and-github-pages-to-build-blog/</link>
+      <link>http://localhost:1313/post/20220503-use-hexo-and-github-pages-to-build-blog/</link>
       <pubDate>Thu, 28 Apr 2022 15:47:12 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20220503-use-hexo-and-github-pages-to-build-blog/</guid>
+      <guid>http://localhost:1313/post/20220503-use-hexo-and-github-pages-to-build-blog/</guid>
       <description>更新紀錄 2022.04.28: 此篇記錄第一次使用 Hexo 搭配 GitHub Pages 來架設 blog。 2022.12.19: 調整順序 (將 VSCode Snippet 片段放在前面)，因為後來實際是使用 Hugo 架設，之後將會新增 Hugo 安裝章節。 2022.12.20:</description>
     </item>
     <item>
       <title>CKA Note Section 7 Security</title>
-      <link>https://blog.xxzk.me/post/20211222-cka_note_section_7_security/</link>
+      <link>http://localhost:1313/post/20211222-cka_note_section_7_security/</link>
       <pubDate>Wed, 22 Dec 2021 13:53:04 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20211222-cka_note_section_7_security/</guid>
+      <guid>http://localhost:1313/post/20211222-cka_note_section_7_security/</guid>
       <description>135. Authentication 請參考 CKAD Note Section 9 Updates for Sep 2021 Changes - 121. Authentication, Authorization and Admission Control 139. TLS in Kubernetes ▲ 各個 K8s component 的 TLS community diagram。 因為現在大部分 kube-proxy 都不是單獨安裝，已經變成 daemondse</description>
     </item>
     <item>
       <title>Dockerfile - Shell 與 Exec 的差異</title>
-      <link>https://blog.xxzk.me/post/20211220-diff-between-shell-and-exec-in-dockerfile/</link>
+      <link>http://localhost:1313/post/20211220-diff-between-shell-and-exec-in-dockerfile/</link>
       <pubDate>Mon, 20 Dec 2021 11:15:34 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20211220-diff-between-shell-and-exec-in-dockerfile/</guid>
+      <guid>http://localhost:1313/post/20211220-diff-between-shell-and-exec-in-dockerfile/</guid>
       <description>前陣子都在忙 CKAD 的好久沒有在公司 Bookstack 耕耘了 XD ~ 會看到這篇是因為 邱 sir 的導讀 懶惰沒有導讀完 所以我才產出這篇文 (竟敢斗膽說邱 sir 懶惰!!) Docker Shell vs. Exec Form - Christian</description>
     </item>
     <item>
       <title>Linux 限制網路速度，使用 Wondershaper</title>
-      <link>https://blog.xxzk.me/post/20211126-linux-network-limiter-wondershaper/20211126-linux-network-limiter-wondershaper/</link>
+      <link>http://localhost:1313/post/20211126-linux-network-limiter-wondershaper/20211126-linux-network-limiter-wondershaper/</link>
       <pubDate>Fri, 26 Nov 2021 14:23:11 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20211126-linux-network-limiter-wondershaper/20211126-linux-network-limiter-wondershaper/</guid>
+      <guid>http://localhost:1313/post/20211126-linux-network-limiter-wondershaper/20211126-linux-network-limiter-wondershaper/</guid>
       <description>Wonder Shaper 是一支底層使用 Linux 自帶的流量控制命令 tc 的 shell script，能夠簡單、方便、快速 達成限流的目的 在 Wonder Shaper v1.3 以上版本等待列隊方式從本來的 CBQ 變更成 HT</description>
     </item>
     <item>
       <title>CKA Note Section 6 Cluster Maintence</title>
-      <link>https://blog.xxzk.me/post/20211126-cka_note_section_6_cluster_maintence/</link>
+      <link>http://localhost:1313/post/20211126-cka_note_section_6_cluster_maintence/</link>
       <pubDate>Fri, 26 Nov 2021 11:24:39 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20211126-cka_note_section_6_cluster_maintence/</guid>
+      <guid>http://localhost:1313/post/20211126-cka_note_section_6_cluster_maintence/</guid>
       <description>117. OS Upgrades 如果我們要將某個 worder node 下線，做一些例行維護 (例如: OS Upgrade) 可以使用 1 kubectl drain &amp;lt;node_name&amp;gt; 來達成，原本在目標 worker node 的 pod 會被 re-schedule 到其它 worker node 上面。當維護完成再使用 1</description>
     </item>
     <item>
       <title>CKA Note Section 5 App Lifecycle Management</title>
-      <link>https://blog.xxzk.me/post/20211125-cka_note_section_5_app_lifecycle_management/</link>
+      <link>http://localhost:1313/post/20211125-cka_note_section_5_app_lifecycle_management/</link>
       <pubDate>Thu, 25 Nov 2021 16:55:33 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20211125-cka_note_section_5_app_lifecycle_management/</guid>
+      <guid>http://localhost:1313/post/20211125-cka_note_section_5_app_lifecycle_management/</guid>
       <description>89. Rolling Updates and Rollbacks 請參考 CKAD Note Section 6 Pod Design 82. Rolling Updates &amp;amp; Rollbacks in Deployments。 93. Commands 請參考 CKAD Note Section 3 Configuration 37. [Pre-Request] Commands and Arguments in Docker。 97. Configure Environment Variables in Applications 請參考 CKAD Note Section 3 Configuration 42.</description>
     </item>
     <item>
       <title>CKA Note Section 4 Logging and Monitoring</title>
-      <link>https://blog.xxzk.me/post/20211125-cka_note_section_4_logging_and_monitoring/</link>
+      <link>http://localhost:1313/post/20211125-cka_note_section_4_logging_and_monitoring/</link>
       <pubDate>Thu, 25 Nov 2021 16:03:41 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20211125-cka_note_section_4_logging_and_monitoring/</guid>
+      <guid>http://localhost:1313/post/20211125-cka_note_section_4_logging_and_monitoring/</guid>
       <description>請參考 CKAD Note Section 5 Observability 76. Monitor and Debug Application 章節。</description>
     </item>
     <item>
       <title>CKA Note Section 3 Scheduling</title>
-      <link>https://blog.xxzk.me/post/20211124-cka_note_section_3_scheduling/</link>
+      <link>http://localhost:1313/post/20211124-cka_note_section_3_scheduling/</link>
       <pubDate>Wed, 24 Nov 2021 15:03:28 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20211124-cka_note_section_3_scheduling/</guid>
+      <guid>http://localhost:1313/post/20211124-cka_note_section_3_scheduling/</guid>
       <description>50. Manual Scheduling 在 有 kube-scheduler 的情況下，我們可以在 pod definition YAML 裡面定義 pod.spec.nodeName: &amp;lt;worker node name&amp;gt; 來把 pod 放在指定 worker node。 在 沒有 kube-scheduler 的情況下，必須要以 json 格式 POST 到 api-server。B</description>
     </item>
     <item>
       <title>CKA Note Section 2 Core Concepts</title>
-      <link>https://blog.xxzk.me/post/20211123-cka_note_section_2_core_concepts/</link>
+      <link>http://localhost:1313/post/20211123-cka_note_section_2_core_concepts/</link>
       <pubDate>Tue, 23 Nov 2021 14:00:06 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20211123-cka_note_section_2_core_concepts/</guid>
+      <guid>http://localhost:1313/post/20211123-cka_note_section_2_core_concepts/</guid>
       <description>10. Cluster Architecture ▲ Kubernetes controll plane / worker node 組件 12. ETCD in Kubernetes 透過 kubectl get 都是 (透過 api-server ) 向 etcd 查詢資料。 講師提供的練習環境是使用 kubeadm 搭建的，課程最後的章節會教導如何從 scratch 建立 Kubernetes cl</description>
     </item>
     <item>
       <title>CKAD Note Section 9 Updates for Sep 2021 Changes</title>
-      <link>https://blog.xxzk.me/post/20211110-ckad-note-section-9-updates-for-sep-2021-changes/</link>
+      <link>http://localhost:1313/post/20211110-ckad-note-section-9-updates-for-sep-2021-changes/</link>
       <pubDate>Wed, 10 Nov 2021 11:05:08 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20211110-ckad-note-section-9-updates-for-sep-2021-changes/</guid>
+      <guid>http://localhost:1313/post/20211110-ckad-note-section-9-updates-for-sep-2021-changes/</guid>
       <description>▲ CKAD 新舊版差異 119. Define, build and modify container images 非常基礎的 Docker Image (container image) 介紹，我之前就打過一篇在公司 Bookstack 了~ 《Docker Image 介紹》 使用 docker 與 podman 大部分情況 docker 與 podman syntax 很接近~ 1</description>
     </item>
     <item>
       <title>CKAD Note Section 8 State Persistence</title>
-      <link>https://blog.xxzk.me/post/20211105-ckad-note-section-8-state-persistence/</link>
+      <link>http://localhost:1313/post/20211105-ckad-note-section-8-state-persistence/</link>
       <pubDate>Fri, 05 Nov 2021 20:54:44 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20211105-ckad-note-section-8-state-persistence/</guid>
+      <guid>http://localhost:1313/post/20211105-ckad-note-section-8-state-persistence/</guid>
       <description>105. Volumes hostPath 這個範例 mount worker-node 的 /data 進 pod 裡面，並且 mapping 到 container 裡面的 /test-pd。 實際上我們並不會這樣做，因為 worker-node 之間的資料並沒辦法同步，一般來說會使用 shared storage 例</description>
     </item>
     <item>
       <title>CKAD Note Section 7 Service and Networking</title>
-      <link>https://blog.xxzk.me/post/20211104-ckad-note-section-7-service-and-networking/</link>
+      <link>http://localhost:1313/post/20211104-ckad-note-section-7-service-and-networking/</link>
       <pubDate>Thu, 04 Nov 2021 11:32:23 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20211104-ckad-note-section-7-service-and-networking/</guid>
+      <guid>http://localhost:1313/post/20211104-ckad-note-section-7-service-and-networking/</guid>
       <description>90. Service ▲ NodePort type 的 service ▲ service 的種類: NodePort, Cluster IP, LoadBlance ▲ NodePort 總共有三個 port number 分別是: node-port, port, target-port NodePort range: 30000~32767 (option)。 如果沒有給定 targetPort，預設 port == targ</description>
     </item>
     <item>
       <title>CKAD Note Section 6 Pod Design</title>
-      <link>https://blog.xxzk.me/post/20211102-ckad-note-section-6-pod-design/</link>
+      <link>http://localhost:1313/post/20211102-ckad-note-section-6-pod-design/</link>
       <pubDate>Tue, 02 Nov 2021 13:56:46 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20211102-ckad-note-section-6-pod-design/</guid>
+      <guid>http://localhost:1313/post/20211102-ckad-note-section-6-pod-design/</guid>
       <description>79. Labels, Selectors and Annotations 1 2 3 4 5 6 7 8 9 10 11 12 13 apiVersion: v1 kind: Pod metadata: name: label-demo labels: environment: production app: nginx spec: containers: - name: nginx image: nginx:1.14.2 ports: - containerPort: 80 我們可以在 kubernetes object 上貼上標籤 (labels) 用於分類。使用 kubectl get pod --selector &amp;lt;key&amp;gt;=&amp;lt;value&amp;gt; 可以篩選</description>
     </item>
     <item>
       <title>CKAD Note Section 5 Observability</title>
-      <link>https://blog.xxzk.me/post/20211027-ckad-note-section-5-observability/</link>
+      <link>http://localhost:1313/post/20211027-ckad-note-section-5-observability/</link>
       <pubDate>Wed, 27 Oct 2021 16:52:37 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20211027-ckad-note-section-5-observability/</guid>
+      <guid>http://localhost:1313/post/20211027-ckad-note-section-5-observability/</guid>
       <description>70. Readiness and Liveness Probes Readiness Probes 透過前面的章節我們可以得知 Pod 具有狀態 (status) 與 條件 (condition)，前者顯示 lifecycle 階段 (pending, containerCreating, running) pending: scheduler 正在安排 pod 到 worker-node 上，或者有問題 (kubectl describe 可</description>
     </item>
     <item>
       <title>使用 certbot 取得免費 Let&#39;s Encrypt TLS/SSL 憑證</title>
-      <link>https://blog.xxzk.me/post/20211013-get-lets-encrypt-cert-using-certbot/</link>
+      <link>http://localhost:1313/post/20211013-get-lets-encrypt-cert-using-certbot/</link>
       <pubDate>Wed, 13 Oct 2021 15:47:29 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20211013-get-lets-encrypt-cert-using-certbot/</guid>
+      <guid>http://localhost:1313/post/20211013-get-lets-encrypt-cert-using-certbot/</guid>
       <description>更新紀錄 2022.12.20: 整合另一篇筆記，關於缺少中繼憑證 (issuer certificate, intermediate certificate) 導致 curl 報錯，而瀏覽器沒事的 trouble shooting 過程。 介紹 Let&amp;rsquo;s Encrypt 是一個 ISRG 建立的非營利項目，免費提供 TLS/SSL Certi</description>
     </item>
     <item>
       <title>我的第一支 Terraform</title>
-      <link>https://blog.xxzk.me/post/20210922-terraform-hello-world/</link>
+      <link>http://localhost:1313/post/20210922-terraform-hello-world/</link>
       <pubDate>Wed, 22 Sep 2021 15:36:09 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20210922-terraform-hello-world/</guid>
+      <guid>http://localhost:1313/post/20210922-terraform-hello-world/</guid>
       <description>Introduction to Terraform Terraform 是一款 Infrastructure as Code (IaC) 工具，以 code 來 定義 / 建造 (build) / 修改 (change) / 版本控制 (version) 基礎設施，支援地端 (on-prem) 與 雲端 (Cloud)。 安裝 Terraform CLI Install Terraform 1 2 3 4 5 6 sudo yum install -y</description>
     </item>
     <item>
       <title>Jumpserver 靜態路由設定 shell script &#43; Ansible Playbook 使用說明</title>
-      <link>https://blog.xxzk.me/post/20210907-setting-jumpserver-static-route-with-ansible-playbook/</link>
+      <link>http://localhost:1313/post/20210907-setting-jumpserver-static-route-with-ansible-playbook/</link>
       <pubDate>Tue, 07 Sep 2021 09:36:54 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20210907-setting-jumpserver-static-route-with-ansible-playbook/</guid>
+      <guid>http://localhost:1313/post/20210907-setting-jumpserver-static-route-with-ansible-playbook/</guid>
       <description>圖片來源 為什麼使用 Jumpserver 要上靜態路由? 公司現有 VM Network 環境只要是 Web server 的， default gateway 都是設定 Private IP Class B (172.x.0.0/16) 網段，也就是 Load Balance 身上。同時該台 VM 也會有 192.168.x.0/23 /24 的網卡 (192.168.x.254 or 253</description>
     </item>
     <item>
       <title>CKAD Note Section 3 Configuration</title>
-      <link>https://blog.xxzk.me/post/20210730-ckad-note-section-3-configuration/</link>
+      <link>http://localhost:1313/post/20210730-ckad-note-section-3-configuration/</link>
       <pubDate>Fri, 30 Jul 2021 11:29:19 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20210730-ckad-note-section-3-configuration/</guid>
+      <guid>http://localhost:1313/post/20210730-ckad-note-section-3-configuration/</guid>
       <description>37. [Pre-Request] Commands and Arguments in Docker 課程一開始就先來複習 Docker File 當中的 CMD 與 ENTRYPOINT，雖然講師說不在 CKAD 的考試範圍，不過 CKAD-2021 (即將在 2021 Q3 改版) 看起來是有被納入的</description>
     </item>
     <item>
       <title>CKAD Note Section 1 Introduction</title>
-      <link>https://blog.xxzk.me/post/20210727-ckad-note-section-1-introduction/</link>
+      <link>http://localhost:1313/post/20210727-ckad-note-section-1-introduction/</link>
       <pubDate>Tue, 27 Jul 2021 09:33:08 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20210727-ckad-note-section-1-introduction/</guid>
+      <guid>http://localhost:1313/post/20210727-ckad-note-section-1-introduction/</guid>
       <description>Kubernetes Series 作者的系列課程總共有三個，分別適合不同職位的三種人。 Absolute Beginners (零經驗初學者，帶你從 container 開始) sysAdmin (想要通過 CKAD) Application Developer (程式開發人員) Certification Details 這邊告知 CKAD 考</description>
     </item>
     <item>
       <title>使用 minicom 設定 Dell PS6210 Storage (iSCSI)</title>
-      <link>https://blog.xxzk.me/post/20210723-config-dell-ps6210-storage-using-minicom/</link>
+      <link>http://localhost:1313/post/20210723-config-dell-ps6210-storage-using-minicom/</link>
       <pubDate>Fri, 23 Jul 2021 13:59:15 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20210723-config-dell-ps6210-storage-using-minicom/</guid>
+      <guid>http://localhost:1313/post/20210723-config-dell-ps6210-storage-using-minicom/</guid>
       <description>本次 192.168.200.x/24 LAB 使用到的 Dell PS6210 本人。 參考資料: EqualLogic PS6210XS 及 CentOS 6.5 MPIO 實作 使用 minicom 連接 serial port 如果作業系統是 Windows 的話可以使用 PuTTY 連接。設定的參數都通用 (baud rate/Data bits/Stop bits/Parity) 使用到的線材:</description>
     </item>
     <item>
       <title>200 LAB Network 網通設備設定筆記</title>
-      <link>https://blog.xxzk.me/post/20210722-lab-200-network-device-setting-note/</link>
+      <link>http://localhost:1313/post/20210722-lab-200-network-device-setting-note/</link>
       <pubDate>Thu, 22 Jul 2021 08:53:50 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20210722-lab-200-network-device-setting-note/</guid>
+      <guid>http://localhost:1313/post/20210722-lab-200-network-device-setting-note/</guid>
       <description>Cisco 3750G 前言日記 在記錄設定前先來段日記 XD，Cisco 3750G 章節紀錄機櫃搬遷後 Cisco 3750G 24TS 作為系統組自管 ToS (Top of Switch) 使用。 原先 K8s LAB 因為留停期間同事有拿來實驗 O</description>
     </item>
     <item>
       <title>Docker 容器與容器的連結。Grafana &#43; Prometheus &#43; Blackbox_expoter</title>
-      <link>https://blog.xxzk.me/post/20210629-docker-container-link/</link>
+      <link>http://localhost:1313/post/20210629-docker-container-link/</link>
       <pubDate>Tue, 29 Jun 2021 17:33:04 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20210629-docker-container-link/</guid>
+      <guid>http://localhost:1313/post/20210629-docker-container-link/</guid>
       <description>此篇筆記紀錄如何使用 docker run --link ... 讓容器與容器之間連結。順便給 Upton 參考監控 LAB 要怎麼出~ Blackbox_expoter 1 docker run -itd --name blackbox_expoter -p 9115:9115 -v /root/yml/blackbox_expoter/:/config --restart always prom/blackbox-exporter:master --config.file=/config/blackbox.yml blackbox.yml 更多範例 可以從 blackbox_expoter/example.yml 尋找。 關於設定</description>
     </item>
     <item>
       <title>minikube 安裝指南。 一個精簡、測試環境使用的 k8s 叢集</title>
-      <link>https://blog.xxzk.me/post/20210617-minikube-installation/</link>
+      <link>http://localhost:1313/post/20210617-minikube-installation/</link>
       <pubDate>Thu, 17 Jun 2021 09:29:55 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20210617-minikube-installation/</guid>
+      <guid>http://localhost:1313/post/20210617-minikube-installation/</guid>
       <description>minikube 能夠快速在本地 (local) 建立 kubernetes cluster (k8s 叢集)，支援 macOS, Linux, Windows 非常適合新手探索 kubernetes 安裝需求 pre-requirement minikube-Driver ▲ 官方有列出各類型 OS 建議搭建在何種虛擬環境上。本篇筆記選用 CentOS 7.9.2009 +</description>
     </item>
     <item>
       <title>終端機神器! tmux 手動編譯安裝</title>
-      <link>https://blog.xxzk.me/post/20210611-compile-tmux-for-bastion/</link>
+      <link>http://localhost:1313/post/20210611-compile-tmux-for-bastion/</link>
       <pubDate>Fri, 11 Jun 2021 13:04:29 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20210611-compile-tmux-for-bastion/</guid>
+      <guid>http://localhost:1313/post/20210611-compile-tmux-for-bastion/</guid>
       <description>圖片來源: GT-Wang tmux 是一款 terminal mutiplexer (終端機多工器)，自帶切割畫面 (pane) 的功能而且能夠在背景執行。 這篇主要紀錄在公司 Border (跳板機) 手動編譯安裝 for single user 應用場景、</description>
     </item>
     <item>
       <title>Docker Image 介紹</title>
-      <link>https://blog.xxzk.me/post/20210608-intro_docker_image/</link>
+      <link>http://localhost:1313/post/20210608-intro_docker_image/</link>
       <pubDate>Tue, 08 Jun 2021 15:54:10 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20210608-intro_docker_image/</guid>
+      <guid>http://localhost:1313/post/20210608-intro_docker_image/</guid>
       <description>圖片來源 此篇筆記主要參考 Docker 官方文件 About storage drivers 主要記錄自己找到的資料，所以不是很有系統性的教學。不過文內有附上邱宏瑋 (hwchiu) 鐵人賽系列文章，需要完整學習</description>
     </item>
     <item>
       <title>Nextcloud 建置，使用 Docker Compose</title>
-      <link>https://blog.xxzk.me/post/20210527-install-nextcloud-with-docker-compose/</link>
+      <link>http://localhost:1313/post/20210527-install-nextcloud-with-docker-compose/</link>
       <pubDate>Thu, 27 May 2021 15:11:37 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20210527-install-nextcloud-with-docker-compose/</guid>
+      <guid>http://localhost:1313/post/20210527-install-nextcloud-with-docker-compose/</guid>
       <description>圖片來源: wiki 安裝 Docker 與 Docker Compose Docker 參考文章: Install Docker Engine on CentOS 新增 docker repo 1 2 yum install -y yum-utils yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo 安裝 docker-ce 1 yum install docker-ce docker-ce-cli containerd.io -y enable/start docker 1 systemctl enable --now docker.service 跑個 docker hello world 確認 docker 安裝成功 1 docker run hello-world Docker</description>
     </item>
     <item>
       <title>Docker Volumes 介紹</title>
-      <link>https://blog.xxzk.me/post/20210513-intro_docker_volume/</link>
+      <link>http://localhost:1313/post/20210513-intro_docker_volume/</link>
       <pubDate>Thu, 13 May 2021 13:37:47 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20210513-intro_docker_volume/</guid>
+      <guid>http://localhost:1313/post/20210513-intro_docker_volume/</guid>
       <description>Docker docs Use volumes 前言 Docker Volume 是一個比較好的機制將 Docker Container 產生的資料永久保存 有稍微摸索過 Docker 的人可能會有點疑惑: 不是可以透過 -v /home/xzk:/mydata 把 host OS 上面的目錄映射進去 container 裡面嗎</description>
     </item>
     <item>
       <title>vSphere 顯示 VM Orphaned (虛擬機孤立狀態)</title>
-      <link>https://blog.xxzk.me/post/20210512-vsphere-showed-that-vm-is-orphanded/</link>
+      <link>http://localhost:1313/post/20210512-vsphere-showed-that-vm-is-orphanded/</link>
       <pubDate>Wed, 12 May 2021 11:25:56 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20210512-vsphere-showed-that-vm-is-orphanded/</guid>
+      <guid>http://localhost:1313/post/20210512-vsphere-showed-that-vm-is-orphanded/</guid>
       <description>通常這個狀況會發生在 ESXi 升級失敗、Firmware 更新踩到地雷爆炸、ESXi 重灌地獄，好不容易 ESXi 灌好了準備回到人間 卻在 vSphere 上面看到該 ESXi Host 所有 VM 顯</description>
     </item>
     <item>
       <title>MinIO 簡單介紹</title>
-      <link>https://blog.xxzk.me/post/20210503-minio-introduce/</link>
+      <link>http://localhost:1313/post/20210503-minio-introduce/</link>
       <pubDate>Mon, 03 May 2021 13:41:55 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20210503-minio-introduce/</guid>
+      <guid>http://localhost:1313/post/20210503-minio-introduce/</guid>
       <description>min.io 簡介—主文 MinIO 是一套開源、高效能、K8s 取向 (Kubernetes-native) 的物件儲存解決方案。 同時強調 Hybrid Cloud 因為 MinIO 相容 AWS S3 服務 可以把它想成是 AWS S3 開源版。目前依據官方統計在</description>
     </item>
     <item>
       <title>Nginx Keepalived (HA) 設定</title>
-      <link>https://blog.xxzk.me/post/20210419-introduce-keepalived/</link>
+      <link>http://localhost:1313/post/20210419-introduce-keepalived/</link>
       <pubDate>Mon, 19 Apr 2021 15:40:55 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20210419-introduce-keepalived/</guid>
+      <guid>http://localhost:1313/post/20210419-introduce-keepalived/</guid>
       <description>本篇筆記參考: NGINX Document-High Availability Support Based on keepalived [sysctl]CentLinux-keepalived: Configure Floating IP in CentOS 7 Servers nixCraft-Verify: Keepalived IP Failover Working Or Not With tcpdump Command man keepalived.conf Keepalived 是一套由 C 語言撰寫的路由軟體 (Routing software)，主要目的是提供 Linux 設施</description>
     </item>
     <item>
       <title>Bookstack 自訂字形與樣式 Customising Visuals</title>
-      <link>https://blog.xxzk.me/post/20210401-bookstack-fronts-customising/</link>
+      <link>http://localhost:1313/post/20210401-bookstack-fronts-customising/</link>
       <pubDate>Thu, 01 Apr 2021 13:19:05 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20210401-bookstack-fronts-customising/</guid>
+      <guid>http://localhost:1313/post/20210401-bookstack-fronts-customising/</guid>
       <description>Bookstack Customising Visuals Bookstack 可以針對外觀做客製化，也就是修改 css 目前使用的是 Google 與 Adobe 合作釋出的開源字體 &amp;ldquo;Noto Sans&amp;rdquo; 若要使用其它 Google Fonts 提供的字體可以訪問: Google Fonts 1 2 3 4 5 6 7 8 9</description>
     </item>
     <item>
       <title>MariaDB Galera Cluster 建置</title>
-      <link>https://blog.xxzk.me/post/20210324-mariadb-galera-cluster/</link>
+      <link>http://localhost:1313/post/20210324-mariadb-galera-cluster/</link>
       <pubDate>Wed, 24 Mar 2021 11:55:50 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20210324-mariadb-galera-cluster/</guid>
+      <guid>http://localhost:1313/post/20210324-mariadb-galera-cluster/</guid>
       <description>Galera Cluster 是 MariaDB 多主架構 (Multi-Master) 的解決方案。 公司目前常用的主從架構 (Master-Slave) 沒辦法做到各個結點 (node) 均可讀寫，並且確保資料一致性，因此不適合做為 HA (高可用) 的解決方案</description>
     </item>
     <item>
       <title>LibreNMS 警報建置實務 LibreNMS Alarm Setting</title>
-      <link>https://blog.xxzk.me/post/20210302-librenms-alert-setting-note/</link>
+      <link>http://localhost:1313/post/20210302-librenms-alert-setting-note/</link>
       <pubDate>Tue, 02 Mar 2021 14:22:28 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20210302-librenms-alert-setting-note/</guid>
+      <guid>http://localhost:1313/post/20210302-librenms-alert-setting-note/</guid>
       <description>此篇筆記紀錄如何使用 LibreNMS 發送 IPMI 警報至 RocketChat WebHook Channel LibreNMS 動態分組 Dynamic Grouping 動態群組可以自動將裝置依照設定的條件自動加入群組 (新加的裝置也可以喔)。這個功能除了方</description>
     </item>
     <item>
       <title>【實驗記錄】到底 VM 在關機 (PowerOff) 狀態搬移</title>
-      <link>https://blog.xxzk.me/post/20210224-what-network-will-vmware-migration-used/</link>
+      <link>http://localhost:1313/post/20210224-what-network-will-vmware-migration-used/</link>
       <pubDate>Wed, 24 Feb 2021 13:21:00 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20210224-what-network-will-vmware-migration-used/</guid>
+      <guid>http://localhost:1313/post/20210224-what-network-will-vmware-migration-used/</guid>
       <description>LAB 架構圖 寫日記 這兩台 ESXi 主要是拿來測試 vSS 轉 vDS 用的。因為 DC1 10.x.x.53 ESXi Host 在 2021.02.19 發現 GBIC 故障 DC1 10.x.x.54 ESXi Host 2021.02.12 發生 DIMM_A3 Multi-bit memory errors (error rate 上升) + 2021.02.19 Power Supply 1 (PS1) 死去。兩台共通點都是 2021.01</description>
     </item>
     <item>
       <title>隱藏 Apache、PHP、OpenSSL、Nginx 版本號</title>
-      <link>https://blog.xxzk.me/post/20210223-hide-apache-php-openssl-nginx-version/</link>
+      <link>http://localhost:1313/post/20210223-hide-apache-php-openssl-nginx-version/</link>
       <pubDate>Tue, 23 Feb 2021 14:33:37 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20210223-hide-apache-php-openssl-nginx-version/</guid>
+      <guid>http://localhost:1313/post/20210223-hide-apache-php-openssl-nginx-version/</guid>
       <description>此篇筆記記錄如何隱藏客戶端看到 Web Server 使用的版本號 判斷標準是用最無腦的 Browser Plug-in 當作依據，推薦使用 Wappalyzer 如果透過 CloudFlare 訪問這些敏感資訊都會被過濾掉;直接使用 IP</description>
     </item>
     <item>
       <title>httpd.conf 研究筆記</title>
-      <link>https://blog.xxzk.me/post/20210220-apache-httpd-main-conf/</link>
+      <link>http://localhost:1313/post/20210220-apache-httpd-main-conf/</link>
       <pubDate>Sat, 20 Feb 2021 10:54:58 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20210220-apache-httpd-main-conf/</guid>
+      <guid>http://localhost:1313/post/20210220-apache-httpd-main-conf/</guid>
       <description>httpd 版本資訊 1 2 Server version: Apache/2.4.6 (CentOS) Server built: Nov 16 2020 16:18:20 敬啟者 開頭就一堆屁話，根本沒有人會看的 (愛開玩笑 自己的筆記也屁話一堆還敢說開發者 XD 節錄幾個重點好了 更多資訊</description>
     </item>
     <item>
       <title>我的第一支 Ansible。 Ansible Hello World</title>
-      <link>https://blog.xxzk.me/post/20210128-ansible-hello-world/</link>
+      <link>http://localhost:1313/post/20210128-ansible-hello-world/</link>
       <pubDate>Thu, 28 Jan 2021 16:44:50 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20210128-ansible-hello-world/</guid>
+      <guid>http://localhost:1313/post/20210128-ansible-hello-world/</guid>
       <description>更新紀錄 2022.12 刪改原有內容、新增 全域/區域 變數設定方式 新增 playbook 簡介 Ansible 是一種開源配置工具，Linux 系統管理員使用的自動化工具。 Ansible 能讓系統管理員從一</description>
     </item>
     <item>
       <title>VCSA 7.0 (vCenter) 安裝教學</title>
-      <link>https://blog.xxzk.me/post/20210127-how-to-install-vcsa7-via-ova/</link>
+      <link>http://localhost:1313/post/20210127-how-to-install-vcsa7-via-ova/</link>
       <pubDate>Wed, 27 Jan 2021 15:13:00 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20210127-how-to-install-vcsa7-via-ova/</guid>
+      <guid>http://localhost:1313/post/20210127-how-to-install-vcsa7-via-ova/</guid>
       <description>先前準備 建議在同一台 ESXi host 上開一台 Windows 10 主機，並將 .iso 丟入這樣在上傳會比較快。 將 .iso 掛載 or 解壓縮後可以看到安裝所需檔案: vcsa-ui-installer: 圖形化安裝精靈 (有 Wind</description>
     </item>
     <item>
       <title>升級 ESXi 6.5.0 -&gt; 6.7.0  Upgrading ESXi From 6.5.0 to 6.7.0</title>
-      <link>https://blog.xxzk.me/post/20210122-upgrade-esxi-650-to-670/</link>
+      <link>http://localhost:1313/post/20210122-upgrade-esxi-650-to-670/</link>
       <pubDate>Fri, 22 Jan 2021 13:46:48 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20210122-upgrade-esxi-650-to-670/</guid>
+      <guid>http://localhost:1313/post/20210122-upgrade-esxi-650-to-670/</guid>
       <description>圖片來源 Before Upgrading 此篇為這次針對 DCX 升級 ESXi 的安裝紀錄。新上了 4 台 Dell R630 暫時緩解 DCX 資源吃緊的情況。 使用 vMotion (VMware Live Migration 技術) 動態轉移將 VM 移至其他 ESXi Host，就可</description>
     </item>
     <item>
       <title>簡單介紹 VMWare NSX Network Virtualization Platform</title>
-      <link>https://blog.xxzk.me/post/20201224-simply-introduce-vmware-nsxt/</link>
+      <link>http://localhost:1313/post/20201224-simply-introduce-vmware-nsxt/</link>
       <pubDate>Thu, 24 Dec 2020 13:46:50 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20201224-simply-introduce-vmware-nsxt/</guid>
+      <guid>http://localhost:1313/post/20201224-simply-introduce-vmware-nsxt/</guid>
       <description>VMwatre NSX Network Virtualization Platform 是一個涵蓋 L2 ~ L7 的網路虛擬化平台 是 VMWare 併購 Nicira 後的產物 什麼是網路虛擬化 ▲ 圖片來源 The VMware NSX Network Virtualization Platform 白皮書 左邊的 Server Virtualization 是將 Bare-Metal (Hardware,</description>
     </item>
     <item>
       <title>Wireguard 實作 (WAN IP version)</title>
-      <link>https://blog.xxzk.me/post/20201221-hands-on-wireguard-wan-ip-version/</link>
+      <link>http://localhost:1313/post/20201221-hands-on-wireguard-wan-ip-version/</link>
       <pubDate>Mon, 21 Dec 2020 10:26:39 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20201221-hands-on-wireguard-wan-ip-version/</guid>
+      <guid>http://localhost:1313/post/20201221-hands-on-wireguard-wan-ip-version/</guid>
       <description>介紹 WireGuard 是一款開放原始碼的 VPN 程式，主打簡單快速 (任何設備) 並且效能比 IPSec、OpenVPN 更快，安全性方面更是強調 &amp;ldquo;state of the art&amp;rdquo; (最先進的) 安全</description>
     </item>
     <item>
       <title>淺談 DNSSEC 使用 dig</title>
-      <link>https://blog.xxzk.me/post/20201210-about-dnssec-using-dig/</link>
+      <link>http://localhost:1313/post/20201210-about-dnssec-using-dig/</link>
       <pubDate>Thu, 10 Dec 2020 11:46:20 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20201210-about-dnssec-using-dig/</guid>
+      <guid>http://localhost:1313/post/20201210-about-dnssec-using-dig/</guid>
       <description>圖片來源 CloudFlare 在開始之前必須先搞懂&amp;hellip;. DNS 在 Internet 中扮演什麼角色、功能是什麼 域名註冊商 DOMAIN name registrar 與 DNS hosting 域名伺服器託管商 的差別 DNSSEC 是什麼，為什麼</description>
     </item>
     <item>
       <title>解析 vRealize 發生「BIOS 電源管理未設定為 [由作業系統控制] 」 BIOS power management not set to OS controlled facing CPU contention</title>
-      <link>https://blog.xxzk.me/post/20201201-bios-power-management-not-set-to-os-controlled/</link>
+      <link>http://localhost:1313/post/20201201-bios-power-management-not-set-to-os-controlled/</link>
       <pubDate>Tue, 01 Dec 2020 09:20:28 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20201201-bios-power-management-not-set-to-os-controlled/</guid>
+      <guid>http://localhost:1313/post/20201201-bios-power-management-not-set-to-os-controlled/</guid>
       <description>這標題有夠長 中文警報標題全文: 位於主機上，且 BIOS 電源管理未設定為 [由作業系統控制] 的虛擬機器面臨 CPU 爭用 先講結論，未來在上機時應該考慮把 BIOS Power Management 設</description>
     </item>
     <item>
       <title>Dell 硬體規格介紹 Infrastructure Specification</title>
-      <link>https://blog.xxzk.me/post/20201130-dell-infrastructure-specification/</link>
+      <link>http://localhost:1313/post/20201130-dell-infrastructure-specification/</link>
       <pubDate>Mon, 30 Nov 2020 14:23:47 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20201130-dell-infrastructure-specification/</guid>
+      <guid>http://localhost:1313/post/20201130-dell-infrastructure-specification/</guid>
       <description>這篇會簡單介紹公司大量使用到的 Dell EMC 伺服器硬體規格以及型號 從型號判斷 Dell EMC 伺服器 世代/產品類別/CPU slot 數/Intel or AMD CPU How to identify which generation your Dell PowerEdge server belongs</description>
     </item>
     <item>
       <title>清除 Dell Server BIOS,iDRAC 密碼與設定值 &#43; 更新 Driver &#43; 建立 RAID</title>
-      <link>https://blog.xxzk.me/post/20201119-clear_dell_bios_passwd_and_upgrade_driver/</link>
+      <link>http://localhost:1313/post/20201119-clear_dell_bios_passwd_and_upgrade_driver/</link>
       <pubDate>Thu, 19 Nov 2020 10:03:54 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20201119-clear_dell_bios_passwd_and_upgrade_driver/</guid>
+      <guid>http://localhost:1313/post/20201119-clear_dell_bios_passwd_and_upgrade_driver/</guid>
       <description>使用機型 Dell R330 BIOS,iDRAC 密碼/設定檔 清除 How to reset the BIOS of a Dell PowerEdge Server? 將所有電源移除 將 NVRAM_CLR 從本來的 pins 3-5 變成 pins 1-3 (如上圖)，PWD_EN 直接拔除 等待十秒鐘以上 重新接</description>
     </item>
     <item>
       <title>Forti Client SSL-VPN 運作機制原理</title>
-      <link>https://blog.xxzk.me/post/20201112-forti-split-tunneling/</link>
+      <link>http://localhost:1313/post/20201112-forti-split-tunneling/</link>
       <pubDate>Thu, 12 Nov 2020 17:34:41 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20201112-forti-split-tunneling/</guid>
+      <guid>http://localhost:1313/post/20201112-forti-split-tunneling/</guid>
       <description>到職以來一直有一個很大的困惑:大家上班都撥 VPN 到 CVT，CVT 流量不會爆炸嗎? 之後又得知 CVT 只拉了一條 30M 的線路&amp;hellip; 那豈不是 10 個人同時</description>
     </item>
     <item>
       <title>淺談 vDS (網路虛擬化 NSX-T 功能之一)</title>
-      <link>https://blog.xxzk.me/post/20201026-introduce-vmware-vds/</link>
+      <link>http://localhost:1313/post/20201026-introduce-vmware-vds/</link>
       <pubDate>Mon, 26 Oct 2020 14:05:21 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20201026-introduce-vmware-vds/</guid>
+      <guid>http://localhost:1313/post/20201026-introduce-vmware-vds/</guid>
       <description>vDS 是什麼 ? 為什麼要用它 ? vDS 全名 vSphere Distributed Switch 是 VMWare vSphere 產品線下 SDN (Software Defined Networking) 的產物，在 vDS 出來之前也有一款叫做 vSS (vSphere Standard Switch) 的產品。 比起 vSS 需要部屬在每一台 ESXi host ， vDS 統一</description>
     </item>
     <item>
       <title>搞懂 vSphere、vCenter 和 ESXi 的關係</title>
-      <link>https://blog.xxzk.me/post/20201023-about-vsphere-vcenter-esxi/</link>
+      <link>http://localhost:1313/post/20201023-about-vsphere-vcenter-esxi/</link>
       <pubDate>Fri, 23 Oct 2020 14:03:42 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20201023-about-vsphere-vcenter-esxi/</guid>
+      <guid>http://localhost:1313/post/20201023-about-vsphere-vcenter-esxi/</guid>
       <description>拿 Office 2019 來舉例好了， 購買 Office 2019 其實就包含 Word、Excel、Powerpoint &amp;hellip;. 等軟體 vSphere 就好像 Office 2019 有相同概念就很好理解 ESXi ESXi 是 VMWare 公司出產的 OS Level</description>
     </item>
     <item>
       <title>在 Ubuntu 使用 Windows 遠端桌面 (RDP)</title>
-      <link>https://blog.xxzk.me/post/20201015-ubuntu-rdp-client-remmina/</link>
+      <link>http://localhost:1313/post/20201015-ubuntu-rdp-client-remmina/</link>
       <pubDate>Thu, 15 Oct 2020 13:53:23 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20201015-ubuntu-rdp-client-remmina/</guid>
+      <guid>http://localhost:1313/post/20201015-ubuntu-rdp-client-remmina/</guid>
       <description>20201016 更新 公司架構圖的 IPsec 是 Site to Site VPN 啦! 一般使用者用的是 Remote access VPN 採用 SSL VPN FortiClient for Linux 可以正常使用喔~ 自己雷自己 這篇會出產的原因是因為&amp;hellip;. FortiClient Linux</description>
     </item>
     <item>
       <title>EncFS &#43; Rclone 公有雲變私有雲，還能掛載串流!</title>
-      <link>https://blog.xxzk.me/post/20201012-encfs-rclone/</link>
+      <link>http://localhost:1313/post/20201012-encfs-rclone/</link>
       <pubDate>Mon, 12 Oct 2020 13:48:24 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20201012-encfs-rclone/</guid>
+      <guid>http://localhost:1313/post/20201012-encfs-rclone/</guid>
       <description>前幾天看到 G Suite 改版的消息，雖然 Education 與 Business 往後都沒有 看似 10T 實際上有無限儲存空間 的雲端硬碟能用了，不過 5TB 的空間對於一般用戶 (冷儲存) 來說已經非常夠用</description>
     </item>
     <item>
       <title>數據機到機房 淺談 GPON 以 HiNet FTTH 為例</title>
-      <link>https://blog.xxzk.me/post/20200929-intro-hinet-gpon-modem-to-otl/</link>
+      <link>http://localhost:1313/post/20200929-intro-hinet-gpon-modem-to-otl/</link>
       <pubDate>Tue, 29 Sep 2020 11:37:08 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20200929-intro-hinet-gpon-modem-to-otl/</guid>
+      <guid>http://localhost:1313/post/20200929-intro-hinet-gpon-modem-to-otl/</guid>
       <description>圖片來源 Spectra TEch 在開始之前先大致介紹一下台灣目前光纖網路接取技術使採用 GPON (Gigabit Passive Optical Network) 千兆級無源光網路，簡單架構如上圖 不知道大家有沒有曾經好奇過從數據</description>
     </item>
     <item>
       <title>將 Apache access,error log 透過 rsyslog 發至 Graylog</title>
-      <link>https://blog.xxzk.me/post/20200924-httpd-log-to-graylog-with-rsyslog/</link>
+      <link>http://localhost:1313/post/20200924-httpd-log-to-graylog-with-rsyslog/</link>
       <pubDate>Thu, 24 Sep 2020 15:29:12 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20200924-httpd-log-to-graylog-with-rsyslog/</guid>
+      <guid>http://localhost:1313/post/20200924-httpd-log-to-graylog-with-rsyslog/</guid>
       <description>由於 httpd 預設沒有將 access/error log 丟到 syslog 做處理，要需手動新增 新增方式有兩種 直接編輯 httpd.conf 將 log file 導向到 syslog 編輯 rsyslog.conf 叫 rsyslog 去撈本來存放在 /var/log/httpd/(access|error).log 第一種方式會需要做 systemctl reload httpd.service ，對於</description>
     </item>
     <item>
       <title>Gralylog 安裝紀錄 (使用 Default CentOS 7.7)</title>
-      <link>https://blog.xxzk.me/post/20200924-graylog-installation-use-centos77/</link>
+      <link>http://localhost:1313/post/20200924-graylog-installation-use-centos77/</link>
       <pubDate>Thu, 24 Sep 2020 15:09:16 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20200924-graylog-installation-use-centos77/</guid>
+      <guid>http://localhost:1313/post/20200924-graylog-installation-use-centos77/</guid>
       <description>本篇參考資料 How to install and configure Graylog on CentOS 7 執行系統更新 1 yum update -y 安裝 EPEL 1 yum install epel-release -y 安裝所需項目，其中 pwgen 套件是等等要用來產生 graylog server 設定檔的密鑰 1 yum install pwgen vim -y 安裝 java</description>
     </item>
     <item>
       <title>Graylog 搜尋語法</title>
-      <link>https://blog.xxzk.me/post/20200923-how-to-search-in-graylog/</link>
+      <link>http://localhost:1313/post/20200923-how-to-search-in-graylog/</link>
       <pubDate>Wed, 23 Sep 2020 16:46:52 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20200923-how-to-search-in-graylog/</guid>
+      <guid>http://localhost:1313/post/20200923-how-to-search-in-graylog/</guid>
       <description>參考文件 Official Searching Doc 在開始之前可以將設定檔內的 allow_highlighting = true 打開，獲得螢光筆功能 Enabling/Disabling search result highlighting 基礎搜尋語法 Syntax Graylog 語法支援正規表示法 (RegEXP) 搜尋 Message 包含 ssh 的 log 1 ssh 搜尋 Message 包含</description>
     </item>
   </channel>

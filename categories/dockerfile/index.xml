@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Dockerfile on 老柯的學習筆記</title>
-    <link>https://blog.xxzk.me/categories/dockerfile/</link>
+    <link>http://localhost:1313/categories/dockerfile/</link>
     <description>Recent content in Dockerfile on 老柯的學習筆記</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Wed, 22 Jun 2022 14:49:46 +0800</lastBuildDate>
-    <atom:link href="https://blog.xxzk.me/categories/dockerfile/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/categories/dockerfile/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Dockerfile - Shell 與 Exec 的差異</title>
-      <link>https://blog.xxzk.me/post/20211220-diff-between-shell-and-exec-in-dockerfile/</link>
+      <link>http://localhost:1313/post/20211220-diff-between-shell-and-exec-in-dockerfile/</link>
       <pubDate>Mon, 20 Dec 2021 11:15:34 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20211220-diff-between-shell-and-exec-in-dockerfile/</guid>
+      <guid>http://localhost:1313/post/20211220-diff-between-shell-and-exec-in-dockerfile/</guid>
       <description>前陣子都在忙 CKAD 的好久沒有在公司 Bookstack 耕耘了 XD ~ 會看到這篇是因為 邱 sir 的導讀 懶惰沒有導讀完 所以我才產出這篇文 (竟敢斗膽說邱 sir 懶惰!!) Docker Shell vs. Exec Form - Christian</description>
     </item>
   </channel>

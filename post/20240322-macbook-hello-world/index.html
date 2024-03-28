@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>MacOS 新手筆記 - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="前言 好久沒有打 blog 了 囧，第一篇先用 MacOS 新手筆記 來練筆吧 XD 在 2023.04.10 進公司之前我完全沒有使用過 MacOS，此篇記錄一位 MacOS 新手如何上手的心得還有推薦安裝的" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.124.1 with theme even" />
+
+
+<link rel="canonical" href="http://localhost:1313/post/20240322-macbook-hello-world/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="MacOS 新手筆記" />
+<meta property="og:description" content="前言 好久沒有打 blog 了 囧，第一篇先用 MacOS 新手筆記 來練筆吧 XD 在 2023.04.10 進公司之前我完全沒有使用過 MacOS，此篇記錄一位 MacOS 新手如何上手的心得還有推薦安裝的" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/post/20240322-macbook-hello-world/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2024-03-22T11:10:55+00:00" />
+<meta property="article:modified_time" content="2024-03-22T11:10:55+00:00" />
+<meta itemprop="name" content="MacOS 新手筆記">
+<meta itemprop="description" content="前言 好久沒有打 blog 了 囧，第一篇先用 MacOS 新手筆記 來練筆吧 XD 在 2023.04.10 進公司之前我完全沒有使用過 MacOS，此篇記錄一位 MacOS 新手如何上手的心得還有推薦安裝的"><meta itemprop="datePublished" content="2024-03-22T11:10:55+00:00" />
+<meta itemprop="dateModified" content="2024-03-22T11:10:55+00:00" />
+<meta itemprop="wordCount" content="1401">
+<meta itemprop="keywords" content="macos," /><meta name="twitter:card" content="summary"/><meta name="twitter:title" content="MacOS 新手筆記"/>
+<meta name="twitter:description" content="前言 好久沒有打 blog 了 囧，第一篇先用 MacOS 新手筆記 來練筆吧 XD 在 2023.04.10 進公司之前我完全沒有使用過 MacOS，此篇記錄一位 MacOS 新手如何上手的心得還有推薦安裝的"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">MacOS 新手筆記</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2024-03-22 </span>
+        <div class="post-category">
+            <a href="/categories/macos/"> macos </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#前言">前言</a></li>
+        <li><a href="#推薦閱讀">推薦閱讀</a></li>
+        <li><a href="#推薦安裝">推薦安裝</a>
+          <ul>
+            <li><a href="#terminal-系列">Terminal 系列</a></li>
+            <li><a href="#app-系列">App 系列</a></li>
+          </ul>
+        </li>
+        <li><a href="#操作系列">操作系列</a></li>
+        <li><a href="#雜項與茶包射手">雜項與茶包射手</a>
+          <ul>
+            <li><a href="#列出背景啟動項目指令-sfltool-dumpbtm">列出背景啟動項目指令 <code>sfltool dumpbtm</code></a></li>
+            <li><a href="#oh-my-zsh-開啟-kubectl-自動補齊功能">oh-my-zsh 開啟 kubectl 自動補齊功能</a></li>
+            <li><a href="#iterm-無法使用-option--arrow-問題">iTerm 無法使用 Option + Arrow 問題</a></li>
+          </ul>
+        </li>
+        <li><a href="#參考資料">參考資料</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p><img src="eric-macbook.jpg" alt="eric-macbook"></p>
+<h2 id="前言">前言</h2>
+<p>好久沒有打 blog 了 囧，第一篇先用 <strong>MacOS 新手筆記</strong> 來練筆吧 XD</p>
+<p>在 2023.04.10 進公司之前我完全沒有使用過 MacOS，此篇記錄一位 MacOS 新手如何上手的心得還有推薦安裝的軟體。</p>
+<h2 id="推薦閱讀">推薦閱讀</h2>
+<ul>
+<li><a href="https://applealmond.com/mac%E6%96%B0%E6%89%8B%E5%85%A5%E9%96%80%E6%95%99%E5%AD%B8">Mac新手入門教學 - 蘋果仁 - 果仁 iPhone/iOS/好物推薦科技媒體</a></li>
+<li><a href="https://applefans.today/macos-keyboard-shortcut/">Mac 快捷鍵 : 新手一定要學會的 13 種常用組合 – 蘋果迷 APPLEFANS</a></li>
+<li><a href="https://ithelp.ithome.com.tw/articles/10262236">[Day2] ＭacOS - 操作上手 - iT 邦幫忙::一起幫忙解決難題，拯救 IT 人的一天</a></li>
+<li><a href="https://ithelp.ithome.com.tw/articles/10262739">[Day4] ＭacOS - 軟體安裝清單 - iT 邦幫忙::一起幫忙解決難題，拯救 IT 人的一天</a></li>
+<li><a href="https://ithelp.ithome.com.tw/articles/10263387">[Day5] ＭacOS - 打造美觀的終端機畫面 - iT 邦幫忙::一起幫忙解決難題，拯救 IT 人的一天</a></li>
+</ul>
+<h2 id="推薦安裝">推薦安裝</h2>
+<h3 id="terminal-系列">Terminal 系列</h3>
+<ul>
+<li><strong><a href="https://brew.sh/">Homebrew</a>: MacOS 的第三方套件管理工具，很多工具都能透過 <code>brew</code> 安裝 (包含 GUI app)</strong></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">/bin/bash -c <span class="s2">&#34;</span><span class="k">$(</span>curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh<span class="k">)</span><span class="s2">&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><a href="https://iterm2.com/">iTerm2 - macOS Terminal Replacement</a>: 取代 MacOS 內建的 Terminal</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">brew cask install iterm2
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><strong><a href="https://ohmyz.sh/#install">oh-my-zsh</a>: 一個 <a href="https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins">plugin 超多</a>且開源的 <code>zsh</code> 框架。</strong></li>
+</ul>
+<p><strong><span style='color:blue'>目前我使用的 plugin 有這些</span></strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">grep -E <span class="s2">&#34;^plugins&#34;</span> ~/.zshrc
+</span></span><span class="line"><span class="cl"><span class="nv">plugins</span><span class="o">=(</span>git aws kubectl z copypath asdf git-open zsh-autosuggestions<span class="o">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><strong><a href="https://github.com/ryanoasis/nerd-fonts">nerd-fonts</a>: 提供了很多酷酷的字體，美化 terminal。</strong></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">brew tap homebrew/cask-fonts
+</span></span><span class="line"><span class="cl">brew install font-hack-nerd-font
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><strong><a href="https://github.com/romkatv/powerlevel10k">romkatv/powerlevel10k</a>: A Zsh theme</strong></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">brew install powerlevel10k
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;source </span><span class="k">$(</span>brew --prefix<span class="k">)</span><span class="s2">/share/powerlevel10k/powerlevel10k.zsh-theme&#34;</span> &gt;&gt;~/.zshrc
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">p10k configure
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><strong><a href="https://github.com/zsh-users/zsh-autosuggestions/tree/master">zsh-autosuggestions</a>: <code>Ctrl + R</code> 自動提示版</strong></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git clone https://github.com/zsh-users/zsh-autosuggestions <span class="si">${</span><span class="nv">ZSH_CUSTOM</span><span class="k">:-</span><span class="p">~/.oh-my-zsh/custom</span><span class="si">}</span>/plugins/zsh-autosuggestions
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">plugins=( 
+</span></span><span class="line"><span class="cl">    # other plugins...
+</span></span><span class="line"><span class="cl">    zsh-autosuggestions
+</span></span><span class="line"><span class="cl">)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>如果要調整提示的顏色:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+</span></span><span class="line"><span class="cl"><span class="c1"># 替換調 fg=8 換成其他顏色 (0~255 / black, red, green, yellow, blue, magenta, cyan and white)</span>
+</span></span><span class="line"><span class="cl"><span class="nv">ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE</span><span class="o">=</span><span class="s1">&#39;fg=8&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><strong><a href="https://github.com/zsh-users/zsh-syntax-highlighting/tree/master">zsh-syntax-highlighting</a>: shell 語法差異化高量</strong></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">brew install zsh-syntax-highlighting
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;source </span><span class="k">$(</span>brew --prefix<span class="k">)</span><span class="s2">/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh&#34;</span> &gt;&gt; <span class="si">${</span><span class="nv">ZDOTDIR</span><span class="k">:-</span><span class="nv">$HOME</span><span class="si">}</span>/.zshrc
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><strong><a href="https://formulae.brew.sh/formula/coreutils">coreutils</a>: 補足 GNU 常用的 CLI tools</strong></li>
+</ul>
+<p>MacOS 缺好多東西 QQ，連 <code>sha256sum</code> 都沒有。<a href="https://www.maizure.org/projects/decoded-gnu-coreutils/">GNU coreutils command 列表</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">brew install coreutils
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="use-gnu-instead.jpg" alt="use-gnu-instead"></p>
+<p>▲ 安裝後會告訴我們有些 command 名稱相同造成衝突，如果想使用 GNU 的版本可以加上 <code>g</code> 前綴。例如 <code>realpath</code> -&gt; <code>grealpath</code>。如果想用原本的名稱可以增加 <code>$PATH</code> 變數。(我自己偏好使用 <code>alias</code> 啦)</p>
+<ul>
+<li><strong><a href="https://formulae.brew.sh/formula/gnu-sed">gnu-sed</a>: GNU 版 sed，我熟悉的 sed</strong></li>
+</ul>
+<p>MacOS 內建的 <code>sed</code> 使用 <code>sed -ie &quot;s|abc|123|g&quot; a.txt</code> 的時候會被建立一個結尾帶 &rsquo;e&rsquo; 的備份檔案 (<code>a.txte</code>)，在多個檔案處理場景中會很麻煩要多花時間刪除備份檔案，而且檔案是在 git repo 中不用擔心回不去。</p>
+<p><img src="sed.jpg" alt="sed"></p>
+<p>▲ MacOS 內建的 <code>sed</code> 會產生備份檔案。</p>
+<p>解決方式是安裝 GNU 版本的 <code>sed</code>，使用 <code>gsed</code> 來取代原本的 <code>sed</code>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">brew install gnu-sed
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="gsed.jpg" alt="gsed"></p>
+<p>▲ GNU sed (<code>gsed</code>) 不會產生備份檔案，是我熟悉的 <code>sed</code>。<a href="https://dywang.csie.cyut.edu.tw/dywang/linuxProgram/node41.html">dywang - sed</a></p>
+<p>或者麻煩一點可以這樣</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sed -i <span class="s1">&#39;&#39;</span> -e <span class="s1">&#39;s/foo/bar/g&#39;</span> test.txt
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a href="https://stackoverflow.com/questions/43214742/sed-search-and-replace-creating-new-file">cygwin - sed search and replace creating new file - Stack Overflow</a></p>
+<ul>
+<li><strong><a href="https://github.com/brona/iproute2mac?tab=readme-ov-file">iproute2mac</a>: MacOS 版的 <code>iproute2</code>，提供 <code>ip</code> 指令</strong></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">brew install iproute2mac
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><strong><a href="https://github.com/abiosoft/colima">colima: Container runtimes on macOS (and Linux) with minimal setup</a></strong></li>
+</ul>
+<p>Docker Desktop 在 MacOS 上面用起來很卡、很吃資源，所以我後來都使用 <code>colima</code> 取代 Docker Desktop 來提供 docker</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">brew install colima
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">colima start --memory <span class="m">4</span> --cpu <span class="m">4</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">brew install docker-compose
+</span></span><span class="line"><span class="cl">mkdir -p ~/.docker/cli-plugins
+</span></span><span class="line"><span class="cl">ln -sfn /usr/local/opt/docker-compose/bin/docker-compose ~/.docker/cli-plugins/docker-compose
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a href="https://smallsharpsoftwaretools.com/tutorials/use-colima-to-run-docker-containers-on-macos/">Use Colima to Run Docker Containers on macOS – Small Sharp Software Tools</a></p>
+<h3 id="app-系列">App 系列</h3>
+<p><img src="stats.png" alt="stats"></p>
+<p>▲ <a href="https://github.com/exelban/stats">GitHub</a> macOS system monitor in your menu bar</p>
+<p><img src="aidente-applealmond.jpg" alt="aidente-applealmond"></p>
+<p>▲ <a href="https://applealmond.com/posts/89252">圖片來源</a> <a href="https://github.com/AppHouseKitchen/AlDente-Charge-Limiter">AIDente</a> 限制電池充電上限，為電池增加壽命。</p>
+<ul>
+<li><strong><a href="https://github.com/newmarcel/KeepingYouAwake">KeepingYouAwake</a>: 避免 Mac Lock screen 之後就直接關閉顯示器</strong></li>
+</ul>
+<p>外接 hub 在喚醒時可能會等 5~10 秒，很麻煩</p>
+<p><img src="https://raw.githubusercontent.com/newmarcel/KeepingYouAwake/main/Extras/Screenshot%402x.jpg" alt="keeping-you-awake"></p>
+<h2 id="操作系列">操作系列</h2>
+<p><img src="wifi-option.jpg" alt="wifi-option"></p>
+<p>▲ 對著上方工具列 Wi-Fi 圖示按下 + Option (Alt) 可以看 Wi-Fi 頻段。 <del>身為一個阿宅看不到 Wi-Fi 詳細資訊真的很痛苦</del></p>
+<p>如果同時有 Ethernet 與 Wi-Fi 連接，Network service 會決定 default gw 順序</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">networksetup -listnetworkserviceorder
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>re-order <a href="https://apple.stackexchange.com/questions/393301/multiple-default-routes-on-macos">ref</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">networksetup -ordernetworkservices &lt;service1&gt; &lt;service2&gt; &lt;...&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong><span style='color:brown'>清除 DNS Cache</span></strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo dscacheutil -flushcache<span class="p">;</span> sudo killall -HUP mDNSResponder
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong><span style='color:brown'>截圖</span></strong></p>
+<ol>
+<li>選取截圖到剪貼簿： <code>Command + Ctrl + Shift +4</code></li>
+<li>截圖到檔案: <code>Command + Shift + 5</code></li>
+</ol>
+<p>如果要變更截圖預設格式成 JPG</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">defaults write com.apple.screencapture <span class="nb">type</span> jpg
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Eason 哥推薦 <a href="https://www.kocpc.com.tw/archives/280072">Xnip 比 Mac 內建還好用的免費截圖 App - 電腦王阿達</a></p>
+<h2 id="雜項與茶包射手">雜項與茶包射手</h2>
+<p>既不是推薦安裝，也不是操作技巧，就是一些雜項與茶包射手。</p>
+<h3 id="列出背景啟動項目指令-sfltool-dumpbtm">列出背景啟動項目指令 <code>sfltool dumpbtm</code></h3>
+<p><del>我也不知道看 MDM Payload 要幹嘛</del></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"> <span class="n">MDM</span> <span class="n">Payload</span> <span class="n">UUIDs</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">   <span class="mi">1</span><span class="p">:</span> <span class="mi">8</span><span class="n">Cxx619</span><span class="o">-</span><span class="n">xxx</span><span class="o">-</span><span class="mi">456</span><span class="n">B</span><span class="o">-</span><span class="n">ABA7</span><span class="o">-</span><span class="mi">09</span><span class="n">CxxxF43x</span>
+</span></span><span class="line"><span class="cl">   <span class="mi">2</span><span class="p">:</span> <span class="mi">8</span><span class="n">C2xx619</span><span class="o">-</span><span class="n">xxx</span><span class="o">-</span><span class="mi">456</span><span class="n">B</span><span class="o">-</span><span class="n">ABA7</span><span class="o">-</span><span class="mi">09</span><span class="n">Cxxx0F43x</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="oh-my-zsh-開啟-kubectl-自動補齊功能">oh-my-zsh 開啟 kubectl 自動補齊功能</h3>
+<ol>
+<li>zsh plugin 啟用 <code>kubectl</code> &lt;= 理論上應該就有自動補齊功能了</li>
+<li>加上</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">alias</span> <span class="nv">k</span><span class="o">=</span><span class="s2">&#34;kubectl&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nb">source</span> &lt;<span class="o">(</span>kubectl completion zsh <span class="p">|</span> sed <span class="s1">&#39;s/kubectl/k/g&#39;</span><span class="o">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a href="https://erwinvaneyk.nl/kubectl-alias-in-zsh/">Fixing kubectl autocompletion for an alias in Zsh - Deferred Posts</a></p>
+<p><a href="https://www.thorsten-hans.com/autocompletion-for-kubectl-and-aliases-using-oh-my-zsh/">Autocompletion for kubectl and aliases using oh-my-zsh · Thorsten Hans&rsquo; blog</a></p>
+<h3 id="iterm-無法使用-option--arrow-問題">iTerm 無法使用 Option + Arrow 問題</h3>
+<p><img src="iterm-option-arrow.png" alt="iterm-option-arrow"></p>
+<p>▲ <a href="https://apple.stackexchange.com/questions/154292/iterm-going-one-word-backwards-and-forwards">command line - iTerm - going one word backwards and forwards - Ask Different</a></p>
+<h2 id="參考資料">參考資料</h2>
+<ul>
+<li>
+<p><a href="https://medium.com/%E6%95%B8%E6%93%9A%E4%B8%8D%E6%AD%A2-not-only-data/macos-%E7%9A%84-terminal-%E5%A4%A7%E6%94%B9%E9%80%A0-iterms-oh-my-zsh-%E5%85%A8%E6%94%BB%E7%95%A5-77d5aae87b10">如何讓 Terminal 看起來好用又好看｜iTerms 2 + Oh-my-zsh 全攻略 | by 學．誌｜Chris Kang | 不止數據｜Not Only Data | Medium</a></p>
+</li>
+<li>
+<p><a href="https://github.com/adileo/squirreldisk">[跨平台硬碟空間掃描] adileo/squirreldisk: Beautiful, Cross-Platform and Super Fast Disk Usage Analysis Tool - Built With Rust</a></p>
+</li>
+<li>
+<p><a href="https://macuknow.com/2022/10/17/4833/betterdisplay/">解放 M1/M2 Mac 的外接螢幕 HiDPI 的實用軟體：BetterDisplay | MacUknow</a></p>
+</li>
+<li>
+<p><a href="https://github.com/waydabber/BetterDisplay/wiki/Fully-scalable-HiDPI-desktop">Fully scalable HiDPI desktop · waydabber/BetterDisplay Wiki</a></p>
+</li>
+</ul>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2024-03-22
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/macos/">macos</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/20230613-kubernetes-dashboard-install-note/">
+            <span class="next-text nav-default">Kubernetes Dashboard 安裝筆記</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022 - 
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

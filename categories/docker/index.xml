@@ -2,31 +2,31 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Docker on 老柯的學習筆記</title>
-    <link>https://blog.xxzk.me/categories/docker/</link>
+    <link>http://localhost:1313/categories/docker/</link>
     <description>Recent content in Docker on 老柯的學習筆記</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Mon, 12 Sep 2022 14:41:23 +0800</lastBuildDate>
-    <atom:link href="https://blog.xxzk.me/categories/docker/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/categories/docker/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Docker 容器與容器的連結。Grafana &#43; Prometheus &#43; Blackbox_expoter</title>
-      <link>https://blog.xxzk.me/post/20210629-docker-container-link/</link>
+      <link>http://localhost:1313/post/20210629-docker-container-link/</link>
       <pubDate>Tue, 29 Jun 2021 17:33:04 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20210629-docker-container-link/</guid>
+      <guid>http://localhost:1313/post/20210629-docker-container-link/</guid>
       <description>此篇筆記紀錄如何使用 docker run --link ... 讓容器與容器之間連結。順便給 Upton 參考監控 LAB 要怎麼出~ Blackbox_expoter 1 docker run -itd --name blackbox_expoter -p 9115:9115 -v /root/yml/blackbox_expoter/:/config --restart always prom/blackbox-exporter:master --config.file=/config/blackbox.yml blackbox.yml 更多範例 可以從 blackbox_expoter/example.yml 尋找。 關於設定</description>
     </item>
     <item>
       <title>Docker Image 介紹</title>
-      <link>https://blog.xxzk.me/post/20210608-intro_docker_image/</link>
+      <link>http://localhost:1313/post/20210608-intro_docker_image/</link>
       <pubDate>Tue, 08 Jun 2021 15:54:10 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20210608-intro_docker_image/</guid>
+      <guid>http://localhost:1313/post/20210608-intro_docker_image/</guid>
       <description>圖片來源 此篇筆記主要參考 Docker 官方文件 About storage drivers 主要記錄自己找到的資料，所以不是很有系統性的教學。不過文內有附上邱宏瑋 (hwchiu) 鐵人賽系列文章，需要完整學習</description>
     </item>
     <item>
       <title>Docker Volumes 介紹</title>
-      <link>https://blog.xxzk.me/post/20210513-intro_docker_volume/</link>
+      <link>http://localhost:1313/post/20210513-intro_docker_volume/</link>
       <pubDate>Thu, 13 May 2021 13:37:47 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20210513-intro_docker_volume/</guid>
+      <guid>http://localhost:1313/post/20210513-intro_docker_volume/</guid>
       <description>Docker docs Use volumes 前言 Docker Volume 是一個比較好的機制將 Docker Container 產生的資料永久保存 有稍微摸索過 Docker 的人可能會有點疑惑: 不是可以透過 -v /home/xzk:/mydata 把 host OS 上面的目錄映射進去 container 裡面嗎</description>
     </item>
   </channel>

@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Dig on 老柯的學習筆記</title>
-    <link>https://blog.xxzk.me/tags/dig/</link>
+    <link>http://localhost:1313/tags/dig/</link>
     <description>Recent content in Dig on 老柯的學習筆記</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Mon, 12 Sep 2022 13:48:23 +0800</lastBuildDate>
-    <atom:link href="https://blog.xxzk.me/tags/dig/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/dig/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>淺談 DNSSEC 使用 dig</title>
-      <link>https://blog.xxzk.me/post/20201210-about-dnssec-using-dig/</link>
+      <link>http://localhost:1313/post/20201210-about-dnssec-using-dig/</link>
       <pubDate>Thu, 10 Dec 2020 11:46:20 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20201210-about-dnssec-using-dig/</guid>
+      <guid>http://localhost:1313/post/20201210-about-dnssec-using-dig/</guid>
       <description>圖片來源 CloudFlare 在開始之前必須先搞懂&amp;hellip;. DNS 在 Internet 中扮演什麼角色、功能是什麼 域名註冊商 DOMAIN name registrar 與 DNS hosting 域名伺服器託管商 的差別 DNSSEC 是什麼，為什麼</description>
     </item>
   </channel>

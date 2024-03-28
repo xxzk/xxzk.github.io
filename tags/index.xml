@@ -2,423 +2,430 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on 老柯的學習筆記</title>
-    <link>https://blog.xxzk.me/tags/</link>
+    <link>http://localhost:1313/tags/</link>
     <description>Recent content in Tags on 老柯的學習筆記</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 13 Jun 2023 15:15:27 +0000</lastBuildDate>
-    <atom:link href="https://blog.xxzk.me/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 22 Mar 2024 11:10:55 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Macos</title>
+      <link>http://localhost:1313/tags/macos/</link>
+      <pubDate>Fri, 22 Mar 2024 11:10:55 +0000</pubDate>
+      <guid>http://localhost:1313/tags/macos/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Kubernetes</title>
-      <link>https://blog.xxzk.me/tags/kubernetes/</link>
+      <link>http://localhost:1313/tags/kubernetes/</link>
       <pubDate>Tue, 13 Jun 2023 15:15:27 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/kubernetes/</guid>
+      <guid>http://localhost:1313/tags/kubernetes/</guid>
       <description></description>
     </item>
     <item>
       <title>AWS</title>
-      <link>https://blog.xxzk.me/tags/aws/</link>
+      <link>http://localhost:1313/tags/aws/</link>
       <pubDate>Tue, 18 Apr 2023 14:32:50 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/aws/</guid>
+      <guid>http://localhost:1313/tags/aws/</guid>
       <description></description>
     </item>
     <item>
       <title>Cloud</title>
-      <link>https://blog.xxzk.me/tags/cloud/</link>
+      <link>http://localhost:1313/tags/cloud/</link>
       <pubDate>Mon, 13 Feb 2023 15:30:50 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/cloud/</guid>
+      <guid>http://localhost:1313/tags/cloud/</guid>
       <description></description>
     </item>
     <item>
       <title>Linux</title>
-      <link>https://blog.xxzk.me/tags/linux/</link>
+      <link>http://localhost:1313/tags/linux/</link>
       <pubDate>Tue, 08 Nov 2022 13:49:51 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/linux/</guid>
+      <guid>http://localhost:1313/tags/linux/</guid>
       <description></description>
     </item>
     <item>
       <title>Grafana</title>
-      <link>https://blog.xxzk.me/tags/grafana/</link>
+      <link>http://localhost:1313/tags/grafana/</link>
       <pubDate>Thu, 25 Aug 2022 11:49:44 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/grafana/</guid>
+      <guid>http://localhost:1313/tags/grafana/</guid>
       <description></description>
     </item>
     <item>
       <title>Prometheus</title>
-      <link>https://blog.xxzk.me/tags/prometheus/</link>
+      <link>http://localhost:1313/tags/prometheus/</link>
       <pubDate>Thu, 25 Aug 2022 11:49:44 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/prometheus/</guid>
+      <guid>http://localhost:1313/tags/prometheus/</guid>
       <description></description>
     </item>
     <item>
       <title>Snmp</title>
-      <link>https://blog.xxzk.me/tags/snmp/</link>
+      <link>http://localhost:1313/tags/snmp/</link>
       <pubDate>Thu, 25 Aug 2022 11:49:44 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/snmp/</guid>
+      <guid>http://localhost:1313/tags/snmp/</guid>
       <description></description>
     </item>
     <item>
       <title>CKA-Note</title>
-      <link>https://blog.xxzk.me/tags/cka-note/</link>
+      <link>http://localhost:1313/tags/cka-note/</link>
       <pubDate>Tue, 26 Jul 2022 13:55:27 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/cka-note/</guid>
+      <guid>http://localhost:1313/tags/cka-note/</guid>
       <description></description>
     </item>
     <item>
       <title>Clamav</title>
-      <link>https://blog.xxzk.me/tags/clamav/</link>
+      <link>http://localhost:1313/tags/clamav/</link>
       <pubDate>Mon, 18 Jul 2022 16:19:40 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/clamav/</guid>
+      <guid>http://localhost:1313/tags/clamav/</guid>
       <description></description>
     </item>
     <item>
       <title>Docker</title>
-      <link>https://blog.xxzk.me/tags/docker/</link>
+      <link>http://localhost:1313/tags/docker/</link>
       <pubDate>Thu, 23 Jun 2022 14:50:31 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/docker/</guid>
+      <guid>http://localhost:1313/tags/docker/</guid>
       <description></description>
     </item>
     <item>
       <title>LibreNMS</title>
-      <link>https://blog.xxzk.me/tags/librenms/</link>
+      <link>http://localhost:1313/tags/librenms/</link>
       <pubDate>Thu, 23 Jun 2022 14:50:31 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/librenms/</guid>
+      <guid>http://localhost:1313/tags/librenms/</guid>
       <description></description>
     </item>
     <item>
       <title>Vcsa</title>
-      <link>https://blog.xxzk.me/tags/vcsa/</link>
+      <link>http://localhost:1313/tags/vcsa/</link>
       <pubDate>Tue, 21 Jun 2022 15:46:54 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/vcsa/</guid>
+      <guid>http://localhost:1313/tags/vcsa/</guid>
       <description></description>
     </item>
     <item>
       <title>Dimm</title>
-      <link>https://blog.xxzk.me/tags/dimm/</link>
+      <link>http://localhost:1313/tags/dimm/</link>
       <pubDate>Mon, 06 Jun 2022 09:19:33 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/dimm/</guid>
+      <guid>http://localhost:1313/tags/dimm/</guid>
       <description></description>
     </item>
     <item>
       <title>Server</title>
-      <link>https://blog.xxzk.me/tags/server/</link>
+      <link>http://localhost:1313/tags/server/</link>
       <pubDate>Mon, 06 Jun 2022 09:19:33 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/server/</guid>
+      <guid>http://localhost:1313/tags/server/</guid>
       <description></description>
     </item>
     <item>
       <title>GitHub</title>
-      <link>https://blog.xxzk.me/tags/github/</link>
+      <link>http://localhost:1313/tags/github/</link>
       <pubDate>Thu, 28 Apr 2022 15:47:12 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/github/</guid>
+      <guid>http://localhost:1313/tags/github/</guid>
       <description></description>
     </item>
     <item>
       <title>Hexo</title>
-      <link>https://blog.xxzk.me/tags/hexo/</link>
+      <link>http://localhost:1313/tags/hexo/</link>
       <pubDate>Thu, 28 Apr 2022 15:47:12 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/hexo/</guid>
+      <guid>http://localhost:1313/tags/hexo/</guid>
       <description></description>
     </item>
     <item>
       <title>Network</title>
-      <link>https://blog.xxzk.me/tags/network/</link>
+      <link>http://localhost:1313/tags/network/</link>
       <pubDate>Fri, 26 Nov 2021 14:23:11 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/network/</guid>
+      <guid>http://localhost:1313/tags/network/</guid>
       <description></description>
     </item>
     <item>
       <title>CKAD</title>
-      <link>https://blog.xxzk.me/tags/ckad/</link>
+      <link>http://localhost:1313/tags/ckad/</link>
       <pubDate>Wed, 10 Nov 2021 11:05:08 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/ckad/</guid>
+      <guid>http://localhost:1313/tags/ckad/</guid>
       <description></description>
     </item>
     <item>
       <title>Cloudflare</title>
-      <link>https://blog.xxzk.me/tags/cloudflare/</link>
+      <link>http://localhost:1313/tags/cloudflare/</link>
       <pubDate>Wed, 13 Oct 2021 15:47:29 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/cloudflare/</guid>
+      <guid>http://localhost:1313/tags/cloudflare/</guid>
       <description></description>
     </item>
     <item>
       <title>SSL-TLS-Certification</title>
-      <link>https://blog.xxzk.me/tags/ssl-tls-certification/</link>
+      <link>http://localhost:1313/tags/ssl-tls-certification/</link>
       <pubDate>Wed, 13 Oct 2021 15:47:29 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/ssl-tls-certification/</guid>
+      <guid>http://localhost:1313/tags/ssl-tls-certification/</guid>
       <description></description>
     </item>
     <item>
       <title>Terraform</title>
-      <link>https://blog.xxzk.me/tags/terraform/</link>
+      <link>http://localhost:1313/tags/terraform/</link>
       <pubDate>Wed, 22 Sep 2021 15:36:09 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/terraform/</guid>
+      <guid>http://localhost:1313/tags/terraform/</guid>
       <description></description>
     </item>
     <item>
       <title>Ansible</title>
-      <link>https://blog.xxzk.me/tags/ansible/</link>
+      <link>http://localhost:1313/tags/ansible/</link>
       <pubDate>Tue, 07 Sep 2021 09:36:54 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/ansible/</guid>
+      <guid>http://localhost:1313/tags/ansible/</guid>
       <description></description>
     </item>
     <item>
       <title>Dell</title>
-      <link>https://blog.xxzk.me/tags/dell/</link>
+      <link>http://localhost:1313/tags/dell/</link>
       <pubDate>Fri, 23 Jul 2021 13:59:15 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/dell/</guid>
+      <guid>http://localhost:1313/tags/dell/</guid>
       <description></description>
     </item>
     <item>
       <title>Iscsi</title>
-      <link>https://blog.xxzk.me/tags/iscsi/</link>
+      <link>http://localhost:1313/tags/iscsi/</link>
       <pubDate>Fri, 23 Jul 2021 13:59:15 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/iscsi/</guid>
+      <guid>http://localhost:1313/tags/iscsi/</guid>
       <description></description>
     </item>
     <item>
       <title>Minicom</title>
-      <link>https://blog.xxzk.me/tags/minicom/</link>
+      <link>http://localhost:1313/tags/minicom/</link>
       <pubDate>Fri, 23 Jul 2021 13:59:15 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/minicom/</guid>
+      <guid>http://localhost:1313/tags/minicom/</guid>
       <description></description>
     </item>
     <item>
       <title>Infra</title>
-      <link>https://blog.xxzk.me/tags/infra/</link>
+      <link>http://localhost:1313/tags/infra/</link>
       <pubDate>Thu, 22 Jul 2021 08:53:50 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/infra/</guid>
+      <guid>http://localhost:1313/tags/infra/</guid>
       <description></description>
     </item>
     <item>
       <title>Minikube</title>
-      <link>https://blog.xxzk.me/tags/minikube/</link>
+      <link>http://localhost:1313/tags/minikube/</link>
       <pubDate>Thu, 17 Jun 2021 09:29:55 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/minikube/</guid>
+      <guid>http://localhost:1313/tags/minikube/</guid>
       <description></description>
     </item>
     <item>
       <title>Tmux</title>
-      <link>https://blog.xxzk.me/tags/tmux/</link>
+      <link>http://localhost:1313/tags/tmux/</link>
       <pubDate>Fri, 11 Jun 2021 13:04:29 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/tmux/</guid>
+      <guid>http://localhost:1313/tags/tmux/</guid>
       <description></description>
     </item>
     <item>
       <title>Image</title>
-      <link>https://blog.xxzk.me/tags/image/</link>
+      <link>http://localhost:1313/tags/image/</link>
       <pubDate>Tue, 08 Jun 2021 15:54:10 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/image/</guid>
+      <guid>http://localhost:1313/tags/image/</guid>
       <description></description>
     </item>
     <item>
       <title>Nextcloud</title>
-      <link>https://blog.xxzk.me/tags/nextcloud/</link>
+      <link>http://localhost:1313/tags/nextcloud/</link>
       <pubDate>Thu, 27 May 2021 15:11:37 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/nextcloud/</guid>
+      <guid>http://localhost:1313/tags/nextcloud/</guid>
       <description></description>
     </item>
     <item>
       <title>Vsphere</title>
-      <link>https://blog.xxzk.me/tags/vsphere/</link>
+      <link>http://localhost:1313/tags/vsphere/</link>
       <pubDate>Wed, 12 May 2021 11:25:56 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/vsphere/</guid>
+      <guid>http://localhost:1313/tags/vsphere/</guid>
       <description></description>
     </item>
     <item>
       <title>Minio</title>
-      <link>https://blog.xxzk.me/tags/minio/</link>
+      <link>http://localhost:1313/tags/minio/</link>
       <pubDate>Mon, 03 May 2021 13:41:55 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/minio/</guid>
+      <guid>http://localhost:1313/tags/minio/</guid>
       <description></description>
     </item>
     <item>
       <title>Keepalived</title>
-      <link>https://blog.xxzk.me/tags/keepalived/</link>
+      <link>http://localhost:1313/tags/keepalived/</link>
       <pubDate>Mon, 19 Apr 2021 15:40:55 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/keepalived/</guid>
+      <guid>http://localhost:1313/tags/keepalived/</guid>
       <description></description>
     </item>
     <item>
       <title>Bookstack</title>
-      <link>https://blog.xxzk.me/tags/bookstack/</link>
+      <link>http://localhost:1313/tags/bookstack/</link>
       <pubDate>Thu, 01 Apr 2021 13:19:05 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/bookstack/</guid>
+      <guid>http://localhost:1313/tags/bookstack/</guid>
       <description></description>
     </item>
     <item>
       <title>DB</title>
-      <link>https://blog.xxzk.me/tags/db/</link>
+      <link>http://localhost:1313/tags/db/</link>
       <pubDate>Wed, 24 Mar 2021 11:55:50 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/db/</guid>
+      <guid>http://localhost:1313/tags/db/</guid>
       <description></description>
     </item>
     <item>
       <title>MariaDB</title>
-      <link>https://blog.xxzk.me/tags/mariadb/</link>
+      <link>http://localhost:1313/tags/mariadb/</link>
       <pubDate>Wed, 24 Mar 2021 11:55:50 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/mariadb/</guid>
+      <guid>http://localhost:1313/tags/mariadb/</guid>
       <description></description>
     </item>
     <item>
       <title>Alert</title>
-      <link>https://blog.xxzk.me/tags/alert/</link>
+      <link>http://localhost:1313/tags/alert/</link>
       <pubDate>Tue, 02 Mar 2021 14:22:28 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/alert/</guid>
+      <guid>http://localhost:1313/tags/alert/</guid>
       <description></description>
     </item>
     <item>
       <title>Vmotion</title>
-      <link>https://blog.xxzk.me/tags/vmotion/</link>
+      <link>http://localhost:1313/tags/vmotion/</link>
       <pubDate>Wed, 24 Feb 2021 13:21:00 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/vmotion/</guid>
+      <guid>http://localhost:1313/tags/vmotion/</guid>
       <description></description>
     </item>
     <item>
       <title>Vmware</title>
-      <link>https://blog.xxzk.me/tags/vmware/</link>
+      <link>http://localhost:1313/tags/vmware/</link>
       <pubDate>Wed, 24 Feb 2021 13:21:00 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/vmware/</guid>
+      <guid>http://localhost:1313/tags/vmware/</guid>
       <description></description>
     </item>
     <item>
       <title>Apache</title>
-      <link>https://blog.xxzk.me/tags/apache/</link>
+      <link>http://localhost:1313/tags/apache/</link>
       <pubDate>Tue, 23 Feb 2021 14:33:37 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/apache/</guid>
+      <guid>http://localhost:1313/tags/apache/</guid>
       <description></description>
     </item>
     <item>
       <title>Nginx</title>
-      <link>https://blog.xxzk.me/tags/nginx/</link>
+      <link>http://localhost:1313/tags/nginx/</link>
       <pubDate>Tue, 23 Feb 2021 14:33:37 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/nginx/</guid>
+      <guid>http://localhost:1313/tags/nginx/</guid>
       <description></description>
     </item>
     <item>
       <title>Openssl</title>
-      <link>https://blog.xxzk.me/tags/openssl/</link>
+      <link>http://localhost:1313/tags/openssl/</link>
       <pubDate>Tue, 23 Feb 2021 14:33:37 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/openssl/</guid>
+      <guid>http://localhost:1313/tags/openssl/</guid>
       <description></description>
     </item>
     <item>
       <title>Php</title>
-      <link>https://blog.xxzk.me/tags/php/</link>
+      <link>http://localhost:1313/tags/php/</link>
       <pubDate>Tue, 23 Feb 2021 14:33:37 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/php/</guid>
+      <guid>http://localhost:1313/tags/php/</guid>
       <description></description>
     </item>
     <item>
       <title>Httpd</title>
-      <link>https://blog.xxzk.me/tags/httpd/</link>
+      <link>http://localhost:1313/tags/httpd/</link>
       <pubDate>Sat, 20 Feb 2021 10:54:58 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/httpd/</guid>
+      <guid>http://localhost:1313/tags/httpd/</guid>
       <description></description>
     </item>
     <item>
       <title>ESXi</title>
-      <link>https://blog.xxzk.me/tags/esxi/</link>
+      <link>http://localhost:1313/tags/esxi/</link>
       <pubDate>Fri, 22 Jan 2021 13:46:48 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/esxi/</guid>
+      <guid>http://localhost:1313/tags/esxi/</guid>
       <description></description>
     </item>
     <item>
       <title>Nsx-T</title>
-      <link>https://blog.xxzk.me/tags/nsx-t/</link>
+      <link>http://localhost:1313/tags/nsx-t/</link>
       <pubDate>Thu, 24 Dec 2020 13:46:50 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/nsx-t/</guid>
+      <guid>http://localhost:1313/tags/nsx-t/</guid>
       <description></description>
     </item>
     <item>
       <title>Vpn</title>
-      <link>https://blog.xxzk.me/tags/vpn/</link>
+      <link>http://localhost:1313/tags/vpn/</link>
       <pubDate>Mon, 21 Dec 2020 10:26:39 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/vpn/</guid>
+      <guid>http://localhost:1313/tags/vpn/</guid>
       <description></description>
     </item>
     <item>
       <title>Wireguard</title>
-      <link>https://blog.xxzk.me/tags/wireguard/</link>
+      <link>http://localhost:1313/tags/wireguard/</link>
       <pubDate>Mon, 21 Dec 2020 10:26:39 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/wireguard/</guid>
+      <guid>http://localhost:1313/tags/wireguard/</guid>
       <description></description>
     </item>
     <item>
       <title>Dig</title>
-      <link>https://blog.xxzk.me/tags/dig/</link>
+      <link>http://localhost:1313/tags/dig/</link>
       <pubDate>Thu, 10 Dec 2020 11:46:20 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/dig/</guid>
+      <guid>http://localhost:1313/tags/dig/</guid>
       <description></description>
     </item>
     <item>
       <title>DNS</title>
-      <link>https://blog.xxzk.me/tags/dns/</link>
+      <link>http://localhost:1313/tags/dns/</link>
       <pubDate>Thu, 10 Dec 2020 11:46:20 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/dns/</guid>
+      <guid>http://localhost:1313/tags/dns/</guid>
       <description></description>
     </item>
     <item>
       <title>Forti</title>
-      <link>https://blog.xxzk.me/tags/forti/</link>
+      <link>http://localhost:1313/tags/forti/</link>
       <pubDate>Thu, 12 Nov 2020 17:34:41 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/forti/</guid>
+      <guid>http://localhost:1313/tags/forti/</guid>
       <description></description>
     </item>
     <item>
       <title>RDP</title>
-      <link>https://blog.xxzk.me/tags/rdp/</link>
+      <link>http://localhost:1313/tags/rdp/</link>
       <pubDate>Thu, 15 Oct 2020 13:53:23 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/rdp/</guid>
+      <guid>http://localhost:1313/tags/rdp/</guid>
       <description></description>
     </item>
     <item>
       <title>Ubuntu</title>
-      <link>https://blog.xxzk.me/tags/ubuntu/</link>
+      <link>http://localhost:1313/tags/ubuntu/</link>
       <pubDate>Thu, 15 Oct 2020 13:53:23 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/ubuntu/</guid>
+      <guid>http://localhost:1313/tags/ubuntu/</guid>
       <description></description>
     </item>
     <item>
       <title>Rclone</title>
-      <link>https://blog.xxzk.me/tags/rclone/</link>
+      <link>http://localhost:1313/tags/rclone/</link>
       <pubDate>Mon, 12 Oct 2020 13:48:24 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/rclone/</guid>
+      <guid>http://localhost:1313/tags/rclone/</guid>
       <description></description>
     </item>
     <item>
       <title>FTTH</title>
-      <link>https://blog.xxzk.me/tags/ftth/</link>
+      <link>http://localhost:1313/tags/ftth/</link>
       <pubDate>Tue, 29 Sep 2020 11:37:08 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/ftth/</guid>
+      <guid>http://localhost:1313/tags/ftth/</guid>
       <description></description>
     </item>
     <item>
       <title>GPON</title>
-      <link>https://blog.xxzk.me/tags/gpon/</link>
+      <link>http://localhost:1313/tags/gpon/</link>
       <pubDate>Tue, 29 Sep 2020 11:37:08 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/gpon/</guid>
+      <guid>http://localhost:1313/tags/gpon/</guid>
       <description></description>
     </item>
     <item>
       <title>HiNet</title>
-      <link>https://blog.xxzk.me/tags/hinet/</link>
+      <link>http://localhost:1313/tags/hinet/</link>
       <pubDate>Tue, 29 Sep 2020 11:37:08 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/hinet/</guid>
+      <guid>http://localhost:1313/tags/hinet/</guid>
       <description></description>
     </item>
     <item>
       <title>Log</title>
-      <link>https://blog.xxzk.me/tags/log/</link>
+      <link>http://localhost:1313/tags/log/</link>
       <pubDate>Thu, 24 Sep 2020 15:29:12 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/log/</guid>
+      <guid>http://localhost:1313/tags/log/</guid>
       <description></description>
     </item>
     <item>
       <title>Graylog</title>
-      <link>https://blog.xxzk.me/tags/graylog/</link>
+      <link>http://localhost:1313/tags/graylog/</link>
       <pubDate>Thu, 24 Sep 2020 15:09:16 +0000</pubDate>
-      <guid>https://blog.xxzk.me/tags/graylog/</guid>
+      <guid>http://localhost:1313/tags/graylog/</guid>
       <description></description>
     </item>
   </channel>

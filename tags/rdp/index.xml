@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>RDP on 老柯的學習筆記</title>
-    <link>https://blog.xxzk.me/tags/rdp/</link>
+    <link>http://localhost:1313/tags/rdp/</link>
     <description>Recent content in RDP on 老柯的學習筆記</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Thu, 22 Dec 2022 15:28:33 +0800</lastBuildDate>
-    <atom:link href="https://blog.xxzk.me/tags/rdp/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/rdp/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>在 Ubuntu 使用 Windows 遠端桌面 (RDP)</title>
-      <link>https://blog.xxzk.me/post/20201015-ubuntu-rdp-client-remmina/</link>
+      <link>http://localhost:1313/post/20201015-ubuntu-rdp-client-remmina/</link>
       <pubDate>Thu, 15 Oct 2020 13:53:23 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20201015-ubuntu-rdp-client-remmina/</guid>
+      <guid>http://localhost:1313/post/20201015-ubuntu-rdp-client-remmina/</guid>
       <description>20201016 更新 公司架構圖的 IPsec 是 Site to Site VPN 啦! 一般使用者用的是 Remote access VPN 採用 SSL VPN FortiClient for Linux 可以正常使用喔~ 自己雷自己 這篇會出產的原因是因為&amp;hellip;. FortiClient Linux</description>
     </item>
   </channel>

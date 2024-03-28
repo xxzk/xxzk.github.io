@@ -2,38 +2,38 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Network on 老柯的學習筆記</title>
-    <link>https://blog.xxzk.me/categories/network/</link>
+    <link>http://localhost:1313/categories/network/</link>
     <description>Recent content in Network on 老柯的學習筆記</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Tue, 27 Dec 2022 14:48:53 +0800</lastBuildDate>
-    <atom:link href="https://blog.xxzk.me/categories/network/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/categories/network/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Linux 限制網路速度，使用 Wondershaper</title>
-      <link>https://blog.xxzk.me/post/20211126-linux-network-limiter-wondershaper/20211126-linux-network-limiter-wondershaper/</link>
+      <link>http://localhost:1313/post/20211126-linux-network-limiter-wondershaper/20211126-linux-network-limiter-wondershaper/</link>
       <pubDate>Fri, 26 Nov 2021 14:23:11 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20211126-linux-network-limiter-wondershaper/20211126-linux-network-limiter-wondershaper/</guid>
+      <guid>http://localhost:1313/post/20211126-linux-network-limiter-wondershaper/20211126-linux-network-limiter-wondershaper/</guid>
       <description>Wonder Shaper 是一支底層使用 Linux 自帶的流量控制命令 tc 的 shell script，能夠簡單、方便、快速 達成限流的目的 在 Wonder Shaper v1.3 以上版本等待列隊方式從本來的 CBQ 變更成 HT</description>
     </item>
     <item>
       <title>簡單介紹 VMWare NSX Network Virtualization Platform</title>
-      <link>https://blog.xxzk.me/post/20201224-simply-introduce-vmware-nsxt/</link>
+      <link>http://localhost:1313/post/20201224-simply-introduce-vmware-nsxt/</link>
       <pubDate>Thu, 24 Dec 2020 13:46:50 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20201224-simply-introduce-vmware-nsxt/</guid>
+      <guid>http://localhost:1313/post/20201224-simply-introduce-vmware-nsxt/</guid>
       <description>VMwatre NSX Network Virtualization Platform 是一個涵蓋 L2 ~ L7 的網路虛擬化平台 是 VMWare 併購 Nicira 後的產物 什麼是網路虛擬化 ▲ 圖片來源 The VMware NSX Network Virtualization Platform 白皮書 左邊的 Server Virtualization 是將 Bare-Metal (Hardware,</description>
     </item>
     <item>
       <title>Wireguard 實作 (WAN IP version)</title>
-      <link>https://blog.xxzk.me/post/20201221-hands-on-wireguard-wan-ip-version/</link>
+      <link>http://localhost:1313/post/20201221-hands-on-wireguard-wan-ip-version/</link>
       <pubDate>Mon, 21 Dec 2020 10:26:39 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20201221-hands-on-wireguard-wan-ip-version/</guid>
+      <guid>http://localhost:1313/post/20201221-hands-on-wireguard-wan-ip-version/</guid>
       <description>介紹 WireGuard 是一款開放原始碼的 VPN 程式，主打簡單快速 (任何設備) 並且效能比 IPSec、OpenVPN 更快，安全性方面更是強調 &amp;ldquo;state of the art&amp;rdquo; (最先進的) 安全</description>
     </item>
     <item>
       <title>淺談 vDS (網路虛擬化 NSX-T 功能之一)</title>
-      <link>https://blog.xxzk.me/post/20201026-introduce-vmware-vds/</link>
+      <link>http://localhost:1313/post/20201026-introduce-vmware-vds/</link>
       <pubDate>Mon, 26 Oct 2020 14:05:21 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20201026-introduce-vmware-vds/</guid>
+      <guid>http://localhost:1313/post/20201026-introduce-vmware-vds/</guid>
       <description>vDS 是什麼 ? 為什麼要用它 ? vDS 全名 vSphere Distributed Switch 是 VMWare vSphere 產品線下 SDN (Software Defined Networking) 的產物，在 vDS 出來之前也有一款叫做 vSS (vSphere Standard Switch) 的產品。 比起 vSS 需要部屬在每一台 ESXi host ， vDS 統一</description>
     </item>
   </channel>

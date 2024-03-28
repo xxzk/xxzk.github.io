@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Infra on 老柯的學習筆記</title>
-    <link>https://blog.xxzk.me/tags/infra/</link>
+    <link>http://localhost:1313/tags/infra/</link>
     <description>Recent content in Infra on 老柯的學習筆記</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Thu, 06 Oct 2022 16:13:56 +0800</lastBuildDate>
-    <atom:link href="https://blog.xxzk.me/tags/infra/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/infra/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>200 LAB Network 網通設備設定筆記</title>
-      <link>https://blog.xxzk.me/post/20210722-lab-200-network-device-setting-note/</link>
+      <link>http://localhost:1313/post/20210722-lab-200-network-device-setting-note/</link>
       <pubDate>Thu, 22 Jul 2021 08:53:50 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20210722-lab-200-network-device-setting-note/</guid>
+      <guid>http://localhost:1313/post/20210722-lab-200-network-device-setting-note/</guid>
       <description>Cisco 3750G 前言日記 在記錄設定前先來段日記 XD，Cisco 3750G 章節紀錄機櫃搬遷後 Cisco 3750G 24TS 作為系統組自管 ToS (Top of Switch) 使用。 原先 K8s LAB 因為留停期間同事有拿來實驗 O</description>
     </item>
   </channel>

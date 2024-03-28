@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Rclone on 老柯的學習筆記</title>
-    <link>https://blog.xxzk.me/tags/rclone/</link>
+    <link>http://localhost:1313/tags/rclone/</link>
     <description>Recent content in Rclone on 老柯的學習筆記</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Tue, 13 Sep 2022 17:47:30 +0800</lastBuildDate>
-    <atom:link href="https://blog.xxzk.me/tags/rclone/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/rclone/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>EncFS &#43; Rclone 公有雲變私有雲，還能掛載串流!</title>
-      <link>https://blog.xxzk.me/post/20201012-encfs-rclone/</link>
+      <link>http://localhost:1313/post/20201012-encfs-rclone/</link>
       <pubDate>Mon, 12 Oct 2020 13:48:24 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20201012-encfs-rclone/</guid>
+      <guid>http://localhost:1313/post/20201012-encfs-rclone/</guid>
       <description>前幾天看到 G Suite 改版的消息，雖然 Education 與 Business 往後都沒有 看似 10T 實際上有無限儲存空間 的雲端硬碟能用了，不過 5TB 的空間對於一般用戶 (冷儲存) 來說已經非常夠用</description>
     </item>
   </channel>

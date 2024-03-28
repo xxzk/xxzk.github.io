@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Dimm on 老柯的學習筆記</title>
-    <link>https://blog.xxzk.me/tags/dimm/</link>
+    <link>http://localhost:1313/tags/dimm/</link>
     <description>Recent content in Dimm on 老柯的學習筆記</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Thu, 09 Jun 2022 15:02:43 +0800</lastBuildDate>
-    <atom:link href="https://blog.xxzk.me/tags/dimm/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/dimm/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>閱讀 R730XD owner manual 淺析伺服器記憶體</title>
-      <link>https://blog.xxzk.me/post/20220606-read-r730xd-owner-manual-learning-about-server-dimm/</link>
+      <link>http://localhost:1313/post/20220606-read-r730xd-owner-manual-learning-about-server-dimm/</link>
       <pubDate>Mon, 06 Jun 2022 09:19:33 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20220606-read-r730xd-owner-manual-learning-about-server-dimm/</guid>
+      <guid>http://localhost:1313/post/20220606-read-r730xd-owner-manual-learning-about-server-dimm/</guid>
       <description>這篇筆記紀錄閱讀 Dell R730XD owners manual 記憶體 (memory) 學到的東西，藉此還債。 ▲ 主修資工腦袋空空 科普資源 在開始讀 owner manual 之前，有幾個關於 DIMM (Double In-line Memory Module) 的科普資源，建議先看。</description>
     </item>
   </channel>

@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Keepalived on 老柯的學習筆記</title>
-    <link>https://blog.xxzk.me/tags/keepalived/</link>
+    <link>http://localhost:1313/tags/keepalived/</link>
     <description>Recent content in Keepalived on 老柯的學習筆記</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Mon, 26 Dec 2022 14:47:20 +0800</lastBuildDate>
-    <atom:link href="https://blog.xxzk.me/tags/keepalived/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/keepalived/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Nginx Keepalived (HA) 設定</title>
-      <link>https://blog.xxzk.me/post/20210419-introduce-keepalived/</link>
+      <link>http://localhost:1313/post/20210419-introduce-keepalived/</link>
       <pubDate>Mon, 19 Apr 2021 15:40:55 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20210419-introduce-keepalived/</guid>
+      <guid>http://localhost:1313/post/20210419-introduce-keepalived/</guid>
       <description>本篇筆記參考: NGINX Document-High Availability Support Based on keepalived [sysctl]CentLinux-keepalived: Configure Floating IP in CentOS 7 Servers nixCraft-Verify: Keepalived IP Failover Working Or Not With tcpdump Command man keepalived.conf Keepalived 是一套由 C 語言撰寫的路由軟體 (Routing software)，主要目的是提供 Linux 設施</description>
     </item>
   </channel>

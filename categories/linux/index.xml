@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Linux on 老柯的學習筆記</title>
-    <link>https://blog.xxzk.me/categories/linux/</link>
+    <link>http://localhost:1313/categories/linux/</link>
     <description>Recent content in Linux on 老柯的學習筆記</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Mon, 21 Nov 2022 17:40:30 +0800</lastBuildDate>
-    <atom:link href="https://blog.xxzk.me/categories/linux/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/categories/linux/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Linux 系統監控命令使用筆記 (ps,top,htop)</title>
-      <link>https://blog.xxzk.me/post/20221108-linux-process-monitoring-command-usage/</link>
+      <link>http://localhost:1313/post/20221108-linux-process-monitoring-command-usage/</link>
       <pubDate>Tue, 08 Nov 2022 13:49:51 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20221108-linux-process-monitoring-command-usage/</guid>
+      <guid>http://localhost:1313/post/20221108-linux-process-monitoring-command-usage/</guid>
       <description>前言 每次想要查系統資源使用狀況都要 Google 一次 (除了 ps -aux, top, htop 很直覺的以外啦)，不如趁這次偕同 RD team 查找 iowait 高的原因整理一篇自己的筆記節省時間。 【常用指</description>
     </item>
   </channel>

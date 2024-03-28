@@ -2,24 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Prometheus on 老柯的學習筆記</title>
-    <link>https://blog.xxzk.me/tags/prometheus/</link>
+    <link>http://localhost:1313/tags/prometheus/</link>
     <description>Recent content in Prometheus on 老柯的學習筆記</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Wed, 07 Sep 2022 17:20:12 +0800</lastBuildDate>
-    <atom:link href="https://blog.xxzk.me/tags/prometheus/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/prometheus/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>使用 snmp_exporter 抓取設備流量</title>
-      <link>https://blog.xxzk.me/post/20220825-moniting-device-traffic-via-snmp_exporter-with-prometheus/</link>
+      <link>http://localhost:1313/post/20220825-moniting-device-traffic-via-snmp_exporter-with-prometheus/</link>
       <pubDate>Thu, 25 Aug 2022 11:49:44 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20220825-moniting-device-traffic-via-snmp_exporter-with-prometheus/</guid>
+      <guid>http://localhost:1313/post/20220825-moniting-device-traffic-via-snmp_exporter-with-prometheus/</guid>
       <description>前言 本篇筆記紀錄如何使用 snmp_exporter 搭配 prometheus 與 Grafana 來即時監控網路設備流量。 公司原先使用 LibreNMS 作為即時流量的依據，由於 default polling interval 是 5 分鐘抓取一次，而且一次抓取 (walk) 的 OID</description>
     </item>
     <item>
       <title>Docker 容器與容器的連結。Grafana &#43; Prometheus &#43; Blackbox_expoter</title>
-      <link>https://blog.xxzk.me/post/20210629-docker-container-link/</link>
+      <link>http://localhost:1313/post/20210629-docker-container-link/</link>
       <pubDate>Tue, 29 Jun 2021 17:33:04 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20210629-docker-container-link/</guid>
+      <guid>http://localhost:1313/post/20210629-docker-container-link/</guid>
       <description>此篇筆記紀錄如何使用 docker run --link ... 讓容器與容器之間連結。順便給 Upton 參考監控 LAB 要怎麼出~ Blackbox_expoter 1 docker run -itd --name blackbox_expoter -p 9115:9115 -v /root/yml/blackbox_expoter/:/config --restart always prom/blackbox-exporter:master --config.file=/config/blackbox.yml blackbox.yml 更多範例 可以從 blackbox_expoter/example.yml 尋找。 關於設定</description>
     </item>
   </channel>

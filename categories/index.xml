@@ -2,248 +2,255 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on 老柯的學習筆記</title>
-    <link>https://blog.xxzk.me/categories/</link>
+    <link>http://localhost:1313/categories/</link>
     <description>Recent content in Categories on 老柯的學習筆記</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 13 Jun 2023 15:15:27 +0000</lastBuildDate>
-    <atom:link href="https://blog.xxzk.me/categories/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 22 Mar 2024 11:10:55 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Macos</title>
+      <link>http://localhost:1313/categories/macos/</link>
+      <pubDate>Fri, 22 Mar 2024 11:10:55 +0000</pubDate>
+      <guid>http://localhost:1313/categories/macos/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Kubernetes</title>
-      <link>https://blog.xxzk.me/categories/kubernetes/</link>
+      <link>http://localhost:1313/categories/kubernetes/</link>
       <pubDate>Tue, 13 Jun 2023 15:15:27 +0000</pubDate>
-      <guid>https://blog.xxzk.me/categories/kubernetes/</guid>
+      <guid>http://localhost:1313/categories/kubernetes/</guid>
       <description></description>
     </item>
     <item>
       <title>AWS</title>
-      <link>https://blog.xxzk.me/categories/aws/</link>
+      <link>http://localhost:1313/categories/aws/</link>
       <pubDate>Tue, 18 Apr 2023 14:32:50 +0000</pubDate>
-      <guid>https://blog.xxzk.me/categories/aws/</guid>
+      <guid>http://localhost:1313/categories/aws/</guid>
       <description></description>
     </item>
     <item>
       <title>Linux</title>
-      <link>https://blog.xxzk.me/categories/linux/</link>
+      <link>http://localhost:1313/categories/linux/</link>
       <pubDate>Tue, 08 Nov 2022 13:49:51 +0000</pubDate>
-      <guid>https://blog.xxzk.me/categories/linux/</guid>
+      <guid>http://localhost:1313/categories/linux/</guid>
       <description></description>
     </item>
     <item>
       <title>Moniting</title>
-      <link>https://blog.xxzk.me/categories/moniting/</link>
+      <link>http://localhost:1313/categories/moniting/</link>
       <pubDate>Thu, 25 Aug 2022 11:49:44 +0000</pubDate>
-      <guid>https://blog.xxzk.me/categories/moniting/</guid>
+      <guid>http://localhost:1313/categories/moniting/</guid>
       <description></description>
     </item>
     <item>
       <title>CKA-Note</title>
-      <link>https://blog.xxzk.me/categories/cka-note/</link>
+      <link>http://localhost:1313/categories/cka-note/</link>
       <pubDate>Tue, 26 Jul 2022 13:55:27 +0000</pubDate>
-      <guid>https://blog.xxzk.me/categories/cka-note/</guid>
+      <guid>http://localhost:1313/categories/cka-note/</guid>
       <description></description>
     </item>
     <item>
       <title>Anti-Virus</title>
-      <link>https://blog.xxzk.me/categories/anti-virus/</link>
+      <link>http://localhost:1313/categories/anti-virus/</link>
       <pubDate>Mon, 18 Jul 2022 16:19:40 +0000</pubDate>
-      <guid>https://blog.xxzk.me/categories/anti-virus/</guid>
+      <guid>http://localhost:1313/categories/anti-virus/</guid>
       <description></description>
     </item>
     <item>
       <title>LibreNMS</title>
-      <link>https://blog.xxzk.me/categories/librenms/</link>
+      <link>http://localhost:1313/categories/librenms/</link>
       <pubDate>Thu, 23 Jun 2022 14:50:31 +0000</pubDate>
-      <guid>https://blog.xxzk.me/categories/librenms/</guid>
+      <guid>http://localhost:1313/categories/librenms/</guid>
       <description></description>
     </item>
     <item>
       <title>Vsphere</title>
-      <link>https://blog.xxzk.me/categories/vsphere/</link>
+      <link>http://localhost:1313/categories/vsphere/</link>
       <pubDate>Tue, 21 Jun 2022 15:46:54 +0000</pubDate>
-      <guid>https://blog.xxzk.me/categories/vsphere/</guid>
+      <guid>http://localhost:1313/categories/vsphere/</guid>
       <description></description>
     </item>
     <item>
       <title>Infra</title>
-      <link>https://blog.xxzk.me/categories/infra/</link>
+      <link>http://localhost:1313/categories/infra/</link>
       <pubDate>Mon, 06 Jun 2022 09:19:33 +0000</pubDate>
-      <guid>https://blog.xxzk.me/categories/infra/</guid>
+      <guid>http://localhost:1313/categories/infra/</guid>
       <description></description>
     </item>
     <item>
       <title>GitHub</title>
-      <link>https://blog.xxzk.me/categories/github/</link>
+      <link>http://localhost:1313/categories/github/</link>
       <pubDate>Thu, 28 Apr 2022 15:47:12 +0000</pubDate>
-      <guid>https://blog.xxzk.me/categories/github/</guid>
+      <guid>http://localhost:1313/categories/github/</guid>
       <description></description>
     </item>
     <item>
       <title>Dockerfile</title>
-      <link>https://blog.xxzk.me/categories/dockerfile/</link>
+      <link>http://localhost:1313/categories/dockerfile/</link>
       <pubDate>Mon, 20 Dec 2021 11:15:34 +0000</pubDate>
-      <guid>https://blog.xxzk.me/categories/dockerfile/</guid>
+      <guid>http://localhost:1313/categories/dockerfile/</guid>
       <description></description>
     </item>
     <item>
       <title>Network</title>
-      <link>https://blog.xxzk.me/categories/network/</link>
+      <link>http://localhost:1313/categories/network/</link>
       <pubDate>Fri, 26 Nov 2021 14:23:11 +0000</pubDate>
-      <guid>https://blog.xxzk.me/categories/network/</guid>
+      <guid>http://localhost:1313/categories/network/</guid>
       <description></description>
     </item>
     <item>
       <title>CKAD-Note</title>
-      <link>https://blog.xxzk.me/categories/ckad-note/</link>
+      <link>http://localhost:1313/categories/ckad-note/</link>
       <pubDate>Wed, 10 Nov 2021 11:05:08 +0000</pubDate>
-      <guid>https://blog.xxzk.me/categories/ckad-note/</guid>
+      <guid>http://localhost:1313/categories/ckad-note/</guid>
       <description></description>
     </item>
     <item>
       <title>SSL-TLS-Certification</title>
-      <link>https://blog.xxzk.me/categories/ssl-tls-certification/</link>
+      <link>http://localhost:1313/categories/ssl-tls-certification/</link>
       <pubDate>Wed, 13 Oct 2021 15:47:29 +0000</pubDate>
-      <guid>https://blog.xxzk.me/categories/ssl-tls-certification/</guid>
+      <guid>http://localhost:1313/categories/ssl-tls-certification/</guid>
       <description></description>
     </item>
     <item>
       <title>Terraform</title>
-      <link>https://blog.xxzk.me/categories/terraform/</link>
+      <link>http://localhost:1313/categories/terraform/</link>
       <pubDate>Wed, 22 Sep 2021 15:36:09 +0000</pubDate>
-      <guid>https://blog.xxzk.me/categories/terraform/</guid>
+      <guid>http://localhost:1313/categories/terraform/</guid>
       <description></description>
     </item>
     <item>
       <title>Ansible</title>
-      <link>https://blog.xxzk.me/categories/ansible/</link>
+      <link>http://localhost:1313/categories/ansible/</link>
       <pubDate>Tue, 07 Sep 2021 09:36:54 +0000</pubDate>
-      <guid>https://blog.xxzk.me/categories/ansible/</guid>
+      <guid>http://localhost:1313/categories/ansible/</guid>
       <description></description>
     </item>
     <item>
       <title>Dell-Ps6210</title>
-      <link>https://blog.xxzk.me/categories/dell-ps6210/</link>
+      <link>http://localhost:1313/categories/dell-ps6210/</link>
       <pubDate>Fri, 23 Jul 2021 13:59:15 +0000</pubDate>
-      <guid>https://blog.xxzk.me/categories/dell-ps6210/</guid>
+      <guid>http://localhost:1313/categories/dell-ps6210/</guid>
       <description></description>
     </item>
     <item>
       <title>Docker</title>
-      <link>https://blog.xxzk.me/categories/docker/</link>
+      <link>http://localhost:1313/categories/docker/</link>
       <pubDate>Tue, 29 Jun 2021 17:33:04 +0000</pubDate>
-      <guid>https://blog.xxzk.me/categories/docker/</guid>
+      <guid>http://localhost:1313/categories/docker/</guid>
       <description></description>
     </item>
     <item>
       <title>Tools</title>
-      <link>https://blog.xxzk.me/categories/tools/</link>
+      <link>http://localhost:1313/categories/tools/</link>
       <pubDate>Fri, 11 Jun 2021 13:04:29 +0000</pubDate>
-      <guid>https://blog.xxzk.me/categories/tools/</guid>
+      <guid>http://localhost:1313/categories/tools/</guid>
       <description></description>
     </item>
     <item>
       <title>Nextcloud</title>
-      <link>https://blog.xxzk.me/categories/nextcloud/</link>
+      <link>http://localhost:1313/categories/nextcloud/</link>
       <pubDate>Thu, 27 May 2021 15:11:37 +0000</pubDate>
-      <guid>https://blog.xxzk.me/categories/nextcloud/</guid>
+      <guid>http://localhost:1313/categories/nextcloud/</guid>
       <description></description>
     </item>
     <item>
       <title>Minio</title>
-      <link>https://blog.xxzk.me/categories/minio/</link>
+      <link>http://localhost:1313/categories/minio/</link>
       <pubDate>Mon, 03 May 2021 13:41:55 +0000</pubDate>
-      <guid>https://blog.xxzk.me/categories/minio/</guid>
+      <guid>http://localhost:1313/categories/minio/</guid>
       <description></description>
     </item>
     <item>
       <title>Keepalived</title>
-      <link>https://blog.xxzk.me/categories/keepalived/</link>
+      <link>http://localhost:1313/categories/keepalived/</link>
       <pubDate>Mon, 19 Apr 2021 15:40:55 +0000</pubDate>
-      <guid>https://blog.xxzk.me/categories/keepalived/</guid>
+      <guid>http://localhost:1313/categories/keepalived/</guid>
       <description></description>
     </item>
     <item>
       <title>Bookstack</title>
-      <link>https://blog.xxzk.me/categories/bookstack/</link>
+      <link>http://localhost:1313/categories/bookstack/</link>
       <pubDate>Thu, 01 Apr 2021 13:19:05 +0000</pubDate>
-      <guid>https://blog.xxzk.me/categories/bookstack/</guid>
+      <guid>http://localhost:1313/categories/bookstack/</guid>
       <description></description>
     </item>
     <item>
       <title>DB</title>
-      <link>https://blog.xxzk.me/categories/db/</link>
+      <link>http://localhost:1313/categories/db/</link>
       <pubDate>Wed, 24 Mar 2021 11:55:50 +0000</pubDate>
-      <guid>https://blog.xxzk.me/categories/db/</guid>
+      <guid>http://localhost:1313/categories/db/</guid>
       <description></description>
     </item>
     <item>
       <title>Vmware</title>
-      <link>https://blog.xxzk.me/categories/vmware/</link>
+      <link>http://localhost:1313/categories/vmware/</link>
       <pubDate>Wed, 24 Feb 2021 13:21:00 +0000</pubDate>
-      <guid>https://blog.xxzk.me/categories/vmware/</guid>
+      <guid>http://localhost:1313/categories/vmware/</guid>
       <description></description>
     </item>
     <item>
       <title>Apache</title>
-      <link>https://blog.xxzk.me/categories/apache/</link>
+      <link>http://localhost:1313/categories/apache/</link>
       <pubDate>Tue, 23 Feb 2021 14:33:37 +0000</pubDate>
-      <guid>https://blog.xxzk.me/categories/apache/</guid>
+      <guid>http://localhost:1313/categories/apache/</guid>
       <description></description>
     </item>
     <item>
       <title>Nginx</title>
-      <link>https://blog.xxzk.me/categories/nginx/</link>
+      <link>http://localhost:1313/categories/nginx/</link>
       <pubDate>Tue, 23 Feb 2021 14:33:37 +0000</pubDate>
-      <guid>https://blog.xxzk.me/categories/nginx/</guid>
+      <guid>http://localhost:1313/categories/nginx/</guid>
       <description></description>
     </item>
     <item>
       <title>VCSA</title>
-      <link>https://blog.xxzk.me/categories/vcsa/</link>
+      <link>http://localhost:1313/categories/vcsa/</link>
       <pubDate>Wed, 27 Jan 2021 15:13:00 +0000</pubDate>
-      <guid>https://blog.xxzk.me/categories/vcsa/</guid>
+      <guid>http://localhost:1313/categories/vcsa/</guid>
       <description></description>
     </item>
     <item>
       <title>DNS</title>
-      <link>https://blog.xxzk.me/categories/dns/</link>
+      <link>http://localhost:1313/categories/dns/</link>
       <pubDate>Thu, 10 Dec 2020 11:46:20 +0000</pubDate>
-      <guid>https://blog.xxzk.me/categories/dns/</guid>
+      <guid>http://localhost:1313/categories/dns/</guid>
       <description></description>
     </item>
     <item>
       <title>Forti</title>
-      <link>https://blog.xxzk.me/categories/forti/</link>
+      <link>http://localhost:1313/categories/forti/</link>
       <pubDate>Thu, 12 Nov 2020 17:34:41 +0000</pubDate>
-      <guid>https://blog.xxzk.me/categories/forti/</guid>
+      <guid>http://localhost:1313/categories/forti/</guid>
       <description></description>
     </item>
     <item>
       <title>Ubuntu</title>
-      <link>https://blog.xxzk.me/categories/ubuntu/</link>
+      <link>http://localhost:1313/categories/ubuntu/</link>
       <pubDate>Thu, 15 Oct 2020 13:53:23 +0000</pubDate>
-      <guid>https://blog.xxzk.me/categories/ubuntu/</guid>
+      <guid>http://localhost:1313/categories/ubuntu/</guid>
       <description></description>
     </item>
     <item>
       <title>Rclone</title>
-      <link>https://blog.xxzk.me/categories/rclone/</link>
+      <link>http://localhost:1313/categories/rclone/</link>
       <pubDate>Mon, 12 Oct 2020 13:48:24 +0000</pubDate>
-      <guid>https://blog.xxzk.me/categories/rclone/</guid>
+      <guid>http://localhost:1313/categories/rclone/</guid>
       <description></description>
     </item>
     <item>
       <title>Hinet</title>
-      <link>https://blog.xxzk.me/categories/hinet/</link>
+      <link>http://localhost:1313/categories/hinet/</link>
       <pubDate>Tue, 29 Sep 2020 11:37:08 +0000</pubDate>
-      <guid>https://blog.xxzk.me/categories/hinet/</guid>
+      <guid>http://localhost:1313/categories/hinet/</guid>
       <description></description>
     </item>
     <item>
       <title>Graylog</title>
-      <link>https://blog.xxzk.me/categories/graylog/</link>
+      <link>http://localhost:1313/categories/graylog/</link>
       <pubDate>Thu, 24 Sep 2020 15:29:12 +0000</pubDate>
-      <guid>https://blog.xxzk.me/categories/graylog/</guid>
+      <guid>http://localhost:1313/categories/graylog/</guid>
       <description></description>
     </item>
   </channel>

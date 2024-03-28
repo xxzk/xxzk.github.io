@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>FTTH on 老柯的學習筆記</title>
-    <link>https://blog.xxzk.me/tags/ftth/</link>
+    <link>http://localhost:1313/tags/ftth/</link>
     <description>Recent content in FTTH on 老柯的學習筆記</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Wed, 22 Jun 2022 14:49:46 +0800</lastBuildDate>
-    <atom:link href="https://blog.xxzk.me/tags/ftth/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/ftth/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>數據機到機房 淺談 GPON 以 HiNet FTTH 為例</title>
-      <link>https://blog.xxzk.me/post/20200929-intro-hinet-gpon-modem-to-otl/</link>
+      <link>http://localhost:1313/post/20200929-intro-hinet-gpon-modem-to-otl/</link>
       <pubDate>Tue, 29 Sep 2020 11:37:08 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20200929-intro-hinet-gpon-modem-to-otl/</guid>
+      <guid>http://localhost:1313/post/20200929-intro-hinet-gpon-modem-to-otl/</guid>
       <description>圖片來源 Spectra TEch 在開始之前先大致介紹一下台灣目前光纖網路接取技術使採用 GPON (Gigabit Passive Optical Network) 千兆級無源光網路，簡單架構如上圖 不知道大家有沒有曾經好奇過從數據</description>
     </item>
   </channel>

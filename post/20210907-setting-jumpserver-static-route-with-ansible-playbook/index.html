@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>Jumpserver 靜態路由設定 shell script &#43; Ansible Playbook 使用說明 - 老柯的學習筆記</title>
@@ -23,10 +23,13 @@
 
 
 
-<meta name="generator" content="Hugo 0.124.1 with theme even" />
+<meta name="generator" content="Hugo 0.133.1 with theme even" />
 
 
-<link rel="canonical" href="http://localhost:1313/post/20210907-setting-jumpserver-static-route-with-ansible-playbook/" />
+<link rel="canonical" href="https://blog.xxzk.me/post/20210907-setting-jumpserver-static-route-with-ansible-playbook/" />
+
+
+
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -39,18 +42,26 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
-<meta property="og:title" content="Jumpserver 靜態路由設定 shell script &#43; Ansible Playbook 使用說明" />
-<meta property="og:description" content="圖片來源 為什麼使用 Jumpserver 要上靜態路由? 公司現有 VM Network 環境只要是 Web server 的， default gateway 都是設定 Private IP Class B (172.x.0.0/16) 網段，也就是 Load Balance 身上。同時該台 VM 也會有 192.168.x.0/23 /24 的網卡 (192.168.x.254 or 253" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="http://localhost:1313/post/20210907-setting-jumpserver-static-route-with-ansible-playbook/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2021-09-07T09:36:54+00:00" />
-<meta property="article:modified_time" content="2022-09-08T14:59:58+08:00" />
-<meta itemprop="name" content="Jumpserver 靜態路由設定 shell script &#43; Ansible Playbook 使用說明">
-<meta itemprop="description" content="圖片來源 為什麼使用 Jumpserver 要上靜態路由? 公司現有 VM Network 環境只要是 Web server 的， default gateway 都是設定 Private IP Class B (172.x.0.0/16) 網段，也就是 Load Balance 身上。同時該台 VM 也會有 192.168.x.0/23 /24 的網卡 (192.168.x.254 or 253"><meta itemprop="datePublished" content="2021-09-07T09:36:54+00:00" />
-<meta itemprop="dateModified" content="2022-09-08T14:59:58+08:00" />
-<meta itemprop="wordCount" content="2250">
-<meta itemprop="keywords" content="ansible," /><meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Jumpserver 靜態路由設定 shell script &#43; Ansible Playbook 使用說明"/>
-<meta name="twitter:description" content="圖片來源 為什麼使用 Jumpserver 要上靜態路由? 公司現有 VM Network 環境只要是 Web server 的， default gateway 都是設定 Private IP Class B (172.x.0.0/16) 網段，也就是 Load Balance 身上。同時該台 VM 也會有 192.168.x.0/23 /24 的網卡 (192.168.x.254 or 253"/>
+<meta property="og:url" content="https://blog.xxzk.me/post/20210907-setting-jumpserver-static-route-with-ansible-playbook/">
+  <meta property="og:site_name" content="老柯的學習筆記">
+  <meta property="og:title" content="Jumpserver 靜態路由設定 shell script &#43; Ansible Playbook 使用說明">
+  <meta property="og:description" content="圖片來源 為什麼使用 Jumpserver 要上靜態路由? 公司現有 VM Network 環境只要是 Web server 的， default gateway 都是設定 Private IP Class B (172.x.0.0/16) 網段，也就是 Load Balance 身上。同時該台 VM 也會有 192.168.x.0/23 /24 的網卡 (192.168.x.254 or 253">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="post">
+    <meta property="article:published_time" content="2021-09-07T09:36:54+00:00">
+    <meta property="article:modified_time" content="2022-09-08T14:59:58+08:00">
+    <meta property="article:tag" content="Ansible">
+
+  <meta itemprop="name" content="Jumpserver 靜態路由設定 shell script &#43; Ansible Playbook 使用說明">
+  <meta itemprop="description" content="圖片來源 為什麼使用 Jumpserver 要上靜態路由? 公司現有 VM Network 環境只要是 Web server 的， default gateway 都是設定 Private IP Class B (172.x.0.0/16) 網段，也就是 Load Balance 身上。同時該台 VM 也會有 192.168.x.0/23 /24 的網卡 (192.168.x.254 or 253">
+  <meta itemprop="datePublished" content="2021-09-07T09:36:54+00:00">
+  <meta itemprop="dateModified" content="2022-09-08T14:59:58+08:00">
+  <meta itemprop="wordCount" content="2250">
+  <meta itemprop="keywords" content="Ansible">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Jumpserver 靜態路由設定 shell script &#43; Ansible Playbook 使用說明">
+  <meta name="twitter:description" content="圖片來源 為什麼使用 Jumpserver 要上靜態路由? 公司現有 VM Network 環境只要是 Web server 的， default gateway 都是設定 Private IP Class B (172.x.0.0/16) 網段，也就是 Load Balance 身上。同時該台 VM 也會有 192.168.x.0/23 /24 的網卡 (192.168.x.254 or 253">
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>

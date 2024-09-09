@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>隱藏 Apache、PHP、OpenSSL、Nginx 版本號 - 老柯的學習筆記</title>
@@ -23,10 +23,13 @@
 
 
 
-<meta name="generator" content="Hugo 0.124.1 with theme even" />
+<meta name="generator" content="Hugo 0.133.1 with theme even" />
 
 
-<link rel="canonical" href="http://localhost:1313/post/20210223-hide-apache-php-openssl-nginx-version/" />
+<link rel="canonical" href="https://blog.xxzk.me/post/20210223-hide-apache-php-openssl-nginx-version/" />
+
+
+
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -39,18 +42,29 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
-<meta property="og:title" content="隱藏 Apache、PHP、OpenSSL、Nginx 版本號" />
-<meta property="og:description" content="此篇筆記記錄如何隱藏客戶端看到 Web Server 使用的版本號 判斷標準是用最無腦的 Browser Plug-in 當作依據，推薦使用 Wappalyzer 如果透過 CloudFlare 訪問這些敏感資訊都會被過濾掉;直接使用 IP" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="http://localhost:1313/post/20210223-hide-apache-php-openssl-nginx-version/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2021-02-23T14:33:37+00:00" />
-<meta property="article:modified_time" content="2022-06-22T15:05:09+08:00" />
-<meta itemprop="name" content="隱藏 Apache、PHP、OpenSSL、Nginx 版本號">
-<meta itemprop="description" content="此篇筆記記錄如何隱藏客戶端看到 Web Server 使用的版本號 判斷標準是用最無腦的 Browser Plug-in 當作依據，推薦使用 Wappalyzer 如果透過 CloudFlare 訪問這些敏感資訊都會被過濾掉;直接使用 IP"><meta itemprop="datePublished" content="2021-02-23T14:33:37+00:00" />
-<meta itemprop="dateModified" content="2022-06-22T15:05:09+08:00" />
-<meta itemprop="wordCount" content="605">
-<meta itemprop="keywords" content="apache,php,openssl,Nginx," /><meta name="twitter:card" content="summary"/><meta name="twitter:title" content="隱藏 Apache、PHP、OpenSSL、Nginx 版本號"/>
-<meta name="twitter:description" content="此篇筆記記錄如何隱藏客戶端看到 Web Server 使用的版本號 判斷標準是用最無腦的 Browser Plug-in 當作依據，推薦使用 Wappalyzer 如果透過 CloudFlare 訪問這些敏感資訊都會被過濾掉;直接使用 IP"/>
+<meta property="og:url" content="https://blog.xxzk.me/post/20210223-hide-apache-php-openssl-nginx-version/">
+  <meta property="og:site_name" content="老柯的學習筆記">
+  <meta property="og:title" content="隱藏 Apache、PHP、OpenSSL、Nginx 版本號">
+  <meta property="og:description" content="此篇筆記記錄如何隱藏客戶端看到 Web Server 使用的版本號 判斷標準是用最無腦的 Browser Plug-in 當作依據，推薦使用 Wappalyzer 如果透過 CloudFlare 訪問這些敏感資訊都會被過濾掉;直接使用 IP">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="post">
+    <meta property="article:published_time" content="2021-02-23T14:33:37+00:00">
+    <meta property="article:modified_time" content="2022-06-22T15:05:09+08:00">
+    <meta property="article:tag" content="Apache">
+    <meta property="article:tag" content="Php">
+    <meta property="article:tag" content="Openssl">
+    <meta property="article:tag" content="Nginx">
+
+  <meta itemprop="name" content="隱藏 Apache、PHP、OpenSSL、Nginx 版本號">
+  <meta itemprop="description" content="此篇筆記記錄如何隱藏客戶端看到 Web Server 使用的版本號 判斷標準是用最無腦的 Browser Plug-in 當作依據，推薦使用 Wappalyzer 如果透過 CloudFlare 訪問這些敏感資訊都會被過濾掉;直接使用 IP">
+  <meta itemprop="datePublished" content="2021-02-23T14:33:37+00:00">
+  <meta itemprop="dateModified" content="2022-06-22T15:05:09+08:00">
+  <meta itemprop="wordCount" content="605">
+  <meta itemprop="keywords" content="Apache,Php,Openssl,Nginx">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="隱藏 Apache、PHP、OpenSSL、Nginx 版本號">
+  <meta name="twitter:description" content="此篇筆記記錄如何隱藏客戶端看到 Web Server 使用的版本號 判斷標準是用最無腦的 Browser Plug-in 當作依據，推薦使用 Wappalyzer 如果透過 CloudFlare 訪問這些敏感資訊都會被過濾掉;直接使用 IP">
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>

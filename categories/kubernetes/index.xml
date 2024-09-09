@@ -2,24 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Kubernetes on 老柯的學習筆記</title>
-    <link>http://localhost:1313/categories/kubernetes/</link>
+    <link>https://blog.xxzk.me/categories/kubernetes/</link>
     <description>Recent content in Kubernetes on 老柯的學習筆記</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
     <language>en</language>
     <lastBuildDate>Tue, 13 Jun 2023 15:15:27 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/categories/kubernetes/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://blog.xxzk.me/categories/kubernetes/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Kubernetes Dashboard 安裝筆記</title>
-      <link>http://localhost:1313/post/20230613-kubernetes-dashboard-install-note/</link>
+      <link>https://blog.xxzk.me/post/20230613-kubernetes-dashboard-install-note/</link>
       <pubDate>Tue, 13 Jun 2023 15:15:27 +0000</pubDate>
-      <guid>http://localhost:1313/post/20230613-kubernetes-dashboard-install-note/</guid>
+      <guid>https://blog.xxzk.me/post/20230613-kubernetes-dashboard-install-note/</guid>
       <description>介紹 這篇筆記會記錄如何從 metrics server 開始安裝 Kubernetes Dashboard，並且設定 Istio virtual service / gateway，最後產生一組僅有特定 namespace read-only 權限的 token。 大部分的</description>
     </item>
     <item>
       <title>minikube 安裝指南。 一個精簡、測試環境使用的 k8s 叢集</title>
-      <link>http://localhost:1313/post/20210617-minikube-installation/</link>
+      <link>https://blog.xxzk.me/post/20210617-minikube-installation/</link>
       <pubDate>Thu, 17 Jun 2021 09:29:55 +0000</pubDate>
-      <guid>http://localhost:1313/post/20210617-minikube-installation/</guid>
+      <guid>https://blog.xxzk.me/post/20210617-minikube-installation/</guid>
       <description>minikube 能夠快速在本地 (local) 建立 kubernetes cluster (k8s 叢集)，支援 macOS, Linux, Windows 非常適合新手探索 kubernetes 安裝需求 pre-requirement minikube-Driver ▲ 官方有列出各類型 OS 建議搭建在何種虛擬環境上。本篇筆記選用 CentOS 7.9.2009 +</description>
     </item>
   </channel>

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>使用 certbot 取得免費 Let&#39;s Encrypt TLS/SSL 憑證 - 老柯的學習筆記</title>
@@ -16,17 +16,20 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="更新紀錄 2022.12.20: 整合另一篇筆記，關於缺少中繼憑證 (issuer certificate, intermediate certificate) 導致 curl 報錯，而瀏覽器沒事的 trouble shooting 過程。 介紹 Let&amp;rsquo;s Encrypt 是一個 ISRG 建立的非營利項目，免費提供 TLS/SSL Certi" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="老柯" /><meta name="description" content="更新紀錄 2022.12.20: 整合另一篇筆記，關於缺少中繼憑證 (issuer certificate, intermediate certificate) 導致 curl 報錯，而瀏覽器沒事的 trouble shooting 過程。 介紹 Let&rsquo;s Encrypt 是一個 ISRG 建立的非營利項目，免費提供 TLS/SSL Certi" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.124.1 with theme even" />
+<meta name="generator" content="Hugo 0.133.1 with theme even" />
 
 
-<link rel="canonical" href="http://localhost:1313/post/20211013-get-lets-encrypt-cert-using-certbot/" />
+<link rel="canonical" href="https://blog.xxzk.me/post/20211013-get-lets-encrypt-cert-using-certbot/" />
+
+
+
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -39,18 +42,27 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
-<meta property="og:title" content="使用 certbot 取得免費 Let&#39;s Encrypt TLS/SSL 憑證" />
-<meta property="og:description" content="更新紀錄 2022.12.20: 整合另一篇筆記，關於缺少中繼憑證 (issuer certificate, intermediate certificate) 導致 curl 報錯，而瀏覽器沒事的 trouble shooting 過程。 介紹 Let&rsquo;s Encrypt 是一個 ISRG 建立的非營利項目，免費提供 TLS/SSL Certi" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="http://localhost:1313/post/20211013-get-lets-encrypt-cert-using-certbot/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2021-10-13T15:47:29+00:00" />
-<meta property="article:modified_time" content="2022-12-21T14:10:33+08:00" />
-<meta itemprop="name" content="使用 certbot 取得免費 Let&#39;s Encrypt TLS/SSL 憑證">
-<meta itemprop="description" content="更新紀錄 2022.12.20: 整合另一篇筆記，關於缺少中繼憑證 (issuer certificate, intermediate certificate) 導致 curl 報錯，而瀏覽器沒事的 trouble shooting 過程。 介紹 Let&rsquo;s Encrypt 是一個 ISRG 建立的非營利項目，免費提供 TLS/SSL Certi"><meta itemprop="datePublished" content="2021-10-13T15:47:29+00:00" />
-<meta itemprop="dateModified" content="2022-12-21T14:10:33+08:00" />
-<meta itemprop="wordCount" content="2313">
-<meta itemprop="keywords" content="SSL-TLS-certification,cloudflare," /><meta name="twitter:card" content="summary"/><meta name="twitter:title" content="使用 certbot 取得免費 Let&#39;s Encrypt TLS/SSL 憑證"/>
-<meta name="twitter:description" content="更新紀錄 2022.12.20: 整合另一篇筆記，關於缺少中繼憑證 (issuer certificate, intermediate certificate) 導致 curl 報錯，而瀏覽器沒事的 trouble shooting 過程。 介紹 Let&rsquo;s Encrypt 是一個 ISRG 建立的非營利項目，免費提供 TLS/SSL Certi"/>
+<meta property="og:url" content="https://blog.xxzk.me/post/20211013-get-lets-encrypt-cert-using-certbot/">
+  <meta property="og:site_name" content="老柯的學習筆記">
+  <meta property="og:title" content="使用 certbot 取得免費 Let&#39;s Encrypt TLS/SSL 憑證">
+  <meta property="og:description" content="更新紀錄 2022.12.20: 整合另一篇筆記，關於缺少中繼憑證 (issuer certificate, intermediate certificate) 導致 curl 報錯，而瀏覽器沒事的 trouble shooting 過程。 介紹 Let’s Encrypt 是一個 ISRG 建立的非營利項目，免費提供 TLS/SSL Certi">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="post">
+    <meta property="article:published_time" content="2021-10-13T15:47:29+00:00">
+    <meta property="article:modified_time" content="2022-12-21T14:10:33+08:00">
+    <meta property="article:tag" content="SSL-TLS-Certification">
+    <meta property="article:tag" content="Cloudflare">
+
+  <meta itemprop="name" content="使用 certbot 取得免費 Let&#39;s Encrypt TLS/SSL 憑證">
+  <meta itemprop="description" content="更新紀錄 2022.12.20: 整合另一篇筆記，關於缺少中繼憑證 (issuer certificate, intermediate certificate) 導致 curl 報錯，而瀏覽器沒事的 trouble shooting 過程。 介紹 Let’s Encrypt 是一個 ISRG 建立的非營利項目，免費提供 TLS/SSL Certi">
+  <meta itemprop="datePublished" content="2021-10-13T15:47:29+00:00">
+  <meta itemprop="dateModified" content="2022-12-21T14:10:33+08:00">
+  <meta itemprop="wordCount" content="2313">
+  <meta itemprop="keywords" content="SSL-TLS-Certification,Cloudflare">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="使用 certbot 取得免費 Let&#39;s Encrypt TLS/SSL 憑證">
+  <meta name="twitter:description" content="更新紀錄 2022.12.20: 整合另一篇筆記，關於缺少中繼憑證 (issuer certificate, intermediate certificate) 導致 curl 報錯，而瀏覽器沒事的 trouble shooting 過程。 介紹 Let’s Encrypt 是一個 ISRG 建立的非營利項目，免費提供 TLS/SSL Certi">
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>

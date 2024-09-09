@@ -2,24 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>LibreNMS on 老柯的學習筆記</title>
-    <link>http://localhost:1313/tags/librenms/</link>
+    <link>https://blog.xxzk.me/tags/librenms/</link>
     <description>Recent content in LibreNMS on 老柯的學習筆記</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
     <language>en</language>
     <lastBuildDate>Mon, 26 Dec 2022 14:16:46 +0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/librenms/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://blog.xxzk.me/tags/librenms/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>使用 container 快速部屬 LibreNMS</title>
-      <link>http://localhost:1313/post/20220623-install-librenms-with-docker-container/</link>
+      <link>https://blog.xxzk.me/post/20220623-install-librenms-with-docker-container/</link>
       <pubDate>Thu, 23 Jun 2022 14:50:31 +0000</pubDate>
-      <guid>http://localhost:1313/post/20220623-install-librenms-with-docker-container/</guid>
+      <guid>https://blog.xxzk.me/post/20220623-install-librenms-with-docker-container/</guid>
       <description>前言 本篇文章紀錄如何透過 docker-compose 快速架一個 LibreNMS 起來。這篇會出現的原因是為了要監控/debug IDC 0F iDRAC/ESXi 電口對接 Cisco Switch 的問題~ 安裝 docker-compose 【standalone】</description>
     </item>
     <item>
       <title>LibreNMS 警報建置實務 LibreNMS Alarm Setting</title>
-      <link>http://localhost:1313/post/20210302-librenms-alert-setting-note/</link>
+      <link>https://blog.xxzk.me/post/20210302-librenms-alert-setting-note/</link>
       <pubDate>Tue, 02 Mar 2021 14:22:28 +0000</pubDate>
-      <guid>http://localhost:1313/post/20210302-librenms-alert-setting-note/</guid>
+      <guid>https://blog.xxzk.me/post/20210302-librenms-alert-setting-note/</guid>
       <description>此篇筆記紀錄如何使用 LibreNMS 發送 IPMI 警報至 RocketChat WebHook Channel LibreNMS 動態分組 Dynamic Grouping 動態群組可以自動將裝置依照設定的條件自動加入群組 (新加的裝置也可以喔)。這個功能除了方</description>
     </item>
   </channel>

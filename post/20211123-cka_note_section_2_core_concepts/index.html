@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>CKA Note Section 2 Core Concepts - 老柯的學習筆記</title>
@@ -23,10 +23,13 @@
 
 
 
-<meta name="generator" content="Hugo 0.124.1 with theme even" />
+<meta name="generator" content="Hugo 0.133.1 with theme even" />
 
 
-<link rel="canonical" href="http://localhost:1313/post/20211123-cka_note_section_2_core_concepts/" />
+<link rel="canonical" href="https://blog.xxzk.me/post/20211123-cka_note_section_2_core_concepts/" />
+
+
+
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -39,18 +42,27 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
-<meta property="og:title" content="CKA Note Section 2 Core Concepts" />
-<meta property="og:description" content="10. Cluster Architecture ▲ Kubernetes controll plane / worker node 組件 12. ETCD in Kubernetes 透過 kubectl get 都是 (透過 api-server ) 向 etcd 查詢資料。 講師提供的練習環境是使用 kubeadm 搭建的，課程最後的章節會教導如何從 scratch 建立 Kubernetes cl" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="http://localhost:1313/post/20211123-cka_note_section_2_core_concepts/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2021-11-23T14:00:06+00:00" />
-<meta property="article:modified_time" content="2022-08-04T10:28:35+08:00" />
-<meta itemprop="name" content="CKA Note Section 2 Core Concepts">
-<meta itemprop="description" content="10. Cluster Architecture ▲ Kubernetes controll plane / worker node 組件 12. ETCD in Kubernetes 透過 kubectl get 都是 (透過 api-server ) 向 etcd 查詢資料。 講師提供的練習環境是使用 kubeadm 搭建的，課程最後的章節會教導如何從 scratch 建立 Kubernetes cl"><meta itemprop="datePublished" content="2021-11-23T14:00:06+00:00" />
-<meta itemprop="dateModified" content="2022-08-04T10:28:35+08:00" />
-<meta itemprop="wordCount" content="993">
-<meta itemprop="keywords" content="CKA-Note,kubernetes," /><meta name="twitter:card" content="summary"/><meta name="twitter:title" content="CKA Note Section 2 Core Concepts"/>
-<meta name="twitter:description" content="10. Cluster Architecture ▲ Kubernetes controll plane / worker node 組件 12. ETCD in Kubernetes 透過 kubectl get 都是 (透過 api-server ) 向 etcd 查詢資料。 講師提供的練習環境是使用 kubeadm 搭建的，課程最後的章節會教導如何從 scratch 建立 Kubernetes cl"/>
+<meta property="og:url" content="https://blog.xxzk.me/post/20211123-cka_note_section_2_core_concepts/">
+  <meta property="og:site_name" content="老柯的學習筆記">
+  <meta property="og:title" content="CKA Note Section 2 Core Concepts">
+  <meta property="og:description" content="10. Cluster Architecture ▲ Kubernetes controll plane / worker node 組件 12. ETCD in Kubernetes 透過 kubectl get 都是 (透過 api-server ) 向 etcd 查詢資料。 講師提供的練習環境是使用 kubeadm 搭建的，課程最後的章節會教導如何從 scratch 建立 Kubernetes cl">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="post">
+    <meta property="article:published_time" content="2021-11-23T14:00:06+00:00">
+    <meta property="article:modified_time" content="2022-08-04T10:28:35+08:00">
+    <meta property="article:tag" content="CKA-Note">
+    <meta property="article:tag" content="Kubernetes">
+
+  <meta itemprop="name" content="CKA Note Section 2 Core Concepts">
+  <meta itemprop="description" content="10. Cluster Architecture ▲ Kubernetes controll plane / worker node 組件 12. ETCD in Kubernetes 透過 kubectl get 都是 (透過 api-server ) 向 etcd 查詢資料。 講師提供的練習環境是使用 kubeadm 搭建的，課程最後的章節會教導如何從 scratch 建立 Kubernetes cl">
+  <meta itemprop="datePublished" content="2021-11-23T14:00:06+00:00">
+  <meta itemprop="dateModified" content="2022-08-04T10:28:35+08:00">
+  <meta itemprop="wordCount" content="993">
+  <meta itemprop="keywords" content="CKA-Note,Kubernetes">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="CKA Note Section 2 Core Concepts">
+  <meta name="twitter:description" content="10. Cluster Architecture ▲ Kubernetes controll plane / worker node 組件 12. ETCD in Kubernetes 透過 kubectl get 都是 (透過 api-server ) 向 etcd 查詢資料。 講師提供的練習環境是使用 kubeadm 搭建的，課程最後的章節會教導如何從 scratch 建立 Kubernetes cl">
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>

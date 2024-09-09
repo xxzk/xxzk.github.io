@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Terraform on 老柯的學習筆記</title>
-    <link>http://localhost:1313/tags/terraform/</link>
+    <link>https://blog.xxzk.me/tags/terraform/</link>
     <description>Recent content in Terraform on 老柯的學習筆記</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
     <language>en</language>
     <lastBuildDate>Thu, 08 Sep 2022 14:59:58 +0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/terraform/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://blog.xxzk.me/tags/terraform/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>我的第一支 Terraform</title>
-      <link>http://localhost:1313/post/20210922-terraform-hello-world/</link>
+      <link>https://blog.xxzk.me/post/20210922-terraform-hello-world/</link>
       <pubDate>Wed, 22 Sep 2021 15:36:09 +0000</pubDate>
-      <guid>http://localhost:1313/post/20210922-terraform-hello-world/</guid>
+      <guid>https://blog.xxzk.me/post/20210922-terraform-hello-world/</guid>
       <description>Introduction to Terraform Terraform 是一款 Infrastructure as Code (IaC) 工具，以 code 來 定義 / 建造 (build) / 修改 (change) / 版本控制 (version) 基礎設施，支援地端 (on-prem) 與 雲端 (Cloud)。 安裝 Terraform CLI Install Terraform 1 2 3 4 5 6 sudo yum install -y</description>
     </item>
   </channel>

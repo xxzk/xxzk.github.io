@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>AWS RDS Encryption 評估 - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="Intro 這篇筆記快速紀錄 AWS RDS Encryption for Compliance requirement. Encrypting Amazon RDS resources [link] Data at rest encryption, 包含: DB instance, logs, snapshot, read replica, and automated backup. AWS 使用 AES-256 加密演算法替 RDS 加密 / 解密。 AWS 使用本身的 AWS Key Management Service (KMS) 來管理加密金" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.133.1 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20240909-aws-rds-encrypt/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:url" content="https://blog.xxzk.me/post/20240909-aws-rds-encrypt/">
+  <meta property="og:site_name" content="老柯的學習筆記">
+  <meta property="og:title" content="AWS RDS Encryption 評估">
+  <meta property="og:description" content="Intro 這篇筆記快速紀錄 AWS RDS Encryption for Compliance requirement. Encrypting Amazon RDS resources [link] Data at rest encryption, 包含: DB instance, logs, snapshot, read replica, and automated backup. AWS 使用 AES-256 加密演算法替 RDS 加密 / 解密。 AWS 使用本身的 AWS Key Management Service (KMS) 來管理加密金">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="post">
+    <meta property="article:published_time" content="2024-09-09T14:23:11+00:00">
+    <meta property="article:modified_time" content="2024-09-09T14:23:11+00:00">
+    <meta property="article:tag" content="Aws">
+    <meta property="article:tag" content="Rds">
+
+  <meta itemprop="name" content="AWS RDS Encryption 評估">
+  <meta itemprop="description" content="Intro 這篇筆記快速紀錄 AWS RDS Encryption for Compliance requirement. Encrypting Amazon RDS resources [link] Data at rest encryption, 包含: DB instance, logs, snapshot, read replica, and automated backup. AWS 使用 AES-256 加密演算法替 RDS 加密 / 解密。 AWS 使用本身的 AWS Key Management Service (KMS) 來管理加密金">
+  <meta itemprop="datePublished" content="2024-09-09T14:23:11+00:00">
+  <meta itemprop="dateModified" content="2024-09-09T14:23:11+00:00">
+  <meta itemprop="wordCount" content="155">
+  <meta itemprop="keywords" content="Aws,Rds">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="AWS RDS Encryption 評估">
+  <meta name="twitter:description" content="Intro 這篇筆記快速紀錄 AWS RDS Encryption for Compliance requirement. Encrypting Amazon RDS resources [link] Data at rest encryption, 包含: DB instance, logs, snapshot, read replica, and automated backup. AWS 使用 AES-256 加密演算法替 RDS 加密 / 解密。 AWS 使用本身的 AWS Key Management Service (KMS) 來管理加密金">
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">AWS RDS Encryption 評估</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2024-09-09 </span>
+        <div class="post-category">
+            <a href="/categories/aws/"> aws </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#intro">Intro</a></li>
+        <li><a href="#encrypting-amazon-rds-resources-linkhttpsdocsawsamazoncomamazonrdslatestuserguideoverviewencryptionhtml">Encrypting Amazon RDS resources <a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.Encryption.html">[link]</a></a></li>
+        <li><a href="#其他資訊">其他資訊</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="intro">Intro</h2>
+<p>這篇筆記快速紀錄 AWS RDS Encryption for Compliance requirement.</p>
+<h2 id="encrypting-amazon-rds-resources-linkhttpsdocsawsamazoncomamazonrdslatestuserguideoverviewencryptionhtml">Encrypting Amazon RDS resources <a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.Encryption.html">[link]</a></h2>
+<ul>
+<li>Data at rest encryption, 包含: DB instance, logs, snapshot, read replica, and automated backup.</li>
+<li>AWS 使用 AES-256 加密演算法替 RDS 加密 / 解密。</li>
+<li>AWS 使用本身的 <a href="https://aws.amazon.com/kms/">AWS Key Management Service (KMS)</a> 來管理加密金鑰。</li>
+<li>AWS KMS 在通過 <a href="https://csrc.nist.gov/projects/cryptographic-module-validation-program/certificate/4523">美國聯邦資訊處理標準 FIPS 140-2</a> 認證的硬體上 儲存 / 產生 客戶的金鑰。<a href="https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#kms_keys">ref</a></li>
+<li><a href="https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#kms_keys">AWS KMS - Customer keys and AWS keys 比較表格</a></li>
+</ul>
+<p><img src="aws-kms-key-type.jpg" alt="aws-kms-key-type"></p>
+<h2 id="其他資訊">其他資訊</h2>
+<ul>
+<li><a href="https://repost.aws/knowledge-center/rds-encrypt-instance-mysql-mariadb">Encrypt an unencrypted Amazon RDS for MySQL or MariaDB instance | AWS re:Post</a></li>
+<li><a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.SSL.html">Using SSL/TLS to encrypt a connection to a DB instance or cluster - Amazon Relational Database Service</a></li>
+</ul>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2024-09-09
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/aws/">aws</a>
+          <a href="/tags/rds/">rds</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/20240322-macbook-hello-world/">
+            <span class="next-text nav-default">MacOS 新手筆記</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  <a href="https://blog.xxzk.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022 - 
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

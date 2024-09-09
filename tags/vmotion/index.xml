@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Vmotion on 老柯的學習筆記</title>
-    <link>http://localhost:1313/tags/vmotion/</link>
+    <link>https://blog.xxzk.me/tags/vmotion/</link>
     <description>Recent content in Vmotion on 老柯的學習筆記</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
     <language>en</language>
     <lastBuildDate>Thu, 08 Sep 2022 14:59:58 +0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/vmotion/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://blog.xxzk.me/tags/vmotion/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>【實驗記錄】到底 VM 在關機 (PowerOff) 狀態搬移</title>
-      <link>http://localhost:1313/post/20210224-what-network-will-vmware-migration-used/</link>
+      <link>https://blog.xxzk.me/post/20210224-what-network-will-vmware-migration-used/</link>
       <pubDate>Wed, 24 Feb 2021 13:21:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/20210224-what-network-will-vmware-migration-used/</guid>
+      <guid>https://blog.xxzk.me/post/20210224-what-network-will-vmware-migration-used/</guid>
       <description>LAB 架構圖 寫日記 這兩台 ESXi 主要是拿來測試 vSS 轉 vDS 用的。因為 DC1 10.x.x.53 ESXi Host 在 2021.02.19 發現 GBIC 故障 DC1 10.x.x.54 ESXi Host 2021.02.12 發生 DIMM_A3 Multi-bit memory errors (error rate 上升) + 2021.02.19 Power Supply 1 (PS1) 死去。兩台共通點都是 2021.01</description>
     </item>
   </channel>

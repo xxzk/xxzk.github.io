@@ -2,31 +2,31 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Apache on 老柯的學習筆記</title>
-    <link>http://localhost:1313/tags/apache/</link>
+    <link>https://blog.xxzk.me/tags/apache/</link>
     <description>Recent content in Apache on 老柯的學習筆記</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
     <language>en</language>
     <lastBuildDate>Thu, 22 Dec 2022 15:28:33 +0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/apache/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://blog.xxzk.me/tags/apache/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>隱藏 Apache、PHP、OpenSSL、Nginx 版本號</title>
-      <link>http://localhost:1313/post/20210223-hide-apache-php-openssl-nginx-version/</link>
+      <link>https://blog.xxzk.me/post/20210223-hide-apache-php-openssl-nginx-version/</link>
       <pubDate>Tue, 23 Feb 2021 14:33:37 +0000</pubDate>
-      <guid>http://localhost:1313/post/20210223-hide-apache-php-openssl-nginx-version/</guid>
+      <guid>https://blog.xxzk.me/post/20210223-hide-apache-php-openssl-nginx-version/</guid>
       <description>此篇筆記記錄如何隱藏客戶端看到 Web Server 使用的版本號 判斷標準是用最無腦的 Browser Plug-in 當作依據，推薦使用 Wappalyzer 如果透過 CloudFlare 訪問這些敏感資訊都會被過濾掉;直接使用 IP</description>
     </item>
     <item>
       <title>httpd.conf 研究筆記</title>
-      <link>http://localhost:1313/post/20210220-apache-httpd-main-conf/</link>
+      <link>https://blog.xxzk.me/post/20210220-apache-httpd-main-conf/</link>
       <pubDate>Sat, 20 Feb 2021 10:54:58 +0000</pubDate>
-      <guid>http://localhost:1313/post/20210220-apache-httpd-main-conf/</guid>
+      <guid>https://blog.xxzk.me/post/20210220-apache-httpd-main-conf/</guid>
       <description>httpd 版本資訊 1 2 Server version: Apache/2.4.6 (CentOS) Server built: Nov 16 2020 16:18:20 敬啟者 開頭就一堆屁話，根本沒有人會看的 (愛開玩笑 自己的筆記也屁話一堆還敢說開發者 XD 節錄幾個重點好了 更多資訊</description>
     </item>
     <item>
       <title>將 Apache access,error log 透過 rsyslog 發至 Graylog</title>
-      <link>http://localhost:1313/post/20200924-httpd-log-to-graylog-with-rsyslog/</link>
+      <link>https://blog.xxzk.me/post/20200924-httpd-log-to-graylog-with-rsyslog/</link>
       <pubDate>Thu, 24 Sep 2020 15:29:12 +0000</pubDate>
-      <guid>http://localhost:1313/post/20200924-httpd-log-to-graylog-with-rsyslog/</guid>
+      <guid>https://blog.xxzk.me/post/20200924-httpd-log-to-graylog-with-rsyslog/</guid>
       <description>由於 httpd 預設沒有將 access/error log 丟到 syslog 做處理，要需手動新增 新增方式有兩種 直接編輯 httpd.conf 將 log file 導向到 syslog 編輯 rsyslog.conf 叫 rsyslog 去撈本來存放在 /var/log/httpd/(access|error).log 第一種方式會需要做 systemctl reload httpd.service ，對於</description>
     </item>
   </channel>

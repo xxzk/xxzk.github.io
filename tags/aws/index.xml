@@ -2,24 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>AWS on 老柯的學習筆記</title>
-    <link>http://localhost:1313/tags/aws/</link>
+    <link>https://blog.xxzk.me/tags/aws/</link>
     <description>Recent content in AWS on 老柯的學習筆記</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
     <language>en</language>
     <lastBuildDate>Wed, 24 May 2023 14:08:14 +0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/aws/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://blog.xxzk.me/tags/aws/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Pulumi / AWS CDK Hello World</title>
-      <link>http://localhost:1313/post/20230418-aws-cdk-hello-world/</link>
+      <link>https://blog.xxzk.me/post/20230418-aws-cdk-hello-world/</link>
       <pubDate>Tue, 18 Apr 2023 14:32:50 +0000</pubDate>
-      <guid>http://localhost:1313/post/20230418-aws-cdk-hello-world/</guid>
+      <guid>https://blog.xxzk.me/post/20230418-aws-cdk-hello-world/</guid>
       <description>Pulumi Get Started with AWS | Pulumi Docs Pulumi vs. AWS CDK | Pulumi Docs 快速補充 Pulumi Hello World 的部分 1 2 3 4 brew install pulumi/tap/pulumi # or Linux distro curl -fsSL https://get.pulumi.com | sh 如果使用 Python 的話，版本必須高於 3.7 且 pip 也需安裝。 Pulumi 可以使用 aws config</description>
     </item>
     <item>
       <title>Udemy AWS SAA-C03 課程筆記</title>
-      <link>http://localhost:1313/post/20230220-udemy-aws-saa-c03-note/</link>
+      <link>https://blog.xxzk.me/post/20230220-udemy-aws-saa-c03-note/</link>
       <pubDate>Mon, 13 Feb 2023 15:30:50 +0000</pubDate>
-      <guid>http://localhost:1313/post/20230220-udemy-aws-saa-c03-note/</guid>
+      <guid>https://blog.xxzk.me/post/20230220-udemy-aws-saa-c03-note/</guid>
       <description>Intro 這篇筆記會記錄 Udemy Ultimate AWS Certified Solutions Architect Associate SAA-C03 隨堂筆記。 !! 目前施工中~~~ !! AWS Free Tier 說明 ▲ Control Your AWS Costs，設定警告避免帳單爆炸。 Slides and Code Download Section 4 IAM and AWS CLI IAM Groups 只</description>
     </item>
   </channel>

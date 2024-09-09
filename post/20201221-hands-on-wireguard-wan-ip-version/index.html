@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>Wireguard 實作 (WAN IP version) - 老柯的學習筆記</title>
@@ -16,17 +16,20 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="介紹 WireGuard 是一款開放原始碼的 VPN 程式，主打簡單快速 (任何設備) 並且效能比 IPSec、OpenVPN 更快，安全性方面更是強調 &amp;ldquo;state of the art&amp;rdquo; (最先進的) 安全" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="老柯" /><meta name="description" content="介紹 WireGuard 是一款開放原始碼的 VPN 程式，主打簡單快速 (任何設備) 並且效能比 IPSec、OpenVPN 更快，安全性方面更是強調 &ldquo;state of the art&rdquo; (最先進的) 安全" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.124.1 with theme even" />
+<meta name="generator" content="Hugo 0.133.1 with theme even" />
 
 
-<link rel="canonical" href="http://localhost:1313/post/20201221-hands-on-wireguard-wan-ip-version/" />
+<link rel="canonical" href="https://blog.xxzk.me/post/20201221-hands-on-wireguard-wan-ip-version/" />
+
+
+
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -39,18 +42,27 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
-<meta property="og:title" content="Wireguard 實作 (WAN IP version)" />
-<meta property="og:description" content="介紹 WireGuard 是一款開放原始碼的 VPN 程式，主打簡單快速 (任何設備) 並且效能比 IPSec、OpenVPN 更快，安全性方面更是強調 &ldquo;state of the art&rdquo; (最先進的) 安全" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="http://localhost:1313/post/20201221-hands-on-wireguard-wan-ip-version/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2020-12-21T10:26:39+00:00" />
-<meta property="article:modified_time" content="2022-12-27T14:48:53+08:00" />
-<meta itemprop="name" content="Wireguard 實作 (WAN IP version)">
-<meta itemprop="description" content="介紹 WireGuard 是一款開放原始碼的 VPN 程式，主打簡單快速 (任何設備) 並且效能比 IPSec、OpenVPN 更快，安全性方面更是強調 &ldquo;state of the art&rdquo; (最先進的) 安全"><meta itemprop="datePublished" content="2020-12-21T10:26:39+00:00" />
-<meta itemprop="dateModified" content="2022-12-27T14:48:53+08:00" />
-<meta itemprop="wordCount" content="3171">
-<meta itemprop="keywords" content="vpn,wireguard," /><meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Wireguard 實作 (WAN IP version)"/>
-<meta name="twitter:description" content="介紹 WireGuard 是一款開放原始碼的 VPN 程式，主打簡單快速 (任何設備) 並且效能比 IPSec、OpenVPN 更快，安全性方面更是強調 &ldquo;state of the art&rdquo; (最先進的) 安全"/>
+<meta property="og:url" content="https://blog.xxzk.me/post/20201221-hands-on-wireguard-wan-ip-version/">
+  <meta property="og:site_name" content="老柯的學習筆記">
+  <meta property="og:title" content="Wireguard 實作 (WAN IP version)">
+  <meta property="og:description" content="介紹 WireGuard 是一款開放原始碼的 VPN 程式，主打簡單快速 (任何設備) 並且效能比 IPSec、OpenVPN 更快，安全性方面更是強調 “state of the art” (最先進的) 安全">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="post">
+    <meta property="article:published_time" content="2020-12-21T10:26:39+00:00">
+    <meta property="article:modified_time" content="2022-12-27T14:48:53+08:00">
+    <meta property="article:tag" content="Vpn">
+    <meta property="article:tag" content="Wireguard">
+
+  <meta itemprop="name" content="Wireguard 實作 (WAN IP version)">
+  <meta itemprop="description" content="介紹 WireGuard 是一款開放原始碼的 VPN 程式，主打簡單快速 (任何設備) 並且效能比 IPSec、OpenVPN 更快，安全性方面更是強調 “state of the art” (最先進的) 安全">
+  <meta itemprop="datePublished" content="2020-12-21T10:26:39+00:00">
+  <meta itemprop="dateModified" content="2022-12-27T14:48:53+08:00">
+  <meta itemprop="wordCount" content="3171">
+  <meta itemprop="keywords" content="Vpn,Wireguard">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Wireguard 實作 (WAN IP version)">
+  <meta name="twitter:description" content="介紹 WireGuard 是一款開放原始碼的 VPN 程式，主打簡單快速 (任何設備) 並且效能比 IPSec、OpenVPN 更快，安全性方面更是強調 “state of the art” (最先進的) 安全">
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>

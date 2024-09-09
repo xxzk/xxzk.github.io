@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>minikube 安裝指南。 一個精簡、測試環境使用的 k8s 叢集 - 老柯的學習筆記</title>
@@ -23,10 +23,13 @@
 
 
 
-<meta name="generator" content="Hugo 0.124.1 with theme even" />
+<meta name="generator" content="Hugo 0.133.1 with theme even" />
 
 
-<link rel="canonical" href="http://localhost:1313/post/20210617-minikube-installation/" />
+<link rel="canonical" href="https://blog.xxzk.me/post/20210617-minikube-installation/" />
+
+
+
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -39,18 +42,27 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
-<meta property="og:title" content="minikube 安裝指南。 一個精簡、測試環境使用的 k8s 叢集" />
-<meta property="og:description" content="minikube 能夠快速在本地 (local) 建立 kubernetes cluster (k8s 叢集)，支援 macOS, Linux, Windows 非常適合新手探索 kubernetes 安裝需求 pre-requirement minikube-Driver ▲ 官方有列出各類型 OS 建議搭建在何種虛擬環境上。本篇筆記選用 CentOS 7.9.2009 &#43;" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="http://localhost:1313/post/20210617-minikube-installation/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2021-06-17T09:29:55+00:00" />
-<meta property="article:modified_time" content="2022-07-06T16:16:25+08:00" />
-<meta itemprop="name" content="minikube 安裝指南。 一個精簡、測試環境使用的 k8s 叢集">
-<meta itemprop="description" content="minikube 能夠快速在本地 (local) 建立 kubernetes cluster (k8s 叢集)，支援 macOS, Linux, Windows 非常適合新手探索 kubernetes 安裝需求 pre-requirement minikube-Driver ▲ 官方有列出各類型 OS 建議搭建在何種虛擬環境上。本篇筆記選用 CentOS 7.9.2009 &#43;"><meta itemprop="datePublished" content="2021-06-17T09:29:55+00:00" />
-<meta itemprop="dateModified" content="2022-07-06T16:16:25+08:00" />
-<meta itemprop="wordCount" content="961">
-<meta itemprop="keywords" content="minikube,kubernetes," /><meta name="twitter:card" content="summary"/><meta name="twitter:title" content="minikube 安裝指南。 一個精簡、測試環境使用的 k8s 叢集"/>
-<meta name="twitter:description" content="minikube 能夠快速在本地 (local) 建立 kubernetes cluster (k8s 叢集)，支援 macOS, Linux, Windows 非常適合新手探索 kubernetes 安裝需求 pre-requirement minikube-Driver ▲ 官方有列出各類型 OS 建議搭建在何種虛擬環境上。本篇筆記選用 CentOS 7.9.2009 &#43;"/>
+<meta property="og:url" content="https://blog.xxzk.me/post/20210617-minikube-installation/">
+  <meta property="og:site_name" content="老柯的學習筆記">
+  <meta property="og:title" content="minikube 安裝指南。 一個精簡、測試環境使用的 k8s 叢集">
+  <meta property="og:description" content="minikube 能夠快速在本地 (local) 建立 kubernetes cluster (k8s 叢集)，支援 macOS, Linux, Windows 非常適合新手探索 kubernetes 安裝需求 pre-requirement minikube-Driver ▲ 官方有列出各類型 OS 建議搭建在何種虛擬環境上。本篇筆記選用 CentOS 7.9.2009 &#43;">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="post">
+    <meta property="article:published_time" content="2021-06-17T09:29:55+00:00">
+    <meta property="article:modified_time" content="2022-07-06T16:16:25+08:00">
+    <meta property="article:tag" content="Minikube">
+    <meta property="article:tag" content="Kubernetes">
+
+  <meta itemprop="name" content="minikube 安裝指南。 一個精簡、測試環境使用的 k8s 叢集">
+  <meta itemprop="description" content="minikube 能夠快速在本地 (local) 建立 kubernetes cluster (k8s 叢集)，支援 macOS, Linux, Windows 非常適合新手探索 kubernetes 安裝需求 pre-requirement minikube-Driver ▲ 官方有列出各類型 OS 建議搭建在何種虛擬環境上。本篇筆記選用 CentOS 7.9.2009 &#43;">
+  <meta itemprop="datePublished" content="2021-06-17T09:29:55+00:00">
+  <meta itemprop="dateModified" content="2022-07-06T16:16:25+08:00">
+  <meta itemprop="wordCount" content="961">
+  <meta itemprop="keywords" content="Minikube,Kubernetes">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="minikube 安裝指南。 一個精簡、測試環境使用的 k8s 叢集">
+  <meta name="twitter:description" content="minikube 能夠快速在本地 (local) 建立 kubernetes cluster (k8s 叢集)，支援 macOS, Linux, Windows 非常適合新手探索 kubernetes 安裝需求 pre-requirement minikube-Driver ▲ 官方有列出各類型 OS 建議搭建在何種虛擬環境上。本篇筆記選用 CentOS 7.9.2009 &#43;">
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>

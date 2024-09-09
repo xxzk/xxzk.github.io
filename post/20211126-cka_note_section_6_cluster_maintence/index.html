@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>CKA Note Section 6 Cluster Maintence - 老柯的學習筆記</title>
@@ -16,17 +16,20 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="117. OS Upgrades 如果我們要將某個 worder node 下線，做一些例行維護 (例如: OS Upgrade) 可以使用 1 kubectl drain &amp;lt;node_name&amp;gt; 來達成，原本在目標 worker node 的 pod 會被 re-schedule 到其它 worker node 上面。當維護完成再使用 1" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="老柯" /><meta name="description" content="117. OS Upgrades 如果我們要將某個 worder node 下線，做一些例行維護 (例如: OS Upgrade) 可以使用 1 kubectl drain &lt;node_name&gt; 來達成，原本在目標 worker node 的 pod 會被 re-schedule 到其它 worker node 上面。當維護完成再使用 1" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.124.1 with theme even" />
+<meta name="generator" content="Hugo 0.133.1 with theme even" />
 
 
-<link rel="canonical" href="http://localhost:1313/post/20211126-cka_note_section_6_cluster_maintence/" />
+<link rel="canonical" href="https://blog.xxzk.me/post/20211126-cka_note_section_6_cluster_maintence/" />
+
+
+
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -39,18 +42,27 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
-<meta property="og:title" content="CKA Note Section 6 Cluster Maintence" />
-<meta property="og:description" content="117. OS Upgrades 如果我們要將某個 worder node 下線，做一些例行維護 (例如: OS Upgrade) 可以使用 1 kubectl drain &lt;node_name&gt; 來達成，原本在目標 worker node 的 pod 會被 re-schedule 到其它 worker node 上面。當維護完成再使用 1" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="http://localhost:1313/post/20211126-cka_note_section_6_cluster_maintence/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2021-11-26T11:24:39+00:00" />
-<meta property="article:modified_time" content="2022-09-27T13:49:20+08:00" />
-<meta itemprop="name" content="CKA Note Section 6 Cluster Maintence">
-<meta itemprop="description" content="117. OS Upgrades 如果我們要將某個 worder node 下線，做一些例行維護 (例如: OS Upgrade) 可以使用 1 kubectl drain &lt;node_name&gt; 來達成，原本在目標 worker node 的 pod 會被 re-schedule 到其它 worker node 上面。當維護完成再使用 1"><meta itemprop="datePublished" content="2021-11-26T11:24:39+00:00" />
-<meta itemprop="dateModified" content="2022-09-27T13:49:20+08:00" />
-<meta itemprop="wordCount" content="1658">
-<meta itemprop="keywords" content="CKA-Note,kubernetes," /><meta name="twitter:card" content="summary"/><meta name="twitter:title" content="CKA Note Section 6 Cluster Maintence"/>
-<meta name="twitter:description" content="117. OS Upgrades 如果我們要將某個 worder node 下線，做一些例行維護 (例如: OS Upgrade) 可以使用 1 kubectl drain &lt;node_name&gt; 來達成，原本在目標 worker node 的 pod 會被 re-schedule 到其它 worker node 上面。當維護完成再使用 1"/>
+<meta property="og:url" content="https://blog.xxzk.me/post/20211126-cka_note_section_6_cluster_maintence/">
+  <meta property="og:site_name" content="老柯的學習筆記">
+  <meta property="og:title" content="CKA Note Section 6 Cluster Maintence">
+  <meta property="og:description" content="117. OS Upgrades 如果我們要將某個 worder node 下線，做一些例行維護 (例如: OS Upgrade) 可以使用 1 kubectl drain &lt;node_name&gt; 來達成，原本在目標 worker node 的 pod 會被 re-schedule 到其它 worker node 上面。當維護完成再使用 1">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="post">
+    <meta property="article:published_time" content="2021-11-26T11:24:39+00:00">
+    <meta property="article:modified_time" content="2022-09-27T13:49:20+08:00">
+    <meta property="article:tag" content="CKA-Note">
+    <meta property="article:tag" content="Kubernetes">
+
+  <meta itemprop="name" content="CKA Note Section 6 Cluster Maintence">
+  <meta itemprop="description" content="117. OS Upgrades 如果我們要將某個 worder node 下線，做一些例行維護 (例如: OS Upgrade) 可以使用 1 kubectl drain &lt;node_name&gt; 來達成，原本在目標 worker node 的 pod 會被 re-schedule 到其它 worker node 上面。當維護完成再使用 1">
+  <meta itemprop="datePublished" content="2021-11-26T11:24:39+00:00">
+  <meta itemprop="dateModified" content="2022-09-27T13:49:20+08:00">
+  <meta itemprop="wordCount" content="1658">
+  <meta itemprop="keywords" content="CKA-Note,Kubernetes">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="CKA Note Section 6 Cluster Maintence">
+  <meta name="twitter:description" content="117. OS Upgrades 如果我們要將某個 worder node 下線，做一些例行維護 (例如: OS Upgrade) 可以使用 1 kubectl drain &lt;node_name&gt; 來達成，原本在目標 worker node 的 pod 會被 re-schedule 到其它 worker node 上面。當維護完成再使用 1">
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>

@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Nginx on 老柯的學習筆記</title>
-    <link>http://localhost:1313/tags/nginx/</link>
+    <link>https://blog.xxzk.me/tags/nginx/</link>
     <description>Recent content in Nginx on 老柯的學習筆記</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
     <language>en</language>
     <lastBuildDate>Wed, 22 Jun 2022 15:05:09 +0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/nginx/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://blog.xxzk.me/tags/nginx/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>隱藏 Apache、PHP、OpenSSL、Nginx 版本號</title>
-      <link>http://localhost:1313/post/20210223-hide-apache-php-openssl-nginx-version/</link>
+      <link>https://blog.xxzk.me/post/20210223-hide-apache-php-openssl-nginx-version/</link>
       <pubDate>Tue, 23 Feb 2021 14:33:37 +0000</pubDate>
-      <guid>http://localhost:1313/post/20210223-hide-apache-php-openssl-nginx-version/</guid>
+      <guid>https://blog.xxzk.me/post/20210223-hide-apache-php-openssl-nginx-version/</guid>
       <description>此篇筆記記錄如何隱藏客戶端看到 Web Server 使用的版本號 判斷標準是用最無腦的 Browser Plug-in 當作依據，推薦使用 Wappalyzer 如果透過 CloudFlare 訪問這些敏感資訊都會被過濾掉;直接使用 IP</description>
     </item>
   </channel>

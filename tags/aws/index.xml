@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>AWS on 老柯的學習筆記</title>
+    <title>Aws on 老柯的學習筆記</title>
     <link>https://blog.xxzk.me/tags/aws/</link>
-    <description>Recent content in AWS on 老柯的學習筆記</description>
+    <description>Recent content in Aws on 老柯的學習筆記</description>
     <generator>Hugo</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 24 May 2023 14:08:14 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 09 Sep 2024 16:24:58 +0800</lastBuildDate>
     <atom:link href="https://blog.xxzk.me/tags/aws/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AWS RDS Encryption 評估</title>
+      <link>https://blog.xxzk.me/post/20240909-aws-rds-encrypt/</link>
+      <pubDate>Mon, 09 Sep 2024 14:23:11 +0000</pubDate>
+      <guid>https://blog.xxzk.me/post/20240909-aws-rds-encrypt/</guid>
+      <description>Intro 這篇筆記快速紀錄 AWS RDS Encryption for Compliance requirement. Encrypting Amazon RDS resources [link] Data at rest encryption, 包含: DB instance, logs, snapshot, read replica, and automated backup. AWS 使用 AES-256 加密演算法替 RDS 加密 / 解密。 AWS 使用本身的 AWS Key Management Service (KMS) 來管理加密金</description>
+    </item>
     <item>
       <title>Pulumi / AWS CDK Hello World</title>
       <link>https://blog.xxzk.me/post/20230418-aws-cdk-hello-world/</link>

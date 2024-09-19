@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>SSL-TLS-Certification on 老柯的學習筆記</title>
-    <link>https://blog.xxzk.me/tags/ssl-tls-certification/</link>
+    <link>http://localhost:1313/tags/ssl-tls-certification/</link>
     <description>Recent content in SSL-TLS-Certification on 老柯的學習筆記</description>
     <generator>Hugo</generator>
     <language>en</language>
     <lastBuildDate>Wed, 21 Dec 2022 14:10:33 +0800</lastBuildDate>
-    <atom:link href="https://blog.xxzk.me/tags/ssl-tls-certification/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/ssl-tls-certification/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>使用 certbot 取得免費 Let&#39;s Encrypt TLS/SSL 憑證</title>
-      <link>https://blog.xxzk.me/post/20211013-get-lets-encrypt-cert-using-certbot/</link>
+      <link>http://localhost:1313/post/20211013-get-lets-encrypt-cert-using-certbot/</link>
       <pubDate>Wed, 13 Oct 2021 15:47:29 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20211013-get-lets-encrypt-cert-using-certbot/</guid>
+      <guid>http://localhost:1313/post/20211013-get-lets-encrypt-cert-using-certbot/</guid>
       <description>更新紀錄 2022.12.20: 整合另一篇筆記，關於缺少中繼憑證 (issuer certificate, intermediate certificate) 導致 curl 報錯，而瀏覽器沒事的 trouble shooting 過程。 介紹 Let&amp;rsquo;s Encrypt 是一個 ISRG 建立的非營利項目，免費提供 TLS/SSL Certi</description>
     </item>
   </channel>

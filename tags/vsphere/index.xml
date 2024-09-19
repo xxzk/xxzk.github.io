@@ -2,52 +2,52 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Vsphere on 老柯的學習筆記</title>
-    <link>https://blog.xxzk.me/tags/vsphere/</link>
+    <link>http://localhost:1313/tags/vsphere/</link>
     <description>Recent content in Vsphere on 老柯的學習筆記</description>
     <generator>Hugo</generator>
     <language>en</language>
     <lastBuildDate>Mon, 26 Dec 2022 16:35:11 +0800</lastBuildDate>
-    <atom:link href="https://blog.xxzk.me/tags/vsphere/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/vsphere/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>vSphere 顯示 VM Orphaned (虛擬機孤立狀態)</title>
-      <link>https://blog.xxzk.me/post/20210512-vsphere-showed-that-vm-is-orphanded/</link>
+      <link>http://localhost:1313/post/20210512-vsphere-showed-that-vm-is-orphanded/</link>
       <pubDate>Wed, 12 May 2021 11:25:56 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20210512-vsphere-showed-that-vm-is-orphanded/</guid>
+      <guid>http://localhost:1313/post/20210512-vsphere-showed-that-vm-is-orphanded/</guid>
       <description>通常這個狀況會發生在 ESXi 升級失敗、Firmware 更新踩到地雷爆炸、ESXi 重灌地獄，好不容易 ESXi 灌好了準備回到人間 卻在 vSphere 上面看到該 ESXi Host 所有 VM 顯</description>
     </item>
     <item>
       <title>VCSA 7.0 (vCenter) 安裝教學</title>
-      <link>https://blog.xxzk.me/post/20210127-how-to-install-vcsa7-via-ova/</link>
+      <link>http://localhost:1313/post/20210127-how-to-install-vcsa7-via-ova/</link>
       <pubDate>Wed, 27 Jan 2021 15:13:00 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20210127-how-to-install-vcsa7-via-ova/</guid>
+      <guid>http://localhost:1313/post/20210127-how-to-install-vcsa7-via-ova/</guid>
       <description>先前準備 建議在同一台 ESXi host 上開一台 Windows 10 主機，並將 .iso 丟入這樣在上傳會比較快。 將 .iso 掛載 or 解壓縮後可以看到安裝所需檔案: vcsa-ui-installer: 圖形化安裝精靈 (有 Wind</description>
     </item>
     <item>
       <title>升級 ESXi 6.5.0 -&gt; 6.7.0  Upgrading ESXi From 6.5.0 to 6.7.0</title>
-      <link>https://blog.xxzk.me/post/20210122-upgrade-esxi-650-to-670/</link>
+      <link>http://localhost:1313/post/20210122-upgrade-esxi-650-to-670/</link>
       <pubDate>Fri, 22 Jan 2021 13:46:48 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20210122-upgrade-esxi-650-to-670/</guid>
+      <guid>http://localhost:1313/post/20210122-upgrade-esxi-650-to-670/</guid>
       <description>圖片來源 Before Upgrading 此篇為這次針對 DCX 升級 ESXi 的安裝紀錄。新上了 4 台 Dell R630 暫時緩解 DCX 資源吃緊的情況。 使用 vMotion (VMware Live Migration 技術) 動態轉移將 VM 移至其他 ESXi Host，就可</description>
     </item>
     <item>
       <title>簡單介紹 VMWare NSX Network Virtualization Platform</title>
-      <link>https://blog.xxzk.me/post/20201224-simply-introduce-vmware-nsxt/</link>
+      <link>http://localhost:1313/post/20201224-simply-introduce-vmware-nsxt/</link>
       <pubDate>Thu, 24 Dec 2020 13:46:50 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20201224-simply-introduce-vmware-nsxt/</guid>
+      <guid>http://localhost:1313/post/20201224-simply-introduce-vmware-nsxt/</guid>
       <description>VMwatre NSX Network Virtualization Platform 是一個涵蓋 L2 ~ L7 的網路虛擬化平台 是 VMWare 併購 Nicira 後的產物 什麼是網路虛擬化 ▲ 圖片來源 The VMware NSX Network Virtualization Platform 白皮書 左邊的 Server Virtualization 是將 Bare-Metal (Hardware,</description>
     </item>
     <item>
       <title>淺談 vDS (網路虛擬化 NSX-T 功能之一)</title>
-      <link>https://blog.xxzk.me/post/20201026-introduce-vmware-vds/</link>
+      <link>http://localhost:1313/post/20201026-introduce-vmware-vds/</link>
       <pubDate>Mon, 26 Oct 2020 14:05:21 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20201026-introduce-vmware-vds/</guid>
+      <guid>http://localhost:1313/post/20201026-introduce-vmware-vds/</guid>
       <description>vDS 是什麼 ? 為什麼要用它 ? vDS 全名 vSphere Distributed Switch 是 VMWare vSphere 產品線下 SDN (Software Defined Networking) 的產物，在 vDS 出來之前也有一款叫做 vSS (vSphere Standard Switch) 的產品。 比起 vSS 需要部屬在每一台 ESXi host ， vDS 統一</description>
     </item>
     <item>
       <title>搞懂 vSphere、vCenter 和 ESXi 的關係</title>
-      <link>https://blog.xxzk.me/post/20201023-about-vsphere-vcenter-esxi/</link>
+      <link>http://localhost:1313/post/20201023-about-vsphere-vcenter-esxi/</link>
       <pubDate>Fri, 23 Oct 2020 14:03:42 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20201023-about-vsphere-vcenter-esxi/</guid>
+      <guid>http://localhost:1313/post/20201023-about-vsphere-vcenter-esxi/</guid>
       <description>拿 Office 2019 來舉例好了， 購買 Office 2019 其實就包含 Word、Excel、Powerpoint &amp;hellip;. 等軟體 vSphere 就好像 Office 2019 有相同概念就很好理解 ESXi ESXi 是 VMWare 公司出產的 OS Level</description>
     </item>
   </channel>

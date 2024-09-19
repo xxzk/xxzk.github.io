@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>Docker 容器與容器的連結。Grafana &#43; Prometheus &#43; Blackbox_expoter - 老柯的學習筆記</title>
@@ -26,7 +26,7 @@
 <meta name="generator" content="Hugo 0.133.1 with theme even" />
 
 
-<link rel="canonical" href="https://blog.xxzk.me/post/20210629-docker-container-link/" />
+<link rel="canonical" href="http://localhost:1313/post/20210629-docker-container-link/" />
 
 
 
@@ -42,7 +42,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
-<meta property="og:url" content="https://blog.xxzk.me/post/20210629-docker-container-link/">
+<meta property="og:url" content="http://localhost:1313/post/20210629-docker-container-link/">
   <meta property="og:site_name" content="老柯的學習筆記">
   <meta property="og:title" content="Docker 容器與容器的連結。Grafana &#43; Prometheus &#43; Blackbox_expoter">
   <meta property="og:description" content="此篇筆記紀錄如何使用 docker run --link ... 讓容器與容器之間連結。順便給 Upton 參考監控 LAB 要怎麼出~ Blackbox_expoter 1 docker run -itd --name blackbox_expoter -p 9115:9115 -v /root/yml/blackbox_expoter/:/config --restart always prom/blackbox-exporter:master --config.file=/config/blackbox.yml blackbox.yml 更多範例 可以從 blackbox_expoter/example.yml 尋找。 關於設定">

@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tmux on 老柯的學習筆記</title>
-    <link>https://blog.xxzk.me/tags/tmux/</link>
+    <link>http://localhost:1313/tags/tmux/</link>
     <description>Recent content in Tmux on 老柯的學習筆記</description>
     <generator>Hugo</generator>
     <language>en</language>
     <lastBuildDate>Fri, 19 Aug 2022 11:31:04 +0800</lastBuildDate>
-    <atom:link href="https://blog.xxzk.me/tags/tmux/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/tmux/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>終端機神器! tmux 手動編譯安裝</title>
-      <link>https://blog.xxzk.me/post/20210611-compile-tmux-for-bastion/</link>
+      <link>http://localhost:1313/post/20210611-compile-tmux-for-bastion/</link>
       <pubDate>Fri, 11 Jun 2021 13:04:29 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20210611-compile-tmux-for-bastion/</guid>
+      <guid>http://localhost:1313/post/20210611-compile-tmux-for-bastion/</guid>
       <description>圖片來源: GT-Wang tmux 是一款 terminal mutiplexer (終端機多工器)，自帶切割畫面 (pane) 的功能而且能夠在背景執行。 這篇主要紀錄在公司 Border (跳板機) 手動編譯安裝 for single user 應用場景、</description>
     </item>
   </channel>

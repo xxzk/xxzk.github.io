@@ -2,31 +2,38 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Aws on 老柯的學習筆記</title>
-    <link>https://blog.xxzk.me/tags/aws/</link>
+    <link>http://localhost:1313/tags/aws/</link>
     <description>Recent content in Aws on 老柯的學習筆記</description>
     <generator>Hugo</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 09 Sep 2024 16:24:58 +0800</lastBuildDate>
-    <atom:link href="https://blog.xxzk.me/tags/aws/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 18 Sep 2024 10:10:13 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/aws/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AWS SES 手動發信 / SPF / DKIM 筆記</title>
+      <link>http://localhost:1313/post/20240919-aws-ses/</link>
+      <pubDate>Wed, 18 Sep 2024 10:10:13 +0000</pubDate>
+      <guid>http://localhost:1313/post/20240919-aws-ses/</guid>
+      <description>Introduction 這篇筆記一開始會先從如何手動透過 SES 發信開始，接著會介紹如何設定 SPF 和 DKIM。 邏輯是著手設定 SPF/DKIM 之前先看看目前 E-Mail 的狀態。 在開始之前建議先了解一</description>
+    </item>
     <item>
       <title>AWS RDS Encryption 評估</title>
-      <link>https://blog.xxzk.me/post/20240909-aws-rds-encrypt/</link>
+      <link>http://localhost:1313/post/20240909-aws-rds-encrypt/</link>
       <pubDate>Mon, 09 Sep 2024 14:23:11 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20240909-aws-rds-encrypt/</guid>
+      <guid>http://localhost:1313/post/20240909-aws-rds-encrypt/</guid>
       <description>Intro 這篇筆記快速紀錄 AWS RDS Encryption for Compliance requirement. Encrypting Amazon RDS resources [link] Data at rest encryption, 包含: DB instance, logs, snapshot, read replica, and automated backup. AWS 使用 AES-256 加密演算法替 RDS 加密 / 解密。 AWS 使用本身的 AWS Key Management Service (KMS) 來管理加密金</description>
     </item>
     <item>
       <title>Pulumi / AWS CDK Hello World</title>
-      <link>https://blog.xxzk.me/post/20230418-aws-cdk-hello-world/</link>
+      <link>http://localhost:1313/post/20230418-aws-cdk-hello-world/</link>
       <pubDate>Tue, 18 Apr 2023 14:32:50 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20230418-aws-cdk-hello-world/</guid>
+      <guid>http://localhost:1313/post/20230418-aws-cdk-hello-world/</guid>
       <description>Pulumi Get Started with AWS | Pulumi Docs Pulumi vs. AWS CDK | Pulumi Docs 快速補充 Pulumi Hello World 的部分 1 2 3 4 brew install pulumi/tap/pulumi # or Linux distro curl -fsSL https://get.pulumi.com | sh 如果使用 Python 的話，版本必須高於 3.7 且 pip 也需安裝。 Pulumi 可以使用 aws config</description>
     </item>
     <item>
       <title>Udemy AWS SAA-C03 課程筆記</title>
-      <link>https://blog.xxzk.me/post/20230220-udemy-aws-saa-c03-note/</link>
+      <link>http://localhost:1313/post/20230220-udemy-aws-saa-c03-note/</link>
       <pubDate>Mon, 13 Feb 2023 15:30:50 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20230220-udemy-aws-saa-c03-note/</guid>
+      <guid>http://localhost:1313/post/20230220-udemy-aws-saa-c03-note/</guid>
       <description>Intro 這篇筆記會記錄 Udemy Ultimate AWS Certified Solutions Architect Associate SAA-C03 隨堂筆記。 !! 目前施工中~~~ !! AWS Free Tier 說明 ▲ Control Your AWS Costs，設定警告避免帳單爆炸。 Slides and Code Download Section 4 IAM and AWS CLI IAM Groups 只</description>
     </item>
   </channel>

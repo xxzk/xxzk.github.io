@@ -2,150 +2,150 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Kubernetes on 老柯的學習筆記</title>
-    <link>https://blog.xxzk.me/tags/kubernetes/</link>
+    <link>http://localhost:1313/tags/kubernetes/</link>
     <description>Recent content in Kubernetes on 老柯的學習筆記</description>
     <generator>Hugo</generator>
     <language>en</language>
     <lastBuildDate>Tue, 13 Jun 2023 15:15:27 +0000</lastBuildDate>
-    <atom:link href="https://blog.xxzk.me/tags/kubernetes/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/kubernetes/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Kubernetes Dashboard 安裝筆記</title>
-      <link>https://blog.xxzk.me/post/20230613-kubernetes-dashboard-install-note/</link>
+      <link>http://localhost:1313/post/20230613-kubernetes-dashboard-install-note/</link>
       <pubDate>Tue, 13 Jun 2023 15:15:27 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20230613-kubernetes-dashboard-install-note/</guid>
+      <guid>http://localhost:1313/post/20230613-kubernetes-dashboard-install-note/</guid>
       <description>介紹 這篇筆記會記錄如何從 metrics server 開始安裝 Kubernetes Dashboard，並且設定 Istio virtual service / gateway，最後產生一組僅有特定 namespace read-only 權限的 token。 大部分的</description>
     </item>
     <item>
       <title>CKA Note Section 13 Troubleshooting</title>
-      <link>https://blog.xxzk.me/post/20220726-cka_note_section_13_troubleshooting/</link>
+      <link>http://localhost:1313/post/20220726-cka_note_section_13_troubleshooting/</link>
       <pubDate>Tue, 26 Jul 2022 13:55:27 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20220726-cka_note_section_13_troubleshooting/</guid>
+      <guid>http://localhost:1313/post/20220726-cka_note_section_13_troubleshooting/</guid>
       <description>235. Application Failure 厚，debug 到眼睛快脫窗 先開 App Web 頁面查看錯誤訊息 (不確定正式考試時網頁是不是也設計成顯示錯誤訊息)，判斷可能出問題的地方 第一題網頁能</description>
     </item>
     <item>
       <title>CKA Note Section 11 Install K8s the kubeadm way</title>
-      <link>https://blog.xxzk.me/post/20220721-cka_note_section_11_install_k8s_the_kubeadm_way/</link>
+      <link>http://localhost:1313/post/20220721-cka_note_section_11_install_k8s_the_kubeadm_way/</link>
       <pubDate>Thu, 21 Jul 2022 13:53:58 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20220721-cka_note_section_11_install_k8s_the_kubeadm_way/</guid>
+      <guid>http://localhost:1313/post/20220721-cka_note_section_11_install_k8s_the_kubeadm_way/</guid>
       <description>225. Important Update: Kubernetes the Hard Way 這個章節其實是 Section 10 的最後一個 lecture，不過我想擺在這裡應該會比較合適! 講師提供一系列 Youtube 影片來示範如何像個硬漢一樣 Install Kubernetes from Scratch</description>
     </item>
     <item>
       <title>CKA Note Section 10 Design and Install a Kubernetes Cluster</title>
-      <link>https://blog.xxzk.me/post/20220719-cka_note_section_10_design_and_install_a_kubernetes_cluster/</link>
+      <link>http://localhost:1313/post/20220719-cka_note_section_10_design_and_install_a_kubernetes_cluster/</link>
       <pubDate>Tue, 19 Jul 2022 14:43:27 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20220719-cka_note_section_10_design_and_install_a_kubernetes_cluster/</guid>
+      <guid>http://localhost:1313/post/20220719-cka_note_section_10_design_and_install_a_kubernetes_cluster/</guid>
       <description>222. Choosing Kubernetes Infrastructure 這個章節在講如何選擇 K8s 建在哪裡，知道了一個蠻有趣的名詞 Kubernetes Turnkey Cloud Solutions 223. Configure High Availability ▲ api-server 可以是 Active-Active mode，不過 kubectl config 一次只能設定一個 URL，所以建議</description>
     </item>
     <item>
       <title>CKA Note Section 9 Networking</title>
-      <link>https://blog.xxzk.me/post/20220704-cka_note_section_9_networking/</link>
+      <link>http://localhost:1313/post/20220704-cka_note_section_9_networking/</link>
       <pubDate>Mon, 04 Jul 2022 13:58:19 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20220704-cka_note_section_9_networking/</guid>
+      <guid>http://localhost:1313/post/20220704-cka_note_section_9_networking/</guid>
       <description>前言 既然這個章節是介紹 Kubernetes Networking 那就先來複習一下之前看過的優質文章吧! [Hwchiu Docker Network - 網路模型 系列] Docker Network - 網路模型 [Day10] Container Network Interface 介紹 188. Prerequisite - Network Namespaces ▲ 使用 ip netns exec &amp;lt;NAMESPACE&amp;gt; ip link</description>
     </item>
     <item>
       <title>CKA Note Section 8 Storage</title>
-      <link>https://blog.xxzk.me/post/20220704-cka_note_section_8_storage/</link>
+      <link>http://localhost:1313/post/20220704-cka_note_section_8_storage/</link>
       <pubDate>Mon, 04 Jul 2022 09:50:26 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20220704-cka_note_section_8_storage/</guid>
+      <guid>http://localhost:1313/post/20220704-cka_note_section_8_storage/</guid>
       <description>169. Storage in Docker 這個章節主要在講 Docker container image/volume 的概念，可以參考我之前打的兩篇文章: Docker Image 介紹 Docker Volumes 介紹 171. Container Storage Interface (CSI) 關於 CRI 的介紹非常推薦 Hwchiu 鐵人賽系列: [Day5] Kubernetes &amp;amp; CRI (Container Runtime Interface)(I)</description>
     </item>
     <item>
       <title>CKA Note Section 7 Security</title>
-      <link>https://blog.xxzk.me/post/20211222-cka_note_section_7_security/</link>
+      <link>http://localhost:1313/post/20211222-cka_note_section_7_security/</link>
       <pubDate>Wed, 22 Dec 2021 13:53:04 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20211222-cka_note_section_7_security/</guid>
+      <guid>http://localhost:1313/post/20211222-cka_note_section_7_security/</guid>
       <description>135. Authentication 請參考 CKAD Note Section 9 Updates for Sep 2021 Changes - 121. Authentication, Authorization and Admission Control 139. TLS in Kubernetes ▲ 各個 K8s component 的 TLS community diagram。 因為現在大部分 kube-proxy 都不是單獨安裝，已經變成 daemondse</description>
     </item>
     <item>
       <title>CKA Note Section 6 Cluster Maintence</title>
-      <link>https://blog.xxzk.me/post/20211126-cka_note_section_6_cluster_maintence/</link>
+      <link>http://localhost:1313/post/20211126-cka_note_section_6_cluster_maintence/</link>
       <pubDate>Fri, 26 Nov 2021 11:24:39 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20211126-cka_note_section_6_cluster_maintence/</guid>
+      <guid>http://localhost:1313/post/20211126-cka_note_section_6_cluster_maintence/</guid>
       <description>117. OS Upgrades 如果我們要將某個 worder node 下線，做一些例行維護 (例如: OS Upgrade) 可以使用 1 kubectl drain &amp;lt;node_name&amp;gt; 來達成，原本在目標 worker node 的 pod 會被 re-schedule 到其它 worker node 上面。當維護完成再使用 1</description>
     </item>
     <item>
       <title>CKA Note Section 5 App Lifecycle Management</title>
-      <link>https://blog.xxzk.me/post/20211125-cka_note_section_5_app_lifecycle_management/</link>
+      <link>http://localhost:1313/post/20211125-cka_note_section_5_app_lifecycle_management/</link>
       <pubDate>Thu, 25 Nov 2021 16:55:33 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20211125-cka_note_section_5_app_lifecycle_management/</guid>
+      <guid>http://localhost:1313/post/20211125-cka_note_section_5_app_lifecycle_management/</guid>
       <description>89. Rolling Updates and Rollbacks 請參考 CKAD Note Section 6 Pod Design 82. Rolling Updates &amp;amp; Rollbacks in Deployments。 93. Commands 請參考 CKAD Note Section 3 Configuration 37. [Pre-Request] Commands and Arguments in Docker。 97. Configure Environment Variables in Applications 請參考 CKAD Note Section 3 Configuration 42.</description>
     </item>
     <item>
       <title>CKA Note Section 4 Logging and Monitoring</title>
-      <link>https://blog.xxzk.me/post/20211125-cka_note_section_4_logging_and_monitoring/</link>
+      <link>http://localhost:1313/post/20211125-cka_note_section_4_logging_and_monitoring/</link>
       <pubDate>Thu, 25 Nov 2021 16:03:41 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20211125-cka_note_section_4_logging_and_monitoring/</guid>
+      <guid>http://localhost:1313/post/20211125-cka_note_section_4_logging_and_monitoring/</guid>
       <description>請參考 CKAD Note Section 5 Observability 76. Monitor and Debug Application 章節。</description>
     </item>
     <item>
       <title>CKA Note Section 3 Scheduling</title>
-      <link>https://blog.xxzk.me/post/20211124-cka_note_section_3_scheduling/</link>
+      <link>http://localhost:1313/post/20211124-cka_note_section_3_scheduling/</link>
       <pubDate>Wed, 24 Nov 2021 15:03:28 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20211124-cka_note_section_3_scheduling/</guid>
+      <guid>http://localhost:1313/post/20211124-cka_note_section_3_scheduling/</guid>
       <description>50. Manual Scheduling 在 有 kube-scheduler 的情況下，我們可以在 pod definition YAML 裡面定義 pod.spec.nodeName: &amp;lt;worker node name&amp;gt; 來把 pod 放在指定 worker node。 在 沒有 kube-scheduler 的情況下，必須要以 json 格式 POST 到 api-server。B</description>
     </item>
     <item>
       <title>CKA Note Section 2 Core Concepts</title>
-      <link>https://blog.xxzk.me/post/20211123-cka_note_section_2_core_concepts/</link>
+      <link>http://localhost:1313/post/20211123-cka_note_section_2_core_concepts/</link>
       <pubDate>Tue, 23 Nov 2021 14:00:06 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20211123-cka_note_section_2_core_concepts/</guid>
+      <guid>http://localhost:1313/post/20211123-cka_note_section_2_core_concepts/</guid>
       <description>10. Cluster Architecture ▲ Kubernetes controll plane / worker node 組件 12. ETCD in Kubernetes 透過 kubectl get 都是 (透過 api-server ) 向 etcd 查詢資料。 講師提供的練習環境是使用 kubeadm 搭建的，課程最後的章節會教導如何從 scratch 建立 Kubernetes cl</description>
     </item>
     <item>
       <title>CKAD Note Section 9 Updates for Sep 2021 Changes</title>
-      <link>https://blog.xxzk.me/post/20211110-ckad-note-section-9-updates-for-sep-2021-changes/</link>
+      <link>http://localhost:1313/post/20211110-ckad-note-section-9-updates-for-sep-2021-changes/</link>
       <pubDate>Wed, 10 Nov 2021 11:05:08 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20211110-ckad-note-section-9-updates-for-sep-2021-changes/</guid>
+      <guid>http://localhost:1313/post/20211110-ckad-note-section-9-updates-for-sep-2021-changes/</guid>
       <description>▲ CKAD 新舊版差異 119. Define, build and modify container images 非常基礎的 Docker Image (container image) 介紹，我之前就打過一篇在公司 Bookstack 了~ 《Docker Image 介紹》 使用 docker 與 podman 大部分情況 docker 與 podman syntax 很接近~ 1</description>
     </item>
     <item>
       <title>CKAD Note Section 8 State Persistence</title>
-      <link>https://blog.xxzk.me/post/20211105-ckad-note-section-8-state-persistence/</link>
+      <link>http://localhost:1313/post/20211105-ckad-note-section-8-state-persistence/</link>
       <pubDate>Fri, 05 Nov 2021 20:54:44 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20211105-ckad-note-section-8-state-persistence/</guid>
+      <guid>http://localhost:1313/post/20211105-ckad-note-section-8-state-persistence/</guid>
       <description>105. Volumes hostPath 這個範例 mount worker-node 的 /data 進 pod 裡面，並且 mapping 到 container 裡面的 /test-pd。 實際上我們並不會這樣做，因為 worker-node 之間的資料並沒辦法同步，一般來說會使用 shared storage 例</description>
     </item>
     <item>
       <title>CKAD Note Section 7 Service and Networking</title>
-      <link>https://blog.xxzk.me/post/20211104-ckad-note-section-7-service-and-networking/</link>
+      <link>http://localhost:1313/post/20211104-ckad-note-section-7-service-and-networking/</link>
       <pubDate>Thu, 04 Nov 2021 11:32:23 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20211104-ckad-note-section-7-service-and-networking/</guid>
+      <guid>http://localhost:1313/post/20211104-ckad-note-section-7-service-and-networking/</guid>
       <description>90. Service ▲ NodePort type 的 service ▲ service 的種類: NodePort, Cluster IP, LoadBlance ▲ NodePort 總共有三個 port number 分別是: node-port, port, target-port NodePort range: 30000~32767 (option)。 如果沒有給定 targetPort，預設 port == targ</description>
     </item>
     <item>
       <title>CKAD Note Section 6 Pod Design</title>
-      <link>https://blog.xxzk.me/post/20211102-ckad-note-section-6-pod-design/</link>
+      <link>http://localhost:1313/post/20211102-ckad-note-section-6-pod-design/</link>
       <pubDate>Tue, 02 Nov 2021 13:56:46 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20211102-ckad-note-section-6-pod-design/</guid>
+      <guid>http://localhost:1313/post/20211102-ckad-note-section-6-pod-design/</guid>
       <description>79. Labels, Selectors and Annotations 1 2 3 4 5 6 7 8 9 10 11 12 13 apiVersion: v1 kind: Pod metadata: name: label-demo labels: environment: production app: nginx spec: containers: - name: nginx image: nginx:1.14.2 ports: - containerPort: 80 我們可以在 kubernetes object 上貼上標籤 (labels) 用於分類。使用 kubectl get pod --selector &amp;lt;key&amp;gt;=&amp;lt;value&amp;gt; 可以篩選</description>
     </item>
     <item>
       <title>CKAD Note Section 5 Observability</title>
-      <link>https://blog.xxzk.me/post/20211027-ckad-note-section-5-observability/</link>
+      <link>http://localhost:1313/post/20211027-ckad-note-section-5-observability/</link>
       <pubDate>Wed, 27 Oct 2021 16:52:37 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20211027-ckad-note-section-5-observability/</guid>
+      <guid>http://localhost:1313/post/20211027-ckad-note-section-5-observability/</guid>
       <description>70. Readiness and Liveness Probes Readiness Probes 透過前面的章節我們可以得知 Pod 具有狀態 (status) 與 條件 (condition)，前者顯示 lifecycle 階段 (pending, containerCreating, running) pending: scheduler 正在安排 pod 到 worker-node 上，或者有問題 (kubectl describe 可</description>
     </item>
     <item>
       <title>CKAD Note Section 3 Configuration</title>
-      <link>https://blog.xxzk.me/post/20210730-ckad-note-section-3-configuration/</link>
+      <link>http://localhost:1313/post/20210730-ckad-note-section-3-configuration/</link>
       <pubDate>Fri, 30 Jul 2021 11:29:19 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20210730-ckad-note-section-3-configuration/</guid>
+      <guid>http://localhost:1313/post/20210730-ckad-note-section-3-configuration/</guid>
       <description>37. [Pre-Request] Commands and Arguments in Docker 課程一開始就先來複習 Docker File 當中的 CMD 與 ENTRYPOINT，雖然講師說不在 CKAD 的考試範圍，不過 CKAD-2021 (即將在 2021 Q3 改版) 看起來是有被納入的</description>
     </item>
     <item>
       <title>CKAD Note Section 1 Introduction</title>
-      <link>https://blog.xxzk.me/post/20210727-ckad-note-section-1-introduction/</link>
+      <link>http://localhost:1313/post/20210727-ckad-note-section-1-introduction/</link>
       <pubDate>Tue, 27 Jul 2021 09:33:08 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20210727-ckad-note-section-1-introduction/</guid>
+      <guid>http://localhost:1313/post/20210727-ckad-note-section-1-introduction/</guid>
       <description>Kubernetes Series 作者的系列課程總共有三個，分別適合不同職位的三種人。 Absolute Beginners (零經驗初學者，帶你從 container 開始) sysAdmin (想要通過 CKAD) Application Developer (程式開發人員) Certification Details 這邊告知 CKAD 考</description>
     </item>
     <item>
       <title>minikube 安裝指南。 一個精簡、測試環境使用的 k8s 叢集</title>
-      <link>https://blog.xxzk.me/post/20210617-minikube-installation/</link>
+      <link>http://localhost:1313/post/20210617-minikube-installation/</link>
       <pubDate>Thu, 17 Jun 2021 09:29:55 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20210617-minikube-installation/</guid>
+      <guid>http://localhost:1313/post/20210617-minikube-installation/</guid>
       <description>minikube 能夠快速在本地 (local) 建立 kubernetes cluster (k8s 叢集)，支援 macOS, Linux, Windows 非常適合新手探索 kubernetes 安裝需求 pre-requirement minikube-Driver ▲ 官方有列出各類型 OS 建議搭建在何種虛擬環境上。本篇筆記選用 CentOS 7.9.2009 +</description>
     </item>
   </channel>

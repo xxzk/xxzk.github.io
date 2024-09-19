@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>AWS SES 手動發信 / SPF / DKIM 筆記 - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="老柯" /><meta name="description" content="Introduction 這篇筆記一開始會先從如何手動透過 SES 發信開始，接著會介紹如何設定 SPF 和 DKIM。 邏輯是著手設定 SPF/DKIM 之前先看看目前 E-Mail 的狀態。 在開始之前建議先了解一" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.133.1 with theme even" />
+
+
+<link rel="canonical" href="http://localhost:1313/post/20240919-aws-ses/" />
+
+
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:url" content="http://localhost:1313/post/20240919-aws-ses/">
+  <meta property="og:site_name" content="老柯的學習筆記">
+  <meta property="og:title" content="AWS SES 手動發信 / SPF / DKIM 筆記">
+  <meta property="og:description" content="Introduction 這篇筆記一開始會先從如何手動透過 SES 發信開始，接著會介紹如何設定 SPF 和 DKIM。 邏輯是著手設定 SPF/DKIM 之前先看看目前 E-Mail 的狀態。 在開始之前建議先了解一">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="post">
+    <meta property="article:published_time" content="2024-09-18T10:10:13+00:00">
+    <meta property="article:modified_time" content="2024-09-18T10:10:13+00:00">
+    <meta property="article:tag" content="Aws">
+    <meta property="article:tag" content="Ses">
+
+  <meta itemprop="name" content="AWS SES 手動發信 / SPF / DKIM 筆記">
+  <meta itemprop="description" content="Introduction 這篇筆記一開始會先從如何手動透過 SES 發信開始，接著會介紹如何設定 SPF 和 DKIM。 邏輯是著手設定 SPF/DKIM 之前先看看目前 E-Mail 的狀態。 在開始之前建議先了解一">
+  <meta itemprop="datePublished" content="2024-09-18T10:10:13+00:00">
+  <meta itemprop="dateModified" content="2024-09-18T10:10:13+00:00">
+  <meta itemprop="wordCount" content="1748">
+  <meta itemprop="keywords" content="Aws,Ses">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="AWS SES 手動發信 / SPF / DKIM 筆記">
+  <meta name="twitter:description" content="Introduction 這篇筆記一開始會先從如何手動透過 SES 發信開始，接著會介紹如何設定 SPF 和 DKIM。 邏輯是著手設定 SPF/DKIM 之前先看看目前 E-Mail 的狀態。 在開始之前建議先了解一">
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">AWS SES 手動發信 / SPF / DKIM 筆記</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2024-09-18 </span>
+        <div class="post-category">
+            <a href="/categories/aws/"> aws </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#introduction">Introduction</a></li>
+        <li><a href="#透過-cli-請-aws-ses-發信-using-the-command-line-to-send-email-using-the-amazon-ses-smtp-interfacehttpsdocsawsamazoncomseslatestdgsend-email-smtp-client-command-linehtml">透過 CLI 請 AWS SES 發信 (<a href="https://docs.aws.amazon.com/ses/latest/dg/send-email-smtp-client-command-line.html">Using the command line to send email using the Amazon SES SMTP interface</a>)</a></li>
+        <li><a href="#spf-authenticating-email-with-spf-in-amazon-seshttpsdocsawsamazoncomseslatestdgsend-email-authentication-spfhtml">SPF (<a href="https://docs.aws.amazon.com/ses/latest/dg/send-email-authentication-spf.html">Authenticating Email with SPF in Amazon SES</a>)</a>
+          <ul>
+            <li><a href="#spf-茶包射手">SPF 茶包射手</a></li>
+          </ul>
+        </li>
+        <li><a href="#dkim">DKIM</a></li>
+        <li><a href="#dmarc">DMARC</a></li>
+        <li><a href="#smtp_credentials_generatepy">smtp_credentials_generate.py</a></li>
+        <li><a href="#send-email-via-sessh">send-email-via-ses.sh</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="introduction">Introduction</h2>
+<p>這篇筆記一開始會先從如何手動透過 SES 發信開始，接著會介紹如何設定 SPF 和 DKIM。 邏輯是著手設定 SPF/DKIM 之前先看看目前 E-Mail 的狀態。</p>
+<p>在開始之前建議先了解一下 E-Mail 寄送過程 An E-Mail&rsquo;s Journey</p>
+<p><img src="https://tech-blog.cymetrics.io/img/posts/crystal/email-sec-theory/journey-1280w.webp" alt="email-jourany"></p>
+<p>▲ 圖片來源 (大推這篇文章): <a href="https://tech-blog.cymetrics.io/posts/crystal/email-sec-theory/">[Cymetrics] 關於 email security 的大小事 — 原理篇</a></p>
+<p><img src="https://tech-blog.cymetrics.io/img/posts/crystal/email-sec-theory/identity-ref-1920w.webp" alt="Identity References in a Message"></p>
+<p>▲ 圖片來源: <a href="https://tech-blog.cymetrics.io/posts/crystal/email-sec-theory/">[Cymetrics] 關於 email security 的大小事 — 原理篇</a>, <a href="https://bbiw.net/specifications/draft-crocker-email-arch-03.html#rfc.section.4.1.4">RFC</a></p>
+<h2 id="透過-cli-請-aws-ses-發信-using-the-command-line-to-send-email-using-the-amazon-ses-smtp-interfacehttpsdocsawsamazoncomseslatestdgsend-email-smtp-client-command-linehtml">透過 CLI 請 AWS SES 發信 (<a href="https://docs.aws.amazon.com/ses/latest/dg/send-email-smtp-client-command-line.html">Using the command line to send email using the Amazon SES SMTP interface</a>)</h2>
+<p>首先我們先測試一下 client 是否能碰到 AWS SES。<a href="https://docs.aws.amazon.com/ses/latest/dg/send-email-smtp-client-command-line.html#send-email-smtp-client-command-line-testing">Testing your connection to the Amazon SES SMTP interface</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">openssl s_client -crlf -quiet -starttls smtp -connect email-smtp.us-west-2.amazonaws.com:587
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong><span style='color:red'>其中 <code>us-west-2</code> 請自行替換成你的 AWS SES SMTP endpoint region。</span></strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-txt" data-lang="txt"><span class="line"><span class="cl">Connecting to 52.13.3.84
+</span></span><span class="line"><span class="cl">depth=2 C=US, O=Amazon, CN=Amazon Root CA 1
+</span></span><span class="line"><span class="cl">verify return:1
+</span></span><span class="line"><span class="cl">depth=1 C=US, O=Amazon, CN=Amazon RSA 2048 M01
+</span></span><span class="line"><span class="cl">verify return:1
+</span></span><span class="line"><span class="cl">depth=0 CN=email-smtp.us-west-2.amazonaws.com
+</span></span><span class="line"><span class="cl">verify return:1
+</span></span><span class="line"><span class="cl">250 Ok  &lt;=== 這個代表連線成功
+</span></span><span class="line"><span class="cl">451 4.4.2 Timeout waiting for data from client.
+</span></span><span class="line"><span class="cl">read:errno=0
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>確認網路沒有障礙後，<strong><span style='color:blue'>再來需要一個 SES SMTP 的帳號密碼才能使用 SES 發信</span></strong>，就跟需要 Google 帳號密碼登入 Gmail 一樣。 <a href="https://docs.aws.amazon.com/ses/latest/dg/smtp-credentials.html">Obtaining Amazon SES SMTP credentials</a>，<strong><span style='color:red'>SMTP password 與 IAM secret key 不同，同一組 credentials 不能跨 AWS Region。</span></strong></p>
+<p>雖然說 IAM secret key 不能直接拿來當 SES credentials，但 IAM secret key 卻是產生 SES credential 必要的參數。 <a href="https://docs.aws.amazon.com/ses/latest/dg/smtp-credentials.html#smtp-credentials-convert">Obtaining SES SMTP credentials by converting existing AWS credentials</a></p>
+<p>send email via ses 所需的 IAM policy</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;Version&#34;</span><span class="p">:</span> <span class="s2">&#34;2012-10-17&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;Statement&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Effect&#34;</span><span class="p">:</span> <span class="s2">&#34;Allow&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Action&#34;</span><span class="p">:</span> <span class="s2">&#34;ses:SendRawEmail&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Resource&#34;</span><span class="p">:</span> <span class="s2">&#34;*&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol>
+<li>首先，產生出 SES SMTP credentials</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># Executing Linux Commands Without Storing Them in History.</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Method 1: By Prefixing with Space</span>
+</span></span><span class="line"><span class="cl"> ./smtp_credentials_generate.py &lt;IAM secret key&gt; &lt;REGION&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="2">
+<li>發信 shell script，<strong><span style='color:red'><code>username</code> 是 IAM access key，<code>password</code> 是剛剛透過 <code>smtp_credentials_generate.py</code> 產生的 SES SMTP password</span></strong>。</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">./send-email-via-ses.sh
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Enter SMTP username &lt;accesskey&gt;:
+</span></span><span class="line"><span class="cl">Enter SMTP password:
+</span></span><span class="line"><span class="cl">Sender email address <span class="o">[</span>non-exist@xxzk.me<span class="o">]</span>:
+</span></span><span class="line"><span class="cl">Receiver email address: a@b.com
+</span></span><span class="line"><span class="cl">Email subject <span class="o">[</span>TEST Email, Send Via AWS SES<span class="o">]</span>:
+</span></span><span class="line"><span class="cl">Message to send <span class="o">[</span>This is a <span class="nb">test</span> email<span class="o">]</span>:
+</span></span><span class="line"><span class="cl">AWS Region Code <span class="o">[</span>us-west-2<span class="o">]</span>:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Connecting to 54.185.234.152
+</span></span><span class="line"><span class="cl"><span class="nv">depth</span><span class="o">=</span><span class="m">2</span> <span class="nv">C</span><span class="o">=</span>US, <span class="nv">O</span><span class="o">=</span>Amazon, <span class="nv">CN</span><span class="o">=</span>Amazon Root CA <span class="m">1</span>
+</span></span><span class="line"><span class="cl">verify <span class="k">return</span>:1
+</span></span><span class="line"><span class="cl"><span class="nv">depth</span><span class="o">=</span><span class="m">1</span> <span class="nv">C</span><span class="o">=</span>US, <span class="nv">O</span><span class="o">=</span>Amazon, <span class="nv">CN</span><span class="o">=</span>Amazon RSA <span class="m">2048</span> M01
+</span></span><span class="line"><span class="cl">verify <span class="k">return</span>:1
+</span></span><span class="line"><span class="cl"><span class="nv">depth</span><span class="o">=</span><span class="m">0</span> <span class="nv">CN</span><span class="o">=</span>email-smtp.us-west-2.amazonaws.com
+</span></span><span class="line"><span class="cl">verify <span class="k">return</span>:1
+</span></span><span class="line"><span class="cl"><span class="m">250</span> Ok
+</span></span><span class="line"><span class="cl">250-email-smtp.amazonaws.com
+</span></span><span class="line"><span class="cl">250-8BITMIME
+</span></span><span class="line"><span class="cl">250-STARTTLS
+</span></span><span class="line"><span class="cl">250-AUTH PLAIN LOGIN
+</span></span><span class="line"><span class="cl"><span class="m">250</span> Ok
+</span></span><span class="line"><span class="cl"><span class="m">334</span> xxzzzzxxxxx
+</span></span><span class="line"><span class="cl"><span class="m">334</span> xxxxxzzzzzz
+</span></span><span class="line"><span class="cl"><span class="m">235</span> Authentication successful. &lt;<span class="o">===</span> 登入 SES 成功
+</span></span><span class="line"><span class="cl"><span class="m">250</span> Ok
+</span></span><span class="line"><span class="cl"><span class="m">250</span> Ok
+</span></span><span class="line"><span class="cl"><span class="m">354</span> End data with &lt;CR&gt;&lt;LF&gt;.&lt;CR&gt;&lt;LF&gt;
+</span></span><span class="line"><span class="cl"><span class="m">554</span> Message rejected: Email address is not verified. The following identities failed the check in region US-WEST-2: non-exsit@xxzk.me
+</span></span><span class="line"><span class="cl"><span class="m">451</span> 4.4.2 Timeout waiting <span class="k">for</span> data from client.
+</span></span><span class="line"><span class="cl">read:errno<span class="o">=</span><span class="m">0</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>可以看到 <code>554 Message rejected: Email address is not verified. The following identities failed the check in region US-WEST-2: non-exist@xxzk.me</code> 錯誤，<strong><span style='color:blue'>因為 <code>no-exist@xxzk.me</code> 不在 SES Identities 當中</span></strong>。將 <code>Sender email address</code> 修正後即可排除。</p>
+<h2 id="spf-authenticating-email-with-spf-in-amazon-seshttpsdocsawsamazoncomseslatestdgsend-email-authentication-spfhtml">SPF (<a href="https://docs.aws.amazon.com/ses/latest/dg/send-email-authentication-spf.html">Authenticating Email with SPF in Amazon SES</a>)</h2>
+<p><strong><span style='color:red'>SPF 驗證 sender E-Mail server 是否在 SPF record 的白名單內。</span></strong></p>
+<p>攻擊手法: 阿貓阿狗都能自架 E-Mail server 發信，只有 SPF 不夠安全。</p>
+<blockquote>
+<p>Messages that you send through Amazon SES automatically use a subdomain of amazonses.com as the default MAIL FROM domain.</p>
+</blockquote>
+<p>透過 AWS SES 發信時，預設的 <code>MAIL FROM</code> (SMTP layer) 是 <code>amazonses.com</code>，AWS 已經幫我們設定好 SPF record 了，所以不用擔心 SPF 的問題。<code>FROM</code> (message header field) 的 domain 可以 denied all。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">dig TXT amazonses.com +noall +answer
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">amazonses.com.          <span class="m">29</span>      IN      TXT     <span class="s2">&#34;v=spf1 ip4:199.255.192.0/22 ip4:199.127.232.0/22 ip4:54.240.0.0/18 ip4:69.169.224.0/20 ip4:23.249.208.0/20 ip4:23.251.224.0/19 ip4:76.223.176.0/20 ip4:54.240.64.0/19 ip4:54.240.96.0/19 ip4:76.223.128.0/19 ip4:216.221.160.0/19 ip4:206.55.144.0/20 -all&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>However, if you don&rsquo;t want to use the SES default MAIL FROM domain, and would rather use a subdomain of a domain that you own, this is referred to in SES as using a custom MAIL FROM domain.</p>
+</blockquote>
+<p>當然，AWS SES 也支援使用自己的 domain 作為 <code>MAIL FROM</code>。<a href="https://docs.aws.amazon.com/ses/latest/dg/mail-from.html">Using a custom MAIL FROM domain</a></p>
+<p><strong><span style='color:red'>既然 <code>MAIL FROM</code> (SMTP layer) 不會是公司的 domain，那就全擋吧 ~</span></strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-txt" data-lang="txt"><span class="line"><span class="cl">v=spf1 -all
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a href="https://mxtoolbox.com/SuperTool.aspx?action=spf#">mxtoolbox.com</a> 線上服務可以幫你檢查 SPF record 是否正確。</p>
+<h3 id="spf-茶包射手">SPF 茶包射手</h3>
+<blockquote>
+<p>InvalidChangeBatch 400: RRSet of type TXT with DNS name sub.r.com. is not permitted because a conflicting RRSet of type CNAME with the same DNS name already exists in zone r.com.</p>
+</blockquote>
+<p><a href="https://repost.aws/knowledge-center/route-53-create-cname-record">Error: InvalidChangeBatch 400: RRSet of type CNAME with DNS name test.example.com. is not permitted as it conflicts with other records with the same DNS name in zone | AWS re:Post</a></p>
+<p>AWS Route53 不允許同一個 domain 同時有 CNAME 和 TXT/MX record (CloudFlare 就不會，沒研究什麼原因)，原本 <code>sub.r.com</code> CNAME 到 CloudFront，現在必需改成 A record 搭配 Alias，方能上 SPF 的 TXT record。</p>
+<h2 id="dkim">DKIM</h2>
+<p>基本上 AWS SES DKIM 是一鍵開啟，完全不用擔心什麼，就連更改 key bit 1024 -&gt; 2048 也是一鍵完成。</p>
+<p><a href="https://repost.aws/questions/QUc2hYJI9lQruFypPJo75yJw/dkim-dns-records-points-to-expired-and-1024-bit-keys-when-we-selected-2048-bit-key">DKIM DNS records points to expired and 1024 bit keys when we selected 2048 bit key | AWS re:Post</a></p>
+<h2 id="dmarc">DMARC</h2>
+<p>預設值即可，因為是使用託管 Mail server (AWS SES)。 (正常一點的 Mail server 看到 <code>MailFrom</code> (smtp layer) 是 <code>amazonaws.com</code> + SPF passed + DKIM passed，這 credit 應該夠高了吧？)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-txt" data-lang="txt"><span class="line"><span class="cl">&#34;v=DMARC1; p=none;&#34;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<h2 id="smtp_credentials_generatepy">smtp_credentials_generate.py</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="ch">#!/usr/bin/env python3</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">hmac</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">hashlib</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">base64</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">argparse</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">SMTP_REGIONS</span> <span class="o">=</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;us-east-2&#34;</span><span class="p">,</span>  <span class="c1"># US East (Ohio)</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;us-east-1&#34;</span><span class="p">,</span>  <span class="c1"># US East (N. Virginia)</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;us-west-2&#34;</span><span class="p">,</span>  <span class="c1"># US West (Oregon)</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;ap-south-1&#34;</span><span class="p">,</span>  <span class="c1"># Asia Pacific (Mumbai)</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;ap-northeast-2&#34;</span><span class="p">,</span>  <span class="c1"># Asia Pacific (Seoul)</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;ap-southeast-1&#34;</span><span class="p">,</span>  <span class="c1"># Asia Pacific (Singapore)</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;ap-southeast-2&#34;</span><span class="p">,</span>  <span class="c1"># Asia Pacific (Sydney)</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;ap-northeast-1&#34;</span><span class="p">,</span>  <span class="c1"># Asia Pacific (Tokyo)</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;ca-central-1&#34;</span><span class="p">,</span>  <span class="c1"># Canada (Central)</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;eu-central-1&#34;</span><span class="p">,</span>  <span class="c1"># Europe (Frankfurt)</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;eu-west-1&#34;</span><span class="p">,</span>  <span class="c1"># Europe (Ireland)</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;eu-west-2&#34;</span><span class="p">,</span>  <span class="c1"># Europe (London)</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;eu-south-1&#34;</span><span class="p">,</span>  <span class="c1"># Europe (Milan)</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;eu-north-1&#34;</span><span class="p">,</span>  <span class="c1"># Europe (Stockholm)</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;sa-east-1&#34;</span><span class="p">,</span>  <span class="c1"># South America (Sao Paulo)</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;us-gov-west-1&#34;</span><span class="p">,</span>  <span class="c1"># AWS GovCloud (US)</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;us-gov-east-1&#34;</span><span class="p">,</span>  <span class="c1"># AWS GovCloud (US)</span>
+</span></span><span class="line"><span class="cl"><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># These values are required to calculate the signature. Do not change them.</span>
+</span></span><span class="line"><span class="cl"><span class="n">DATE</span> <span class="o">=</span> <span class="s2">&#34;11111111&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">SERVICE</span> <span class="o">=</span> <span class="s2">&#34;ses&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">MESSAGE</span> <span class="o">=</span> <span class="s2">&#34;SendRawEmail&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">TERMINAL</span> <span class="o">=</span> <span class="s2">&#34;aws4_request&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">VERSION</span> <span class="o">=</span> <span class="mh">0x04</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">sign</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">msg</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&#34;utf-8&#34;</span><span class="p">),</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">calculate_key</span><span class="p">(</span><span class="n">secret_access_key</span><span class="p">,</span> <span class="n">region</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">region</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">SMTP_REGIONS</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;The </span><span class="si">{</span><span class="n">region</span><span class="si">}</span><span class="s2"> Region doesn&#39;t have an SMTP endpoint.&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">signature</span> <span class="o">=</span> <span class="n">sign</span><span class="p">((</span><span class="s2">&#34;AWS4&#34;</span> <span class="o">+</span> <span class="n">secret_access_key</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&#34;utf-8&#34;</span><span class="p">),</span> <span class="n">DATE</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">signature</span> <span class="o">=</span> <span class="n">sign</span><span class="p">(</span><span class="n">signature</span><span class="p">,</span> <span class="n">region</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">signature</span> <span class="o">=</span> <span class="n">sign</span><span class="p">(</span><span class="n">signature</span><span class="p">,</span> <span class="n">SERVICE</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">signature</span> <span class="o">=</span> <span class="n">sign</span><span class="p">(</span><span class="n">signature</span><span class="p">,</span> <span class="n">TERMINAL</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">signature</span> <span class="o">=</span> <span class="n">sign</span><span class="p">(</span><span class="n">signature</span><span class="p">,</span> <span class="n">MESSAGE</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">signature_and_version</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">([</span><span class="n">VERSION</span><span class="p">])</span> <span class="o">+</span> <span class="n">signature</span>
+</span></span><span class="line"><span class="cl">    <span class="n">smtp_password</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">signature_and_version</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">smtp_password</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&#34;utf-8&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">description</span><span class="o">=</span><span class="s2">&#34;Convert a Secret Access Key to an SMTP password.&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&#34;secret&#34;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&#34;The Secret Access Key to convert.&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;region&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">help</span><span class="o">=</span><span class="s2">&#34;The AWS Region where the SMTP password will be used.&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">choices</span><span class="o">=</span><span class="n">SMTP_REGIONS</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="n">calculate_key</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">secret</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">region</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&#34;__main__&#34;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">main</span><span class="p">()</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="send-email-via-sessh">send-email-via-ses.sh</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Prompt user to provide following information</span>
+</span></span><span class="line"><span class="cl"><span class="nb">read</span> -p <span class="s2">&#34;Enter SMTP username &lt;accesskey&gt;: &#34;</span> SMTPUsername
+</span></span><span class="line"><span class="cl"><span class="nb">read</span> -p <span class="s2">&#34;Enter SMTP password: &#34;</span> SMTPPassword
+</span></span><span class="line"><span class="cl"><span class="nb">read</span> -p <span class="s2">&#34;Sender email address: &#34;</span> MAILFROM
+</span></span><span class="line"><span class="cl"><span class="nb">read</span> -p <span class="s2">&#34;Receiver email address: &#34;</span> RCPT
+</span></span><span class="line"><span class="cl"><span class="nb">read</span> -p <span class="s2">&#34;Email subject [TEST Email, Send Via AWS SES]: &#34;</span> SUBJECT
+</span></span><span class="line"><span class="cl"><span class="nv">SUBJECT</span><span class="o">=</span><span class="si">${</span><span class="nv">SUBJECT</span><span class="k">:-</span><span class="nv">TEST</span><span class="p"> Email, Send Via AWS SES</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl"><span class="nb">read</span> -p <span class="s2">&#34;Message to send [This is a test email]: &#34;</span> DATA
+</span></span><span class="line"><span class="cl"><span class="nv">DATA</span><span class="o">=</span><span class="si">${</span><span class="nv">DATA</span><span class="k">:-</span><span class="nv">This</span><span class="p"> is a test email.</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl"><span class="nb">read</span> -p <span class="s2">&#34;AWS Region Code [us-west-2]: &#34;</span> REGION
+</span></span><span class="line"><span class="cl"><span class="nv">REGION</span><span class="o">=</span><span class="si">${</span><span class="nv">REGION</span><span class="k">:-</span><span class="nv">us</span><span class="p">-west-2</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Encode SMTP username and password using base64</span>
+</span></span><span class="line"><span class="cl"><span class="nv">EncodedSMTPUsername</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span> -n <span class="s2">&#34;</span><span class="nv">$SMTPUsername</span><span class="s2">&#34;</span> <span class="p">|</span> openssl enc -base64<span class="k">)</span>
+</span></span><span class="line"><span class="cl"><span class="nv">EncodedSMTPPassword</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span> -n <span class="s2">&#34;</span><span class="nv">$SMTPPassword</span><span class="s2">&#34;</span> <span class="p">|</span> openssl enc -base64<span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Construct the email</span>
+</span></span><span class="line"><span class="cl"><span class="nv">Email</span><span class="o">=</span><span class="s2">&#34;EHLO example.com
+</span></span></span><span class="line"><span class="cl"><span class="s2">AUTH LOGIN
+</span></span></span><span class="line"><span class="cl"><span class="s2"></span><span class="nv">$EncodedSMTPUsername</span><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2"></span><span class="nv">$EncodedSMTPPassword</span><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">MAIL FROM: </span><span class="nv">$MAILFROM</span><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">RCPT TO: </span><span class="nv">$RCPT</span><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">DATA
+</span></span></span><span class="line"><span class="cl"><span class="s2">From: </span><span class="nv">$MAILFROM</span><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">To: </span><span class="nv">$RCPT</span><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">Subject: </span><span class="nv">$SUBJECT</span><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2"></span><span class="nv">$DATA</span><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">.
+</span></span></span><span class="line"><span class="cl"><span class="s2">QUIT&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$Email</span><span class="s2">&#34;</span> <span class="p">|</span> openssl s_client -crlf -quiet -starttls smtp -connect email-smtp.<span class="si">${</span><span class="nv">REGION</span><span class="si">}</span>.amazonaws.com:587
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">老柯</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2024-09-18
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/aws/">aws</a>
+          <a href="/tags/ses/">ses</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/20240909-aws-rds-encrypt/">
+            <span class="next-text nav-default">AWS RDS Encryption 評估</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022 - 
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

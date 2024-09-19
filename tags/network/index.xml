@@ -2,24 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Network on 老柯的學習筆記</title>
-    <link>https://blog.xxzk.me/tags/network/</link>
+    <link>http://localhost:1313/tags/network/</link>
     <description>Recent content in Network on 老柯的學習筆記</description>
     <generator>Hugo</generator>
     <language>en</language>
     <lastBuildDate>Thu, 22 Dec 2022 15:38:04 +0800</lastBuildDate>
-    <atom:link href="https://blog.xxzk.me/tags/network/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/network/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Linux 限制網路速度，使用 Wondershaper</title>
-      <link>https://blog.xxzk.me/post/20211126-linux-network-limiter-wondershaper/20211126-linux-network-limiter-wondershaper/</link>
+      <link>http://localhost:1313/post/20211126-linux-network-limiter-wondershaper/20211126-linux-network-limiter-wondershaper/</link>
       <pubDate>Fri, 26 Nov 2021 14:23:11 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20211126-linux-network-limiter-wondershaper/20211126-linux-network-limiter-wondershaper/</guid>
+      <guid>http://localhost:1313/post/20211126-linux-network-limiter-wondershaper/20211126-linux-network-limiter-wondershaper/</guid>
       <description>Wonder Shaper 是一支底層使用 Linux 自帶的流量控制命令 tc 的 shell script，能夠簡單、方便、快速 達成限流的目的 在 Wonder Shaper v1.3 以上版本等待列隊方式從本來的 CBQ 變更成 HT</description>
     </item>
     <item>
       <title>200 LAB Network 網通設備設定筆記</title>
-      <link>https://blog.xxzk.me/post/20210722-lab-200-network-device-setting-note/</link>
+      <link>http://localhost:1313/post/20210722-lab-200-network-device-setting-note/</link>
       <pubDate>Thu, 22 Jul 2021 08:53:50 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20210722-lab-200-network-device-setting-note/</guid>
+      <guid>http://localhost:1313/post/20210722-lab-200-network-device-setting-note/</guid>
       <description>Cisco 3750G 前言日記 在記錄設定前先來段日記 XD，Cisco 3750G 章節紀錄機櫃搬遷後 Cisco 3750G 24TS 作為系統組自管 ToS (Top of Switch) 使用。 原先 K8s LAB 因為留停期間同事有拿來實驗 O</description>
     </item>
   </channel>

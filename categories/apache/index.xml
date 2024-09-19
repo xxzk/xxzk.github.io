@@ -2,24 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Apache on 老柯的學習筆記</title>
-    <link>https://blog.xxzk.me/categories/apache/</link>
+    <link>http://localhost:1313/categories/apache/</link>
     <description>Recent content in Apache on 老柯的學習筆記</description>
     <generator>Hugo</generator>
     <language>en</language>
     <lastBuildDate>Fri, 08 Jul 2022 17:20:37 +0800</lastBuildDate>
-    <atom:link href="https://blog.xxzk.me/categories/apache/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/categories/apache/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>隱藏 Apache、PHP、OpenSSL、Nginx 版本號</title>
-      <link>https://blog.xxzk.me/post/20210223-hide-apache-php-openssl-nginx-version/</link>
+      <link>http://localhost:1313/post/20210223-hide-apache-php-openssl-nginx-version/</link>
       <pubDate>Tue, 23 Feb 2021 14:33:37 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20210223-hide-apache-php-openssl-nginx-version/</guid>
+      <guid>http://localhost:1313/post/20210223-hide-apache-php-openssl-nginx-version/</guid>
       <description>此篇筆記記錄如何隱藏客戶端看到 Web Server 使用的版本號 判斷標準是用最無腦的 Browser Plug-in 當作依據，推薦使用 Wappalyzer 如果透過 CloudFlare 訪問這些敏感資訊都會被過濾掉;直接使用 IP</description>
     </item>
     <item>
       <title>httpd.conf 研究筆記</title>
-      <link>https://blog.xxzk.me/post/20210220-apache-httpd-main-conf/</link>
+      <link>http://localhost:1313/post/20210220-apache-httpd-main-conf/</link>
       <pubDate>Sat, 20 Feb 2021 10:54:58 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20210220-apache-httpd-main-conf/</guid>
+      <guid>http://localhost:1313/post/20210220-apache-httpd-main-conf/</guid>
       <description>httpd 版本資訊 1 2 Server version: Apache/2.4.6 (CentOS) Server built: Nov 16 2020 16:18:20 敬啟者 開頭就一堆屁話，根本沒有人會看的 (愛開玩笑 自己的筆記也屁話一堆還敢說開發者 XD 節錄幾個重點好了 更多資訊</description>
     </item>
   </channel>

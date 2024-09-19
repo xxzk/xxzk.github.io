@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Nextcloud on 老柯的學習筆記</title>
-    <link>https://blog.xxzk.me/categories/nextcloud/</link>
+    <link>http://localhost:1313/categories/nextcloud/</link>
     <description>Recent content in Nextcloud on 老柯的學習筆記</description>
     <generator>Hugo</generator>
     <language>en</language>
     <lastBuildDate>Mon, 26 Dec 2022 11:34:31 +0800</lastBuildDate>
-    <atom:link href="https://blog.xxzk.me/categories/nextcloud/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/categories/nextcloud/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Nextcloud 建置，使用 Docker Compose</title>
-      <link>https://blog.xxzk.me/post/20210527-install-nextcloud-with-docker-compose/</link>
+      <link>http://localhost:1313/post/20210527-install-nextcloud-with-docker-compose/</link>
       <pubDate>Thu, 27 May 2021 15:11:37 +0000</pubDate>
-      <guid>https://blog.xxzk.me/post/20210527-install-nextcloud-with-docker-compose/</guid>
+      <guid>http://localhost:1313/post/20210527-install-nextcloud-with-docker-compose/</guid>
       <description>圖片來源: wiki 安裝 Docker 與 Docker Compose Docker 參考文章: Install Docker Engine on CentOS 新增 docker repo 1 2 yum install -y yum-utils yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo 安裝 docker-ce 1 yum install docker-ce docker-ce-cli containerd.io -y enable/start docker 1 systemctl enable --now docker.service 跑個 docker hello world 確認 docker 安裝成功 1 docker run hello-world Docker</description>
     </item>
   </channel>

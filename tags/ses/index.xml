@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ses on 老柯的學習筆記</title>
+    <link>http://localhost:1313/tags/ses/</link>
+    <description>Recent content in Ses on 老柯的學習筆記</description>
+    <generator>Hugo</generator>
+    <language>en</language>
+    <lastBuildDate>Wed, 18 Sep 2024 10:10:13 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/ses/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AWS SES 手動發信 / SPF / DKIM 筆記</title>
+      <link>http://localhost:1313/post/20240919-aws-ses/</link>
+      <pubDate>Wed, 18 Sep 2024 10:10:13 +0000</pubDate>
+      <guid>http://localhost:1313/post/20240919-aws-ses/</guid>
+      <description>Introduction 這篇筆記一開始會先從如何手動透過 SES 發信開始，接著會介紹如何設定 SPF 和 DKIM。 邏輯是著手設定 SPF/DKIM 之前先看看目前 E-Mail 的狀態。 在開始之前建議先了解一</description>
+    </item>
+  </channel>
+</rss>

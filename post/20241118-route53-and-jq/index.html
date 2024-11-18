@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>jq 與 AWS Route53 (DNS hosting) - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="" /><meta name="description" content="前言 因為看到 GCP 沒有上任何防護，被打 DDoS 造成流量費用暴增的案例，想來盤點一下公司有哪些 domain 是沒有上 CDN (cloudfront) 保護的。
+其實網頁就能查詢，但為了方便填到 Jira issue 上，所以用了 aws CLI 搭配 jq 來查詢。藉機熟悉一下 jq 的使用方式。此篇筆記非常沒有結構性，主要紀錄 jq 用法。
+" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.136.5 with theme even" />
+
+
+<link rel="canonical" href="https://blog.xxzk.me/post/20241118-route53-and-jq/" />
+
+
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:url" content="https://blog.xxzk.me/post/20241118-route53-and-jq/">
+  <meta property="og:site_name" content="老柯的學習筆記">
+  <meta property="og:title" content="jq 與 AWS Route53 (DNS hosting)">
+  <meta property="og:description" content="前言 因為看到 GCP 沒有上任何防護，被打 DDoS 造成流量費用暴增的案例，想來盤點一下公司有哪些 domain 是沒有上 CDN (cloudfront) 保護的。
+其實網頁就能查詢，但為了方便填到 Jira issue 上，所以用了 aws CLI 搭配 jq 來查詢。藉機熟悉一下 jq 的使用方式。此篇筆記非常沒有結構性，主要紀錄 jq 用法。">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="post">
+    <meta property="article:published_time" content="2024-11-18T15:59:00+00:00">
+    <meta property="article:modified_time" content="2024-11-18T15:59:00+00:00">
+    <meta property="article:tag" content="Aws">
+
+  <meta itemprop="name" content="jq 與 AWS Route53 (DNS hosting)">
+  <meta itemprop="description" content="前言 因為看到 GCP 沒有上任何防護，被打 DDoS 造成流量費用暴增的案例，想來盤點一下公司有哪些 domain 是沒有上 CDN (cloudfront) 保護的。
+其實網頁就能查詢，但為了方便填到 Jira issue 上，所以用了 aws CLI 搭配 jq 來查詢。藉機熟悉一下 jq 的使用方式。此篇筆記非常沒有結構性，主要紀錄 jq 用法。">
+  <meta itemprop="datePublished" content="2024-11-18T15:59:00+00:00">
+  <meta itemprop="dateModified" content="2024-11-18T15:59:00+00:00">
+  <meta itemprop="wordCount" content="389">
+  <meta itemprop="keywords" content="Aws">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="jq 與 AWS Route53 (DNS hosting)">
+  <meta name="twitter:description" content="前言 因為看到 GCP 沒有上任何防護，被打 DDoS 造成流量費用暴增的案例，想來盤點一下公司有哪些 domain 是沒有上 CDN (cloudfront) 保護的。
+其實網頁就能查詢，但為了方便填到 Jira issue 上，所以用了 aws CLI 搭配 jq 來查詢。藉機熟悉一下 jq 的使用方式。此篇筆記非常沒有結構性，主要紀錄 jq 用法。">
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">jq 與 AWS Route53 (DNS hosting)</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2024-11-18 </span>
+        <div class="post-category">
+            <a href="/categories/aws/"> aws </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#前言">前言</a></li>
+        <li><a href="#input-範例">Input 範例</a></li>
+        <li><a href="#附件---shell-script">附件 - shell script</a></li>
+        <li><a href="#參考資料">參考資料</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>因為看到 <a href="https://www.facebook.com/groups/rayforum/posts/8635612826518799">GCP 沒有上任何防護，被打 DDoS 造成流量費用暴增的案例</a>，想來盤點一下公司有哪些 domain 是沒有上 CDN (cloudfront) 保護的。</p>
+<p>其實網頁就能查詢，但為了方便填到 Jira issue 上，所以用了 aws CLI 搭配 jq 來查詢。藉機熟悉一下 jq 的使用方式。<strong><span style='color:red'>此篇筆記非常沒有結構性，主要紀錄 <code>jq</code> 用法</span></strong>。</p>
+<h2 id="input-範例">Input 範例</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;ResourceRecordSets&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Name&#34;</span><span class="p">:</span> <span class="s2">&#34;xxzk.me.&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Type&#34;</span><span class="p">:</span> <span class="s2">&#34;NS&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;TTL&#34;</span><span class="p">:</span> <span class="mi">172800</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;ResourceRecords&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">                <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="nt">&#34;Value&#34;</span><span class="p">:</span> <span class="s2">&#34;ns-1769.awsdns-29.co.uk.&#34;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">},</span>
+</span></span><span class="line"><span class="cl">                <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="nt">&#34;Value&#34;</span><span class="p">:</span> <span class="s2">&#34;ns-1182.awsdns-19.org.&#34;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Name&#34;</span><span class="p">:</span> <span class="s2">&#34;google.xxzk.me.&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Type&#34;</span><span class="p">:</span> <span class="s2">&#34;CNAME&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;TTL&#34;</span><span class="p">:</span> <span class="mi">300</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;ResourceRecords&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">                <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="nt">&#34;Value&#34;</span><span class="p">:</span> <span class="s2">&#34;google.com&#34;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Name&#34;</span><span class="p">:</span> <span class="s2">&#34;sub.xxzk.me.&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;Type&#34;</span><span class="p">:</span> <span class="s2">&#34;CNAME&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;TTL&#34;</span><span class="p">:</span> <span class="mi">300</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;ResourceRecords&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">                <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="nt">&#34;Value&#34;</span><span class="p">:</span> <span class="s2">&#34;use-cloudfront.net&#34;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="附件---shell-script">附件 - shell script</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="nb">set</span> -e
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">ZONE_ID</span><span class="o">=</span><span class="nv">$1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[[</span> <span class="s2">&#34;</span><span class="nv">$ZONE_ID</span><span class="s2">&#34;</span> <span class="o">==</span> <span class="s2">&#34;&#34;</span> <span class="o">]]</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&#34;Usage: </span><span class="nv">$0</span><span class="s2"> &lt;zone-id&gt;&#34;</span> <span class="o">&amp;&amp;</span> <span class="nb">exit</span> <span class="m">1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## Type 是 CNAME 且 Value 包含 cloudfront 的 DNS record</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># JQ_QUERY=&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># (.ResourceRecordSets[]? | select(.Type ==&#34;CNAME&#34;) | select(.ResourceRecords[].Value | contains(&#34;cloudfront&#34;)) </span>
+</span></span><span class="line"><span class="cl"><span class="c1"># | [.Name, .ResourceRecords[].Value] | @csv)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># &#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## ===== 備用 JQ_QUERY =====</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## Type 是 CNAME 且 Value 「不」包含 cloudfront 的 DNS record</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># JQ_QUERY=&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># (.ResourceRecordSets[]? | select(.Type ==&#34;CNAME&#34;) | select(.ResourceRecords[].Value | contains(&#34;cloudfront&#34;) | not) </span>
+</span></span><span class="line"><span class="cl"><span class="c1"># | [.Name, .ResourceRecords[].Value] | @csv)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># &#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## -----------------</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># -r: raw output</span>
+</span></span><span class="line"><span class="cl">aws route53 list-resource-record-sets --hosted-zone-id <span class="nv">$ZONE_ID</span> <span class="p">|</span> jq -r <span class="s2">&#34;</span><span class="nv">$JQ_QUERY</span><span class="s2">&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="參考資料">參考資料</h2>
+<ul>
+<li><a href="https://jqlang.github.io/jq/manual/">[官方文件] jq 1.7 Manual</a></li>
+<li><a href="https://jqplay.org/">[on-line Tool] jqplay</a></li>
+<li><a href="https://stackoverflow.com/questions/39139107/how-to-format-a-json-string-as-a-table-using-jq">bash - How to format a JSON string as a table using jq? - Stack Overflow</a></li>
+<li><a href="https://docs.aws.amazon.com/cli/latest/reference/route53/list-resource-record-sets.html">list-resource-record-sets — AWS CLI 1.36.4 Command Reference</a></li>
+</ul>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content"></span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2024-11-18
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/aws/">aws</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/20241009-rabbit-mq-cluster-k8s-operator/">
+            <span class="next-text nav-default">在 Kubernetes 建設 RabbitMQ 使用 RabbitMQ Operator</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022 - 
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

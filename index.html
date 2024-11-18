@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>老柯的學習筆記</title>
@@ -26,8 +26,8 @@
 <meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
-<link rel="canonical" href="http://localhost:1313/" />
-<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/index.xml" title="老柯的學習筆記">
+<link rel="canonical" href="https://blog.xxzk.me/" />
+<link rel="alternate" type="application/rss+xml" href="https://blog.xxzk.me/index.xml" title="老柯的學習筆記">
 
 
 
@@ -43,7 +43,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
-<meta property="og:url" content="http://localhost:1313/">
+<meta property="og:url" content="https://blog.xxzk.me/">
   <meta property="og:site_name" content="老柯的學習筆記">
   <meta property="og:title" content="老柯的學習筆記">
   <meta property="og:description" content="Learning note.">
@@ -53,7 +53,7 @@
   <meta itemprop="name" content="老柯的學習筆記">
   <meta itemprop="description" content="Learning note.">
   <meta itemprop="datePublished" content="2024-10-09T14:47:52+00:00">
-  <meta itemprop="dateModified" content="2024-11-18T14:50:24+08:00">
+  <meta itemprop="dateModified" content="2024-11-18T15:59:00+00:00">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="老柯的學習筆記">
   <meta name="twitter:description" content="Learning note.">
@@ -127,6 +127,29 @@
       <div class="content-wrapper">
         <div id="content" class="content">
           <section id="posts" class="posts">
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/20241118-route53-and-jq/">jq 與 AWS Route53 (DNS hosting)</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2024-11-18 </span>
+      <div class="post-category">
+          <a href="/categories/aws/"> aws </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <h2 id="前言">前言</h2>
+<p>因為看到 <a href="https://www.facebook.com/groups/rayforum/posts/8635612826518799">GCP 沒有上任何防護，被打 DDoS 造成流量費用暴增的案例</a>，想來盤點一下公司有哪些 domain 是沒有上 CDN (cloudfront) 保護的。</p>
+<p>其實網頁就能查詢，但為了方便填到 Jira issue 上，所以用了 aws CLI 搭配 jq 來查詢。藉機熟悉一下 jq 的使用方式。<strong><span style='color:red'>此篇筆記非常沒有結構性，主要紀錄 <code>jq</code> 用法</span></strong>。</p>
+    </div>
+    <div class="read-more">
+      <a href="/post/20241118-route53-and-jq/" class="read-more-link">Read more...</a>
+    </div>
+  </div>
+</article>
+
     <article class="post">
   <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/20241009-rabbit-mq-cluster-k8s-operator/">在 Kubernetes 建設 RabbitMQ 使用 RabbitMQ Operator</a></h1>
@@ -233,29 +256,6 @@ Kubernetes (EKS) 版本: v1.30</p>
   </div>
 </article>
 
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/20230613-kubernetes-dashboard-install-note/">Kubernetes Dashboard 安裝筆記</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2023-06-13 </span>
-      <div class="post-category">
-          <a href="/categories/kubernetes/"> kubernetes </a>
-          </div>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      <h2 id="介紹">介紹</h2>
-<p>這篇筆記會記錄如何從 <a href="https://github.com/kubernetes-sigs/metrics-server">metrics server</a> 開始安裝 <a href="https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/">Kubernetes Dashboard</a>，並且設定 Istio virtual service / gateway，最後產生一組僅有特定 namespace read-only 權限的 token。</p>
-<p>大部分的使用者可以省去安裝 metrics server 這段，因為自 Kubernetes v1.18 開始 metrics server 已是預設元件。</p>
-    </div>
-    <div class="read-more">
-      <a href="/post/20230613-kubernetes-dashboard-install-note/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
     </section>
   
   <nav class="pagination">
@@ -275,7 +275,7 @@ Kubernetes (EKS) 版本: v1.30</p>
       <div class="social-links">
       <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
   
-  <link href="http://localhost:1313/index.xml" rel="feed" type="application/rss+xml" class="iconfont icon-rss" title="老柯的學習筆記" />
+  <link href="https://blog.xxzk.me/index.xml" rel="feed" type="application/rss+xml" class="iconfont icon-rss" title="老柯的學習筆記" />
 </div>
 
 <div class="copyright">

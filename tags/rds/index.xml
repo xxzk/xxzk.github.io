@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Rds on 老柯的學習筆記</title>
-    <link>http://localhost:1313/tags/rds/</link>
+    <link>https://blog.xxzk.me/tags/rds/</link>
     <description>Recent content in Rds on 老柯的學習筆記</description>
     <generator>Hugo</generator>
     <language>en</language>
     <lastBuildDate>Mon, 09 Sep 2024 16:24:58 +0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/rds/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://blog.xxzk.me/tags/rds/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>AWS RDS Encryption 評估</title>
-      <link>http://localhost:1313/post/20240909-aws-rds-encrypt/</link>
+      <link>https://blog.xxzk.me/post/20240909-aws-rds-encrypt/</link>
       <pubDate>Mon, 09 Sep 2024 14:23:11 +0000</pubDate>
-      <guid>http://localhost:1313/post/20240909-aws-rds-encrypt/</guid>
+      <guid>https://blog.xxzk.me/post/20240909-aws-rds-encrypt/</guid>
       <description>&lt;h2 id=&#34;intro&#34;&gt;Intro&lt;/h2&gt;&#xA;&lt;p&gt;這篇筆記快速紀錄 AWS RDS Encryption for Compliance requirement.&lt;/p&gt;&#xA;&lt;h2 id=&#34;encrypting-amazon-rds-resources-linkhttpsdocsawsamazoncomamazonrdslatestuserguideoverviewencryptionhtml&#34;&gt;Encrypting Amazon RDS resources &lt;a href=&#34;https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.Encryption.html&#34;&gt;[link]&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Data at rest encryption, 包含: DB instance, logs, snapshot, read replica, and automated backup.&lt;/li&gt;&#xA;&lt;li&gt;AWS 使用 AES-256 加密演算法替 RDS 加密 / 解密。&lt;/li&gt;&#xA;&lt;li&gt;AWS 使用本身的 &lt;a href=&#34;https://aws.amazon.com/kms/&#34;&gt;AWS Key Management Service (KMS)&lt;/a&gt; 來管理加密金鑰。&lt;/li&gt;&#xA;&lt;li&gt;AWS KMS 在通過 &lt;a href=&#34;https://csrc.nist.gov/projects/cryptographic-module-validation-program/certificate/4523&#34;&gt;美國聯邦資訊處理標準 FIPS 140-2&lt;/a&gt; 認證的硬體上 儲存 / 產生 客戶的金鑰。&lt;a href=&#34;https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#kms_keys&#34;&gt;ref&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#kms_keys&#34;&gt;AWS KMS - Customer keys and AWS keys 比較表格&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;&lt;img src=&#34;aws-kms-key-type.jpg&#34; alt=&#34;aws-kms-key-type&#34;&gt;&lt;/p&gt;</description>
     </item>
   </channel>

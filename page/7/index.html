@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>老柯的學習筆記</title>
@@ -26,8 +26,8 @@
 <meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
-<link rel="canonical" href="http://localhost:1313/" />
-<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/index.xml" title="老柯的學習筆記">
+<link rel="canonical" href="https://blog.xxzk.me/" />
+<link rel="alternate" type="application/rss+xml" href="https://blog.xxzk.me/index.xml" title="老柯的學習筆記">
 
 
 
@@ -43,7 +43,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
-<meta property="og:url" content="http://localhost:1313/">
+<meta property="og:url" content="https://blog.xxzk.me/">
   <meta property="og:site_name" content="老柯的學習筆記">
   <meta property="og:title" content="老柯的學習筆記">
   <meta property="og:description" content="Learning note.">
@@ -53,7 +53,7 @@
   <meta itemprop="name" content="老柯的學習筆記">
   <meta itemprop="description" content="Learning note.">
   <meta itemprop="datePublished" content="2024-10-09T14:47:52+00:00">
-  <meta itemprop="dateModified" content="2024-11-18T14:50:24+08:00">
+  <meta itemprop="dateModified" content="2024-11-18T15:59:00+00:00">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="老柯的學習筆記">
   <meta name="twitter:description" content="Learning note.">
@@ -127,6 +127,76 @@
       <div class="content-wrapper">
         <div id="content" class="content">
           <section id="posts" class="posts">
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/20211104-ckad-note-section-7-service-and-networking/">CKAD Note Section 7 Service and Networking</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2021-11-04 </span>
+      <div class="post-category">
+          <a href="/categories/ckad-note/"> CKAD-Note </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <h2 id="90-service">90. Service</h2>
+<br>
+<p><img src="serivce_0.jpg" alt="serivce_0"></p>
+<p>▲ NodePort type 的 <code>service</code></p>
+<br>
+<p><img src="service_type.jpg" alt="service_type"></p>
+<p>▲ <code>service</code> 的種類: NodePort, Cluster IP, LoadBlance</p>
+<br>
+<p><img src="nodeport_0.jpg" alt="nodeport_0"></p>
+<p>▲ NodePort 總共有三個 port number 分別是: node-port, port, target-port</p>
+<br>
+<ul>
+<li>NodePort range: 30000~32767 (option)。</li>
+<li>如果沒有給定 targetPort，預設 <code>port == targetPort</code>。</li>
+</ul>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Service</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">my-service</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">NodePort</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">selector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">MyApp</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">80</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">nodePort</span><span class="p">:</span><span class="w"> </span><span class="m">30007</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">targetPort</span><span class="p">:</span><span class="w"> </span><span class="m">9376</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p>NodePort <code>service</code> 使用 <code>selector</code> 來決定要將流量導向到哪些 <code>pod</code> 身上。<br>
+P.S 這邊先偷吃步給一個簡單的方法:<br>
+<code>kubectl expose deployment nginx-rollout --port=80 --target-port=80</code></p>
+    </div>
+    <div class="read-more">
+      <a href="/post/20211104-ckad-note-section-7-service-and-networking/" class="read-more-link">Read more...</a>
+    </div>
+  </div>
+</article>
+
     <article class="post">
   <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/20211102-ckad-note-section-6-pod-design/">CKAD Note Section 6 Pod Design</a></h1>
@@ -313,31 +383,6 @@
   </div>
 </article>
 
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/20210907-setting-jumpserver-static-route-with-ansible-playbook/">Jumpserver 靜態路由設定 shell script &#43; Ansible Playbook 使用說明</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2021-09-07 </span>
-      <div class="post-category">
-          <a href="/categories/ansible/"> ansible </a>
-          </div>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      <p><img src="pexels-athena-910299.jpg" alt="pexels-athena-910299"></p>
-<p><a href="https://www.pexels.com/zh-tw/photo/910299/">圖片來源</a></p>
-<h2 id="為什麼使用-jumpserver-要上靜態路由">為什麼使用 Jumpserver 要上靜態路由?</h2>
-<p>公司現有 VM Network 環境只要是 Web server 的， default gateway 都是設定 Private IP Class B (172.x.0.0/16) 網段，也就是 <strong><span style='color:blue'>Load Balance</span></strong> 身上。同時該台 VM 也會有 <code>192.168.x.0/23 /24</code> 的網卡 (<code>192.168.x.254 or 253</code> 在 <strong><span style='color:red'>Forti</span></strong> 身上)<br>
-直接上 routing table 會比文字敘述更清楚~</p>
-    </div>
-    <div class="read-more">
-      <a href="/post/20210907-setting-jumpserver-static-route-with-ansible-playbook/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
     </section>
   
   <nav class="pagination">
@@ -360,7 +405,7 @@
       <div class="social-links">
       <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
   
-  <link href="http://localhost:1313/index.xml" rel="feed" type="application/rss+xml" class="iconfont icon-rss" title="老柯的學習筆記" />
+  <link href="https://blog.xxzk.me/index.xml" rel="feed" type="application/rss+xml" class="iconfont icon-rss" title="老柯的學習筆記" />
 </div>
 
 <div class="copyright">

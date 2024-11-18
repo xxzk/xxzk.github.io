@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>SSL-TLS-Certification on 老柯的學習筆記</title>
-    <link>http://localhost:1313/categories/ssl-tls-certification/</link>
+    <link>https://blog.xxzk.me/categories/ssl-tls-certification/</link>
     <description>Recent content in SSL-TLS-Certification on 老柯的學習筆記</description>
     <generator>Hugo</generator>
     <language>en</language>
     <lastBuildDate>Wed, 21 Dec 2022 14:10:33 +0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/categories/ssl-tls-certification/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://blog.xxzk.me/categories/ssl-tls-certification/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>使用 certbot 取得免費 Let&#39;s Encrypt TLS/SSL 憑證</title>
-      <link>http://localhost:1313/post/20211013-get-lets-encrypt-cert-using-certbot/</link>
+      <link>https://blog.xxzk.me/post/20211013-get-lets-encrypt-cert-using-certbot/</link>
       <pubDate>Wed, 13 Oct 2021 15:47:29 +0000</pubDate>
-      <guid>http://localhost:1313/post/20211013-get-lets-encrypt-cert-using-certbot/</guid>
+      <guid>https://blog.xxzk.me/post/20211013-get-lets-encrypt-cert-using-certbot/</guid>
       <description>&lt;center&gt;&#xA;&lt;p&gt;&lt;img src=&#34;https://letsencrypt.org/images/letsencrypt-logo-horizontal.svg&#34; alt=&#34;Let&amp;rsquo;s Encrypt logo&#34;&gt;&lt;/p&gt;&#xA;&lt;/center&gt;&#xA;&lt;h2 id=&#34;更新紀錄&#34;&gt;更新紀錄&lt;/h2&gt;&#xA;&lt;p&gt;2022.12.20: 整合另一篇筆記，關於缺少中繼憑證 (issuer certificate, intermediate certificate) 導致 &lt;code&gt;curl&lt;/code&gt; 報錯，而瀏覽器沒事的 trouble shooting 過程。&lt;/p&gt;&#xA;&lt;h2 id=&#34;介紹&#34;&gt;介紹&lt;/h2&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://letsencrypt.org/&#34;&gt;Let&amp;rsquo;s Encrypt&lt;/a&gt; 是一個 &lt;a href=&#34;https://www.abetterinternet.org/&#34;&gt;ISRG&lt;/a&gt; 建立的非營利項目，&lt;strong&gt;免費提供 TLS/SSL Certification&lt;/strong&gt;。&lt;br&gt;&#xA;除了有超多網路巨頭 &lt;a href=&#34;https://letsencrypt.org/sponsors/&#34;&gt;贊助商&lt;/a&gt; 同時也是 &lt;a href=&#34;https://www.linuxfoundation.org/projects&#34;&gt;Linux Foundation 合作的項目&lt;/a&gt;&lt;/p&gt;</description>
     </item>
   </channel>

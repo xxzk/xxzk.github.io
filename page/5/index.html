@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>老柯的學習筆記</title>
@@ -26,8 +26,8 @@
 <meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
-<link rel="canonical" href="http://localhost:1313/" />
-<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/index.xml" title="老柯的學習筆記">
+<link rel="canonical" href="https://blog.xxzk.me/" />
+<link rel="alternate" type="application/rss+xml" href="https://blog.xxzk.me/index.xml" title="老柯的學習筆記">
 
 
 
@@ -43,7 +43,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
-<meta property="og:url" content="http://localhost:1313/">
+<meta property="og:url" content="https://blog.xxzk.me/">
   <meta property="og:site_name" content="老柯的學習筆記">
   <meta property="og:title" content="老柯的學習筆記">
   <meta property="og:description" content="Learning note.">
@@ -53,7 +53,7 @@
   <meta itemprop="name" content="老柯的學習筆記">
   <meta itemprop="description" content="Learning note.">
   <meta itemprop="datePublished" content="2024-10-09T14:47:52+00:00">
-  <meta itemprop="dateModified" content="2024-11-18T14:50:24+08:00">
+  <meta itemprop="dateModified" content="2024-11-18T15:59:00+00:00">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="老柯的學習筆記">
   <meta name="twitter:description" content="Learning note.">
@@ -127,6 +127,35 @@
       <div class="content-wrapper">
         <div id="content" class="content">
           <section id="posts" class="posts">
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/20211222-cka_note_section_7_security/">CKA Note Section 7 Security</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2021-12-22 </span>
+      <div class="post-category">
+          <a href="/categories/cka-note/"> CKA-Note </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <h2 id="135-authentication">135. Authentication</h2>
+<br>
+<p>請參考 <a href="https://github.com/xxzk/CKAD_Note_Section_9_Updates_for_Sep_2021_Changes/blob/master/CKAD%20Note%20Section%209%20Updates%20for%20Sep%202021.md#121-authentication-authorization-and-admission-control">CKAD Note Section 9 Updates for Sep 2021 Changes - 121. Authentication, Authorization and Admission Control</a></p>
+<br>
+<h2 id="139-tls-in-kubernetes">139. TLS in Kubernetes</h2>
+<br>
+<p><img src="tls_communication_diagram.jpg" alt="tls_communication_diagram"></p>
+<p>▲ 各個 K8s component 的 TLS community diagram。</p>
+<p><strong><span style='color:blue'>因為現在大部分 kube-proxy 都不是單獨安裝，已經變成 daemondset，所以官方 docs 才沒有找到關於它的 certificate。在這個情況下可以用 <code>serviceaccount</code> 與 <code>secret</code> 傳入 daemondset 來達成需求。(謝謝 hwchiu)</span></strong></p>
+    </div>
+    <div class="read-more">
+      <a href="/post/20211222-cka_note_section_7_security/" class="read-more-link">Read more...</a>
+    </div>
+  </div>
+</article>
+
     <article class="post">
   <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/20211220-diff-between-shell-and-exec-in-dockerfile/">Dockerfile - Shell 與 Exec 的差異</a></h1>
@@ -253,28 +282,6 @@
   </div>
 </article>
 
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/20211125-cka_note_section_4_logging_and_monitoring/">CKA Note Section 4 Logging and Monitoring</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2021-11-25 </span>
-      <div class="post-category">
-          <a href="/categories/cka-note/"> CKA-Note </a>
-          </div>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      <br>
-<p>請參考 CKAD Note Section 5 Observability  <code>76. Monitor and Debug Application</code> 章節。</p>
-    </div>
-    <div class="read-more">
-      <a href="/post/20211125-cka_note_section_4_logging_and_monitoring/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
     </section>
   
   <nav class="pagination">
@@ -297,7 +304,7 @@
       <div class="social-links">
       <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
   
-  <link href="http://localhost:1313/index.xml" rel="feed" type="application/rss+xml" class="iconfont icon-rss" title="老柯的學習筆記" />
+  <link href="https://blog.xxzk.me/index.xml" rel="feed" type="application/rss+xml" class="iconfont icon-rss" title="老柯的學習筆記" />
 </div>
 
 <div class="copyright">

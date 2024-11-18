@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>GitHub on 老柯的學習筆記</title>
-    <link>http://localhost:1313/categories/github/</link>
+    <link>https://blog.xxzk.me/categories/github/</link>
     <description>Recent content in GitHub on 老柯的學習筆記</description>
     <generator>Hugo</generator>
     <language>en</language>
     <lastBuildDate>Tue, 20 Dec 2022 14:30:02 +0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/categories/github/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://blog.xxzk.me/categories/github/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>使用 Hexo 搭配 GitHub Pages 架設靜態網站</title>
-      <link>http://localhost:1313/post/20220503-use-hexo-and-github-pages-to-build-blog/</link>
+      <link>https://blog.xxzk.me/post/20220503-use-hexo-and-github-pages-to-build-blog/</link>
       <pubDate>Thu, 28 Apr 2022 15:47:12 +0000</pubDate>
-      <guid>http://localhost:1313/post/20220503-use-hexo-and-github-pages-to-build-blog/</guid>
+      <guid>https://blog.xxzk.me/post/20220503-use-hexo-and-github-pages-to-build-blog/</guid>
       <description>&lt;h2 id=&#34;更新紀錄&#34;&gt;更新紀錄&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;2022.04.28: 此篇記錄第一次使用 Hexo 搭配 GitHub Pages 來架設 blog。&lt;/li&gt;&#xA;&lt;li&gt;2022.12.19: 調整順序 (將 VSCode Snippet 片段放在前面)，因為後來實際是使用 &lt;a href=&#34;https://gohugo.io/&#34;&gt;Hugo&lt;/a&gt; 架設，之後將會新增 Hugo 安裝章節。&lt;/li&gt;&#xA;&lt;li&gt;2022.12.20: 新增 &lt;code&gt;Install Hugo on Linux&lt;/code&gt; 章節。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;install-hugo-on-linux&#34;&gt;Install Hugo on Linux&lt;/h2&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://gohugo.io/installation/linux/&#34;&gt;Install Hugo on Linux&lt;/a&gt;&lt;/p&gt;</description>
     </item>
   </channel>

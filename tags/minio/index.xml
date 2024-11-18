@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Minio on 老柯的學習筆記</title>
-    <link>http://localhost:1313/tags/minio/</link>
+    <link>https://blog.xxzk.me/tags/minio/</link>
     <description>Recent content in Minio on 老柯的學習筆記</description>
     <generator>Hugo</generator>
     <language>en</language>
     <lastBuildDate>Tue, 20 Sep 2022 13:56:02 +0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/minio/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://blog.xxzk.me/tags/minio/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>MinIO 簡單介紹</title>
-      <link>http://localhost:1313/post/20210503-minio-introduce/</link>
+      <link>https://blog.xxzk.me/post/20210503-minio-introduce/</link>
       <pubDate>Mon, 03 May 2021 13:41:55 +0000</pubDate>
-      <guid>http://localhost:1313/post/20210503-minio-introduce/</guid>
+      <guid>https://blog.xxzk.me/post/20210503-minio-introduce/</guid>
       <description>&lt;p&gt;&lt;img src=&#34;https://min.io/resources/img/logo/MINIO_wordmark.png&#34; alt=&#34;minio_logo&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://min.io/&#34;&gt;min.io&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;簡介主文&#34;&gt;簡介—主文&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;MinIO 是一套開源、高效能、K8s 取向 (Kubernetes-native) 的物件儲存解決方案。&lt;/strong&gt;&lt;br&gt;&#xA;&lt;strong&gt;同時強調 &lt;span style=&#34;color:blue&#34;&gt;Hybrid Cloud &lt;/span&gt; 因為 MinIO 相容 AWS S3 服務&lt;/strong&gt;&lt;br&gt;&#xA;&lt;strong&gt;可以把它想成是 AWS S3 開源版。目前依據官方統計在 AWS, Azure, GCP 上面的 MinIO 實例超過 7.7M 台 (七百七十萬，202105)&lt;/strong&gt;&lt;/p&gt;</description>
     </item>
   </channel>

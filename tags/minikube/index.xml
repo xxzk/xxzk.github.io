@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Minikube on 老柯的學習筆記</title>
-    <link>http://localhost:1313/tags/minikube/</link>
+    <link>https://blog.xxzk.me/tags/minikube/</link>
     <description>Recent content in Minikube on 老柯的學習筆記</description>
     <generator>Hugo</generator>
     <language>en</language>
     <lastBuildDate>Wed, 06 Jul 2022 16:16:25 +0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/minikube/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://blog.xxzk.me/tags/minikube/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>minikube 安裝指南。 一個精簡、測試環境使用的 k8s 叢集</title>
-      <link>http://localhost:1313/post/20210617-minikube-installation/</link>
+      <link>https://blog.xxzk.me/post/20210617-minikube-installation/</link>
       <pubDate>Thu, 17 Jun 2021 09:29:55 +0000</pubDate>
-      <guid>http://localhost:1313/post/20210617-minikube-installation/</guid>
+      <guid>https://blog.xxzk.me/post/20210617-minikube-installation/</guid>
       <description>&lt;center&gt;&#xA;&lt;img src=&#34;https://github.com/kubernetes/minikube/raw/master/images/logo/logo.png&#34; width=&#34;300&#34; alt=&#34;minikube logo&#34;&gt;&#xA;&lt;/center&gt;&#xA;&lt;br&gt;&#xA;&lt;p&gt;&lt;strong&gt;minikube 能夠快速在本地 (local) 建立 kubernetes cluster (k8s 叢集)，支援 macOS, Linux, Windows&lt;/strong&gt;&lt;br&gt;&#xA;&lt;strong&gt;非常適合新手探索 kubernetes&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;安裝需求-pre-requirement&#34;&gt;安裝需求 pre-requirement&lt;/h2&gt;&#xA;&lt;br&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://minikube.sigs.k8s.io/docs/drivers/&#34;&gt;minikube-Driver&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;▲ 官方有列出各類型 OS 建議搭建在何種虛擬環境上。本篇筆記選用 &lt;code&gt;CentOS 7.9.2009&lt;/code&gt; + &lt;code&gt;Docker&lt;/code&gt;&lt;/p&gt;&#xA;&lt;br&gt;&#xA;&lt;h3 id=&#34;最小硬體需求&#34;&gt;最小硬體需求&lt;/h3&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;雙核心 2 (CPUs or more)\&lt;/li&gt;&#xA;&lt;li&gt;記憶體 2 GB (2 GB of free memory)\&lt;/li&gt;&#xA;&lt;li&gt;硬碟空間 20 GB (20GB of free disk space)\&lt;/li&gt;&#xA;&lt;li&gt;連上外部網路 (Internet connection)&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;br&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;安裝&#34;&gt;安裝&lt;/h2&gt;&#xA;&lt;br&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://minikube.sigs.k8s.io/docs/start/&#34;&gt;minikube start&lt;/a&gt;&lt;/p&gt;</description>
     </item>
   </channel>

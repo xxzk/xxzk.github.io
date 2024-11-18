@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Rclone on 老柯的學習筆記</title>
-    <link>http://localhost:1313/tags/rclone/</link>
+    <link>https://blog.xxzk.me/tags/rclone/</link>
     <description>Recent content in Rclone on 老柯的學習筆記</description>
     <generator>Hugo</generator>
     <language>en</language>
     <lastBuildDate>Tue, 13 Sep 2022 17:47:30 +0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/rclone/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://blog.xxzk.me/tags/rclone/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>EncFS &#43; Rclone 公有雲變私有雲，還能掛載串流!</title>
-      <link>http://localhost:1313/post/20201012-encfs-rclone/</link>
+      <link>https://blog.xxzk.me/post/20201012-encfs-rclone/</link>
       <pubDate>Mon, 12 Oct 2020 13:48:24 +0000</pubDate>
-      <guid>http://localhost:1313/post/20201012-encfs-rclone/</guid>
+      <guid>https://blog.xxzk.me/post/20201012-encfs-rclone/</guid>
       <description>&lt;p&gt;&lt;img src=&#34;rclone_logo.png&#34; alt=&#34;rclone_logo&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;前幾天看到 &lt;a href=&#34;https://www.ithome.com.tw/news/140395&#34;&gt;G Suite 改版&lt;/a&gt;的消息，雖然 &lt;code&gt;Education&lt;/code&gt; 與 &lt;code&gt;Business&lt;/code&gt; 往後都沒有 &lt;strong&gt;看似 10T 實際上有無限儲存空間&lt;/strong&gt; 的雲端硬碟能用了，不過 &lt;code&gt;5TB&lt;/code&gt; 的空間對於一般用戶 (冷儲存) 來說已經非常夠用。&lt;br&gt;&#xA;但 個人/公司 資料放上公有雲端硬碟還是有隱私以及商業機密的問題，本篇旨意就是利用 &lt;code&gt;EncFS&lt;/code&gt; 搭配 &lt;code&gt;Rclone&lt;/code&gt; 來加解密 上傳、同步備份/下載、串流 放在 &lt;code&gt;Google Drive&lt;/code&gt; 上面的檔案。&lt;/p&gt;</description>
     </item>
   </channel>

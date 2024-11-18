@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>老柯的學習筆記</title>
@@ -26,8 +26,8 @@
 <meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
-<link rel="canonical" href="http://localhost:1313/" />
-<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/index.xml" title="老柯的學習筆記">
+<link rel="canonical" href="https://blog.xxzk.me/" />
+<link rel="alternate" type="application/rss+xml" href="https://blog.xxzk.me/index.xml" title="老柯的學習筆記">
 
 
 
@@ -43,7 +43,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
-<meta property="og:url" content="http://localhost:1313/">
+<meta property="og:url" content="https://blog.xxzk.me/">
   <meta property="og:site_name" content="老柯的學習筆記">
   <meta property="og:title" content="老柯的學習筆記">
   <meta property="og:description" content="Learning note.">
@@ -53,7 +53,7 @@
   <meta itemprop="name" content="老柯的學習筆記">
   <meta itemprop="description" content="Learning note.">
   <meta itemprop="datePublished" content="2024-10-09T14:47:52+00:00">
-  <meta itemprop="dateModified" content="2024-11-18T14:50:24+08:00">
+  <meta itemprop="dateModified" content="2024-11-18T15:59:00+00:00">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="老柯的學習筆記">
   <meta name="twitter:description" content="Learning note.">
@@ -127,6 +127,29 @@
       <div class="content-wrapper">
         <div id="content" class="content">
           <section id="posts" class="posts">
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/20230613-kubernetes-dashboard-install-note/">Kubernetes Dashboard 安裝筆記</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2023-06-13 </span>
+      <div class="post-category">
+          <a href="/categories/kubernetes/"> kubernetes </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <h2 id="介紹">介紹</h2>
+<p>這篇筆記會記錄如何從 <a href="https://github.com/kubernetes-sigs/metrics-server">metrics server</a> 開始安裝 <a href="https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/">Kubernetes Dashboard</a>，並且設定 Istio virtual service / gateway，最後產生一組僅有特定 namespace read-only 權限的 token。</p>
+<p>大部分的使用者可以省去安裝 metrics server 這段，因為自 Kubernetes v1.18 開始 metrics server 已是預設元件。</p>
+    </div>
+    <div class="read-more">
+      <a href="/post/20230613-kubernetes-dashboard-install-note/" class="read-more-link">Read more...</a>
+    </div>
+  </div>
+</article>
+
     <article class="post">
   <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/20230418-aws-cdk-hello-world/">Pulumi / AWS CDK Hello World</a></h1>
@@ -281,44 +304,6 @@
   </div>
 </article>
 
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/20220726-cka_note_section_13_troubleshooting/">CKA Note Section 13 Troubleshooting</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2022-07-26 </span>
-      <div class="post-category">
-          <a href="/categories/cka-note/"> CKA-Note </a>
-          </div>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      <h2 id="235-application-failure">235. Application Failure</h2>
-<p><del>厚，debug 到眼睛快脫窗</del></p>
-<ul>
-<li>先開 App Web 頁面查看錯誤訊息 (不確定正式考試時網頁是不是也設計成顯示錯誤訊息)，判斷可能出問題的地方</li>
-<li>第一題網頁能開判斷 Web pod + service =&gt; 無問題，<strong><span style='color:red'>網頁顯示 <code>-2 Name does not resolve</code></span></strong> =&gt; 連不到 DB =&gt; 往 <code>mysql-service</code> <strong><span style='color:blue'>&ldquo;DNS name&rdquo;</span></strong> 查找</li>
-<li>第二題一樣，網頁顯示 <strong><span style='color:red'><code>111 Connection refused</code></span></strong> =&gt; <br>
-(1) 拒絕 =&gt; DB credential 有問題 =&gt; 要嘛在 Web pod env 不然就是 db pod env <br>
-(2) <code>svc</code> port 號 <code>OR</code> selector 錯誤 <code>OR</code> pod 身上 port 錯誤</li>
-<li>第三題 <strong><span style='color:red'>網頁直接打不開啊!</span></strong> =&gt; 等待時間先去查 web svc =&gt; <code>curl http://&lt;svc_IP&gt;:&lt;port&gt;</code>
-(1) 後來噴出 504 Gateway Error =&gt; 5xx 系列 server 內部問題 =&gt; 都要查! (<strong>包含 web svc</strong>) <del>槓</del>
-(2) <code>k get all -o wide</code> 先看一下能不能看出端倪，果然看到 <code>selector:name=sql00001</code> =&gt; <code>k get pod mysql --show-labels</code></li>
-<li>第四題 env <code>DB_User</code> 不符合題目要求。</li>
-<li>第五題 兩個 issue，第一個承上題。<strong><span style='color:blue'><code>Access denied for user 'root'@'10.42.0.20' (using password: YES)</code> =&gt; 這 error 是 DB 噴的代表 DB svc 沒問題</span></strong></li>
-<li>第六題 三個 issue <br>
-(1) <code>web-service</code> <code>NodePort</code> 錯誤 <br>
-(2) env <code>DB_User</code> 錯誤</li>
-</ul>
-<p><img src="kubectl_show_svc_ports.jpg" alt="kubectl_show_svc_ports"></p>
-    </div>
-    <div class="read-more">
-      <a href="/post/20220726-cka_note_section_13_troubleshooting/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
     </section>
   
   <nav class="pagination">
@@ -341,7 +326,7 @@
       <div class="social-links">
       <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
   
-  <link href="http://localhost:1313/index.xml" rel="feed" type="application/rss+xml" class="iconfont icon-rss" title="老柯的學習筆記" />
+  <link href="https://blog.xxzk.me/index.xml" rel="feed" type="application/rss+xml" class="iconfont icon-rss" title="老柯的學習筆記" />
 </div>
 
 <div class="copyright">

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>老柯的學習筆記</title>
@@ -26,8 +26,8 @@
 <meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
-<link rel="canonical" href="http://localhost:1313/" />
-<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/index.xml" title="老柯的學習筆記">
+<link rel="canonical" href="https://blog.xxzk.me/" />
+<link rel="alternate" type="application/rss+xml" href="https://blog.xxzk.me/index.xml" title="老柯的學習筆記">
 
 
 
@@ -43,7 +43,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
-<meta property="og:url" content="http://localhost:1313/">
+<meta property="og:url" content="https://blog.xxzk.me/">
   <meta property="og:site_name" content="老柯的學習筆記">
   <meta property="og:title" content="老柯的學習筆記">
   <meta property="og:description" content="Learning note.">
@@ -53,7 +53,7 @@
   <meta itemprop="name" content="老柯的學習筆記">
   <meta itemprop="description" content="Learning note.">
   <meta itemprop="datePublished" content="2024-10-09T14:47:52+00:00">
-  <meta itemprop="dateModified" content="2024-11-18T14:50:24+08:00">
+  <meta itemprop="dateModified" content="2024-11-18T15:59:00+00:00">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="老柯的學習筆記">
   <meta name="twitter:description" content="Learning note.">
@@ -127,6 +127,30 @@
       <div class="content-wrapper">
         <div id="content" class="content">
           <section id="posts" class="posts">
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/20201026-introduce-vmware-vds/">淺談 vDS (網路虛擬化 NSX-T 功能之一)</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2020-10-26 </span>
+      <div class="post-category">
+          <a href="/categories/network/"> network </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p><img src="sdn_logo_informationage.jpeg" alt="sdn_logo_informationage"></p>
+<h2 id="vds-是什麼--為什麼要用它-">vDS 是什麼 ? 為什麼要用它 ?</h2>
+<p><code>vDS</code> 全名 <code>vSphere Distributed Switch</code> 是 VMWare vSphere 產品線下 <code>SDN</code> (Software Defined Networking) 的產物，在 <code>vDS</code> 出來之前也有一款叫做 <code>vSS</code> (vSphere Standard Switch) 的產品。</p>
+<p>比起 <code>vSS</code> 需要部屬在每一台 <code>ESXi host</code> ， <code>vDS</code> 統一部屬在 <code>vCenter</code> 而且有更強大的功能:</p>
+    </div>
+    <div class="read-more">
+      <a href="/post/20201026-introduce-vmware-vds/" class="read-more-link">Read more...</a>
+    </div>
+  </div>
+</article>
+
     <article class="post">
   <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/20201023-about-vsphere-vcenter-esxi/">搞懂 vSphere、vCenter 和 ESXi 的關係</a></h1>
@@ -227,35 +251,6 @@ FortiClient for Linux 可以正常使用喔~ <del>自己雷自己</del></p>
   </div>
 </article>
 
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/20200924-httpd-log-to-graylog-with-rsyslog/">將 Apache access,error log 透過 rsyslog 發至 Graylog</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2020-09-24 </span>
-      <div class="post-category">
-          <a href="/categories/graylog/"> graylog </a>
-          </div>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      <p>由於 httpd 預設沒有將 access/error log 丟到 syslog 做處理，要需手動新增<br>
-新增方式有兩種</p>
-<ol>
-<li>直接編輯 <code>httpd.conf</code> 將 log file 導向到 syslog</li>
-<li>編輯 <code>rsyslog.conf</code> 叫 rsyslog 去撈本來存放在 <code>/var/log/httpd/(access|error).log</code></li>
-</ol>
-<p>第一種方式會需要做 <code>systemctl reload httpd.service</code> ，對於線上運作中的機器有一定風險 <del>一個弄不好鍋就是你戴好 ^^</del><br>
-雖然有文章指出 <code>reload</code> 不會中斷現有的 connection 不過還是少碰為妙<br>
-<a href="https://elearning.wsldp.com/pcmagazine/apache-graceful-restart-centos-7/">How to do an Apache Graceful Restart in CentOS 7</a></p>
-    </div>
-    <div class="read-more">
-      <a href="/post/20200924-httpd-log-to-graylog-with-rsyslog/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
     </section>
   
   <nav class="pagination">
@@ -278,7 +273,7 @@ FortiClient for Linux 可以正常使用喔~ <del>自己雷自己</del></p>
       <div class="social-links">
       <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
   
-  <link href="http://localhost:1313/index.xml" rel="feed" type="application/rss+xml" class="iconfont icon-rss" title="老柯的學習筆記" />
+  <link href="https://blog.xxzk.me/index.xml" rel="feed" type="application/rss+xml" class="iconfont icon-rss" title="老柯的學習筆記" />
 </div>
 
 <div class="copyright">

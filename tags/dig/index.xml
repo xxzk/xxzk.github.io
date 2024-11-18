@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Dig on 老柯的學習筆記</title>
-    <link>http://localhost:1313/tags/dig/</link>
+    <link>https://blog.xxzk.me/tags/dig/</link>
     <description>Recent content in Dig on 老柯的學習筆記</description>
     <generator>Hugo</generator>
     <language>en</language>
     <lastBuildDate>Mon, 12 Sep 2022 13:48:23 +0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/dig/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://blog.xxzk.me/tags/dig/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>淺談 DNSSEC 使用 dig</title>
-      <link>http://localhost:1313/post/20201210-about-dnssec-using-dig/</link>
+      <link>https://blog.xxzk.me/post/20201210-about-dnssec-using-dig/</link>
       <pubDate>Thu, 10 Dec 2020 11:46:20 +0000</pubDate>
-      <guid>http://localhost:1313/post/20201210-about-dnssec-using-dig/</guid>
+      <guid>https://blog.xxzk.me/post/20201210-about-dnssec-using-dig/</guid>
       <description>&lt;p&gt;&lt;img src=&#34;dnssec.jpeg&#34; alt=&#34;dnssec&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;圖片來源 &lt;a href=&#34;https://www.cloudflare.com/dns/dnssec/how-dnssec-works/&#34;&gt;CloudFlare&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;在開始之前必須先搞懂&amp;hellip;.&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;DNS 在 Internet 中扮演什麼角色、功能是什麼&lt;/li&gt;&#xA;&lt;li&gt;域名註冊商 DOMAIN name registrar 與 DNS hosting 域名伺服器託管商 的差別&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;h2 id=&#34;dnssec-是什麼為什麼需要它&#34;&gt;DNSSEC 是什麼，為什麼需要它&lt;/h2&gt;&#xA;&lt;p&gt;大家知道 DNS 是分散式的樹狀系統，在原始設計當中並沒有考量到環境安全性的問題，也就是沒有加入身分驗證機制。&lt;br&gt;&#xA;DNSSEC (&lt;strong&gt;D&lt;/strong&gt;omain &lt;strong&gt;N&lt;/strong&gt;ame &lt;strong&gt;S&lt;/strong&gt;ystem &lt;strong&gt;Sec&lt;/strong&gt;urity Extensions) 就是用來解決這個問題的方案。透過層層簽署達到身分驗證的目的。&lt;br&gt;&#xA;DNSSEC 簽署方式簡單說就是由上層域 (Parent Zones) 簽署下層域 (Child Zones) 的 RRSet，解釋一下:&lt;/p&gt;</description>
     </item>
   </channel>

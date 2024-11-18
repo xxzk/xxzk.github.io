@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Macos on 老柯的學習筆記</title>
-    <link>http://localhost:1313/tags/macos/</link>
+    <link>https://blog.xxzk.me/tags/macos/</link>
     <description>Recent content in Macos on 老柯的學習筆記</description>
     <generator>Hugo</generator>
     <language>en</language>
     <lastBuildDate>Thu, 28 Mar 2024 16:15:48 +0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/macos/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://blog.xxzk.me/tags/macos/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>MacOS 新手筆記</title>
-      <link>http://localhost:1313/post/20240322-macbook-hello-world/</link>
+      <link>https://blog.xxzk.me/post/20240322-macbook-hello-world/</link>
       <pubDate>Fri, 22 Mar 2024 11:10:55 +0000</pubDate>
-      <guid>http://localhost:1313/post/20240322-macbook-hello-world/</guid>
+      <guid>https://blog.xxzk.me/post/20240322-macbook-hello-world/</guid>
       <description>&lt;p&gt;&lt;img src=&#34;eric-macbook.jpg&#34; alt=&#34;eric-macbook&#34;&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;&#xA;&lt;p&gt;好久沒有打 blog 了 囧，第一篇先用 &lt;strong&gt;MacOS 新手筆記&lt;/strong&gt; 來練筆吧 XD&lt;/p&gt;&#xA;&lt;p&gt;在 2023.04.10 進公司之前我完全沒有使用過 MacOS，此篇記錄一位 MacOS 新手如何上手的心得還有推薦安裝的軟體。&lt;/p&gt;</description>
     </item>
   </channel>

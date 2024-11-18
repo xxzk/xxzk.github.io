@@ -2,31 +2,31 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Apache on 老柯的學習筆記</title>
-    <link>http://localhost:1313/tags/apache/</link>
+    <link>https://blog.xxzk.me/tags/apache/</link>
     <description>Recent content in Apache on 老柯的學習筆記</description>
     <generator>Hugo</generator>
     <language>en</language>
     <lastBuildDate>Thu, 22 Dec 2022 15:28:33 +0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/apache/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://blog.xxzk.me/tags/apache/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>隱藏 Apache、PHP、OpenSSL、Nginx 版本號</title>
-      <link>http://localhost:1313/post/20210223-hide-apache-php-openssl-nginx-version/</link>
+      <link>https://blog.xxzk.me/post/20210223-hide-apache-php-openssl-nginx-version/</link>
       <pubDate>Tue, 23 Feb 2021 14:33:37 +0000</pubDate>
-      <guid>http://localhost:1313/post/20210223-hide-apache-php-openssl-nginx-version/</guid>
+      <guid>https://blog.xxzk.me/post/20210223-hide-apache-php-openssl-nginx-version/</guid>
       <description>&lt;br&gt;&#xA;&lt;p&gt;&lt;img src=&#34;pexels-markus-spiske-1089438.jpg&#34; alt=&#34;pexels-markus-spiske-1089438&#34;&gt;&lt;/p&gt;&#xA;&lt;br&gt;&#xA;&lt;hr&gt;&#xA;&lt;p&gt;&lt;strong&gt;此篇筆記記錄如何隱藏客戶端看到 Web Server 使用的版本號&lt;/strong&gt;&lt;br&gt;&#xA;&lt;strong&gt;判斷標準是用最無腦的 Browser Plug-in 當作依據，推薦使用 &lt;a href=&#34;https://www.wappalyzer.com/&#34;&gt;Wappalyzer&lt;/a&gt;&lt;/strong&gt;&lt;br&gt;&#xA;&lt;strong&gt;如果透過 CloudFlare 訪問這些敏感資訊都會被過濾掉;直接使用 IP 則否。&lt;/strong&gt;&lt;/p&gt;</description>
     </item>
     <item>
       <title>httpd.conf 研究筆記</title>
-      <link>http://localhost:1313/post/20210220-apache-httpd-main-conf/</link>
+      <link>https://blog.xxzk.me/post/20210220-apache-httpd-main-conf/</link>
       <pubDate>Sat, 20 Feb 2021 10:54:58 +0000</pubDate>
-      <guid>http://localhost:1313/post/20210220-apache-httpd-main-conf/</guid>
+      <guid>https://blog.xxzk.me/post/20210220-apache-httpd-main-conf/</guid>
       <description>&lt;h2 id=&#34;httpd-版本資訊&#34;&gt;httpd 版本資訊&lt;/h2&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;&#xA;&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;&#xA;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1&#xA;&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2&#xA;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&#xA;&lt;td class=&#34;lntd&#34;&gt;&#xA;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Server version: Apache/2.4.6 (CentOS)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Server built:   Nov 16 2020 16:18:20&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&#xA;&lt;/div&gt;&#xA;&lt;/div&gt;&lt;h2 id=&#34;敬啟者&#34;&gt;敬啟者&lt;/h2&gt;&#xA;&lt;br&gt;&#xA;&lt;p&gt;&lt;del&gt;開頭就一堆屁話，根本沒有人會看的 (愛開玩笑 自己的筆記也屁話一堆還敢說開發者 XD&lt;/del&gt;&lt;br&gt;&#xA;&lt;strong&gt;節錄幾個重點好了&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;更多資訊請到 &lt;a href=&#34;http://httpd.apache.org/docs/2.4/&#34;&gt;Apache 2.4 版官方文件&lt;/a&gt; 參閱，或者更詳細的 &lt;a href=&#34;http://httpd.apache.org/docs/2.4/mod/directives.html&#34;&gt;指示 (Directives)&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;配置 logfile 路徑規則。&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;如果路徑是由 &lt;code&gt;/&lt;/code&gt; 起始的，httpd 會使用&lt;strong&gt;絕對路徑&lt;/strong&gt; (換句話說: 直接在 Linux 下 &lt;code&gt;ls -al &amp;lt;path&amp;gt;&lt;/code&gt; 的地方)。&lt;br&gt;&#xA;若不是，則使用&lt;strong&gt;相對路徑&lt;/strong&gt;，以 &lt;code&gt;ServerRoot&lt;/code&gt; 當作參考點，舉個例子:&lt;br&gt;&#xA;當 &lt;code&gt;ServerRoot /www&lt;/code&gt; 時 &lt;code&gt;log/access_log&lt;/code&gt; 的路徑會是 &lt;code&gt;/www/log/access_log&lt;/code&gt;&lt;/p&gt;</description>
     </item>
     <item>
       <title>將 Apache access,error log 透過 rsyslog 發至 Graylog</title>
-      <link>http://localhost:1313/post/20200924-httpd-log-to-graylog-with-rsyslog/</link>
+      <link>https://blog.xxzk.me/post/20200924-httpd-log-to-graylog-with-rsyslog/</link>
       <pubDate>Thu, 24 Sep 2020 15:29:12 +0000</pubDate>
-      <guid>http://localhost:1313/post/20200924-httpd-log-to-graylog-with-rsyslog/</guid>
+      <guid>https://blog.xxzk.me/post/20200924-httpd-log-to-graylog-with-rsyslog/</guid>
       <description>&lt;p&gt;由於 httpd 預設沒有將 access/error log 丟到 syslog 做處理，要需手動新增&lt;br&gt;&#xA;新增方式有兩種&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;直接編輯 &lt;code&gt;httpd.conf&lt;/code&gt; 將 log file 導向到 syslog&lt;/li&gt;&#xA;&lt;li&gt;編輯 &lt;code&gt;rsyslog.conf&lt;/code&gt; 叫 rsyslog 去撈本來存放在 &lt;code&gt;/var/log/httpd/(access|error).log&lt;/code&gt;&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;第一種方式會需要做 &lt;code&gt;systemctl reload httpd.service&lt;/code&gt; ，對於線上運作中的機器有一定風險 &lt;del&gt;一個弄不好鍋就是你戴好 ^^&lt;/del&gt;&lt;br&gt;&#xA;雖然有文章指出 &lt;code&gt;reload&lt;/code&gt; 不會中斷現有的 connection 不過還是少碰為妙&lt;br&gt;&#xA;&lt;a href=&#34;https://elearning.wsldp.com/pcmagazine/apache-graceful-restart-centos-7/&#34;&gt;How to do an Apache Graceful Restart in CentOS 7&lt;/a&gt;&lt;/p&gt;</description>
     </item>
   </channel>

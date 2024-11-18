@@ -2,24 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Grafana on 老柯的學習筆記</title>
-    <link>http://localhost:1313/tags/grafana/</link>
+    <link>https://blog.xxzk.me/tags/grafana/</link>
     <description>Recent content in Grafana on 老柯的學習筆記</description>
     <generator>Hugo</generator>
     <language>en</language>
     <lastBuildDate>Wed, 07 Sep 2022 17:20:12 +0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/grafana/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://blog.xxzk.me/tags/grafana/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>使用 snmp_exporter 抓取設備流量</title>
-      <link>http://localhost:1313/post/20220825-moniting-device-traffic-via-snmp_exporter-with-prometheus/</link>
+      <link>https://blog.xxzk.me/post/20220825-moniting-device-traffic-via-snmp_exporter-with-prometheus/</link>
       <pubDate>Thu, 25 Aug 2022 11:49:44 +0000</pubDate>
-      <guid>http://localhost:1313/post/20220825-moniting-device-traffic-via-snmp_exporter-with-prometheus/</guid>
+      <guid>https://blog.xxzk.me/post/20220825-moniting-device-traffic-via-snmp_exporter-with-prometheus/</guid>
       <description>&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;&#xA;&lt;p&gt;本篇筆記紀錄如何使用 &lt;a href=&#34;https://github.com/prometheus/snmp_exporter&#34;&gt;snmp_exporter&lt;/a&gt; 搭配 &lt;a href=&#34;https://github.com/prometheus/prometheus&#34;&gt;prometheus&lt;/a&gt; 與 &lt;a href=&#34;https://github.com/grafana/grafana&#34;&gt;Grafana&lt;/a&gt; 來即時監控網路設備流量。&lt;br&gt;&#xA;公司原先使用 LibreNMS 作為即時流量的依據，由於 &lt;strong&gt;&lt;span style=&#39;color:blue&#39;&gt;default polling interval 是 5 分鐘抓取一次，而且一次抓取 (walk) 的 OID 也是世界多~&lt;/span&gt;&lt;/strong&gt;&lt;br&gt;&#xA;雖然說 LibreNMS 有提供 &lt;a href=&#34;https://docs.librenms.org/Support/1-Minute-Polling/&#34;&gt;1-Minute Polling&lt;/a&gt; 的方式，不過一次抓取就是長長一串造成設備不必要的負擔，更可能造成風暴 (前一次抓取尚未完成，時間到了又必須進行下一次)。&lt;br&gt;&#xA;況且即使 1-Minute polling 完美運作，對於流量的精細程度個人認為是遠遠不足的! 被打 DDoS 幾秒之內流量就可能飆高，若針對流量 moniting 顆粒度太大就失去了意義、無法反映實際狀況。&lt;/p&gt;</description>
     </item>
     <item>
       <title>Docker 容器與容器的連結。Grafana &#43; Prometheus &#43; Blackbox_expoter</title>
-      <link>http://localhost:1313/post/20210629-docker-container-link/</link>
+      <link>https://blog.xxzk.me/post/20210629-docker-container-link/</link>
       <pubDate>Tue, 29 Jun 2021 17:33:04 +0000</pubDate>
-      <guid>http://localhost:1313/post/20210629-docker-container-link/</guid>
+      <guid>https://blog.xxzk.me/post/20210629-docker-container-link/</guid>
       <description>&lt;p&gt;&lt;strong&gt;此篇筆記紀錄如何使用 &lt;code&gt;docker run --link ...&lt;/code&gt; 讓容器與容器之間連結。順便給 Upton 參考監控 LAB 要怎麼出~&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;blackbox_expoter&#34;&gt;Blackbox_expoter&lt;/h2&gt;&#xA;&lt;br&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;&#xA;&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;&#xA;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1&#xA;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&#xA;&lt;td class=&#34;lntd&#34;&gt;&#xA;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;docker run -itd --name blackbox_expoter -p 9115:9115 -v /root/yml/blackbox_expoter/:/config --restart always prom/blackbox-exporter:master --config.file&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/config/blackbox.yml&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&#xA;&lt;/div&gt;&#xA;&lt;/div&gt;&lt;br&gt;&#xA;&lt;h3 id=&#34;blackboxyml&#34;&gt;blackbox.yml&lt;/h3&gt;&#xA;&lt;p&gt;&lt;strong&gt;更多範例&lt;/strong&gt; 可以從 &lt;a href=&#34;https://github.com/prometheus/blackbox_exporter/blob/master/example.yml&#34;&gt;blackbox_expoter/example.yml&lt;/a&gt; 尋找。&lt;br&gt;&#xA;關於設定檔 &lt;strong&gt;Document&lt;/strong&gt; 這邊請  &lt;a href=&#34;https://github.com/prometheus/blackbox_exporter/blob/master/CONFIGURATION.md&#34;&gt;blackbox_exporter/CONFIGURATION.md &lt;/a&gt;。&lt;/p&gt;</description>
     </item>
   </channel>

@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Dockerfile on 老柯的學習筆記</title>
-    <link>http://localhost:1313/categories/dockerfile/</link>
+    <link>https://blog.xxzk.me/categories/dockerfile/</link>
     <description>Recent content in Dockerfile on 老柯的學習筆記</description>
     <generator>Hugo</generator>
     <language>en</language>
     <lastBuildDate>Wed, 22 Jun 2022 14:49:46 +0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/categories/dockerfile/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://blog.xxzk.me/categories/dockerfile/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Dockerfile - Shell 與 Exec 的差異</title>
-      <link>http://localhost:1313/post/20211220-diff-between-shell-and-exec-in-dockerfile/</link>
+      <link>https://blog.xxzk.me/post/20211220-diff-between-shell-and-exec-in-dockerfile/</link>
       <pubDate>Mon, 20 Dec 2021 11:15:34 +0000</pubDate>
-      <guid>http://localhost:1313/post/20211220-diff-between-shell-and-exec-in-dockerfile/</guid>
+      <guid>https://blog.xxzk.me/post/20211220-diff-between-shell-and-exec-in-dockerfile/</guid>
       <description>&lt;br&gt;&#xA;&lt;p&gt;&lt;img src=&#34;docker-shell-vs-exec-form.jpg&#34; alt=&#34;docker-shell-vs.-exec-form&#34;&gt;&lt;/p&gt;&#xA;&lt;br&gt;&#xA;&lt;p&gt;前陣子都在忙 &lt;a href=&#34;https://www.cncf.io/certification/ckad/&#34;&gt;CKAD&lt;/a&gt; 的好久沒有在公司 Bookstack 耕耘了 XD ~&lt;br&gt;&#xA;會看到這篇是因為 &lt;a href=&#34;https://www.facebook.com/technologynoteniu/posts/432574848576653&#34;&gt;邱 sir 的導讀&lt;/a&gt; &lt;del&gt;懶惰沒有導讀完 所以我才產出這篇文 (竟敢斗膽說邱 sir 懶惰!!)&lt;/del&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://emmer.dev/blog/docker-shell-vs.-exec-form/&#34;&gt;Docker Shell vs. Exec Form - Christian Emmer&lt;/a&gt;&lt;/p&gt;</description>
     </item>
   </channel>

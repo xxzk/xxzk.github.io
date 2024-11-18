@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Keepalived on 老柯的學習筆記</title>
-    <link>http://localhost:1313/tags/keepalived/</link>
+    <link>https://blog.xxzk.me/tags/keepalived/</link>
     <description>Recent content in Keepalived on 老柯的學習筆記</description>
     <generator>Hugo</generator>
     <language>en</language>
     <lastBuildDate>Mon, 26 Dec 2022 14:47:20 +0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/keepalived/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://blog.xxzk.me/tags/keepalived/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Nginx Keepalived (HA) 設定</title>
-      <link>http://localhost:1313/post/20210419-introduce-keepalived/</link>
+      <link>https://blog.xxzk.me/post/20210419-introduce-keepalived/</link>
       <pubDate>Mon, 19 Apr 2021 15:40:55 +0000</pubDate>
-      <guid>http://localhost:1313/post/20210419-introduce-keepalived/</guid>
+      <guid>https://blog.xxzk.me/post/20210419-introduce-keepalived/</guid>
       <description>&lt;p&gt;&lt;img src=&#34;https://www.keepalived.org/images/ka-header-new.png&#34; alt=&#34;ka-header-new.png&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;本篇筆記參考:&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://docs.nginx.com/nginx/admin-guide/high-availability/ha-keepalived/&#34;&gt;NGINX Document-High Availability Support Based on keepalived&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://www.centlinux.com/2018/08/keepalived-configure-floating-ip-centos-7.html&#34;&gt;[sysctl]CentLinux-keepalived: Configure Floating IP in CentOS 7 Servers &lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://www.cyberciti.biz/faq/linux-unix-verify-keepalived-working-or-not/&#34;&gt;nixCraft-Verify: Keepalived IP Failover Working Or Not With tcpdump Command&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://manpages.debian.org/unstable/keepalived/keepalived.conf.5.en.html&#34;&gt;man keepalived.conf&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;&lt;strong&gt;&lt;a href=&#34;https://www.keepalived.org/index.html&#34;&gt;Keepalived&lt;/a&gt; 是一套由 C 語言撰寫的路由軟體 (Routing software)，主要目的是提供 Linux 設施簡單的高可用 (High-Availability) 以及平衡負載 (Loadbalancing) 方案。&lt;/strong&gt;&lt;/p&gt;</description>
     </item>
   </channel>

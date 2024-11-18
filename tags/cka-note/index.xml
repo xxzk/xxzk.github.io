@@ -2,87 +2,87 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>CKA-Note on 老柯的學習筆記</title>
-    <link>http://localhost:1313/tags/cka-note/</link>
+    <link>https://blog.xxzk.me/tags/cka-note/</link>
     <description>Recent content in CKA-Note on 老柯的學習筆記</description>
     <generator>Hugo</generator>
     <language>en</language>
     <lastBuildDate>Tue, 18 Oct 2022 11:54:59 +0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/cka-note/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://blog.xxzk.me/tags/cka-note/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>CKA Note Section 13 Troubleshooting</title>
-      <link>http://localhost:1313/post/20220726-cka_note_section_13_troubleshooting/</link>
+      <link>https://blog.xxzk.me/post/20220726-cka_note_section_13_troubleshooting/</link>
       <pubDate>Tue, 26 Jul 2022 13:55:27 +0000</pubDate>
-      <guid>http://localhost:1313/post/20220726-cka_note_section_13_troubleshooting/</guid>
+      <guid>https://blog.xxzk.me/post/20220726-cka_note_section_13_troubleshooting/</guid>
       <description>&lt;h2 id=&#34;235-application-failure&#34;&gt;235. Application Failure&lt;/h2&gt;&#xA;&lt;p&gt;&lt;del&gt;厚，debug 到眼睛快脫窗&lt;/del&gt;&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;先開 App Web 頁面查看錯誤訊息 (不確定正式考試時網頁是不是也設計成顯示錯誤訊息)，判斷可能出問題的地方&lt;/li&gt;&#xA;&lt;li&gt;第一題網頁能開判斷 Web pod + service =&amp;gt; 無問題，&lt;strong&gt;&lt;span style=&#39;color:red&#39;&gt;網頁顯示 &lt;code&gt;-2 Name does not resolve&lt;/code&gt;&lt;/span&gt;&lt;/strong&gt; =&amp;gt; 連不到 DB =&amp;gt; 往 &lt;code&gt;mysql-service&lt;/code&gt; &lt;strong&gt;&lt;span style=&#39;color:blue&#39;&gt;&amp;ldquo;DNS name&amp;rdquo;&lt;/span&gt;&lt;/strong&gt; 查找&lt;/li&gt;&#xA;&lt;li&gt;第二題一樣，網頁顯示 &lt;strong&gt;&lt;span style=&#39;color:red&#39;&gt;&lt;code&gt;111 Connection refused&lt;/code&gt;&lt;/span&gt;&lt;/strong&gt; =&amp;gt; &lt;br&gt;&#xA;(1) 拒絕 =&amp;gt; DB credential 有問題 =&amp;gt; 要嘛在 Web pod env 不然就是 db pod env &lt;br&gt;&#xA;(2) &lt;code&gt;svc&lt;/code&gt; port 號 &lt;code&gt;OR&lt;/code&gt; selector 錯誤 &lt;code&gt;OR&lt;/code&gt; pod 身上 port 錯誤&lt;/li&gt;&#xA;&lt;li&gt;第三題 &lt;strong&gt;&lt;span style=&#39;color:red&#39;&gt;網頁直接打不開啊!&lt;/span&gt;&lt;/strong&gt; =&amp;gt; 等待時間先去查 web svc =&amp;gt; &lt;code&gt;curl http://&amp;lt;svc_IP&amp;gt;:&amp;lt;port&amp;gt;&lt;/code&gt;&#xA;(1) 後來噴出 504 Gateway Error =&amp;gt; 5xx 系列 server 內部問題 =&amp;gt; 都要查! (&lt;strong&gt;包含 web svc&lt;/strong&gt;) &lt;del&gt;槓&lt;/del&gt;&#xA;(2) &lt;code&gt;k get all -o wide&lt;/code&gt; 先看一下能不能看出端倪，果然看到 &lt;code&gt;selector:name=sql00001&lt;/code&gt; =&amp;gt; &lt;code&gt;k get pod mysql --show-labels&lt;/code&gt;&lt;/li&gt;&#xA;&lt;li&gt;第四題 env &lt;code&gt;DB_User&lt;/code&gt; 不符合題目要求。&lt;/li&gt;&#xA;&lt;li&gt;第五題 兩個 issue，第一個承上題。&lt;strong&gt;&lt;span style=&#39;color:blue&#39;&gt;&lt;code&gt;Access denied for user &#39;root&#39;@&#39;10.42.0.20&#39; (using password: YES)&lt;/code&gt; =&amp;gt; 這 error 是 DB 噴的代表 DB svc 沒問題&lt;/span&gt;&lt;/strong&gt;&lt;/li&gt;&#xA;&lt;li&gt;第六題 三個 issue &lt;br&gt;&#xA;(1) &lt;code&gt;web-service&lt;/code&gt; &lt;code&gt;NodePort&lt;/code&gt; 錯誤 &lt;br&gt;&#xA;(2) env &lt;code&gt;DB_User&lt;/code&gt; 錯誤&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;&lt;img src=&#34;kubectl_show_svc_ports.jpg&#34; alt=&#34;kubectl_show_svc_ports&#34;&gt;&lt;/p&gt;</description>
     </item>
     <item>
       <title>CKA Note Section 11 Install K8s the kubeadm way</title>
-      <link>http://localhost:1313/post/20220721-cka_note_section_11_install_k8s_the_kubeadm_way/</link>
+      <link>https://blog.xxzk.me/post/20220721-cka_note_section_11_install_k8s_the_kubeadm_way/</link>
       <pubDate>Thu, 21 Jul 2022 13:53:58 +0000</pubDate>
-      <guid>http://localhost:1313/post/20220721-cka_note_section_11_install_k8s_the_kubeadm_way/</guid>
+      <guid>https://blog.xxzk.me/post/20220721-cka_note_section_11_install_k8s_the_kubeadm_way/</guid>
       <description>&lt;h2 id=&#34;225-important-update-kubernetes-the-hard-way&#34;&gt;225. Important Update: Kubernetes the Hard Way&lt;/h2&gt;&#xA;&lt;p&gt;這個章節其實是 Section 10 的最後一個 lecture，不過我想擺在這裡應該會比較合適!&lt;br&gt;&#xA;講師提供一系列 Youtube 影片來示範如何像個硬漢一樣 &lt;a href=&#34;https://www.youtube.com/watch?v=uUupRagM7m0&amp;amp;list=PL2We04F3Y_41jYdadX55fdJplDvgNGENo&#34;&gt;Install Kubernetes from Scratch&lt;/a&gt; 課程中所有範例可以在  &lt;a href=&#34;https://github.com/mmumshad/kubernetes-the-hard-way&#34;&gt;mmumshad / kubernetes-the-hard-way &lt;/a&gt; 找到。&lt;/p&gt;</description>
     </item>
     <item>
       <title>CKA Note Section 10 Design and Install a Kubernetes Cluster</title>
-      <link>http://localhost:1313/post/20220719-cka_note_section_10_design_and_install_a_kubernetes_cluster/</link>
+      <link>https://blog.xxzk.me/post/20220719-cka_note_section_10_design_and_install_a_kubernetes_cluster/</link>
       <pubDate>Tue, 19 Jul 2022 14:43:27 +0000</pubDate>
-      <guid>http://localhost:1313/post/20220719-cka_note_section_10_design_and_install_a_kubernetes_cluster/</guid>
+      <guid>https://blog.xxzk.me/post/20220719-cka_note_section_10_design_and_install_a_kubernetes_cluster/</guid>
       <description>&lt;h2 id=&#34;222-choosing-kubernetes-infrastructure&#34;&gt;222. Choosing Kubernetes Infrastructure&lt;/h2&gt;&#xA;&lt;p&gt;這個章節在講如何選擇 K8s 建在哪裡，知道了一個蠻有趣的名詞 &lt;a href=&#34;https://kubernetes.io/docs/setup/production-environment/turnkey-solutions/&#34;&gt;Kubernetes Turnkey Cloud Solutions&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;223-configure-high-availability&#34;&gt;223. Configure High Availability&lt;/h2&gt;&#xA;&lt;p&gt;&lt;img src=&#34;api_server_ha_0.jpg&#34; alt=&#34;api_server_ha_0&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;▲ &lt;code&gt;api-server&lt;/code&gt; 可以是 Active-Active mode，不過 &lt;code&gt;kubectl&lt;/code&gt; config 一次只能設定一個 URL，所以建議在前面放一個 load blancer&lt;/p&gt;</description>
     </item>
     <item>
       <title>CKA Note Section 9 Networking</title>
-      <link>http://localhost:1313/post/20220704-cka_note_section_9_networking/</link>
+      <link>https://blog.xxzk.me/post/20220704-cka_note_section_9_networking/</link>
       <pubDate>Mon, 04 Jul 2022 13:58:19 +0000</pubDate>
-      <guid>http://localhost:1313/post/20220704-cka_note_section_9_networking/</guid>
+      <guid>https://blog.xxzk.me/post/20220704-cka_note_section_9_networking/</guid>
       <description>&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;&#xA;&lt;p&gt;既然這個章節是介紹 Kubernetes Networking 那就先來複習一下之前看過的優質文章吧!&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://www.hwchiu.com/docker-network-model.html&#34;&gt;[Hwchiu Docker Network - 網路模型 系列] Docker Network - 網路模型&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://ithelp.ithome.com.tw/articles/10220626&#34;&gt;[Day10] Container Network Interface 介紹&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;188-prerequisite---network-namespaces&#34;&gt;188. Prerequisite - Network Namespaces&lt;/h2&gt;&#xA;&lt;p&gt;&lt;img src=&#34;list_link_as_ns.jpg&#34; alt=&#34;list_link_as_ns&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;▲ 使用 &lt;code&gt;ip netns exec &amp;lt;NAMESPACE&amp;gt; ip link&lt;/code&gt; 能以 &lt;code&gt;&amp;lt;NAMESPACE&amp;gt;&lt;/code&gt; 的視角查看，&lt;strong&gt;&lt;span style=&#39;color:blue&#39;&gt;或者更快的 &lt;code&gt;ip -n &amp;lt;NAMESPACE&amp;gt; link&lt;/code&gt;&lt;/span&gt;&lt;/strong&gt;。&lt;/p&gt;</description>
     </item>
     <item>
       <title>CKA Note Section 8 Storage</title>
-      <link>http://localhost:1313/post/20220704-cka_note_section_8_storage/</link>
+      <link>https://blog.xxzk.me/post/20220704-cka_note_section_8_storage/</link>
       <pubDate>Mon, 04 Jul 2022 09:50:26 +0000</pubDate>
-      <guid>http://localhost:1313/post/20220704-cka_note_section_8_storage/</guid>
+      <guid>https://blog.xxzk.me/post/20220704-cka_note_section_8_storage/</guid>
       <description>&lt;h2 id=&#34;169-storage-in-docker&#34;&gt;169. Storage in Docker&lt;/h2&gt;&#xA;&lt;p&gt;這個章節主要在講 Docker container image/volume 的概念，可以參考我之前打的兩篇文章:&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://blog.xxzk.me/post/20210608-intro_docker_image/&#34;&gt;Docker Image 介紹 &lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://blog.xxzk.me/post/20210513-intro_docker_volume/&#34;&gt;Docker Volumes 介紹&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;171-container-storage-interface-csi&#34;&gt;171. Container Storage Interface (CSI)&lt;/h2&gt;&#xA;&lt;p&gt;關於 CRI 的介紹非常推薦 Hwchiu 鐵人賽系列: &lt;a href=&#34;https://ithelp.ithome.com.tw/articles/10218127&#34;&gt;[Day5] Kubernetes &amp;amp; CRI (Container Runtime Interface)(I) &lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;img src=&#34;three_interface_in_k8s.jpg&#34; alt=&#34;three_interface_in_k8s&#34;&gt;&lt;/p&gt;</description>
     </item>
     <item>
       <title>CKA Note Section 7 Security</title>
-      <link>http://localhost:1313/post/20211222-cka_note_section_7_security/</link>
+      <link>https://blog.xxzk.me/post/20211222-cka_note_section_7_security/</link>
       <pubDate>Wed, 22 Dec 2021 13:53:04 +0000</pubDate>
-      <guid>http://localhost:1313/post/20211222-cka_note_section_7_security/</guid>
+      <guid>https://blog.xxzk.me/post/20211222-cka_note_section_7_security/</guid>
       <description>&lt;h2 id=&#34;135-authentication&#34;&gt;135. Authentication&lt;/h2&gt;&#xA;&lt;br&gt;&#xA;&lt;p&gt;請參考 &lt;a href=&#34;https://github.com/xxzk/CKAD_Note_Section_9_Updates_for_Sep_2021_Changes/blob/master/CKAD%20Note%20Section%209%20Updates%20for%20Sep%202021.md#121-authentication-authorization-and-admission-control&#34;&gt;CKAD Note Section 9 Updates for Sep 2021 Changes - 121. Authentication, Authorization and Admission Control&lt;/a&gt;&lt;/p&gt;&#xA;&lt;br&gt;&#xA;&lt;h2 id=&#34;139-tls-in-kubernetes&#34;&gt;139. TLS in Kubernetes&lt;/h2&gt;&#xA;&lt;br&gt;&#xA;&lt;p&gt;&lt;img src=&#34;tls_communication_diagram.jpg&#34; alt=&#34;tls_communication_diagram&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;▲ 各個 K8s component 的 TLS community diagram。&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;&lt;span style=&#39;color:blue&#39;&gt;因為現在大部分 kube-proxy 都不是單獨安裝，已經變成 daemondset，所以官方 docs 才沒有找到關於它的 certificate。在這個情況下可以用 &lt;code&gt;serviceaccount&lt;/code&gt; 與 &lt;code&gt;secret&lt;/code&gt; 傳入 daemondset 來達成需求。(謝謝 hwchiu)&lt;/span&gt;&lt;/strong&gt;&lt;/p&gt;</description>
     </item>
     <item>
       <title>CKA Note Section 6 Cluster Maintence</title>
-      <link>http://localhost:1313/post/20211126-cka_note_section_6_cluster_maintence/</link>
+      <link>https://blog.xxzk.me/post/20211126-cka_note_section_6_cluster_maintence/</link>
       <pubDate>Fri, 26 Nov 2021 11:24:39 +0000</pubDate>
-      <guid>http://localhost:1313/post/20211126-cka_note_section_6_cluster_maintence/</guid>
+      <guid>https://blog.xxzk.me/post/20211126-cka_note_section_6_cluster_maintence/</guid>
       <description>&lt;h2 id=&#34;117-os-upgrades&#34;&gt;117. OS Upgrades&lt;/h2&gt;&#xA;&lt;br&gt;&#xA;&lt;p&gt;如果我們要將某個 worder node 下線，做一些例行維護 (例如: OS Upgrade) 可以使用&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;&#xA;&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;&#xA;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1&#xA;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&#xA;&lt;td class=&#34;lntd&#34;&gt;&#xA;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;kubectl drain &amp;lt;node_name&amp;gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&#xA;&lt;/div&gt;&#xA;&lt;/div&gt;&lt;p&gt;來達成，原本在目標 worker node 的 &lt;code&gt;pod&lt;/code&gt; 會被 re-schedule 到其它 worker node 上面。當維護完成再使用&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;&#xA;&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;&#xA;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1&#xA;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&#xA;&lt;td class=&#34;lntd&#34;&gt;&#xA;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;kubectl uncorden &amp;lt;node_name&amp;gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&#xA;&lt;/div&gt;&#xA;&lt;/div&gt;&lt;p&gt;來告訴 master node 我好了，可以把 &lt;code&gt;pod&lt;/code&gt; 繼續 schedule 到我身上囉! &lt;strong&gt;&lt;span style=&#39;color:red&#39;&gt;被調度出去的 &lt;code&gt;pod&lt;/code&gt; 不會恢復回來。&lt;/span&gt;&lt;/strong&gt;&lt;br&gt;&#xA;如果單純要讓 master node 不要把 &lt;code&gt;pod&lt;/code&gt; 調度過來 (mark as unschedulable) 的話則可以使用。&lt;/p&gt;</description>
     </item>
     <item>
       <title>CKA Note Section 5 App Lifecycle Management</title>
-      <link>http://localhost:1313/post/20211125-cka_note_section_5_app_lifecycle_management/</link>
+      <link>https://blog.xxzk.me/post/20211125-cka_note_section_5_app_lifecycle_management/</link>
       <pubDate>Thu, 25 Nov 2021 16:55:33 +0000</pubDate>
-      <guid>http://localhost:1313/post/20211125-cka_note_section_5_app_lifecycle_management/</guid>
+      <guid>https://blog.xxzk.me/post/20211125-cka_note_section_5_app_lifecycle_management/</guid>
       <description>&lt;h2 id=&#34;89-rolling-updates-and-rollbacks&#34;&gt;89. Rolling Updates and Rollbacks&lt;/h2&gt;&#xA;&lt;br&gt;&#xA;&lt;p&gt;請參考 CKAD Note Section 6 Pod Design &lt;code&gt;82. Rolling Updates &amp;amp; Rollbacks in Deployments&lt;/code&gt;。&lt;/p&gt;&#xA;&lt;br&gt;&#xA;&lt;h2 id=&#34;93-commands&#34;&gt;93. Commands&lt;/h2&gt;&#xA;&lt;br&gt;&#xA;&lt;p&gt;請參考 CKAD Note Section 3 Configuration &lt;code&gt;37. [Pre-Request] Commands and Arguments in Docker&lt;/code&gt;。&lt;/p&gt;&#xA;&lt;br&gt;&#xA;&lt;h2 id=&#34;97-configure-environment-variables-in-applications&#34;&gt;97. Configure Environment Variables in Applications&lt;/h2&gt;&#xA;&lt;br&gt;&#xA;&lt;p&gt;請參考 CKAD Note Section 3 Configuration &lt;code&gt;42. Enviroment Variables&lt;/code&gt;。&lt;/p&gt;&#xA;&lt;br&gt;&#xA;&lt;h2 id=&#34;98-configuring-configmaps-in-applications&#34;&gt;98. Configuring ConfigMaps in Applications&lt;/h2&gt;&#xA;&lt;br&gt;&#xA;&lt;p&gt;請參考 CKAD Note Section 3 Configuration &lt;code&gt;42. Enviroment Variables&lt;/code&gt;。&lt;/p&gt;</description>
     </item>
     <item>
       <title>CKA Note Section 4 Logging and Monitoring</title>
-      <link>http://localhost:1313/post/20211125-cka_note_section_4_logging_and_monitoring/</link>
+      <link>https://blog.xxzk.me/post/20211125-cka_note_section_4_logging_and_monitoring/</link>
       <pubDate>Thu, 25 Nov 2021 16:03:41 +0000</pubDate>
-      <guid>http://localhost:1313/post/20211125-cka_note_section_4_logging_and_monitoring/</guid>
+      <guid>https://blog.xxzk.me/post/20211125-cka_note_section_4_logging_and_monitoring/</guid>
       <description>&lt;br&gt;&#xA;&lt;p&gt;請參考 CKAD Note Section 5 Observability  &lt;code&gt;76. Monitor and Debug Application&lt;/code&gt; 章節。&lt;/p&gt;</description>
     </item>
     <item>
       <title>CKA Note Section 3 Scheduling</title>
-      <link>http://localhost:1313/post/20211124-cka_note_section_3_scheduling/</link>
+      <link>https://blog.xxzk.me/post/20211124-cka_note_section_3_scheduling/</link>
       <pubDate>Wed, 24 Nov 2021 15:03:28 +0000</pubDate>
-      <guid>http://localhost:1313/post/20211124-cka_note_section_3_scheduling/</guid>
+      <guid>https://blog.xxzk.me/post/20211124-cka_note_section_3_scheduling/</guid>
       <description>&lt;h2 id=&#34;50-manual-scheduling&#34;&gt;50. Manual Scheduling&lt;/h2&gt;&#xA;&lt;br&gt;&#xA;&lt;p&gt;在 &lt;strong&gt;有&lt;/strong&gt; &lt;code&gt;kube-scheduler&lt;/code&gt; 的情況下，我們可以在 &lt;code&gt;pod&lt;/code&gt; definition YAML 裡面定義 &lt;code&gt;pod.spec.nodeName: &amp;lt;worker node name&amp;gt;&lt;/code&gt; 來把 &lt;code&gt;pod&lt;/code&gt; 放在指定 worker node。&lt;br&gt;&#xA;在 &lt;strong&gt;沒有&lt;/strong&gt; &lt;code&gt;kube-scheduler&lt;/code&gt; 的情況下，必須要以 &lt;code&gt;json&lt;/code&gt; 格式 POST 到 &lt;code&gt;api-server&lt;/code&gt;。BTW，我找不到 docs 耶 = =&lt;/p&gt;</description>
     </item>
     <item>
       <title>CKA Note Section 2 Core Concepts</title>
-      <link>http://localhost:1313/post/20211123-cka_note_section_2_core_concepts/</link>
+      <link>https://blog.xxzk.me/post/20211123-cka_note_section_2_core_concepts/</link>
       <pubDate>Tue, 23 Nov 2021 14:00:06 +0000</pubDate>
-      <guid>http://localhost:1313/post/20211123-cka_note_section_2_core_concepts/</guid>
+      <guid>https://blog.xxzk.me/post/20211123-cka_note_section_2_core_concepts/</guid>
       <description>&lt;h2 id=&#34;10-cluster-architecture&#34;&gt;10. Cluster Architecture&lt;/h2&gt;&#xA;&lt;br&gt;&#xA;&lt;p&gt;&lt;img src=&#34;k8s_arch.jpg&#34; alt=&#34;k8s_arch&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;▲ Kubernetes controll plane / worker node 組件&lt;/p&gt;&#xA;&lt;br&gt;&#xA;&lt;h2 id=&#34;12-etcd-in-kubernetes&#34;&gt;12. ETCD in Kubernetes&lt;/h2&gt;&#xA;&lt;br&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;透過 &lt;code&gt;kubectl get&lt;/code&gt; 都是 (透過 &lt;code&gt;api-server&lt;/code&gt; ) 向 etcd 查詢資料。&lt;/li&gt;&#xA;&lt;li&gt;講師提供的練習環境是使用 &lt;code&gt;kubeadm&lt;/code&gt; 搭建的，課程最後的章節會教導如何從 scratch 建立 Kubernetes cluster。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;br&gt;&#xA;&lt;p&gt;&lt;img src=&#34;etcd_manual_install_0.jpg&#34; alt=&#34;etcd_manual_install_0&#34;&gt;&lt;/p&gt;</description>
     </item>
   </channel>

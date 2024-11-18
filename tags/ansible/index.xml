@@ -2,24 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Ansible on 老柯的學習筆記</title>
-    <link>http://localhost:1313/tags/ansible/</link>
+    <link>https://blog.xxzk.me/tags/ansible/</link>
     <description>Recent content in Ansible on 老柯的學習筆記</description>
     <generator>Hugo</generator>
     <language>en</language>
     <lastBuildDate>Tue, 13 Dec 2022 14:51:27 +0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/ansible/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://blog.xxzk.me/tags/ansible/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Jumpserver 靜態路由設定 shell script &#43; Ansible Playbook 使用說明</title>
-      <link>http://localhost:1313/post/20210907-setting-jumpserver-static-route-with-ansible-playbook/</link>
+      <link>https://blog.xxzk.me/post/20210907-setting-jumpserver-static-route-with-ansible-playbook/</link>
       <pubDate>Tue, 07 Sep 2021 09:36:54 +0000</pubDate>
-      <guid>http://localhost:1313/post/20210907-setting-jumpserver-static-route-with-ansible-playbook/</guid>
+      <guid>https://blog.xxzk.me/post/20210907-setting-jumpserver-static-route-with-ansible-playbook/</guid>
       <description>&lt;p&gt;&lt;img src=&#34;pexels-athena-910299.jpg&#34; alt=&#34;pexels-athena-910299&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://www.pexels.com/zh-tw/photo/910299/&#34;&gt;圖片來源&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;為什麼使用-jumpserver-要上靜態路由&#34;&gt;為什麼使用 Jumpserver 要上靜態路由?&lt;/h2&gt;&#xA;&lt;p&gt;公司現有 VM Network 環境只要是 Web server 的， default gateway 都是設定 Private IP Class B (172.x.0.0/16) 網段，也就是 &lt;strong&gt;&lt;span style=&#39;color:blue&#39;&gt;Load Balance&lt;/span&gt;&lt;/strong&gt; 身上。同時該台 VM 也會有 &lt;code&gt;192.168.x.0/23 /24&lt;/code&gt; 的網卡 (&lt;code&gt;192.168.x.254 or 253&lt;/code&gt; 在 &lt;strong&gt;&lt;span style=&#39;color:red&#39;&gt;Forti&lt;/span&gt;&lt;/strong&gt; 身上)&lt;br&gt;&#xA;直接上 routing table 會比文字敘述更清楚~&lt;/p&gt;</description>
     </item>
     <item>
       <title>我的第一支 Ansible。 Ansible Hello World</title>
-      <link>http://localhost:1313/post/20210128-ansible-hello-world/</link>
+      <link>https://blog.xxzk.me/post/20210128-ansible-hello-world/</link>
       <pubDate>Thu, 28 Jan 2021 16:44:50 +0000</pubDate>
-      <guid>http://localhost:1313/post/20210128-ansible-hello-world/</guid>
+      <guid>https://blog.xxzk.me/post/20210128-ansible-hello-world/</guid>
       <description>&lt;p&gt;&lt;img src=&#34;ansible_hello_world_logo.jpg&#34; alt=&#34;ansible_hello_world_logo&#34;&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;更新紀錄&#34;&gt;更新紀錄&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;2022.12&#xA;&lt;ol&gt;&#xA;&lt;li&gt;刪改原有內容、新增 &lt;code&gt;全域/區域 變數設定方式&lt;/code&gt;&lt;/li&gt;&#xA;&lt;li&gt;新增 &lt;code&gt;playbook&lt;/code&gt;&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;簡介&#34;&gt;簡介&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;Ansible 是一種開源配置工具，Linux 系統管理員使用的自動化工具。&lt;/strong&gt;&lt;br&gt;&#xA;&lt;strong&gt;Ansible 能讓系統管理員從一個控制節點（即 Ansible 服務器）管理數百台服務器。&lt;/strong&gt;&lt;br&gt;&#xA;&lt;strong&gt;Ansible 不需要任何代理，並且可以在 SSH 和 python 上工作。&lt;/strong&gt;&lt;/p&gt;</description>
     </item>
   </channel>

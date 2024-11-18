@@ -16,14 +16,14 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="Learning note." /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="" /><meta name="description" content="Learning note." /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.133.1 with theme even" />
+<meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/" />
@@ -52,8 +52,8 @@
 
   <meta itemprop="name" content="老柯的學習筆記">
   <meta itemprop="description" content="Learning note.">
-  <meta itemprop="datePublished" content="2024-09-18T10:10:13+00:00">
-  <meta itemprop="dateModified" content="2024-09-18T10:10:13+00:00">
+  <meta itemprop="datePublished" content="2024-10-09T14:47:52+00:00">
+  <meta itemprop="dateModified" content="2024-11-18T14:50:24+08:00">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="老柯的學習筆記">
   <meta name="twitter:description" content="Learning note.">
@@ -129,6 +129,90 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/20200924-graylog-installation-use-centos77/">Gralylog 安裝紀錄 (使用 Default CentOS 7.7)</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2020-09-24 </span>
+      <div class="post-category">
+          <a href="/categories//">  </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>本篇參考資料 <a href="https://www.fosslinux.com/28650/how-to-install-and-configure-graylog-on-centos-7.htm">How to install and configure Graylog on CentOS 7</a></p>
+<hr>
+<br>
+<br>
+<ol>
+<li>執行系統更新</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">yum update -y 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="2">
+<li>安裝 EPEL</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">yum install epel-release -y
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="3">
+<li>安裝所需項目，其中 pwgen 套件是等等要用來產生 graylog server 設定檔的密鑰</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">yum install pwgen vim -y
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="4">
+<li>安裝 java</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">yum install java-1.8.0-openjdk-headless.x86_64 -y
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">確認安裝正確可以使用 java -version
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="5">
+<li>安裝 MongoDB ，由於 RHEL 預設 repo 沒有這個項目必須手動增加 repo</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">vim /etc/yum.repos.d/mongodb-org.repo
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>新增內容如下</p>
+    </div>
+    <div class="read-more">
+      <a href="/post/20200924-graylog-installation-use-centos77/" class="read-more-link">Read more...</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/20200923-how-to-search-in-graylog/">Graylog 搜尋語法</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2020-09-23 </span>
@@ -140,7 +224,23 @@
   
   <div class="post-content">
     <div class="post-summary">
-      參考文件 Official Searching Doc 在開始之前可以將設定檔內的 allow_highlighting = true 打開，獲得螢光筆功能 Enabling/Disabling search result highlighting 基礎搜尋語法 Syntax Graylog 語法支援正規表示法 (RegEXP) 搜尋 Message 包含 ssh 的 log 1 ssh 搜尋 Message 包含
+      <p>參考文件 <a href="https://docs.graylog.org/en/3.2/pages/queries.html">Official Searching Doc</a></p>
+<p><img src="searching_area.jpg" alt="searching_area"></p>
+<p>在開始之前可以將設定檔內的 <code>allow_highlighting = true</code> 打開，獲得螢光筆功能 <br>
+<a href="https://docs.graylog.org/en/3.2/pages/searching/result_highlighting.html">Enabling/Disabling search result highlighting</a></p>
+<p><img src="enable_highlight.jpg" alt="enable_highlight"></p>
+<h3 id="基礎搜尋語法-syntax">基礎搜尋語法 Syntax</h3>
+<p>Graylog 語法支援<code>正規表示法 (RegEXP)</code></p>
+<p>搜尋 Message 包含 ssh 的 log</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">ssh
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>搜尋 Message 包含 ssh <code>或 (OR)</code> login 的 log</p>
     </div>
     <div class="read-more">
       <a href="/post/20200923-how-to-search-in-graylog/" class="read-more-link">Read more...</a>
@@ -185,7 +285,7 @@
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

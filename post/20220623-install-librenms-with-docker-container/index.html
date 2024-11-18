@@ -16,14 +16,17 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="前言 本篇文章紀錄如何透過 docker-compose 快速架一個 LibreNMS 起來。這篇會出現的原因是為了要監控/debug IDC 0F iDRAC/ESXi 電口對接 Cisco Switch 的問題~ 安裝 docker-compose 【standalone】" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="" /><meta name="description" content="前言 本篇文章紀錄如何透過 docker-compose 快速架一個 LibreNMS 起來。這篇會出現的原因是為了要監控/debug IDC 0F iDRAC/ESXi 電口對接 Cisco Switch 的問題~
+安裝 docker-compose 【standalone】Install the plugin manually
+1 2 3 4 5 curl -SL https://github.com/docker/compose/releases/download/v2.6.0/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose chmod a&#43;x /usr/local/bin/docker-compose ## if $PATH not include &#39;/usr/local/bin/&#39; sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose 安裝 LibreNMS 官方針對 Docker 安裝的說明都放在 GitHub - librenms/docker 裡面了。
+" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.133.1 with theme even" />
+<meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/post/20220623-install-librenms-with-docker-container/" />
@@ -45,7 +48,9 @@
 <meta property="og:url" content="http://localhost:1313/post/20220623-install-librenms-with-docker-container/">
   <meta property="og:site_name" content="老柯的學習筆記">
   <meta property="og:title" content="使用 container 快速部屬 LibreNMS">
-  <meta property="og:description" content="前言 本篇文章紀錄如何透過 docker-compose 快速架一個 LibreNMS 起來。這篇會出現的原因是為了要監控/debug IDC 0F iDRAC/ESXi 電口對接 Cisco Switch 的問題~ 安裝 docker-compose 【standalone】">
+  <meta property="og:description" content="前言 本篇文章紀錄如何透過 docker-compose 快速架一個 LibreNMS 起來。這篇會出現的原因是為了要監控/debug IDC 0F iDRAC/ESXi 電口對接 Cisco Switch 的問題~
+安裝 docker-compose 【standalone】Install the plugin manually
+1 2 3 4 5 curl -SL https://github.com/docker/compose/releases/download/v2.6.0/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose chmod a&#43;x /usr/local/bin/docker-compose ## if $PATH not include &#39;/usr/local/bin/&#39; sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose 安裝 LibreNMS 官方針對 Docker 安裝的說明都放在 GitHub - librenms/docker 裡面了。">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="post">
@@ -55,14 +60,18 @@
     <meta property="article:tag" content="Docker">
 
   <meta itemprop="name" content="使用 container 快速部屬 LibreNMS">
-  <meta itemprop="description" content="前言 本篇文章紀錄如何透過 docker-compose 快速架一個 LibreNMS 起來。這篇會出現的原因是為了要監控/debug IDC 0F iDRAC/ESXi 電口對接 Cisco Switch 的問題~ 安裝 docker-compose 【standalone】">
+  <meta itemprop="description" content="前言 本篇文章紀錄如何透過 docker-compose 快速架一個 LibreNMS 起來。這篇會出現的原因是為了要監控/debug IDC 0F iDRAC/ESXi 電口對接 Cisco Switch 的問題~
+安裝 docker-compose 【standalone】Install the plugin manually
+1 2 3 4 5 curl -SL https://github.com/docker/compose/releases/download/v2.6.0/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose chmod a&#43;x /usr/local/bin/docker-compose ## if $PATH not include &#39;/usr/local/bin/&#39; sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose 安裝 LibreNMS 官方針對 Docker 安裝的說明都放在 GitHub - librenms/docker 裡面了。">
   <meta itemprop="datePublished" content="2022-06-23T14:50:31+00:00">
   <meta itemprop="dateModified" content="2022-08-19T11:31:04+08:00">
   <meta itemprop="wordCount" content="1201">
   <meta itemprop="keywords" content="LibreNMS,Docker">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="使用 container 快速部屬 LibreNMS">
-  <meta name="twitter:description" content="前言 本篇文章紀錄如何透過 docker-compose 快速架一個 LibreNMS 起來。這篇會出現的原因是為了要監控/debug IDC 0F iDRAC/ESXi 電口對接 Cisco Switch 的問題~ 安裝 docker-compose 【standalone】">
+  <meta name="twitter:description" content="前言 本篇文章紀錄如何透過 docker-compose 快速架一個 LibreNMS 起來。這篇會出現的原因是為了要監控/debug IDC 0F iDRAC/ESXi 電口對接 Cisco Switch 的問題~
+安裝 docker-compose 【standalone】Install the plugin manually
+1 2 3 4 5 curl -SL https://github.com/docker/compose/releases/download/v2.6.0/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose chmod a&#43;x /usr/local/bin/docker-compose ## if $PATH not include &#39;/usr/local/bin/&#39; sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose 安裝 LibreNMS 官方針對 Docker 安裝的說明都放在 GitHub - librenms/docker 裡面了。">
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -519,7 +528,7 @@
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">Author</span>
-    <span class="item-content">老柯</span>
+    <span class="item-content"></span>
   </p>
   <p class="copyright-item">
     <span class="item-title">LastMod</span>
@@ -581,7 +590,7 @@
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

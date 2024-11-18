@@ -16,14 +16,16 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="前言 既然這個章節是介紹 Kubernetes Networking 那就先來複習一下之前看過的優質文章吧! [Hwchiu Docker Network - 網路模型 系列] Docker Network - 網路模型 [Day10] Container Network Interface 介紹 188. Prerequisite - Network Namespaces ▲ 使用 ip netns exec &lt;NAMESPACE&gt; ip link" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="" /><meta name="description" content="前言 既然這個章節是介紹 Kubernetes Networking 那就先來複習一下之前看過的優質文章吧!
+[Hwchiu Docker Network - 網路模型 系列] Docker Network - 網路模型 [Day10] Container Network Interface 介紹 188. Prerequisite - Network Namespaces ▲ 使用 ip netns exec &lt;NAMESPACE&gt; ip link 能以 &lt;NAMESPACE&gt; 的視角查看，或者更快的 ip -n &lt;NAMESPACE&gt; link。
+" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.133.1 with theme even" />
+<meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/post/20220704-cka_note_section_9_networking/" />
@@ -45,7 +47,8 @@
 <meta property="og:url" content="http://localhost:1313/post/20220704-cka_note_section_9_networking/">
   <meta property="og:site_name" content="老柯的學習筆記">
   <meta property="og:title" content="CKA Note Section 9 Networking">
-  <meta property="og:description" content="前言 既然這個章節是介紹 Kubernetes Networking 那就先來複習一下之前看過的優質文章吧! [Hwchiu Docker Network - 網路模型 系列] Docker Network - 網路模型 [Day10] Container Network Interface 介紹 188. Prerequisite - Network Namespaces ▲ 使用 ip netns exec &lt;NAMESPACE&gt; ip link">
+  <meta property="og:description" content="前言 既然這個章節是介紹 Kubernetes Networking 那就先來複習一下之前看過的優質文章吧!
+[Hwchiu Docker Network - 網路模型 系列] Docker Network - 網路模型 [Day10] Container Network Interface 介紹 188. Prerequisite - Network Namespaces ▲ 使用 ip netns exec &lt;NAMESPACE&gt; ip link 能以 &lt;NAMESPACE&gt; 的視角查看，或者更快的 ip -n &lt;NAMESPACE&gt; link。">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="post">
@@ -55,14 +58,16 @@
     <meta property="article:tag" content="Kubernetes">
 
   <meta itemprop="name" content="CKA Note Section 9 Networking">
-  <meta itemprop="description" content="前言 既然這個章節是介紹 Kubernetes Networking 那就先來複習一下之前看過的優質文章吧! [Hwchiu Docker Network - 網路模型 系列] Docker Network - 網路模型 [Day10] Container Network Interface 介紹 188. Prerequisite - Network Namespaces ▲ 使用 ip netns exec &lt;NAMESPACE&gt; ip link">
+  <meta itemprop="description" content="前言 既然這個章節是介紹 Kubernetes Networking 那就先來複習一下之前看過的優質文章吧!
+[Hwchiu Docker Network - 網路模型 系列] Docker Network - 網路模型 [Day10] Container Network Interface 介紹 188. Prerequisite - Network Namespaces ▲ 使用 ip netns exec &lt;NAMESPACE&gt; ip link 能以 &lt;NAMESPACE&gt; 的視角查看，或者更快的 ip -n &lt;NAMESPACE&gt; link。">
   <meta itemprop="datePublished" content="2022-07-04T13:58:19+00:00">
   <meta itemprop="dateModified" content="2022-08-03T15:32:40+08:00">
   <meta itemprop="wordCount" content="2823">
   <meta itemprop="keywords" content="CKA-Note,Kubernetes">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="CKA Note Section 9 Networking">
-  <meta name="twitter:description" content="前言 既然這個章節是介紹 Kubernetes Networking 那就先來複習一下之前看過的優質文章吧! [Hwchiu Docker Network - 網路模型 系列] Docker Network - 網路模型 [Day10] Container Network Interface 介紹 188. Prerequisite - Network Namespaces ▲ 使用 ip netns exec &lt;NAMESPACE&gt; ip link">
+  <meta name="twitter:description" content="前言 既然這個章節是介紹 Kubernetes Networking 那就先來複習一下之前看過的優質文章吧!
+[Hwchiu Docker Network - 網路模型 系列] Docker Network - 網路模型 [Day10] Container Network Interface 介紹 188. Prerequisite - Network Namespaces ▲ 使用 ip netns exec &lt;NAMESPACE&gt; ip link 能以 &lt;NAMESPACE&gt; 的視角查看，或者更快的 ip -n &lt;NAMESPACE&gt; link。">
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -344,7 +349,7 @@ CNI 還有提供 library 可以自行開發屬於你自己的 CNI plugins~</p>
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">Author</span>
-    <span class="item-content">老柯</span>
+    <span class="item-content"></span>
   </p>
   <p class="copyright-item">
     <span class="item-title">LastMod</span>
@@ -406,7 +411,7 @@ CNI 還有提供 library 可以自行開發屬於你自己的 CNI plugins~</p>
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

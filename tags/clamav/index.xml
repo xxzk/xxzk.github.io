@@ -13,7 +13,7 @@
       <link>http://localhost:1313/post/20220718-linux-antivirus-tool-clamav-how-to-use/</link>
       <pubDate>Mon, 18 Jul 2022 16:19:40 +0000</pubDate>
       <guid>http://localhost:1313/post/20220718-linux-antivirus-tool-clamav-how-to-use/</guid>
-      <description>前言 這次主要是有放了一千年的老舊服務 VM 疑似被攻擊/入侵的疑慮，才找工具來掃看看~ 一開始是用 開源系統安全稽核工具：Lynis ，但使用後發現 Lynis 比</description>
+      <description>&lt;p&gt;&lt;img src=&#34;clamav_official_site.jpg&#34; alt=&#34;clamav_official_site&#34;&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;&#xA;&lt;p&gt;這次主要是有放了一千年的老舊服務 VM 疑似被攻擊/入侵的疑慮，才找工具來掃看看~ 一開始是用 &lt;a href=&#34;https://ithelp.ithome.com.tw/articles/10217009&#34;&gt;開源系統安全稽核工具：Lynis &lt;/a&gt;，但使用後發現 Lynis 比較像是安全稽核，沒有掃描惡意程式的功能。&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

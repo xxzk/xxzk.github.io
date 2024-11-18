@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Rabbitmq on 老柯的學習筆記</title>
+    <link>http://localhost:1313/tags/rabbitmq/</link>
+    <description>Recent content in Rabbitmq on 老柯的學習筆記</description>
+    <generator>Hugo</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 18 Nov 2024 14:50:24 +0800</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/rabbitmq/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在 Kubernetes 建設 RabbitMQ 使用 RabbitMQ Operator</title>
+      <link>http://localhost:1313/post/20241009-rabbit-mq-cluster-k8s-operator/</link>
+      <pubDate>Wed, 09 Oct 2024 14:47:52 +0000</pubDate>
+      <guid>http://localhost:1313/post/20241009-rabbit-mq-cluster-k8s-operator/</guid>
+      <description>&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;&#xA;&lt;p&gt;本來託管在 AWS 的 RabbitMQ 因為成本考量只開 single instance，每次 maintenance windows 時 app 都會受到影響。因此決定嘗試在 Kubernetes 上建構 RabbitMQ cluster。&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;RabbitMQ 版本: v3.13.7 (fallow operator default) &lt;br&gt;&#xA;Kubernetes (EKS) 版本: v1.30&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;h2 id=&#34;installing-rabbitmq-cluster-operator-in-a-kubernetes-cluster-refhttpswwwrabbitmqcomkubernetesoperatorinstall-operator&#34;&gt;Installing RabbitMQ Cluster Operator in a Kubernetes Cluster [&lt;a href=&#34;https://www.rabbitmq.com/kubernetes/operator/install-operator&#34;&gt;ref&lt;/a&gt;]&lt;/h2&gt;&#xA;&lt;p&gt;這個 Operator 負責建立 RabbitMQ Cluster，版本我固定當前最新版 v2.11.0，預設建立的 RabbitMQ 版本是 v3.13.7 (&lt;a href=&#34;https://github.com/rabbitmq/cluster-operator/tree/v2.10.0?tab=readme-ov-file#supported-versions&#34;&gt;ref&lt;/a&gt;)。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

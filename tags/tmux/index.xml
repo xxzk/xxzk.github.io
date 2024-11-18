@@ -13,7 +13,7 @@
       <link>http://localhost:1313/post/20210611-compile-tmux-for-bastion/</link>
       <pubDate>Fri, 11 Jun 2021 13:04:29 +0000</pubDate>
       <guid>http://localhost:1313/post/20210611-compile-tmux-for-bastion/</guid>
-      <description>圖片來源: GT-Wang tmux 是一款 terminal mutiplexer (終端機多工器)，自帶切割畫面 (pane) 的功能而且能夠在背景執行。 這篇主要紀錄在公司 Border (跳板機) 手動編譯安裝 for single user 應用場景、</description>
+      <description>&lt;p&gt;&lt;img src=&#34;https://blog.gtwang.org/wp-content/uploads/2019/12/linux-tmux-terminal-multiplexer-tutorial-20191204-02.png&#34; alt=&#34;linux-tmux-terminal-multiplexer-tutorial-20191204-02.png&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;圖片來源: &lt;a href=&#34;https://blog.gtwang.org/linux/linux-tmux-terminal-multiplexer-tutorial/&#34;&gt;GT-Wang&lt;/a&gt;&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;p&gt;&lt;strong&gt;tmux 是一款 terminal mutiplexer (終端機多工器)，自帶切割畫面 (pane) 的功能而且能夠在背景執行。&lt;/strong&gt;&lt;br&gt;&#xA;&lt;strong&gt;&lt;span style=&#39;color:blue&#39;&gt;這篇主要紀錄在公司 Border (跳板機) 手動編譯安裝 for single user&lt;/span&gt;&lt;/strong&gt;&lt;br&gt;&#xA;&lt;strong&gt;應用場景、操作，請參考這幾篇文章:&lt;/strong&gt;&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

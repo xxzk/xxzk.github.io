@@ -16,14 +16,14 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="Learning note." /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="" /><meta name="description" content="Learning note." /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.133.1 with theme even" />
+<meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/" />
@@ -52,8 +52,8 @@
 
   <meta itemprop="name" content="老柯的學習筆記">
   <meta itemprop="description" content="Learning note.">
-  <meta itemprop="datePublished" content="2024-09-18T10:10:13+00:00">
-  <meta itemprop="dateModified" content="2024-09-18T10:10:13+00:00">
+  <meta itemprop="datePublished" content="2024-10-09T14:47:52+00:00">
+  <meta itemprop="dateModified" content="2024-11-18T14:50:24+08:00">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="老柯的學習筆記">
   <meta name="twitter:description" content="Learning note.">
@@ -129,6 +129,54 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/20230418-aws-cdk-hello-world/">Pulumi / AWS CDK Hello World</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2023-04-18 </span>
+      <div class="post-category">
+          <a href="/categories/aws/"> AWS </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <h2 id="pulumi">Pulumi</h2>
+<p align="center">
+  <img src="https://www.pulumi.com/images/logo/logo-on-white.svg">
+</p>
+<ul>
+<li><a href="https://www.pulumi.com/docs/get-started/aws/">Get Started with AWS | Pulumi Docs</a></li>
+<li><a href="https://www.pulumi.com/docs/intro/vs/cloud-template-transpilers/aws-cdk/">Pulumi vs. AWS CDK | Pulumi Docs</a></li>
+</ul>
+<p>快速補充 Pulumi Hello World 的部分</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">brew install pulumi/tap/pulumi
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># or Linux distro</span>
+</span></span><span class="line"><span class="cl">curl -fsSL https://get.pulumi.com <span class="p">|</span> sh
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><strong><span style='color:red'>如果使用 Python 的話，版本必須高於 3.7 且 <code>pip</code> 也需安裝。</span></strong></li>
+<li>Pulumi 可以使用 aws config 或者直接吃 <code>export AWS_ACCESS_KEY_ID=&lt;YOUR_ACCESS_KEY_ID&gt;</code>, <code>export AWS_SECRET_ACCESS_KEY=&lt;YOUR_SECRET_ACCESS_KEY&gt;</code></li>
+</ul>
+<p>切換 AWS profile 並確認 active session</p>
+    </div>
+    <div class="read-more">
+      <a href="/post/20230418-aws-cdk-hello-world/" class="read-more-link">Read more...</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/20230220-udemy-aws-saa-c03-note/">Udemy AWS SAA-C03 課程筆記</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2023-02-13 </span>
@@ -140,7 +188,20 @@
   
   <div class="post-content">
     <div class="post-summary">
-      Intro 這篇筆記會記錄 Udemy Ultimate AWS Certified Solutions Architect Associate SAA-C03 隨堂筆記。 !! 目前施工中~~~ !! AWS Free Tier 說明 ▲ Control Your AWS Costs，設定警告避免帳單爆炸。 Slides and Code Download Section 4 IAM and AWS CLI IAM Groups 只
+      <h2 id="intro">Intro</h2>
+<p>這篇筆記會記錄 <a href="https://www.udemy.com/course/aws-certified-solutions-architect-associate-saa-c03/">Udemy Ultimate AWS Certified Solutions Architect Associate SAA-C03</a> 隨堂筆記。</p>
+<p><strong><span style='color:red'>!! 目前施工中~~~ !!</span></strong></p>
+<h2 id="aws-free-tier-說明httpsawsamazoncomfree"><a href="https://aws.amazon.com/free/">AWS Free Tier 說明</a></h2>
+<p><img src="aws_zero_spend_budget_setting.jpg" alt="aws_zero_spend_budget_setting"></p>
+<p>▲ <a href="https://aws.amazon.com/getting-started/hands-on/control-your-costs-free-tier-budgets/">Control Your AWS Costs</a>，設定警告避免帳單爆炸。</p>
+<p><a href="https://courses.datacumulus.com/downloads/certified-solutions-architect-pn9/">Slides and Code Download</a></p>
+<h2 id="section-4-iam-and-aws-cli">Section 4 IAM and AWS CLI</h2>
+<h3 id="iam">IAM</h3>
+<ul>
+<li>Groups 只能包含 users， <strong><span style='color:red'>不能包含另一個 group</span></strong></li>
+<li>Policy 除了可以加在 groups 以外， <strong>inline policy</strong> 可以直接對 user 賦予權限</li>
+</ul>
+<p><img src="add_inline_policy_to_user.jpg" alt="add_inline_policy_to_user"></p>
     </div>
     <div class="read-more">
       <a href="/post/20230220-udemy-aws-saa-c03-note/" class="read-more-link">Read more...</a>
@@ -161,7 +222,33 @@
   
   <div class="post-content">
     <div class="post-summary">
-      前言 每次想要查系統資源使用狀況都要 Google 一次 (除了 ps -aux, top, htop 很直覺的以外啦)，不如趁這次偕同 RD team 查找 iowait 高的原因整理一篇自己的筆記節省時間。 【常用指
+      <h2 id="前言">前言</h2>
+<p>每次想要查系統資源使用狀況都要 Google 一次 (除了 <code>ps -aux</code>, <code>top</code>, <code>htop</code> 很直覺的以外啦)，不如趁這次偕同 RD team 查找 <code>iowait</code> 高的原因整理一篇自己的筆記節省時間。</p>
+<h2 id="常用指令-cheatsheet">【常用指令】 cheatsheet</h2>
+<h3 id="ps-常用指令"><code>ps</code> 常用指令</h3>
+<ol>
+<li>以 <code>%CPU</code> 排序前 5 名</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ps -eo user,command,pcpu,pmem --sort -pcpu <span class="p">|</span> head -5
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="2">
+<li>以 <code>%MEM</code> 排序前 5 名</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ps -eo user,command,pcpu,pmem --sort -pmem <span class="p">|</span> head -5
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a href="https://www.networkworld.com/article/3596800/how-to-sort-ps-output.html">How to sort ps output</a></p>
     </div>
     <div class="read-more">
       <a href="/post/20221108-linux-process-monitoring-command-usage/" class="read-more-link">Read more...</a>
@@ -182,7 +269,11 @@
   
   <div class="post-content">
     <div class="post-summary">
-      前言 本篇筆記紀錄如何使用 snmp_exporter 搭配 prometheus 與 Grafana 來即時監控網路設備流量。 公司原先使用 LibreNMS 作為即時流量的依據，由於 default polling interval 是 5 分鐘抓取一次，而且一次抓取 (walk) 的 OID
+      <h2 id="前言">前言</h2>
+<p>本篇筆記紀錄如何使用 <a href="https://github.com/prometheus/snmp_exporter">snmp_exporter</a> 搭配 <a href="https://github.com/prometheus/prometheus">prometheus</a> 與 <a href="https://github.com/grafana/grafana">Grafana</a> 來即時監控網路設備流量。<br>
+公司原先使用 LibreNMS 作為即時流量的依據，由於 <strong><span style='color:blue'>default polling interval 是 5 分鐘抓取一次，而且一次抓取 (walk) 的 OID 也是世界多~</span></strong><br>
+雖然說 LibreNMS 有提供 <a href="https://docs.librenms.org/Support/1-Minute-Polling/">1-Minute Polling</a> 的方式，不過一次抓取就是長長一串造成設備不必要的負擔，更可能造成風暴 (前一次抓取尚未完成，時間到了又必須進行下一次)。<br>
+況且即使 1-Minute polling 完美運作，對於流量的精細程度個人認為是遠遠不足的! 被打 DDoS 幾秒之內流量就可能飆高，若針對流量 moniting 顆粒度太大就失去了意義、無法反映實際狀況。</p>
     </div>
     <div class="read-more">
       <a href="/post/20220825-moniting-device-traffic-via-snmp_exporter-with-prometheus/" class="read-more-link">Read more...</a>
@@ -203,31 +294,27 @@
   
   <div class="post-content">
     <div class="post-summary">
-      235. Application Failure 厚，debug 到眼睛快脫窗 先開 App Web 頁面查看錯誤訊息 (不確定正式考試時網頁是不是也設計成顯示錯誤訊息)，判斷可能出問題的地方 第一題網頁能
+      <h2 id="235-application-failure">235. Application Failure</h2>
+<p><del>厚，debug 到眼睛快脫窗</del></p>
+<ul>
+<li>先開 App Web 頁面查看錯誤訊息 (不確定正式考試時網頁是不是也設計成顯示錯誤訊息)，判斷可能出問題的地方</li>
+<li>第一題網頁能開判斷 Web pod + service =&gt; 無問題，<strong><span style='color:red'>網頁顯示 <code>-2 Name does not resolve</code></span></strong> =&gt; 連不到 DB =&gt; 往 <code>mysql-service</code> <strong><span style='color:blue'>&ldquo;DNS name&rdquo;</span></strong> 查找</li>
+<li>第二題一樣，網頁顯示 <strong><span style='color:red'><code>111 Connection refused</code></span></strong> =&gt; <br>
+(1) 拒絕 =&gt; DB credential 有問題 =&gt; 要嘛在 Web pod env 不然就是 db pod env <br>
+(2) <code>svc</code> port 號 <code>OR</code> selector 錯誤 <code>OR</code> pod 身上 port 錯誤</li>
+<li>第三題 <strong><span style='color:red'>網頁直接打不開啊!</span></strong> =&gt; 等待時間先去查 web svc =&gt; <code>curl http://&lt;svc_IP&gt;:&lt;port&gt;</code>
+(1) 後來噴出 504 Gateway Error =&gt; 5xx 系列 server 內部問題 =&gt; 都要查! (<strong>包含 web svc</strong>) <del>槓</del>
+(2) <code>k get all -o wide</code> 先看一下能不能看出端倪，果然看到 <code>selector:name=sql00001</code> =&gt; <code>k get pod mysql --show-labels</code></li>
+<li>第四題 env <code>DB_User</code> 不符合題目要求。</li>
+<li>第五題 兩個 issue，第一個承上題。<strong><span style='color:blue'><code>Access denied for user 'root'@'10.42.0.20' (using password: YES)</code> =&gt; 這 error 是 DB 噴的代表 DB svc 沒問題</span></strong></li>
+<li>第六題 三個 issue <br>
+(1) <code>web-service</code> <code>NodePort</code> 錯誤 <br>
+(2) env <code>DB_User</code> 錯誤</li>
+</ul>
+<p><img src="kubectl_show_svc_ports.jpg" alt="kubectl_show_svc_ports"></p>
     </div>
     <div class="read-more">
       <a href="/post/20220726-cka_note_section_13_troubleshooting/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/20220721-cka_note_section_11_install_k8s_the_kubeadm_way/">CKA Note Section 11 Install K8s the kubeadm way</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2022-07-21 </span>
-      <div class="post-category">
-          <a href="/categories/cka-note/"> CKA-Note </a>
-          </div>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      225. Important Update: Kubernetes the Hard Way 這個章節其實是 Section 10 的最後一個 lecture，不過我想擺在這裡應該會比較合適! 講師提供一系列 Youtube 影片來示範如何像個硬漢一樣 Install Kubernetes from Scratch
-    </div>
-    <div class="read-more">
-      <a href="/post/20220721-cka_note_section_11_install_k8s_the_kubeadm_way/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>
@@ -272,7 +359,7 @@
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

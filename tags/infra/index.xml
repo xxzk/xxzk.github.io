@@ -13,7 +13,7 @@
       <link>http://localhost:1313/post/20210722-lab-200-network-device-setting-note/</link>
       <pubDate>Thu, 22 Jul 2021 08:53:50 +0000</pubDate>
       <guid>http://localhost:1313/post/20210722-lab-200-network-device-setting-note/</guid>
-      <description>Cisco 3750G 前言日記 在記錄設定前先來段日記 XD，Cisco 3750G 章節紀錄機櫃搬遷後 Cisco 3750G 24TS 作為系統組自管 ToS (Top of Switch) 使用。 原先 K8s LAB 因為留停期間同事有拿來實驗 O</description>
+      <description>&lt;h2 id=&#34;cisco-3750g&#34;&gt;Cisco 3750G&lt;/h2&gt;&#xA;&lt;h3 id=&#34;前言日記&#34;&gt;前言日記&lt;/h3&gt;&#xA;&lt;p&gt;在記錄設定前先來段日記 XD，Cisco 3750G 章節紀錄機櫃搬遷後 Cisco 3750G 24TS 作為系統組自管 ToS (Top of Switch) 使用。&lt;br&gt;&#xA;原先 K8s LAB 因為留停期間同事有拿來實驗 OpenStack，再加上大主管說要召回 Forti 200D，我就交接給同事自行處理/規劃了~~ &lt;br&gt;&#xA;我想辦公室的那四台 R620 應該非常夠我練習 Kubernetes 相關了~ 畢竟目前還在用 minikube 練 CKA。&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

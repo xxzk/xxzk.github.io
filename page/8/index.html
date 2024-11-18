@@ -16,14 +16,14 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="Learning note." /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="" /><meta name="description" content="Learning note." /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.133.1 with theme even" />
+<meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/" />
@@ -52,8 +52,8 @@
 
   <meta itemprop="name" content="老柯的學習筆記">
   <meta itemprop="description" content="Learning note.">
-  <meta itemprop="datePublished" content="2024-09-18T10:10:13+00:00">
-  <meta itemprop="dateModified" content="2024-09-18T10:10:13+00:00">
+  <meta itemprop="datePublished" content="2024-10-09T14:47:52+00:00">
+  <meta itemprop="dateModified" content="2024-11-18T14:50:24+08:00">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="老柯的學習筆記">
   <meta name="twitter:description" content="Learning note.">
@@ -129,6 +129,31 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/20210730-ckad-note-section-3-configuration/">CKAD Note Section 3 Configuration</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2021-07-30 </span>
+      <div class="post-category">
+          <a href="/categories/ckad-note/"> CKAD-Note </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <br>
+<hr>
+<h2 id="37-pre-request-commands-and-arguments-in-docker">37. [Pre-Request] Commands and Arguments in Docker</h2>
+<br>
+<p>課程一開始就先來複習 <code>Docker File</code> 當中的 <code>CMD</code> 與 <code>ENTRYPOINT</code>，雖然講師說不在 CKAD 的考試範圍，不過 <a href="https://training.linuxfoundation.org/ckad-program-change-2021/">CKAD-2021 (即將在 2021 Q3 改版)</a> 看起來是有被納入的喔~</p>
+    </div>
+    <div class="read-more">
+      <a href="/post/20210730-ckad-note-section-3-configuration/" class="read-more-link">Read more...</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/20210727-ckad-note-section-1-introduction/">CKAD Note Section 1 Introduction</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2021-07-27 </span>
@@ -140,7 +165,22 @@
   
   <div class="post-content">
     <div class="post-summary">
-      Kubernetes Series 作者的系列課程總共有三個，分別適合不同職位的三種人。 Absolute Beginners (零經驗初學者，帶你從 container 開始) sysAdmin (想要通過 CKAD) Application Developer (程式開發人員) Certification Details 這邊告知 CKAD 考
+      <br>
+<h2 id="kubernetes-series">Kubernetes Series</h2>
+<br>
+<p>作者的系列課程總共有三個，分別適合不同職位的三種人。</p>
+<ul>
+<li>Absolute Beginners (零經驗初學者，帶你從 container 開始)</li>
+<li>sysAdmin (想要通過 CKAD)</li>
+<li>Application Developer (程式開發人員)</li>
+</ul>
+<br>
+<p><img src="ckad_three_courses.jpg" alt="ckad_three_courses"></p>
+<br>
+<hr>
+<h2 id="certification-details">Certification Details</h2>
+<br>
+<p>這邊告知 CKAD 考試的方式 (非選擇題、線上考試、會有監考官、考試時間 2 小時，可以向監考官申請暫停去上廁所之類的)</p>
     </div>
     <div class="read-more">
       <a href="/post/20210727-ckad-note-section-1-introduction/" class="read-more-link">Read more...</a>
@@ -161,7 +201,19 @@
   
   <div class="post-content">
     <div class="post-summary">
-      本次 192.168.200.x/24 LAB 使用到的 Dell PS6210 本人。 參考資料: EqualLogic PS6210XS 及 CentOS 6.5 MPIO 實作 使用 minicom 連接 serial port 如果作業系統是 Windows 的話可以使用 PuTTY 連接。設定的參數都通用 (baud rate/Data bits/Stop bits/Parity) 使用到的線材:
+      <p><img src="dell_ps6210_in_207.jpg" alt="dell_ps6210_in_207.jpg"></p>
+<br>
+<p>本次 <code>192.168.200.x/24</code> LAB 使用到的 Dell PS6210 本人。<br>
+參考資料: <a href="https://www.weithenn.org/2015/03/equallogic-ps210xs-centos6-mpio.html">EqualLogic PS6210XS 及 CentOS 6.5 MPIO 實作</a></p>
+<br>
+<hr>
+<h2 id="使用-minicom-連接-serial-port">使用 minicom 連接 serial port</h2>
+<br>
+<p><strong><span style='color:blue'>如果作業系統是 Windows 的話可以使用 PuTTY 連接。設定的參數都通用 (baud rate/Data bits/Stop bits/Parity)</span></strong></p>
+<br>
+<p><strong>使用到的線材: RS 232</strong></p>
+<br>
+<p><img src="ugreen_db9_rs232.jpg" alt="ugreen_db9_rs232.jpg"></p>
     </div>
     <div class="read-more">
       <a href="/post/20210723-config-dell-ps6210-storage-using-minicom/" class="read-more-link">Read more...</a>
@@ -182,7 +234,11 @@
   
   <div class="post-content">
     <div class="post-summary">
-      Cisco 3750G 前言日記 在記錄設定前先來段日記 XD，Cisco 3750G 章節紀錄機櫃搬遷後 Cisco 3750G 24TS 作為系統組自管 ToS (Top of Switch) 使用。 原先 K8s LAB 因為留停期間同事有拿來實驗 O
+      <h2 id="cisco-3750g">Cisco 3750G</h2>
+<h3 id="前言日記">前言日記</h3>
+<p>在記錄設定前先來段日記 XD，Cisco 3750G 章節紀錄機櫃搬遷後 Cisco 3750G 24TS 作為系統組自管 ToS (Top of Switch) 使用。<br>
+原先 K8s LAB 因為留停期間同事有拿來實驗 OpenStack，再加上大主管說要召回 Forti 200D，我就交接給同事自行處理/規劃了~~ <br>
+我想辦公室的那四台 R620 應該非常夠我練習 Kubernetes 相關了~ 畢竟目前還在用 minikube 練 CKA。</p>
     </div>
     <div class="read-more">
       <a href="/post/20210722-lab-200-network-device-setting-note/" class="read-more-link">Read more...</a>
@@ -203,31 +259,25 @@
   
   <div class="post-content">
     <div class="post-summary">
-      此篇筆記紀錄如何使用 docker run --link ... 讓容器與容器之間連結。順便給 Upton 參考監控 LAB 要怎麼出~ Blackbox_expoter 1 docker run -itd --name blackbox_expoter -p 9115:9115 -v /root/yml/blackbox_expoter/:/config --restart always prom/blackbox-exporter:master --config.file=/config/blackbox.yml blackbox.yml 更多範例 可以從 blackbox_expoter/example.yml 尋找。 關於設定
+      <p><strong>此篇筆記紀錄如何使用 <code>docker run --link ...</code> 讓容器與容器之間連結。順便給 Upton 參考監控 LAB 要怎麼出~</strong></p>
+<hr>
+<h2 id="blackbox_expoter">Blackbox_expoter</h2>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker run -itd --name blackbox_expoter -p 9115:9115 -v /root/yml/blackbox_expoter/:/config --restart always prom/blackbox-exporter:master --config.file<span class="o">=</span>/config/blackbox.yml
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<h3 id="blackboxyml">blackbox.yml</h3>
+<p><strong>更多範例</strong> 可以從 <a href="https://github.com/prometheus/blackbox_exporter/blob/master/example.yml">blackbox_expoter/example.yml</a> 尋找。<br>
+關於設定檔 <strong>Document</strong> 這邊請  <a href="https://github.com/prometheus/blackbox_exporter/blob/master/CONFIGURATION.md">blackbox_exporter/CONFIGURATION.md </a>。</p>
     </div>
     <div class="read-more">
       <a href="/post/20210629-docker-container-link/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/20210617-minikube-installation/">minikube 安裝指南。 一個精簡、測試環境使用的 k8s 叢集</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2021-06-17 </span>
-      <div class="post-category">
-          <a href="/categories/kubernetes/"> kubernetes </a>
-          </div>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      minikube 能夠快速在本地 (local) 建立 kubernetes cluster (k8s 叢集)，支援 macOS, Linux, Windows 非常適合新手探索 kubernetes 安裝需求 pre-requirement minikube-Driver ▲ 官方有列出各類型 OS 建議搭建在何種虛擬環境上。本篇筆記選用 CentOS 7.9.2009 +
-    </div>
-    <div class="read-more">
-      <a href="/post/20210617-minikube-installation/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>
@@ -272,7 +322,7 @@
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

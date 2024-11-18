@@ -16,14 +16,18 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="Introduction to Terraform Terraform 是一款 Infrastructure as Code (IaC) 工具，以 code 來 定義 / 建造 (build) / 修改 (change) / 版本控制 (version) 基礎設施，支援地端 (on-prem) 與 雲端 (Cloud)。 安裝 Terraform CLI Install Terraform 1 2 3 4 5 6 sudo yum install -y" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="" /><meta name="description" content="
+Introduction to Terraform Terraform 是一款 Infrastructure as Code (IaC) 工具，以 code 來 定義 / 建造 (build) / 修改 (change) / 版本控制 (version) 基礎設施，支援地端 (on-prem) 與 雲端 (Cloud)。
+安裝 Terraform CLI Install Terraform
+1 2 3 4 5 6 sudo yum install -y yum-utils sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo sudo yum -y install terraform ## Auto Completion terraform -install-autocomplete 1 2 3 4 5 6 7 8 9 10 11 ## show version terraform --version Terraform v1.0.7 on linux_amd64 ## The auto completion file in bashrc tail ~/.bashrc ... complete -C /usr/bin/terraform terraform Terraform Hello World using Docker provider Build Infrastructure
+" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.133.1 with theme even" />
+<meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/post/20210922-terraform-hello-world/" />
@@ -45,7 +49,9 @@
 <meta property="og:url" content="http://localhost:1313/post/20210922-terraform-hello-world/">
   <meta property="og:site_name" content="老柯的學習筆記">
   <meta property="og:title" content="我的第一支 Terraform">
-  <meta property="og:description" content="Introduction to Terraform Terraform 是一款 Infrastructure as Code (IaC) 工具，以 code 來 定義 / 建造 (build) / 修改 (change) / 版本控制 (version) 基礎設施，支援地端 (on-prem) 與 雲端 (Cloud)。 安裝 Terraform CLI Install Terraform 1 2 3 4 5 6 sudo yum install -y">
+  <meta property="og:description" content="Introduction to Terraform Terraform 是一款 Infrastructure as Code (IaC) 工具，以 code 來 定義 / 建造 (build) / 修改 (change) / 版本控制 (version) 基礎設施，支援地端 (on-prem) 與 雲端 (Cloud)。
+安裝 Terraform CLI Install Terraform
+1 2 3 4 5 6 sudo yum install -y yum-utils sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo sudo yum -y install terraform ## Auto Completion terraform -install-autocomplete 1 2 3 4 5 6 7 8 9 10 11 ## show version terraform --version Terraform v1.0.7 on linux_amd64 ## The auto completion file in bashrc tail ~/.bashrc ... complete -C /usr/bin/terraform terraform Terraform Hello World using Docker provider Build Infrastructure">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="post">
@@ -54,14 +60,18 @@
     <meta property="article:tag" content="Terraform">
 
   <meta itemprop="name" content="我的第一支 Terraform">
-  <meta itemprop="description" content="Introduction to Terraform Terraform 是一款 Infrastructure as Code (IaC) 工具，以 code 來 定義 / 建造 (build) / 修改 (change) / 版本控制 (version) 基礎設施，支援地端 (on-prem) 與 雲端 (Cloud)。 安裝 Terraform CLI Install Terraform 1 2 3 4 5 6 sudo yum install -y">
+  <meta itemprop="description" content="Introduction to Terraform Terraform 是一款 Infrastructure as Code (IaC) 工具，以 code 來 定義 / 建造 (build) / 修改 (change) / 版本控制 (version) 基礎設施，支援地端 (on-prem) 與 雲端 (Cloud)。
+安裝 Terraform CLI Install Terraform
+1 2 3 4 5 6 sudo yum install -y yum-utils sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo sudo yum -y install terraform ## Auto Completion terraform -install-autocomplete 1 2 3 4 5 6 7 8 9 10 11 ## show version terraform --version Terraform v1.0.7 on linux_amd64 ## The auto completion file in bashrc tail ~/.bashrc ... complete -C /usr/bin/terraform terraform Terraform Hello World using Docker provider Build Infrastructure">
   <meta itemprop="datePublished" content="2021-09-22T15:36:09+00:00">
   <meta itemprop="dateModified" content="2022-09-08T14:59:58+08:00">
   <meta itemprop="wordCount" content="2148">
   <meta itemprop="keywords" content="Terraform">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="我的第一支 Terraform">
-  <meta name="twitter:description" content="Introduction to Terraform Terraform 是一款 Infrastructure as Code (IaC) 工具，以 code 來 定義 / 建造 (build) / 修改 (change) / 版本控制 (version) 基礎設施，支援地端 (on-prem) 與 雲端 (Cloud)。 安裝 Terraform CLI Install Terraform 1 2 3 4 5 6 sudo yum install -y">
+  <meta name="twitter:description" content="Introduction to Terraform Terraform 是一款 Infrastructure as Code (IaC) 工具，以 code 來 定義 / 建造 (build) / 修改 (change) / 版本控制 (version) 基礎設施，支援地端 (on-prem) 與 雲端 (Cloud)。
+安裝 Terraform CLI Install Terraform
+1 2 3 4 5 6 sudo yum install -y yum-utils sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo sudo yum -y install terraform ## Auto Completion terraform -install-autocomplete 1 2 3 4 5 6 7 8 9 10 11 ## show version terraform --version Terraform v1.0.7 on linux_amd64 ## The auto completion file in bashrc tail ~/.bashrc ... complete -C /usr/bin/terraform terraform Terraform Hello World using Docker provider Build Infrastructure">
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -710,7 +720,7 @@
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">Author</span>
-    <span class="item-content">老柯</span>
+    <span class="item-content"></span>
   </p>
   <p class="copyright-item">
     <span class="item-title">LastMod</span>
@@ -771,7 +781,7 @@
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

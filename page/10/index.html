@@ -16,14 +16,14 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="Learning note." /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="" /><meta name="description" content="Learning note." /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.133.1 with theme even" />
+<meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/" />
@@ -52,8 +52,8 @@
 
   <meta itemprop="name" content="老柯的學習筆記">
   <meta itemprop="description" content="Learning note.">
-  <meta itemprop="datePublished" content="2024-09-18T10:10:13+00:00">
-  <meta itemprop="dateModified" content="2024-09-18T10:10:13+00:00">
+  <meta itemprop="datePublished" content="2024-10-09T14:47:52+00:00">
+  <meta itemprop="dateModified" content="2024-11-18T14:50:24+08:00">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="老柯的學習筆記">
   <meta name="twitter:description" content="Learning note.">
@@ -129,6 +129,30 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/20210512-vsphere-showed-that-vm-is-orphanded/">vSphere 顯示 VM Orphaned (虛擬機孤立狀態)</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2021-05-12 </span>
+      <div class="post-category">
+          <a href="/categories/vsphere/"> vsphere </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p><img src="vm_orphaned.jpg" alt="vm_orphaned"></p>
+<p>通常這個狀況會發生在 ESXi 升級失敗、Firmware 更新踩到地雷爆炸、ESXi 重灌地獄，好不容易 ESXi 灌好了準備回到人間<br>
+卻在 vSphere 上面看到該 ESXi Host <span style="color:red"><strong>所有 VM 顯示 Orphaned (孤立)</strong></span><br>
+<del>哪有可能有人這麼雖 有，就是我</del>           <del>可能今年忘記安太座吧 (安太歲已經不流行了)</del></p>
+    </div>
+    <div class="read-more">
+      <a href="/post/20210512-vsphere-showed-that-vm-is-orphanded/" class="read-more-link">Read more...</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/20210503-minio-introduce/">MinIO 簡單介紹</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2021-05-03 </span>
@@ -140,7 +164,12 @@
   
   <div class="post-content">
     <div class="post-summary">
-      min.io 簡介—主文 MinIO 是一套開源、高效能、K8s 取向 (Kubernetes-native) 的物件儲存解決方案。 同時強調 Hybrid Cloud 因為 MinIO 相容 AWS S3 服務 可以把它想成是 AWS S3 開源版。目前依據官方統計在
+      <p><img src="https://min.io/resources/img/logo/MINIO_wordmark.png" alt="minio_logo"></p>
+<p><a href="https://min.io/">min.io</a></p>
+<h2 id="簡介主文">簡介—主文</h2>
+<p><strong>MinIO 是一套開源、高效能、K8s 取向 (Kubernetes-native) 的物件儲存解決方案。</strong><br>
+<strong>同時強調 <span style="color:blue">Hybrid Cloud </span> 因為 MinIO 相容 AWS S3 服務</strong><br>
+<strong>可以把它想成是 AWS S3 開源版。目前依據官方統計在 AWS, Azure, GCP 上面的 MinIO 實例超過 7.7M 台 (七百七十萬，202105)</strong></p>
     </div>
     <div class="read-more">
       <a href="/post/20210503-minio-introduce/" class="read-more-link">Read more...</a>
@@ -161,7 +190,15 @@
   
   <div class="post-content">
     <div class="post-summary">
-      本篇筆記參考: NGINX Document-High Availability Support Based on keepalived [sysctl]CentLinux-keepalived: Configure Floating IP in CentOS 7 Servers nixCraft-Verify: Keepalived IP Failover Working Or Not With tcpdump Command man keepalived.conf Keepalived 是一套由 C 語言撰寫的路由軟體 (Routing software)，主要目的是提供 Linux 設施
+      <p><img src="https://www.keepalived.org/images/ka-header-new.png" alt="ka-header-new.png"></p>
+<p><strong>本篇筆記參考:</strong></p>
+<ul>
+<li><a href="https://docs.nginx.com/nginx/admin-guide/high-availability/ha-keepalived/">NGINX Document-High Availability Support Based on keepalived</a></li>
+<li><a href="https://www.centlinux.com/2018/08/keepalived-configure-floating-ip-centos-7.html">[sysctl]CentLinux-keepalived: Configure Floating IP in CentOS 7 Servers </a></li>
+<li><a href="https://www.cyberciti.biz/faq/linux-unix-verify-keepalived-working-or-not/">nixCraft-Verify: Keepalived IP Failover Working Or Not With tcpdump Command</a></li>
+<li><a href="https://manpages.debian.org/unstable/keepalived/keepalived.conf.5.en.html">man keepalived.conf</a></li>
+</ul>
+<p><strong><a href="https://www.keepalived.org/index.html">Keepalived</a> 是一套由 C 語言撰寫的路由軟體 (Routing software)，主要目的是提供 Linux 設施簡單的高可用 (High-Availability) 以及平衡負載 (Loadbalancing) 方案。</strong></p>
     </div>
     <div class="read-more">
       <a href="/post/20210419-introduce-keepalived/" class="read-more-link">Read more...</a>
@@ -182,7 +219,58 @@
   
   <div class="post-content">
     <div class="post-summary">
-      Bookstack Customising Visuals Bookstack 可以針對外觀做客製化，也就是修改 css 目前使用的是 Google 與 Adobe 合作釋出的開源字體 &ldquo;Noto Sans&rdquo; 若要使用其它 Google Fonts 提供的字體可以訪問: Google Fonts 1 2 3 4 5 6 7 8 9
+      <p><img src="google_noto_sans_tc.jpg" alt="google_noto_sans_tc"></p>
+<p><a href="https://www.bookstackapp.com/docs/admin/visual-customisation/">Bookstack Customising Visuals</a></p>
+<p><strong>Bookstack 可以針對外觀做客製化，也就是修改 css</strong><br>
+<strong>目前使用的是 Google 與 Adobe 合作釋出的開源字體 &ldquo;Noto Sans&rdquo;</strong><br>
+<strong>若要使用其它 Google Fonts 提供的字體可以訪問: <a href="https://fonts.google.com">Google Fonts</a></strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-css" data-lang="css"><span class="line"><span class="cl"><span class="o">&lt;</span><span class="nt">link</span> <span class="nt">href</span><span class="o">=</span><span class="s2">&#34;https://fonts.googleapis.com/css?family=Noto+Sans+TC&#34;</span> <span class="nt">rel</span><span class="o">=</span><span class="s2">&#34;stylesheet&#34;</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="o">&lt;</span><span class="nt">style</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nt">body</span><span class="o">,</span> <span class="nt">button</span><span class="o">,</span> <span class="nt">input</span><span class="o">,</span> <span class="nt">select</span><span class="o">,</span> <span class="nt">label</span><span class="o">,</span> <span class="nt">textarea</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">font-family</span><span class="p">:</span> <span class="s1">&#39;Noto Sans TC&#39;</span><span class="p">,</span> <span class="n">Light</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">font-size</span><span class="p">:</span> <span class="mi">17</span><span class="kt">px</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">.</span><span class="nc">CodeMirror</span><span class="o">,</span> <span class="nt">blockquote</span><span class="o">,</span> <span class="nt">pre</span><span class="o">,</span> <span class="p">#</span><span class="nn">markdown-editor-input</span><span class="o">,</span> <span class="p">.</span><span class="nc">editor-toolbar</span><span class="o">,</span> <span class="p">.</span><span class="nc">code-base</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">font-family</span><span class="p">:</span> <span class="s1">&#39;Noto Sans TC&#39;</span><span class="p">,</span> <span class="n">Light</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">font-size</span><span class="p">:</span> <span class="mi">13</span><span class="kt">px</span>
+</span></span><span class="line"><span class="cl">  <span class="k">margin-right</span><span class="o">:</span> <span class="mi">150</span><span class="kt">px</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nt">blockquote</span><span class="p">:</span><span class="nd">before</span> <span class="p">{</span>                                     
+</span></span><span class="line"><span class="cl">  <span class="k">content</span><span class="p">:</span> <span class="kc">open-quote</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">vertical-align</span><span class="p">:</span> <span class="kc">top</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">&lt;/</span><span class="nt">style</span><span class="o">&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>css 小弟沒學過，東拼西湊而已。歡迎來信建議 XD</p>
     </div>
     <div class="read-more">
       <a href="/post/20210401-bookstack-fronts-customising/" class="read-more-link">Read more...</a>
@@ -203,31 +291,15 @@
   
   <div class="post-content">
     <div class="post-summary">
-      Galera Cluster 是 MariaDB 多主架構 (Multi-Master) 的解決方案。 公司目前常用的主從架構 (Master-Slave) 沒辦法做到各個結點 (node) 均可讀寫，並且確保資料一致性，因此不適合做為 HA (高可用) 的解決方案
+      <p><img src="https://galeracluster.com/wp-content/uploads/2014/05/Galera-Cluster-logo.jpg" alt="Galera-Cluster-logo.jpg"></p>
+<p><strong>Galera Cluster 是 MariaDB 多主架構 (Multi-Master) 的解決方案。</strong><br>
+<strong>公司目前常用的主從架構 (Master-Slave) <span style="color:red">沒辦法做到各個結點 (node) 均可讀寫，並且確保資料一致性，因此不適合做為 HA (高可用) 的解決方案</span></strong></p>
+<h2 id="比較-master-slave-replication-vs-galera-cluster-multi-master">比較 Master-Slave Replication V.S Galera Cluster (Multi-Master)</h2>
+<h3 id="master-slave-replication">Master-Slave Replication</h3>
+<p><img src="replicationnew.jpg" alt="replicationnew.jpg"></p>
     </div>
     <div class="read-more">
       <a href="/post/20210324-mariadb-galera-cluster/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/20210302-librenms-alert-setting-note/">LibreNMS 警報建置實務 LibreNMS Alarm Setting</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2021-03-02 </span>
-      <div class="post-category">
-          <a href="/categories/librenms/"> librenms </a>
-          </div>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      此篇筆記紀錄如何使用 LibreNMS 發送 IPMI 警報至 RocketChat WebHook Channel LibreNMS 動態分組 Dynamic Grouping 動態群組可以自動將裝置依照設定的條件自動加入群組 (新加的裝置也可以喔)。這個功能除了方
-    </div>
-    <div class="read-more">
-      <a href="/post/20210302-librenms-alert-setting-note/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>
@@ -272,7 +344,7 @@
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

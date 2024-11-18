@@ -16,14 +16,19 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="minikube 能夠快速在本地 (local) 建立 kubernetes cluster (k8s 叢集)，支援 macOS, Linux, Windows 非常適合新手探索 kubernetes 安裝需求 pre-requirement minikube-Driver ▲ 官方有列出各類型 OS 建議搭建在何種虛擬環境上。本篇筆記選用 CentOS 7.9.2009 &#43;" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="" /><meta name="description" content=" minikube 能夠快速在本地 (local) 建立 kubernetes cluster (k8s 叢集)，支援 macOS, Linux, Windows
+非常適合新手探索 kubernetes
+安裝需求 pre-requirement minikube-Driver
+▲ 官方有列出各類型 OS 建議搭建在何種虛擬環境上。本篇筆記選用 CentOS 7.9.2009 &#43; Docker
+最小硬體需求 雙核心 2 (CPUs or more)\ 記憶體 2 GB (2 GB of free memory)\ 硬碟空間 20 GB (20GB of free disk space)\ 連上外部網路 (Internet connection) 安裝 minikube start
+" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.133.1 with theme even" />
+<meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/post/20210617-minikube-installation/" />
@@ -45,7 +50,11 @@
 <meta property="og:url" content="http://localhost:1313/post/20210617-minikube-installation/">
   <meta property="og:site_name" content="老柯的學習筆記">
   <meta property="og:title" content="minikube 安裝指南。 一個精簡、測試環境使用的 k8s 叢集">
-  <meta property="og:description" content="minikube 能夠快速在本地 (local) 建立 kubernetes cluster (k8s 叢集)，支援 macOS, Linux, Windows 非常適合新手探索 kubernetes 安裝需求 pre-requirement minikube-Driver ▲ 官方有列出各類型 OS 建議搭建在何種虛擬環境上。本篇筆記選用 CentOS 7.9.2009 &#43;">
+  <meta property="og:description" content="minikube 能夠快速在本地 (local) 建立 kubernetes cluster (k8s 叢集)，支援 macOS, Linux, Windows
+非常適合新手探索 kubernetes
+安裝需求 pre-requirement minikube-Driver
+▲ 官方有列出各類型 OS 建議搭建在何種虛擬環境上。本篇筆記選用 CentOS 7.9.2009 &#43; Docker
+最小硬體需求 雙核心 2 (CPUs or more)\ 記憶體 2 GB (2 GB of free memory)\ 硬碟空間 20 GB (20GB of free disk space)\ 連上外部網路 (Internet connection) 安裝 minikube start">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="post">
@@ -55,14 +64,22 @@
     <meta property="article:tag" content="Kubernetes">
 
   <meta itemprop="name" content="minikube 安裝指南。 一個精簡、測試環境使用的 k8s 叢集">
-  <meta itemprop="description" content="minikube 能夠快速在本地 (local) 建立 kubernetes cluster (k8s 叢集)，支援 macOS, Linux, Windows 非常適合新手探索 kubernetes 安裝需求 pre-requirement minikube-Driver ▲ 官方有列出各類型 OS 建議搭建在何種虛擬環境上。本篇筆記選用 CentOS 7.9.2009 &#43;">
+  <meta itemprop="description" content="minikube 能夠快速在本地 (local) 建立 kubernetes cluster (k8s 叢集)，支援 macOS, Linux, Windows
+非常適合新手探索 kubernetes
+安裝需求 pre-requirement minikube-Driver
+▲ 官方有列出各類型 OS 建議搭建在何種虛擬環境上。本篇筆記選用 CentOS 7.9.2009 &#43; Docker
+最小硬體需求 雙核心 2 (CPUs or more)\ 記憶體 2 GB (2 GB of free memory)\ 硬碟空間 20 GB (20GB of free disk space)\ 連上外部網路 (Internet connection) 安裝 minikube start">
   <meta itemprop="datePublished" content="2021-06-17T09:29:55+00:00">
   <meta itemprop="dateModified" content="2022-07-06T16:16:25+08:00">
   <meta itemprop="wordCount" content="961">
   <meta itemprop="keywords" content="Minikube,Kubernetes">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="minikube 安裝指南。 一個精簡、測試環境使用的 k8s 叢集">
-  <meta name="twitter:description" content="minikube 能夠快速在本地 (local) 建立 kubernetes cluster (k8s 叢集)，支援 macOS, Linux, Windows 非常適合新手探索 kubernetes 安裝需求 pre-requirement minikube-Driver ▲ 官方有列出各類型 OS 建議搭建在何種虛擬環境上。本篇筆記選用 CentOS 7.9.2009 &#43;">
+  <meta name="twitter:description" content="minikube 能夠快速在本地 (local) 建立 kubernetes cluster (k8s 叢集)，支援 macOS, Linux, Windows
+非常適合新手探索 kubernetes
+安裝需求 pre-requirement minikube-Driver
+▲ 官方有列出各類型 OS 建議搭建在何種虛擬環境上。本篇筆記選用 CentOS 7.9.2009 &#43; Docker
+最小硬體需求 雙核心 2 (CPUs or more)\ 記憶體 2 GB (2 GB of free memory)\ 硬碟空間 20 GB (20GB of free disk space)\ 連上外部網路 (Internet connection) 安裝 minikube start">
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -444,7 +461,7 @@ This will run the Kubernetes client (kubectl) with the same version as the clust
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">Author</span>
-    <span class="item-content">老柯</span>
+    <span class="item-content"></span>
   </p>
   <p class="copyright-item">
     <span class="item-title">LastMod</span>
@@ -506,7 +523,7 @@ This will run the Kubernetes client (kubectl) with the same version as the clust
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

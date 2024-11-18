@@ -16,14 +16,14 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="Learning note." /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="" /><meta name="description" content="Learning note." /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.133.1 with theme even" />
+<meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/" />
@@ -52,8 +52,8 @@
 
   <meta itemprop="name" content="老柯的學習筆記">
   <meta itemprop="description" content="Learning note.">
-  <meta itemprop="datePublished" content="2024-09-18T10:10:13+00:00">
-  <meta itemprop="dateModified" content="2024-09-18T10:10:13+00:00">
+  <meta itemprop="datePublished" content="2024-10-09T14:47:52+00:00">
+  <meta itemprop="dateModified" content="2024-11-18T14:50:24+08:00">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="老柯的學習筆記">
   <meta name="twitter:description" content="Learning note.">
@@ -129,6 +129,48 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/20220623-install-librenms-with-docker-container/">使用 container 快速部屬 LibreNMS</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2022-06-23 </span>
+      <div class="post-category">
+          <a href="/categories/librenms/"> LibreNMS </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <h2 id="前言">前言</h2>
+<p>本篇文章紀錄如何透過 <code>docker-compose</code> 快速架一個 LibreNMS 起來。這篇會出現的原因是為了要監控/debug IDC 0F iDRAC/ESXi 電口對接 Cisco Switch 的問題~</p>
+<h2 id="安裝-docker-compose">安裝 <code>docker-compose</code></h2>
+<p><a href="https://docs.docker.com/compose/install/compose-plugin/#install-the-plugin-manually">【standalone】Install the plugin manually</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl -SL https://github.com/docker/compose/releases/download/v2.6.0/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
+</span></span><span class="line"><span class="cl">chmod a+x /usr/local/bin/docker-compose
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## if $PATH not include &#39;/usr/local/bin/&#39;</span>
+</span></span><span class="line"><span class="cl">sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="安裝-librenms">安裝 LibreNMS</h2>
+<p>官方針對 Docker 安裝的說明都放在 <a href="https://github.com/librenms/docker#documentation">GitHub - librenms/docker</a> 裡面了。</p>
+    </div>
+    <div class="read-more">
+      <a href="/post/20220623-install-librenms-with-docker-container/" class="read-more-link">Read more...</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/20220621-upgrade-vcsa-using-iso-file/">離線更新 VCSA (vCenter) 使用 iso</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2022-06-21 </span>
@@ -140,7 +182,8 @@
   
   <div class="post-content">
     <div class="post-summary">
-      前言 這篇簡單紀錄透過使用 patch iso 映像檔，在沒有外網的情況下去做 upgrade。更新的原因很簡單，原本的 VCSA 7.0U1 還沒有跨 vCenter vMotion (Advanced Cross vCenter Server vMotion, XVM) 移轉的功能，必
+      <h2 id="前言">前言</h2>
+<p>這篇簡單紀錄透過使用 patch iso 映像檔，在沒有外網的情況下去做 upgrade。更新的原因很簡單，原本的 VCSA 7.0U1 還沒有跨 vCenter vMotion (Advanced Cross vCenter Server vMotion, XVM) 移轉的功能，必須要升級到 VCSA 7.0U1c 以上才有</p>
     </div>
     <div class="read-more">
       <a href="/post/20220621-upgrade-vcsa-using-iso-file/" class="read-more-link">Read more...</a>
@@ -161,7 +204,13 @@
   
   <div class="post-content">
     <div class="post-summary">
-      這篇筆記紀錄閱讀 Dell R730XD owners manual 記憶體 (memory) 學到的東西，藉此還債。 ▲ 主修資工腦袋空空 科普資源 在開始讀 owner manual 之前，有幾個關於 DIMM (Double In-line Memory Module) 的科普資源，建議先看。
+      <p>這篇筆記紀錄閱讀 <a href="https://dl.dell.com/topicspdf/poweredge-r730xd_owners-manual_en-us.pdf">Dell R730XD owners manual</a> 記憶體 (memory) 學到的東西，藉此還債。</p>
+<p><img src="sorry_about_as_a_csie_student.jpg" alt="sorry_about_as_a_csie_student"></p>
+<p>▲ <del>主修資工腦袋空空</del></p>
+<h2 id="科普資源">科普資源</h2>
+<p>在開始讀 owner manual 之前，有幾個關於 DIMM (Double In-line Memory Module) 的科普資源，建議先看。</p>
+<h3 id="1-硬件茶談-为什么装机内存条推荐安装到第24槽而不是13槽为什么itx主板超频内存更容易">1) 硬件茶談-为什么装机内存条推荐安装到第24槽而不是13槽？为什么ITX主板超频内存更容易？</h3>
+<p><a href="https://www.youtube.com/watch?v=aRZcm4WvJEc">【硬件科普】为什么装机内存条推荐安装到第24槽而不是13槽？为什么ITX主板超频内存更容易？</a></p>
     </div>
     <div class="read-more">
       <a href="/post/20220606-read-r730xd-owner-manual-learning-about-server-dimm/" class="read-more-link">Read more...</a>
@@ -182,7 +231,14 @@
   
   <div class="post-content">
     <div class="post-summary">
-      更新紀錄 2022.04.28: 此篇記錄第一次使用 Hexo 搭配 GitHub Pages 來架設 blog。 2022.12.19: 調整順序 (將 VSCode Snippet 片段放在前面)，因為後來實際是使用 Hugo 架設，之後將會新增 Hugo 安裝章節。 2022.12.20:
+      <h2 id="更新紀錄">更新紀錄</h2>
+<ul>
+<li>2022.04.28: 此篇記錄第一次使用 Hexo 搭配 GitHub Pages 來架設 blog。</li>
+<li>2022.12.19: 調整順序 (將 VSCode Snippet 片段放在前面)，因為後來實際是使用 <a href="https://gohugo.io/">Hugo</a> 架設，之後將會新增 Hugo 安裝章節。</li>
+<li>2022.12.20: 新增 <code>Install Hugo on Linux</code> 章節。</li>
+</ul>
+<h2 id="install-hugo-on-linux">Install Hugo on Linux</h2>
+<p><a href="https://gohugo.io/installation/linux/">Install Hugo on Linux</a></p>
     </div>
     <div class="read-more">
       <a href="/post/20220503-use-hexo-and-github-pages-to-build-blog/" class="read-more-link">Read more...</a>
@@ -203,31 +259,18 @@
   
   <div class="post-content">
     <div class="post-summary">
-      135. Authentication 請參考 CKAD Note Section 9 Updates for Sep 2021 Changes - 121. Authentication, Authorization and Admission Control 139. TLS in Kubernetes ▲ 各個 K8s component 的 TLS community diagram。 因為現在大部分 kube-proxy 都不是單獨安裝，已經變成 daemondse
+      <h2 id="135-authentication">135. Authentication</h2>
+<br>
+<p>請參考 <a href="https://github.com/xxzk/CKAD_Note_Section_9_Updates_for_Sep_2021_Changes/blob/master/CKAD%20Note%20Section%209%20Updates%20for%20Sep%202021.md#121-authentication-authorization-and-admission-control">CKAD Note Section 9 Updates for Sep 2021 Changes - 121. Authentication, Authorization and Admission Control</a></p>
+<br>
+<h2 id="139-tls-in-kubernetes">139. TLS in Kubernetes</h2>
+<br>
+<p><img src="tls_communication_diagram.jpg" alt="tls_communication_diagram"></p>
+<p>▲ 各個 K8s component 的 TLS community diagram。</p>
+<p><strong><span style='color:blue'>因為現在大部分 kube-proxy 都不是單獨安裝，已經變成 daemondset，所以官方 docs 才沒有找到關於它的 certificate。在這個情況下可以用 <code>serviceaccount</code> 與 <code>secret</code> 傳入 daemondset 來達成需求。(謝謝 hwchiu)</span></strong></p>
     </div>
     <div class="read-more">
       <a href="/post/20211222-cka_note_section_7_security/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/20211220-diff-between-shell-and-exec-in-dockerfile/">Dockerfile - Shell 與 Exec 的差異</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2021-12-20 </span>
-      <div class="post-category">
-          <a href="/categories/dockerfile/"> dockerfile </a>
-          </div>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      前陣子都在忙 CKAD 的好久沒有在公司 Bookstack 耕耘了 XD ~ 會看到這篇是因為 邱 sir 的導讀 懶惰沒有導讀完 所以我才產出這篇文 (竟敢斗膽說邱 sir 懶惰!!) Docker Shell vs. Exec Form - Christian
-    </div>
-    <div class="read-more">
-      <a href="/post/20211220-diff-between-shell-and-exec-in-dockerfile/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>
@@ -272,7 +315,7 @@
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

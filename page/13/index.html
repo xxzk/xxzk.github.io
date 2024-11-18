@@ -16,14 +16,14 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="Learning note." /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="" /><meta name="description" content="Learning note." /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.133.1 with theme even" />
+<meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/" />
@@ -52,8 +52,8 @@
 
   <meta itemprop="name" content="老柯的學習筆記">
   <meta itemprop="description" content="Learning note.">
-  <meta itemprop="datePublished" content="2024-09-18T10:10:13+00:00">
-  <meta itemprop="dateModified" content="2024-09-18T10:10:13+00:00">
+  <meta itemprop="datePublished" content="2024-10-09T14:47:52+00:00">
+  <meta itemprop="dateModified" content="2024-11-18T14:50:24+08:00">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="老柯的學習筆記">
   <meta name="twitter:description" content="Learning note.">
@@ -129,6 +129,32 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/20201201-bios-power-management-not-set-to-os-controlled/">解析 vRealize 發生「BIOS 電源管理未設定為 [由作業系統控制] 」 BIOS power management not set to OS controlled facing CPU contention</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2020-12-01 </span>
+      <div class="post-category">
+          <a href="/categories/vmware/"> vmware </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p><del>這標題有夠長</del><br>
+中文警報標題全文:</p>
+<blockquote>
+<p>位於主機上，且 BIOS 電源管理未設定為 [由作業系統控制] 的虛擬機器面臨 CPU 爭用</p>
+</blockquote>
+<p><strong><span style='color:red'>先講結論，未來在上機時應該考慮把 BIOS Power Management 設定成 OS-Controlled，才能避免掉這個問題</span></strong></p>
+    </div>
+    <div class="read-more">
+      <a href="/post/20201201-bios-power-management-not-set-to-os-controlled/" class="read-more-link">Read more...</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/20201130-dell-infrastructure-specification/">Dell 硬體規格介紹 Infrastructure Specification</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2020-11-30 </span>
@@ -140,7 +166,10 @@
   
   <div class="post-content">
     <div class="post-summary">
-      這篇會簡單介紹公司大量使用到的 Dell EMC 伺服器硬體規格以及型號 從型號判斷 Dell EMC 伺服器 世代/產品類別/CPU slot 數/Intel or AMD CPU How to identify which generation your Dell PowerEdge server belongs
+      <p><img src="dellemc_bezels_rack.jpg" alt="dellemc_bezels_rack"></p>
+<p><strong>這篇會簡單介紹公司大量使用到的 Dell EMC 伺服器硬體規格以及型號</strong></p>
+<h2 id="從型號判斷-dell-emc-伺服器-世代產品類別cpu-slot-數intel-or-amd-cpu">從型號判斷 Dell EMC 伺服器 世代/產品類別/CPU slot 數/Intel or AMD CPU</h2>
+<p><a href="https://www.dell.com/support/article/zh-tw/sln294897/how-to-identify-which-generation-your-dell-poweredge-server-belongs-to?lang=en">How to identify which generation your Dell PowerEdge server belongs to</a></p>
     </div>
     <div class="read-more">
       <a href="/post/20201130-dell-infrastructure-specification/" class="read-more-link">Read more...</a>
@@ -161,7 +190,23 @@
   
   <div class="post-content">
     <div class="post-summary">
-      使用機型 Dell R330 BIOS,iDRAC 密碼/設定檔 清除 How to reset the BIOS of a Dell PowerEdge Server? 將所有電源移除 將 NVRAM_CLR 從本來的 pins 3-5 變成 pins 1-3 (如上圖)，PWD_EN 直接拔除 等待十秒鐘以上 重新接
+      <p><strong>使用機型 Dell R330</strong></p>
+<hr>
+<h2 id="biosidrac-密碼設定檔-清除">BIOS,iDRAC 密碼/設定檔 清除</h2>
+<br>
+<p><a href="https://www.dell.com/support/article/zh-tw/sln302725/how-to-reset-the-bios-of-a-dell-poweredge-server?lang=en">How to reset the BIOS of a Dell PowerEdge Server?</a></p>
+<br>
+<p><img src="dell_official_doc_jumper.jpg" alt="dell_official_doc_jumper"></p>
+<br>
+<ol>
+<li>
+<p>將所有電源移除</p>
+</li>
+<li>
+<p>將 <strong>NVRAM_CLR 從本來的 pins 3-5 變成 pins 1-3 (如上圖)</strong>，<strong>PWD_EN 直接拔除</strong></p>
+</li>
+<li>
+<p><strong>等待十秒鐘以上</strong> 重新接上電源並開機 <strong>按 F2 進入 System Setting</strong></p>
     </div>
     <div class="read-more">
       <a href="/post/20201119-clear_dell_bios_passwd_and_upgrade_driver/" class="read-more-link">Read more...</a>
@@ -182,7 +227,10 @@
   
   <div class="post-content">
     <div class="post-summary">
-      到職以來一直有一個很大的困惑:大家上班都撥 VPN 到 CVT，CVT 流量不會爆炸嗎? 之後又得知 CVT 只拉了一條 30M 的線路&hellip; 那豈不是 10 個人同時
+      <p><img src="pexels-kehn-hermano-3881034.jpg" alt="pexels-kehn-hermano-3881034"></p>
+<br>
+<p><strong>到職以來一直有一個很大的困惑:大家上班都撥 VPN 到 CVT，CVT 流量不會爆炸嗎?</strong><br>
+<strong>之後又得知 CVT 只拉了一條 30M 的線路&hellip; 那豈不是 10 個人同時撥放 Youtube 影片頻寬就被吃滿了 OAO</strong></p>
     </div>
     <div class="read-more">
       <a href="/post/20201112-forti-split-tunneling/" class="read-more-link">Read more...</a>
@@ -203,31 +251,13 @@
   
   <div class="post-content">
     <div class="post-summary">
-      vDS 是什麼 ? 為什麼要用它 ? vDS 全名 vSphere Distributed Switch 是 VMWare vSphere 產品線下 SDN (Software Defined Networking) 的產物，在 vDS 出來之前也有一款叫做 vSS (vSphere Standard Switch) 的產品。 比起 vSS 需要部屬在每一台 ESXi host ， vDS 統一
+      <p><img src="sdn_logo_informationage.jpeg" alt="sdn_logo_informationage"></p>
+<h2 id="vds-是什麼--為什麼要用它-">vDS 是什麼 ? 為什麼要用它 ?</h2>
+<p><code>vDS</code> 全名 <code>vSphere Distributed Switch</code> 是 VMWare vSphere 產品線下 <code>SDN</code> (Software Defined Networking) 的產物，在 <code>vDS</code> 出來之前也有一款叫做 <code>vSS</code> (vSphere Standard Switch) 的產品。</p>
+<p>比起 <code>vSS</code> 需要部屬在每一台 <code>ESXi host</code> ， <code>vDS</code> 統一部屬在 <code>vCenter</code> 而且有更強大的功能:</p>
     </div>
     <div class="read-more">
       <a href="/post/20201026-introduce-vmware-vds/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/20201023-about-vsphere-vcenter-esxi/">搞懂 vSphere、vCenter 和 ESXi 的關係</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2020-10-23 </span>
-      <div class="post-category">
-          <a href="/categories/vsphere/"> vSphere </a>
-          </div>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      拿 Office 2019 來舉例好了， 購買 Office 2019 其實就包含 Word、Excel、Powerpoint &hellip;. 等軟體 vSphere 就好像 Office 2019 有相同概念就很好理解 ESXi ESXi 是 VMWare 公司出產的 OS Level
-    </div>
-    <div class="read-more">
-      <a href="/post/20201023-about-vsphere-vcenter-esxi/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>
@@ -272,7 +302,7 @@
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

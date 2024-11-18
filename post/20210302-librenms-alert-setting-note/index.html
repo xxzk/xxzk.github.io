@@ -16,14 +16,17 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="此篇筆記紀錄如何使用 LibreNMS 發送 IPMI 警報至 RocketChat WebHook Channel LibreNMS 動態分組 Dynamic Grouping 動態群組可以自動將裝置依照設定的條件自動加入群組 (新加的裝置也可以喔)。這個功能除了方" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="" /><meta name="description" content="此篇筆記紀錄如何使用 LibreNMS 發送 IPMI 警報至 RocketChat WebHook Channel
+LibreNMS 動態分組 Dynamic Grouping 動態群組可以自動將裝置依照設定的條件自動加入群組 (新加的裝置也可以喔)。這個功能除了方便 管理/查找 外，待會的警報建置也會派上用場~
+LibreNMS Docs-Dynamic Groups
+" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.133.1 with theme even" />
+<meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/post/20210302-librenms-alert-setting-note/" />
@@ -45,7 +48,9 @@
 <meta property="og:url" content="http://localhost:1313/post/20210302-librenms-alert-setting-note/">
   <meta property="og:site_name" content="老柯的學習筆記">
   <meta property="og:title" content="LibreNMS 警報建置實務 LibreNMS Alarm Setting">
-  <meta property="og:description" content="此篇筆記紀錄如何使用 LibreNMS 發送 IPMI 警報至 RocketChat WebHook Channel LibreNMS 動態分組 Dynamic Grouping 動態群組可以自動將裝置依照設定的條件自動加入群組 (新加的裝置也可以喔)。這個功能除了方">
+  <meta property="og:description" content="此篇筆記紀錄如何使用 LibreNMS 發送 IPMI 警報至 RocketChat WebHook Channel
+LibreNMS 動態分組 Dynamic Grouping 動態群組可以自動將裝置依照設定的條件自動加入群組 (新加的裝置也可以喔)。這個功能除了方便 管理/查找 外，待會的警報建置也會派上用場~
+LibreNMS Docs-Dynamic Groups">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="post">
@@ -55,14 +60,18 @@
     <meta property="article:tag" content="Alert">
 
   <meta itemprop="name" content="LibreNMS 警報建置實務 LibreNMS Alarm Setting">
-  <meta itemprop="description" content="此篇筆記紀錄如何使用 LibreNMS 發送 IPMI 警報至 RocketChat WebHook Channel LibreNMS 動態分組 Dynamic Grouping 動態群組可以自動將裝置依照設定的條件自動加入群組 (新加的裝置也可以喔)。這個功能除了方">
+  <meta itemprop="description" content="此篇筆記紀錄如何使用 LibreNMS 發送 IPMI 警報至 RocketChat WebHook Channel
+LibreNMS 動態分組 Dynamic Grouping 動態群組可以自動將裝置依照設定的條件自動加入群組 (新加的裝置也可以喔)。這個功能除了方便 管理/查找 外，待會的警報建置也會派上用場~
+LibreNMS Docs-Dynamic Groups">
   <meta itemprop="datePublished" content="2021-03-02T14:22:28+00:00">
   <meta itemprop="dateModified" content="2022-12-26T14:16:46+08:00">
   <meta itemprop="wordCount" content="2218">
   <meta itemprop="keywords" content="LibreNMS,Alert">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="LibreNMS 警報建置實務 LibreNMS Alarm Setting">
-  <meta name="twitter:description" content="此篇筆記紀錄如何使用 LibreNMS 發送 IPMI 警報至 RocketChat WebHook Channel LibreNMS 動態分組 Dynamic Grouping 動態群組可以自動將裝置依照設定的條件自動加入群組 (新加的裝置也可以喔)。這個功能除了方">
+  <meta name="twitter:description" content="此篇筆記紀錄如何使用 LibreNMS 發送 IPMI 警報至 RocketChat WebHook Channel
+LibreNMS 動態分組 Dynamic Grouping 動態群組可以自動將裝置依照設定的條件自動加入群組 (新加的裝置也可以喔)。這個功能除了方便 管理/查找 外，待會的警報建置也會派上用場~
+LibreNMS Docs-Dynamic Groups">
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -474,7 +483,7 @@ But 我不知道為什麼會是 <code>.10892.5.5.1.20.140.1.1.&quot;4&quot;</cod
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">Author</span>
-    <span class="item-content">老柯</span>
+    <span class="item-content"></span>
   </p>
   <p class="copyright-item">
     <span class="item-title">LastMod</span>
@@ -536,7 +545,7 @@ But 我不知道為什麼會是 <code>.10892.5.5.1.20.140.1.1.&quot;4&quot;</cod
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

@@ -16,14 +16,17 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="到職以來一直有一個很大的困惑:大家上班都撥 VPN 到 CVT，CVT 流量不會爆炸嗎? 之後又得知 CVT 只拉了一條 30M 的線路&hellip; 那豈不是 10 個人同時" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="" /><meta name="description" content="
+到職以來一直有一個很大的困惑:大家上班都撥 VPN 到 CVT，CVT 流量不會爆炸嗎?
+之後又得知 CVT 只拉了一條 30M 的線路&hellip; 那豈不是 10 個人同時撥放 Youtube 影片頻寬就被吃滿了 OAO
+" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.133.1 with theme even" />
+<meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/post/20201112-forti-split-tunneling/" />
@@ -45,7 +48,8 @@
 <meta property="og:url" content="http://localhost:1313/post/20201112-forti-split-tunneling/">
   <meta property="og:site_name" content="老柯的學習筆記">
   <meta property="og:title" content="Forti Client SSL-VPN 運作機制原理">
-  <meta property="og:description" content="到職以來一直有一個很大的困惑:大家上班都撥 VPN 到 CVT，CVT 流量不會爆炸嗎? 之後又得知 CVT 只拉了一條 30M 的線路… 那豈不是 10 個人同時">
+  <meta property="og:description" content="到職以來一直有一個很大的困惑:大家上班都撥 VPN 到 CVT，CVT 流量不會爆炸嗎?
+之後又得知 CVT 只拉了一條 30M 的線路… 那豈不是 10 個人同時撥放 Youtube 影片頻寬就被吃滿了 OAO">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="post">
@@ -55,14 +59,16 @@
     <meta property="article:tag" content="Vpn">
 
   <meta itemprop="name" content="Forti Client SSL-VPN 運作機制原理">
-  <meta itemprop="description" content="到職以來一直有一個很大的困惑:大家上班都撥 VPN 到 CVT，CVT 流量不會爆炸嗎? 之後又得知 CVT 只拉了一條 30M 的線路… 那豈不是 10 個人同時">
+  <meta itemprop="description" content="到職以來一直有一個很大的困惑:大家上班都撥 VPN 到 CVT，CVT 流量不會爆炸嗎?
+之後又得知 CVT 只拉了一條 30M 的線路… 那豈不是 10 個人同時撥放 Youtube 影片頻寬就被吃滿了 OAO">
   <meta itemprop="datePublished" content="2020-11-12T17:34:41+00:00">
   <meta itemprop="dateModified" content="2022-07-06T16:45:10+08:00">
   <meta itemprop="wordCount" content="843">
   <meta itemprop="keywords" content="Forti,Vpn">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Forti Client SSL-VPN 運作機制原理">
-  <meta name="twitter:description" content="到職以來一直有一個很大的困惑:大家上班都撥 VPN 到 CVT，CVT 流量不會爆炸嗎? 之後又得知 CVT 只拉了一條 30M 的線路… 那豈不是 10 個人同時">
+  <meta name="twitter:description" content="到職以來一直有一個很大的困惑:大家上班都撥 VPN 到 CVT，CVT 流量不會爆炸嗎?
+之後又得知 CVT 只拉了一條 30M 的線路… 那豈不是 10 個人同時撥放 Youtube 影片頻寬就被吃滿了 OAO">
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -233,7 +239,7 @@ Server side 不再接收所有來自使用者裝置的流量，限制隧道只�
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">Author</span>
-    <span class="item-content">老柯</span>
+    <span class="item-content"></span>
   </p>
   <p class="copyright-item">
     <span class="item-title">LastMod</span>
@@ -295,7 +301,7 @@ Server side 不再接收所有來自使用者裝置的流量，限制隧道只�
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

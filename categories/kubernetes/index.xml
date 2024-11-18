@@ -6,21 +6,28 @@
     <description>Recent content in Kubernetes on 老柯的學習筆記</description>
     <generator>Hugo</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 13 Jun 2023 15:15:27 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 18 Nov 2024 14:50:24 +0800</lastBuildDate>
     <atom:link href="http://localhost:1313/categories/kubernetes/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在 Kubernetes 建設 RabbitMQ 使用 RabbitMQ Operator</title>
+      <link>http://localhost:1313/post/20241009-rabbit-mq-cluster-k8s-operator/</link>
+      <pubDate>Wed, 09 Oct 2024 14:47:52 +0000</pubDate>
+      <guid>http://localhost:1313/post/20241009-rabbit-mq-cluster-k8s-operator/</guid>
+      <description>&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;&#xA;&lt;p&gt;本來託管在 AWS 的 RabbitMQ 因為成本考量只開 single instance，每次 maintenance windows 時 app 都會受到影響。因此決定嘗試在 Kubernetes 上建構 RabbitMQ cluster。&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;RabbitMQ 版本: v3.13.7 (fallow operator default) &lt;br&gt;&#xA;Kubernetes (EKS) 版本: v1.30&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;h2 id=&#34;installing-rabbitmq-cluster-operator-in-a-kubernetes-cluster-refhttpswwwrabbitmqcomkubernetesoperatorinstall-operator&#34;&gt;Installing RabbitMQ Cluster Operator in a Kubernetes Cluster [&lt;a href=&#34;https://www.rabbitmq.com/kubernetes/operator/install-operator&#34;&gt;ref&lt;/a&gt;]&lt;/h2&gt;&#xA;&lt;p&gt;這個 Operator 負責建立 RabbitMQ Cluster，版本我固定當前最新版 v2.11.0，預設建立的 RabbitMQ 版本是 v3.13.7 (&lt;a href=&#34;https://github.com/rabbitmq/cluster-operator/tree/v2.10.0?tab=readme-ov-file#supported-versions&#34;&gt;ref&lt;/a&gt;)。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Kubernetes Dashboard 安裝筆記</title>
       <link>http://localhost:1313/post/20230613-kubernetes-dashboard-install-note/</link>
       <pubDate>Tue, 13 Jun 2023 15:15:27 +0000</pubDate>
       <guid>http://localhost:1313/post/20230613-kubernetes-dashboard-install-note/</guid>
-      <description>介紹 這篇筆記會記錄如何從 metrics server 開始安裝 Kubernetes Dashboard，並且設定 Istio virtual service / gateway，最後產生一組僅有特定 namespace read-only 權限的 token。 大部分的</description>
+      <description>&lt;h2 id=&#34;介紹&#34;&gt;介紹&lt;/h2&gt;&#xA;&lt;p&gt;這篇筆記會記錄如何從 &lt;a href=&#34;https://github.com/kubernetes-sigs/metrics-server&#34;&gt;metrics server&lt;/a&gt; 開始安裝 &lt;a href=&#34;https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/&#34;&gt;Kubernetes Dashboard&lt;/a&gt;，並且設定 Istio virtual service / gateway，最後產生一組僅有特定 namespace read-only 權限的 token。&lt;/p&gt;&#xA;&lt;p&gt;大部分的使用者可以省去安裝 metrics server 這段，因為自 Kubernetes v1.18 開始 metrics server 已是預設元件。&lt;/p&gt;</description>
     </item>
     <item>
       <title>minikube 安裝指南。 一個精簡、測試環境使用的 k8s 叢集</title>
       <link>http://localhost:1313/post/20210617-minikube-installation/</link>
       <pubDate>Thu, 17 Jun 2021 09:29:55 +0000</pubDate>
       <guid>http://localhost:1313/post/20210617-minikube-installation/</guid>
-      <description>minikube 能夠快速在本地 (local) 建立 kubernetes cluster (k8s 叢集)，支援 macOS, Linux, Windows 非常適合新手探索 kubernetes 安裝需求 pre-requirement minikube-Driver ▲ 官方有列出各類型 OS 建議搭建在何種虛擬環境上。本篇筆記選用 CentOS 7.9.2009 +</description>
+      <description>&lt;center&gt;&#xA;&lt;img src=&#34;https://github.com/kubernetes/minikube/raw/master/images/logo/logo.png&#34; width=&#34;300&#34; alt=&#34;minikube logo&#34;&gt;&#xA;&lt;/center&gt;&#xA;&lt;br&gt;&#xA;&lt;p&gt;&lt;strong&gt;minikube 能夠快速在本地 (local) 建立 kubernetes cluster (k8s 叢集)，支援 macOS, Linux, Windows&lt;/strong&gt;&lt;br&gt;&#xA;&lt;strong&gt;非常適合新手探索 kubernetes&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;安裝需求-pre-requirement&#34;&gt;安裝需求 pre-requirement&lt;/h2&gt;&#xA;&lt;br&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://minikube.sigs.k8s.io/docs/drivers/&#34;&gt;minikube-Driver&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;▲ 官方有列出各類型 OS 建議搭建在何種虛擬環境上。本篇筆記選用 &lt;code&gt;CentOS 7.9.2009&lt;/code&gt; + &lt;code&gt;Docker&lt;/code&gt;&lt;/p&gt;&#xA;&lt;br&gt;&#xA;&lt;h3 id=&#34;最小硬體需求&#34;&gt;最小硬體需求&lt;/h3&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;雙核心 2 (CPUs or more)\&lt;/li&gt;&#xA;&lt;li&gt;記憶體 2 GB (2 GB of free memory)\&lt;/li&gt;&#xA;&lt;li&gt;硬碟空間 20 GB (20GB of free disk space)\&lt;/li&gt;&#xA;&lt;li&gt;連上外部網路 (Internet connection)&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;br&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;安裝&#34;&gt;安裝&lt;/h2&gt;&#xA;&lt;br&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://minikube.sigs.k8s.io/docs/start/&#34;&gt;minikube start&lt;/a&gt;&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

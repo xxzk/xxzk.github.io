@@ -16,14 +16,15 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="Intro 這篇筆記快速紀錄 AWS RDS Encryption for Compliance requirement. Encrypting Amazon RDS resources [link] Data at rest encryption, 包含: DB instance, logs, snapshot, read replica, and automated backup. AWS 使用 AES-256 加密演算法替 RDS 加密 / 解密。 AWS 使用本身的 AWS Key Management Service (KMS) 來管理加密金" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="" /><meta name="description" content="Intro 這篇筆記快速紀錄 AWS RDS Encryption for Compliance requirement.
+Encrypting Amazon RDS resources [link] Data at rest encryption, 包含: DB instance, logs, snapshot, read replica, and automated backup. AWS 使用 AES-256 加密演算法替 RDS 加密 / 解密。 AWS 使用本身的 AWS Key Management Service (KMS) 來管理加密金鑰。 AWS KMS 在通過 美國聯邦資訊處理標準 FIPS 140-2 認證的硬體上 儲存 / 產生 客戶的金鑰。ref AWS KMS - Customer keys and AWS keys 比較表格 " /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.133.1 with theme even" />
+<meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/post/20240909-aws-rds-encrypt/" />
@@ -45,7 +46,8 @@
 <meta property="og:url" content="http://localhost:1313/post/20240909-aws-rds-encrypt/">
   <meta property="og:site_name" content="老柯的學習筆記">
   <meta property="og:title" content="AWS RDS Encryption 評估">
-  <meta property="og:description" content="Intro 這篇筆記快速紀錄 AWS RDS Encryption for Compliance requirement. Encrypting Amazon RDS resources [link] Data at rest encryption, 包含: DB instance, logs, snapshot, read replica, and automated backup. AWS 使用 AES-256 加密演算法替 RDS 加密 / 解密。 AWS 使用本身的 AWS Key Management Service (KMS) 來管理加密金">
+  <meta property="og:description" content="Intro 這篇筆記快速紀錄 AWS RDS Encryption for Compliance requirement.
+Encrypting Amazon RDS resources [link] Data at rest encryption, 包含: DB instance, logs, snapshot, read replica, and automated backup. AWS 使用 AES-256 加密演算法替 RDS 加密 / 解密。 AWS 使用本身的 AWS Key Management Service (KMS) 來管理加密金鑰。 AWS KMS 在通過 美國聯邦資訊處理標準 FIPS 140-2 認證的硬體上 儲存 / 產生 客戶的金鑰。ref AWS KMS - Customer keys and AWS keys 比較表格">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="post">
@@ -55,14 +57,16 @@
     <meta property="article:tag" content="Rds">
 
   <meta itemprop="name" content="AWS RDS Encryption 評估">
-  <meta itemprop="description" content="Intro 這篇筆記快速紀錄 AWS RDS Encryption for Compliance requirement. Encrypting Amazon RDS resources [link] Data at rest encryption, 包含: DB instance, logs, snapshot, read replica, and automated backup. AWS 使用 AES-256 加密演算法替 RDS 加密 / 解密。 AWS 使用本身的 AWS Key Management Service (KMS) 來管理加密金">
+  <meta itemprop="description" content="Intro 這篇筆記快速紀錄 AWS RDS Encryption for Compliance requirement.
+Encrypting Amazon RDS resources [link] Data at rest encryption, 包含: DB instance, logs, snapshot, read replica, and automated backup. AWS 使用 AES-256 加密演算法替 RDS 加密 / 解密。 AWS 使用本身的 AWS Key Management Service (KMS) 來管理加密金鑰。 AWS KMS 在通過 美國聯邦資訊處理標準 FIPS 140-2 認證的硬體上 儲存 / 產生 客戶的金鑰。ref AWS KMS - Customer keys and AWS keys 比較表格">
   <meta itemprop="datePublished" content="2024-09-09T14:23:11+00:00">
   <meta itemprop="dateModified" content="2024-09-09T16:24:58+08:00">
   <meta itemprop="wordCount" content="155">
   <meta itemprop="keywords" content="Aws,Rds">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="AWS RDS Encryption 評估">
-  <meta name="twitter:description" content="Intro 這篇筆記快速紀錄 AWS RDS Encryption for Compliance requirement. Encrypting Amazon RDS resources [link] Data at rest encryption, 包含: DB instance, logs, snapshot, read replica, and automated backup. AWS 使用 AES-256 加密演算法替 RDS 加密 / 解密。 AWS 使用本身的 AWS Key Management Service (KMS) 來管理加密金">
+  <meta name="twitter:description" content="Intro 這篇筆記快速紀錄 AWS RDS Encryption for Compliance requirement.
+Encrypting Amazon RDS resources [link] Data at rest encryption, 包含: DB instance, logs, snapshot, read replica, and automated backup. AWS 使用 AES-256 加密演算法替 RDS 加密 / 解密。 AWS 使用本身的 AWS Key Management Service (KMS) 來管理加密金鑰。 AWS KMS 在通過 美國聯邦資訊處理標準 FIPS 140-2 認證的硬體上 儲存 / 產生 客戶的金鑰。ref AWS KMS - Customer keys and AWS keys 比較表格">
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -185,7 +189,7 @@
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">Author</span>
-    <span class="item-content">老柯</span>
+    <span class="item-content"></span>
   </p>
   <p class="copyright-item">
     <span class="item-title">LastMod</span>
@@ -247,7 +251,7 @@
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

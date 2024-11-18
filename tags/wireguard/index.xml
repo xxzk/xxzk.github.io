@@ -13,7 +13,7 @@
       <link>http://localhost:1313/post/20201221-hands-on-wireguard-wan-ip-version/</link>
       <pubDate>Mon, 21 Dec 2020 10:26:39 +0000</pubDate>
       <guid>http://localhost:1313/post/20201221-hands-on-wireguard-wan-ip-version/</guid>
-      <description>介紹 WireGuard 是一款開放原始碼的 VPN 程式，主打簡單快速 (任何設備) 並且效能比 IPSec、OpenVPN 更快，安全性方面更是強調 &amp;ldquo;state of the art&amp;rdquo; (最先進的) 安全</description>
+      <description>&lt;p&gt;&lt;img src=&#34;https://www.wireguard.com/img/wireguard.svg&#34; alt=&#34;logo&#34;&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;介紹&#34;&gt;介紹&lt;/h2&gt;&#xA;&lt;p&gt;WireGuard 是一款開放原始碼的 VPN 程式，主打簡單快速 (任何設備) 並且效能比 IPSec、OpenVPN 更快，安全性方面更是強調 &amp;ldquo;state of the art&amp;rdquo; (最先進的) 安全協議包括但不限於:  Noise protocol framework, Curve25519, ChaCha20, Poly1305, BLAKE2, SipHash24, HKDF &lt;a href=&#34;https://www.wireguard.com/protocol/&#34;&gt;Protocol &amp;amp; Cryptography - WireGuard&lt;/a&gt;。 Source Code 也僅僅約 4000 行，相比其他 VPN 軟體更容易維護以及稽查安全漏洞&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

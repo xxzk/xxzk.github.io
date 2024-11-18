@@ -13,7 +13,7 @@
       <link>http://localhost:1313/post/20210302-librenms-alert-setting-note/</link>
       <pubDate>Tue, 02 Mar 2021 14:22:28 +0000</pubDate>
       <guid>http://localhost:1313/post/20210302-librenms-alert-setting-note/</guid>
-      <description>此篇筆記紀錄如何使用 LibreNMS 發送 IPMI 警報至 RocketChat WebHook Channel LibreNMS 動態分組 Dynamic Grouping 動態群組可以自動將裝置依照設定的條件自動加入群組 (新加的裝置也可以喔)。這個功能除了方</description>
+      <description>&lt;p&gt;此篇筆記紀錄如何使用 LibreNMS 發送 IPMI 警報至 RocketChat WebHook Channel&lt;/p&gt;&#xA;&lt;h2 id=&#34;librenms-動態分組-dynamic-grouping&#34;&gt;LibreNMS 動態分組 Dynamic Grouping&lt;/h2&gt;&#xA;&lt;p&gt;動態群組可以自動將裝置依照設定的條件自動加入群組 (新加的裝置也可以喔)。這個功能除了方便 管理/查找 外，待會的警報建置也會派上用場~&lt;br&gt;&#xA;&lt;a href=&#34;https://docs.librenms.org/Extensions/Device-Groups/&#34;&gt;LibreNMS Docs-Dynamic Groups&lt;/a&gt;&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

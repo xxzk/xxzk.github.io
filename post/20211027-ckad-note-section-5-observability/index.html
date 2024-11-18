@@ -16,14 +16,16 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="70. Readiness and Liveness Probes Readiness Probes 透過前面的章節我們可以得知 Pod 具有狀態 (status) 與 條件 (condition)，前者顯示 lifecycle 階段 (pending, containerCreating, running) pending: scheduler 正在安排 pod 到 worker-node 上，或者有問題 (kubectl describe 可" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="" /><meta name="description" content="70. Readiness and Liveness Probes Readiness Probes 透過前面的章節我們可以得知 Pod 具有狀態 (status) 與 條件 (condition)，前者顯示 lifecycle 階段 (pending, containerCreating, running)
+pending: scheduler 正在安排 pod 到 worker-node 上，或者有問題 (kubectl describe 可以查) containerCreating: pod 已經被放在 worker-node 上，正在建立容器 running: 執行中 Condition 的部分就有點類似細項，透過 kubectl describe 可以觀察。
+" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.133.1 with theme even" />
+<meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/post/20211027-ckad-note-section-5-observability/" />
@@ -45,7 +47,8 @@
 <meta property="og:url" content="http://localhost:1313/post/20211027-ckad-note-section-5-observability/">
   <meta property="og:site_name" content="老柯的學習筆記">
   <meta property="og:title" content="CKAD Note Section 5 Observability">
-  <meta property="og:description" content="70. Readiness and Liveness Probes Readiness Probes 透過前面的章節我們可以得知 Pod 具有狀態 (status) 與 條件 (condition)，前者顯示 lifecycle 階段 (pending, containerCreating, running) pending: scheduler 正在安排 pod 到 worker-node 上，或者有問題 (kubectl describe 可">
+  <meta property="og:description" content="70. Readiness and Liveness Probes Readiness Probes 透過前面的章節我們可以得知 Pod 具有狀態 (status) 與 條件 (condition)，前者顯示 lifecycle 階段 (pending, containerCreating, running)
+pending: scheduler 正在安排 pod 到 worker-node 上，或者有問題 (kubectl describe 可以查) containerCreating: pod 已經被放在 worker-node 上，正在建立容器 running: 執行中 Condition 的部分就有點類似細項，透過 kubectl describe 可以觀察。">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="post">
@@ -55,14 +58,16 @@
     <meta property="article:tag" content="Kubernetes">
 
   <meta itemprop="name" content="CKAD Note Section 5 Observability">
-  <meta itemprop="description" content="70. Readiness and Liveness Probes Readiness Probes 透過前面的章節我們可以得知 Pod 具有狀態 (status) 與 條件 (condition)，前者顯示 lifecycle 階段 (pending, containerCreating, running) pending: scheduler 正在安排 pod 到 worker-node 上，或者有問題 (kubectl describe 可">
+  <meta itemprop="description" content="70. Readiness and Liveness Probes Readiness Probes 透過前面的章節我們可以得知 Pod 具有狀態 (status) 與 條件 (condition)，前者顯示 lifecycle 階段 (pending, containerCreating, running)
+pending: scheduler 正在安排 pod 到 worker-node 上，或者有問題 (kubectl describe 可以查) containerCreating: pod 已經被放在 worker-node 上，正在建立容器 running: 執行中 Condition 的部分就有點類似細項，透過 kubectl describe 可以觀察。">
   <meta itemprop="datePublished" content="2021-10-27T16:52:37+00:00">
   <meta itemprop="dateModified" content="2022-05-23T13:17:26+08:00">
   <meta itemprop="wordCount" content="758">
   <meta itemprop="keywords" content="CKAD,Kubernetes">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="CKAD Note Section 5 Observability">
-  <meta name="twitter:description" content="70. Readiness and Liveness Probes Readiness Probes 透過前面的章節我們可以得知 Pod 具有狀態 (status) 與 條件 (condition)，前者顯示 lifecycle 階段 (pending, containerCreating, running) pending: scheduler 正在安排 pod 到 worker-node 上，或者有問題 (kubectl describe 可">
+  <meta name="twitter:description" content="70. Readiness and Liveness Probes Readiness Probes 透過前面的章節我們可以得知 Pod 具有狀態 (status) 與 條件 (condition)，前者顯示 lifecycle 階段 (pending, containerCreating, running)
+pending: scheduler 正在安排 pod 到 worker-node 上，或者有問題 (kubectl describe 可以查) containerCreating: pod 已經被放在 worker-node 上，正在建立容器 running: 執行中 Condition 的部分就有點類似細項，透過 kubectl describe 可以觀察。">
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -228,7 +233,7 @@
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">Author</span>
-    <span class="item-content">老柯</span>
+    <span class="item-content"></span>
   </p>
   <p class="copyright-item">
     <span class="item-title">LastMod</span>
@@ -290,7 +295,7 @@
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

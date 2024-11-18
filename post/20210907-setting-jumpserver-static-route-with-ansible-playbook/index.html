@@ -16,14 +16,18 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="圖片來源 為什麼使用 Jumpserver 要上靜態路由? 公司現有 VM Network 環境只要是 Web server 的， default gateway 都是設定 Private IP Class B (172.x.0.0/16) 網段，也就是 Load Balance 身上。同時該台 VM 也會有 192.168.x.0/23 /24 的網卡 (192.168.x.254 or 253" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="" /><meta name="description" content="
+圖片來源
+為什麼使用 Jumpserver 要上靜態路由? 公司現有 VM Network 環境只要是 Web server 的， default gateway 都是設定 Private IP Class B (172.x.0.0/16) 網段，也就是 Load Balance 身上。同時該台 VM 也會有 192.168.x.0/23 /24 的網卡 (192.168.x.254 or 253 在 Forti 身上)
+直接上 routing table 會比文字敘述更清楚~
+" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.133.1 with theme even" />
+<meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/post/20210907-setting-jumpserver-static-route-with-ansible-playbook/" />
@@ -45,7 +49,9 @@
 <meta property="og:url" content="http://localhost:1313/post/20210907-setting-jumpserver-static-route-with-ansible-playbook/">
   <meta property="og:site_name" content="老柯的學習筆記">
   <meta property="og:title" content="Jumpserver 靜態路由設定 shell script &#43; Ansible Playbook 使用說明">
-  <meta property="og:description" content="圖片來源 為什麼使用 Jumpserver 要上靜態路由? 公司現有 VM Network 環境只要是 Web server 的， default gateway 都是設定 Private IP Class B (172.x.0.0/16) 網段，也就是 Load Balance 身上。同時該台 VM 也會有 192.168.x.0/23 /24 的網卡 (192.168.x.254 or 253">
+  <meta property="og:description" content="圖片來源
+為什麼使用 Jumpserver 要上靜態路由? 公司現有 VM Network 環境只要是 Web server 的， default gateway 都是設定 Private IP Class B (172.x.0.0/16) 網段，也就是 Load Balance 身上。同時該台 VM 也會有 192.168.x.0/23 /24 的網卡 (192.168.x.254 or 253 在 Forti 身上)
+直接上 routing table 會比文字敘述更清楚~">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="post">
@@ -54,14 +60,18 @@
     <meta property="article:tag" content="Ansible">
 
   <meta itemprop="name" content="Jumpserver 靜態路由設定 shell script &#43; Ansible Playbook 使用說明">
-  <meta itemprop="description" content="圖片來源 為什麼使用 Jumpserver 要上靜態路由? 公司現有 VM Network 環境只要是 Web server 的， default gateway 都是設定 Private IP Class B (172.x.0.0/16) 網段，也就是 Load Balance 身上。同時該台 VM 也會有 192.168.x.0/23 /24 的網卡 (192.168.x.254 or 253">
+  <meta itemprop="description" content="圖片來源
+為什麼使用 Jumpserver 要上靜態路由? 公司現有 VM Network 環境只要是 Web server 的， default gateway 都是設定 Private IP Class B (172.x.0.0/16) 網段，也就是 Load Balance 身上。同時該台 VM 也會有 192.168.x.0/23 /24 的網卡 (192.168.x.254 or 253 在 Forti 身上)
+直接上 routing table 會比文字敘述更清楚~">
   <meta itemprop="datePublished" content="2021-09-07T09:36:54+00:00">
   <meta itemprop="dateModified" content="2022-09-08T14:59:58+08:00">
   <meta itemprop="wordCount" content="2250">
   <meta itemprop="keywords" content="Ansible">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Jumpserver 靜態路由設定 shell script &#43; Ansible Playbook 使用說明">
-  <meta name="twitter:description" content="圖片來源 為什麼使用 Jumpserver 要上靜態路由? 公司現有 VM Network 環境只要是 Web server 的， default gateway 都是設定 Private IP Class B (172.x.0.0/16) 網段，也就是 Load Balance 身上。同時該台 VM 也會有 192.168.x.0/23 /24 的網卡 (192.168.x.254 or 253">
+  <meta name="twitter:description" content="圖片來源
+為什麼使用 Jumpserver 要上靜態路由? 公司現有 VM Network 環境只要是 Web server 的， default gateway 都是設定 Private IP Class B (172.x.0.0/16) 網段，也就是 Load Balance 身上。同時該台 VM 也會有 192.168.x.0/23 /24 的網卡 (192.168.x.254 or 253 在 Forti 身上)
+直接上 routing table 會比文字敘述更清楚~">
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -690,7 +700,7 @@ net-tools-2.0-0.25.20131004git.el7.x86_64.rpm<br>
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">Author</span>
-    <span class="item-content">老柯</span>
+    <span class="item-content"></span>
   </p>
   <p class="copyright-item">
     <span class="item-title">LastMod</span>
@@ -751,7 +761,7 @@ net-tools-2.0-0.25.20131004git.el7.x86_64.rpm<br>
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

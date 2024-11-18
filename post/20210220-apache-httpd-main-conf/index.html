@@ -16,14 +16,19 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="httpd 版本資訊 1 2 Server version: Apache/2.4.6 (CentOS) Server built: Nov 16 2020 16:18:20 敬啟者 開頭就一堆屁話，根本沒有人會看的 (愛開玩笑 自己的筆記也屁話一堆還敢說開發者 XD 節錄幾個重點好了 更多資訊" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="" /><meta name="description" content="httpd 版本資訊 1 2 Server version: Apache/2.4.6 (CentOS) Server built: Nov 16 2020 16:18:20 敬啟者 開頭就一堆屁話，根本沒有人會看的 (愛開玩笑 自己的筆記也屁話一堆還敢說開發者 XD
+節錄幾個重點好了
+更多資訊請到 Apache 2.4 版官方文件 參閱，或者更詳細的 指示 (Directives) 配置 logfile 路徑規則。 如果路徑是由 / 起始的，httpd 會使用絕對路徑 (換句話說: 直接在 Linux 下 ls -al &lt;path&gt; 的地方)。
+若不是，則使用相對路徑，以 ServerRoot 當作參考點，舉個例子:
+當 ServerRoot /www 時 log/access_log 的路徑會是 /www/log/access_log
+" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.133.1 with theme even" />
+<meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/post/20210220-apache-httpd-main-conf/" />
@@ -45,7 +50,11 @@
 <meta property="og:url" content="http://localhost:1313/post/20210220-apache-httpd-main-conf/">
   <meta property="og:site_name" content="老柯的學習筆記">
   <meta property="og:title" content="httpd.conf 研究筆記">
-  <meta property="og:description" content="httpd 版本資訊 1 2 Server version: Apache/2.4.6 (CentOS) Server built: Nov 16 2020 16:18:20 敬啟者 開頭就一堆屁話，根本沒有人會看的 (愛開玩笑 自己的筆記也屁話一堆還敢說開發者 XD 節錄幾個重點好了 更多資訊">
+  <meta property="og:description" content="httpd 版本資訊 1 2 Server version: Apache/2.4.6 (CentOS) Server built: Nov 16 2020 16:18:20 敬啟者 開頭就一堆屁話，根本沒有人會看的 (愛開玩笑 自己的筆記也屁話一堆還敢說開發者 XD
+節錄幾個重點好了
+更多資訊請到 Apache 2.4 版官方文件 參閱，或者更詳細的 指示 (Directives) 配置 logfile 路徑規則。 如果路徑是由 / 起始的，httpd 會使用絕對路徑 (換句話說: 直接在 Linux 下 ls -al &lt;path&gt; 的地方)。
+若不是，則使用相對路徑，以 ServerRoot 當作參考點，舉個例子:
+當 ServerRoot /www 時 log/access_log 的路徑會是 /www/log/access_log">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="post">
@@ -55,14 +64,22 @@
     <meta property="article:tag" content="Apache">
 
   <meta itemprop="name" content="httpd.conf 研究筆記">
-  <meta itemprop="description" content="httpd 版本資訊 1 2 Server version: Apache/2.4.6 (CentOS) Server built: Nov 16 2020 16:18:20 敬啟者 開頭就一堆屁話，根本沒有人會看的 (愛開玩笑 自己的筆記也屁話一堆還敢說開發者 XD 節錄幾個重點好了 更多資訊">
+  <meta itemprop="description" content="httpd 版本資訊 1 2 Server version: Apache/2.4.6 (CentOS) Server built: Nov 16 2020 16:18:20 敬啟者 開頭就一堆屁話，根本沒有人會看的 (愛開玩笑 自己的筆記也屁話一堆還敢說開發者 XD
+節錄幾個重點好了
+更多資訊請到 Apache 2.4 版官方文件 參閱，或者更詳細的 指示 (Directives) 配置 logfile 路徑規則。 如果路徑是由 / 起始的，httpd 會使用絕對路徑 (換句話說: 直接在 Linux 下 ls -al &lt;path&gt; 的地方)。
+若不是，則使用相對路徑，以 ServerRoot 當作參考點，舉個例子:
+當 ServerRoot /www 時 log/access_log 的路徑會是 /www/log/access_log">
   <meta itemprop="datePublished" content="2021-02-20T10:54:58+00:00">
   <meta itemprop="dateModified" content="2022-07-08T17:20:37+08:00">
   <meta itemprop="wordCount" content="2890">
   <meta itemprop="keywords" content="Httpd,Apache">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="httpd.conf 研究筆記">
-  <meta name="twitter:description" content="httpd 版本資訊 1 2 Server version: Apache/2.4.6 (CentOS) Server built: Nov 16 2020 16:18:20 敬啟者 開頭就一堆屁話，根本沒有人會看的 (愛開玩笑 自己的筆記也屁話一堆還敢說開發者 XD 節錄幾個重點好了 更多資訊">
+  <meta name="twitter:description" content="httpd 版本資訊 1 2 Server version: Apache/2.4.6 (CentOS) Server built: Nov 16 2020 16:18:20 敬啟者 開頭就一堆屁話，根本沒有人會看的 (愛開玩笑 自己的筆記也屁話一堆還敢說開發者 XD
+節錄幾個重點好了
+更多資訊請到 Apache 2.4 版官方文件 參閱，或者更詳細的 指示 (Directives) 配置 logfile 路徑規則。 如果路徑是由 / 起始的，httpd 會使用絕對路徑 (換句話說: 直接在 Linux 下 ls -al &lt;path&gt; 的地方)。
+若不是，則使用相對路徑，以 ServerRoot 當作參考點，舉個例子:
+當 ServerRoot /www 時 log/access_log 的路徑會是 /www/log/access_log">
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -863,7 +880,7 @@ Rocket 討論串在 <strong>IT-System</strong> 關鍵字: <code>假 404 </code><
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">Author</span>
-    <span class="item-content">老柯</span>
+    <span class="item-content"></span>
   </p>
   <p class="copyright-item">
     <span class="item-title">LastMod</span>
@@ -925,7 +942,7 @@ Rocket 討論串在 <strong>IT-System</strong> 關鍵字: <code>假 404 </code><
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

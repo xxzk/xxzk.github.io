@@ -13,28 +13,28 @@
       <link>http://localhost:1313/post/20210224-what-network-will-vmware-migration-used/</link>
       <pubDate>Wed, 24 Feb 2021 13:21:00 +0000</pubDate>
       <guid>http://localhost:1313/post/20210224-what-network-will-vmware-migration-used/</guid>
-      <description>LAB 架構圖 寫日記 這兩台 ESXi 主要是拿來測試 vSS 轉 vDS 用的。因為 DC1 10.x.x.53 ESXi Host 在 2021.02.19 發現 GBIC 故障 DC1 10.x.x.54 ESXi Host 2021.02.12 發生 DIMM_A3 Multi-bit memory errors (error rate 上升) + 2021.02.19 Power Supply 1 (PS1) 死去。兩台共通點都是 2021.01</description>
+      <description>&lt;p&gt;&lt;img src=&#34;pexels-brett-sayles-1624895.jpg&#34; alt=&#34;pexels-brett-sayles-1624895&#34;&gt;&lt;/p&gt;&#xA;&lt;br&gt;&#xA;&lt;h2 id=&#34;lab-架構圖&#34;&gt;LAB 架構圖&lt;/h2&gt;&#xA;&lt;br&gt;&#xA;&lt;p&gt;&lt;img src=&#34;lab_dc1_overview.jpg&#34; alt=&#34;lab_dc1_overview&#34;&gt;&lt;/p&gt;&#xA;&lt;br&gt;&#xA;&lt;p&gt;&lt;del&gt;寫日記&lt;/del&gt;&lt;br&gt;&#xA;這兩台 ESXi 主要是拿來測試 vSS 轉 vDS 用的。因為 &lt;code&gt;DC1 10.x.x.53 ESXi Host&lt;/code&gt; 在 2021.02.19 發現 GBIC 故障&lt;br&gt;&#xA;&lt;code&gt;DC1 10.x.x.54 ESXi Host&lt;/code&gt; 2021.02.12 發生 DIMM_A3 Multi-bit memory errors (error rate 上升) + 2021.02.19 Power Supply 1 (PS1) 死去。兩台共通點都是 &lt;a href=&#34;https://blog.xxzk.me&#34;&gt;2021.01 新上櫃&lt;/a&gt; 的，所以請廠商更換料件後放置觀察一周&lt;/p&gt;</description>
     </item>
     <item>
       <title>簡單介紹 VMWare NSX Network Virtualization Platform</title>
       <link>http://localhost:1313/post/20201224-simply-introduce-vmware-nsxt/</link>
       <pubDate>Thu, 24 Dec 2020 13:46:50 +0000</pubDate>
       <guid>http://localhost:1313/post/20201224-simply-introduce-vmware-nsxt/</guid>
-      <description>VMwatre NSX Network Virtualization Platform 是一個涵蓋 L2 ~ L7 的網路虛擬化平台 是 VMWare 併購 Nicira 後的產物 什麼是網路虛擬化 ▲ 圖片來源 The VMware NSX Network Virtualization Platform 白皮書 左邊的 Server Virtualization 是將 Bare-Metal (Hardware,</description>
+      <description>&lt;p&gt;&lt;img src=&#34;nsx_intro_official_website.jpg&#34; alt=&#34;nsx_intro_official_website&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;VMwatre NSX Network Virtualization Platform 是一個涵蓋 L2 ~ L7 的網路虛擬化平台&lt;/strong&gt;&lt;br&gt;&#xA;&lt;strong&gt;是 VMWare &lt;a href=&#34;https://www.ithome.com.tw/node/75097&#34;&gt;併購 Nicira&lt;/a&gt; 後的產物&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;什麼是網路虛擬化&#34;&gt;什麼是網路虛擬化&lt;/h2&gt;&#xA;&lt;p&gt;&lt;img src=&#34;network_virtualization_diagram.jpg&#34; alt=&#34;network_virtualization_diagram&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;▲ 圖片來源 &lt;a href=&#34;https://www.vmware.com/content/dam/digitalmarketing/vmware/en/pdf/whitepaper/products/nsx/vmware-nsx-network-virtualization-platform-white-paper.pdf&#34;&gt;The VMware NSX Network Virtualization Platform 白皮書&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;左邊的 &lt;strong&gt;Server Virtualization&lt;/strong&gt; 是將 Bare-Metal (Hardware,硬體) 透過 Virtualization Layer aka &lt;strong&gt;Hypervisor&lt;/strong&gt; (講白話: 公司用的 VMWare ESXi) 模擬出多個一台電腦所需的硬體資源，並在這個條件上建立 &lt;strong&gt;Virtual Mechine (VM)&lt;/strong&gt;。&lt;br&gt;&#xA;各台 VM 在邏輯上可以視為獨立環境 (isolate) 彼此互不干擾、享有獨立資源。實際上還是會發生硬體爭用的情況&lt;br&gt;&#xA;延伸相關閱讀 &lt;a href=&#34;https://blog.xxzk.me/post/20201201-bios-power-management-not-set-to-os-controlled/&#34;&gt;解析 vRealize 發生「BIOS 電源管理未設定為 [由作業系統控制] 」 BIOS power management not set to OS controlled facing CPU contention&lt;/a&gt;&lt;br&gt;&#xA;將硬體虛擬化的好處是可以充分利用硬體效能、加快部屬時間&amp;hellip;. 等&lt;/p&gt;</description>
     </item>
     <item>
       <title>解析 vRealize 發生「BIOS 電源管理未設定為 [由作業系統控制] 」 BIOS power management not set to OS controlled facing CPU contention</title>
       <link>http://localhost:1313/post/20201201-bios-power-management-not-set-to-os-controlled/</link>
       <pubDate>Tue, 01 Dec 2020 09:20:28 +0000</pubDate>
       <guid>http://localhost:1313/post/20201201-bios-power-management-not-set-to-os-controlled/</guid>
-      <description>這標題有夠長 中文警報標題全文: 位於主機上，且 BIOS 電源管理未設定為 [由作業系統控制] 的虛擬機器面臨 CPU 爭用 先講結論，未來在上機時應該考慮把 BIOS Power Management 設</description>
+      <description>&lt;p&gt;&lt;del&gt;這標題有夠長&lt;/del&gt;&lt;br&gt;&#xA;中文警報標題全文:&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;位於主機上，且 BIOS 電源管理未設定為 [由作業系統控制] 的虛擬機器面臨 CPU 爭用&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;p&gt;&lt;strong&gt;&lt;span style=&#39;color:red&#39;&gt;先講結論，未來在上機時應該考慮把 BIOS Power Management 設定成 OS-Controlled，才能避免掉這個問題&lt;/span&gt;&lt;/strong&gt;&lt;/p&gt;</description>
     </item>
     <item>
       <title>淺談 vDS (網路虛擬化 NSX-T 功能之一)</title>
       <link>http://localhost:1313/post/20201026-introduce-vmware-vds/</link>
       <pubDate>Mon, 26 Oct 2020 14:05:21 +0000</pubDate>
       <guid>http://localhost:1313/post/20201026-introduce-vmware-vds/</guid>
-      <description>vDS 是什麼 ? 為什麼要用它 ? vDS 全名 vSphere Distributed Switch 是 VMWare vSphere 產品線下 SDN (Software Defined Networking) 的產物，在 vDS 出來之前也有一款叫做 vSS (vSphere Standard Switch) 的產品。 比起 vSS 需要部屬在每一台 ESXi host ， vDS 統一</description>
+      <description>&lt;p&gt;&lt;img src=&#34;sdn_logo_informationage.jpeg&#34; alt=&#34;sdn_logo_informationage&#34;&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;vds-是什麼--為什麼要用它-&#34;&gt;vDS 是什麼 ? 為什麼要用它 ?&lt;/h2&gt;&#xA;&lt;p&gt;&lt;code&gt;vDS&lt;/code&gt; 全名 &lt;code&gt;vSphere Distributed Switch&lt;/code&gt; 是 VMWare vSphere 產品線下 &lt;code&gt;SDN&lt;/code&gt; (Software Defined Networking) 的產物，在 &lt;code&gt;vDS&lt;/code&gt; 出來之前也有一款叫做 &lt;code&gt;vSS&lt;/code&gt; (vSphere Standard Switch) 的產品。&lt;/p&gt;&#xA;&lt;p&gt;比起 &lt;code&gt;vSS&lt;/code&gt; 需要部屬在每一台 &lt;code&gt;ESXi host&lt;/code&gt; ， &lt;code&gt;vDS&lt;/code&gt; 統一部屬在 &lt;code&gt;vCenter&lt;/code&gt; 而且有更強大的功能:&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

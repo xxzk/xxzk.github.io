@@ -13,14 +13,14 @@
       <link>http://localhost:1313/post/20211126-linux-network-limiter-wondershaper/20211126-linux-network-limiter-wondershaper/</link>
       <pubDate>Fri, 26 Nov 2021 14:23:11 +0000</pubDate>
       <guid>http://localhost:1313/post/20211126-linux-network-limiter-wondershaper/20211126-linux-network-limiter-wondershaper/</guid>
-      <description>Wonder Shaper 是一支底層使用 Linux 自帶的流量控制命令 tc 的 shell script，能夠簡單、方便、快速 達成限流的目的 在 Wonder Shaper v1.3 以上版本等待列隊方式從本來的 CBQ 變更成 HT</description>
+      <description>&lt;p&gt;&lt;img src=&#34;pexels-kehn-hermano-3849167.jpg&#34; alt=&#34;pexels-kehn-hermano-3849167&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;&lt;span style=&#39;color:red&#39;&gt;Wonder Shaper 是一支底層使用 Linux 自帶的流量控制命令 &lt;code&gt;tc&lt;/code&gt; 的 shell script，能夠簡單、方便、快速 達成限流的目的&lt;/span&gt;&lt;/strong&gt; &lt;br&gt;&#xA;在 Wonder Shaper v1.3 以上版本等待列隊方式從本來的 CBQ 變更成 HTB，針對 10Mb (tenmegabits) 以上的速率提供更好的流量控制方式。&lt;/p&gt;</description>
     </item>
     <item>
       <title>200 LAB Network 網通設備設定筆記</title>
       <link>http://localhost:1313/post/20210722-lab-200-network-device-setting-note/</link>
       <pubDate>Thu, 22 Jul 2021 08:53:50 +0000</pubDate>
       <guid>http://localhost:1313/post/20210722-lab-200-network-device-setting-note/</guid>
-      <description>Cisco 3750G 前言日記 在記錄設定前先來段日記 XD，Cisco 3750G 章節紀錄機櫃搬遷後 Cisco 3750G 24TS 作為系統組自管 ToS (Top of Switch) 使用。 原先 K8s LAB 因為留停期間同事有拿來實驗 O</description>
+      <description>&lt;h2 id=&#34;cisco-3750g&#34;&gt;Cisco 3750G&lt;/h2&gt;&#xA;&lt;h3 id=&#34;前言日記&#34;&gt;前言日記&lt;/h3&gt;&#xA;&lt;p&gt;在記錄設定前先來段日記 XD，Cisco 3750G 章節紀錄機櫃搬遷後 Cisco 3750G 24TS 作為系統組自管 ToS (Top of Switch) 使用。&lt;br&gt;&#xA;原先 K8s LAB 因為留停期間同事有拿來實驗 OpenStack，再加上大主管說要召回 Forti 200D，我就交接給同事自行處理/規劃了~~ &lt;br&gt;&#xA;我想辦公室的那四台 R620 應該非常夠我練習 Kubernetes 相關了~ 畢竟目前還在用 minikube 練 CKA。&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

@@ -16,14 +16,14 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="Learning note." /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="" /><meta name="description" content="Learning note." /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.133.1 with theme even" />
+<meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/" />
@@ -52,8 +52,8 @@
 
   <meta itemprop="name" content="老柯的學習筆記">
   <meta itemprop="description" content="Learning note.">
-  <meta itemprop="datePublished" content="2024-09-18T10:10:13+00:00">
-  <meta itemprop="dateModified" content="2024-09-18T10:10:13+00:00">
+  <meta itemprop="datePublished" content="2024-10-09T14:47:52+00:00">
+  <meta itemprop="dateModified" content="2024-11-18T14:50:24+08:00">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="老柯的學習筆記">
   <meta name="twitter:description" content="Learning note.">
@@ -129,6 +129,50 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/20210617-minikube-installation/">minikube 安裝指南。 一個精簡、測試環境使用的 k8s 叢集</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2021-06-17 </span>
+      <div class="post-category">
+          <a href="/categories/kubernetes/"> kubernetes </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <center>
+<img src="https://github.com/kubernetes/minikube/raw/master/images/logo/logo.png" width="300" alt="minikube logo">
+</center>
+<br>
+<p><strong>minikube 能夠快速在本地 (local) 建立 kubernetes cluster (k8s 叢集)，支援 macOS, Linux, Windows</strong><br>
+<strong>非常適合新手探索 kubernetes</strong></p>
+<hr>
+<h2 id="安裝需求-pre-requirement">安裝需求 pre-requirement</h2>
+<br>
+<p><a href="https://minikube.sigs.k8s.io/docs/drivers/">minikube-Driver</a></p>
+<p>▲ 官方有列出各類型 OS 建議搭建在何種虛擬環境上。本篇筆記選用 <code>CentOS 7.9.2009</code> + <code>Docker</code></p>
+<br>
+<h3 id="最小硬體需求">最小硬體需求</h3>
+<ul>
+<li>雙核心 2 (CPUs or more)\</li>
+<li>記憶體 2 GB (2 GB of free memory)\</li>
+<li>硬碟空間 20 GB (20GB of free disk space)\</li>
+<li>連上外部網路 (Internet connection)</li>
+</ul>
+<br>
+<hr>
+<h2 id="安裝">安裝</h2>
+<br>
+<p><a href="https://minikube.sigs.k8s.io/docs/start/">minikube start</a></p>
+    </div>
+    <div class="read-more">
+      <a href="/post/20210617-minikube-installation/" class="read-more-link">Read more...</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/20210611-compile-tmux-for-bastion/">終端機神器! tmux 手動編譯安裝</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2021-06-11 </span>
@@ -140,7 +184,12 @@
   
   <div class="post-content">
     <div class="post-summary">
-      圖片來源: GT-Wang tmux 是一款 terminal mutiplexer (終端機多工器)，自帶切割畫面 (pane) 的功能而且能夠在背景執行。 這篇主要紀錄在公司 Border (跳板機) 手動編譯安裝 for single user 應用場景、
+      <p><img src="https://blog.gtwang.org/wp-content/uploads/2019/12/linux-tmux-terminal-multiplexer-tutorial-20191204-02.png" alt="linux-tmux-terminal-multiplexer-tutorial-20191204-02.png"></p>
+<p>圖片來源: <a href="https://blog.gtwang.org/linux/linux-tmux-terminal-multiplexer-tutorial/">GT-Wang</a></p>
+<hr>
+<p><strong>tmux 是一款 terminal mutiplexer (終端機多工器)，自帶切割畫面 (pane) 的功能而且能夠在背景執行。</strong><br>
+<strong><span style='color:blue'>這篇主要紀錄在公司 Border (跳板機) 手動編譯安裝 for single user</span></strong><br>
+<strong>應用場景、操作，請參考這幾篇文章:</strong></p>
     </div>
     <div class="read-more">
       <a href="/post/20210611-compile-tmux-for-bastion/" class="read-more-link">Read more...</a>
@@ -161,7 +210,10 @@
   
   <div class="post-content">
     <div class="post-summary">
-      圖片來源 此篇筆記主要參考 Docker 官方文件 About storage drivers 主要記錄自己找到的資料，所以不是很有系統性的教學。不過文內有附上邱宏瑋 (hwchiu) 鐵人賽系列文章，需要完整學習
+      <p><img src="storia-container-768x550.jpg" alt="storia-container-768x550"></p>
+<p><a href="https://www.criticalcase.com/blog/containers-from-the-origins-to-docker.html">圖片來源</a></p>
+<p><strong>此篇筆記主要參考 Docker 官方文件 <a href="https://docs.docker.com/storage/storagedriver/">About storage drivers</a></strong><br>
+<strong>主要記錄自己找到的資料，所以不是很有系統性的教學。不過文內有附上邱宏瑋 (hwchiu) 鐵人賽系列文章，需要完整學習的可以去拜讀 &lt;(__)&gt;</strong></p>
     </div>
     <div class="read-more">
       <a href="/post/20210608-intro_docker_image/" class="read-more-link">Read more...</a>
@@ -182,7 +234,51 @@
   
   <div class="post-content">
     <div class="post-summary">
-      圖片來源: wiki 安裝 Docker 與 Docker Compose Docker 參考文章: Install Docker Engine on CentOS 新增 docker repo 1 2 yum install -y yum-utils yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo 安裝 docker-ce 1 yum install docker-ce docker-ce-cli containerd.io -y enable/start docker 1 systemctl enable --now docker.service 跑個 docker hello world 確認 docker 安裝成功 1 docker run hello-world Docker
+      <p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Nextcloud_Logo.svg/2560px-Nextcloud_Logo.svg.png" alt="nextcloud_logo"></p>
+<p><a href="https://commons.wikimedia.org/wiki/File:Nextcloud_Logo.svg">圖片來源: wiki</a></p>
+<h2 id="安裝-docker-與-docker-compose">安裝 Docker 與 Docker Compose</h2>
+<h3 id="docker">Docker</h3>
+<p>參考文章: <a href="https://docs.docker.com/engine/install/centos/">Install Docker Engine on CentOS</a></p>
+<p>新增 docker repo</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">yum install -y yum-utils
+</span></span><span class="line"><span class="cl">yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>安裝 docker-ce</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">yum install docker-ce docker-ce-cli containerd.io -y
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>enable/start docker</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">systemctl <span class="nb">enable</span> --now  docker.service
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>跑個 docker hello world 確認 docker 安裝成功</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker run hello-world
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="docker-compose">Docker Compose</h3>
+<p><a href="https://docs.docker.com/compose/install/">Install Compose on Linux systems</a></p>
     </div>
     <div class="read-more">
       <a href="/post/20210527-install-nextcloud-with-docker-compose/" class="read-more-link">Read more...</a>
@@ -203,31 +299,19 @@
   
   <div class="post-content">
     <div class="post-summary">
-      Docker docs Use volumes 前言 Docker Volume 是一個比較好的機制將 Docker Container 產生的資料永久保存 有稍微摸索過 Docker 的人可能會有點疑惑: 不是可以透過 -v /home/xzk:/mydata 把 host OS 上面的目錄映射進去 container 裡面嗎
+      <p><a href="https://docs.docker.com/storage/volumes/">Docker docs Use volumes</a></p>
+<br>
+<p><img src="https://docs.docker.com/storage/images/types-of-mounts-volume.png" alt="types-of-mounts-volume"></p>
+<br>
+<hr>
+<h2 id="前言">前言</h2>
+<br>
+<p><strong>Docker Volume 是一個比較好的機制將 Docker Container 產生的資料永久保存</strong></p>
+<p><strong>有稍微摸索過 Docker 的人可能會有點疑惑: 不是可以透過 <code>-v /home/xzk:/mydata</code> 把 host OS 上面的目錄映射進去 container 裡面嗎? 為什麼我還需要 volumes ?</strong><br>
+<strong>的確，bind mount 某種程度上這樣很方便。不過 Docker 官方因為以下幾點原因，還是推薦使用 Docker Volume 作為永久資料保存的方式。</strong></p>
     </div>
     <div class="read-more">
       <a href="/post/20210513-intro_docker_volume/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/20210512-vsphere-showed-that-vm-is-orphanded/">vSphere 顯示 VM Orphaned (虛擬機孤立狀態)</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2021-05-12 </span>
-      <div class="post-category">
-          <a href="/categories/vsphere/"> vsphere </a>
-          </div>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      通常這個狀況會發生在 ESXi 升級失敗、Firmware 更新踩到地雷爆炸、ESXi 重灌地獄，好不容易 ESXi 灌好了準備回到人間 卻在 vSphere 上面看到該 ESXi Host 所有 VM 顯
-    </div>
-    <div class="read-more">
-      <a href="/post/20210512-vsphere-showed-that-vm-is-orphanded/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>
@@ -272,7 +356,7 @@
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

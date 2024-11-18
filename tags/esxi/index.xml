@@ -13,7 +13,7 @@
       <link>http://localhost:1313/post/20210122-upgrade-esxi-650-to-670/</link>
       <pubDate>Fri, 22 Jan 2021 13:46:48 +0000</pubDate>
       <guid>http://localhost:1313/post/20210122-upgrade-esxi-650-to-670/</guid>
-      <description>圖片來源 Before Upgrading 此篇為這次針對 DCX 升級 ESXi 的安裝紀錄。新上了 4 台 Dell R630 暫時緩解 DCX 資源吃緊的情況。 使用 vMotion (VMware Live Migration 技術) 動態轉移將 VM 移至其他 ESXi Host，就可</description>
+      <description>&lt;p&gt;&lt;img src=&#34;esxi_670_logo.jpg&#34; alt=&#34;esxi_670_logo&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://clipart.me/download/maintenance-and-repair-series-of-signs-vector-9385&#34;&gt;圖片來源&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;before-upgrading&#34;&gt;Before Upgrading&lt;/h2&gt;&#xA;&lt;p&gt;此篇為這次針對 &lt;strong&gt;DCX&lt;/strong&gt; 升級 ESXi 的安裝紀錄。新上了 4 台 Dell R630 暫時緩解 &lt;strong&gt;DCX&lt;/strong&gt; 資源吃緊的情況。&lt;br&gt;&#xA;使用 vMotion (VMware Live Migration 技術) 動態轉移將 VM 移至其他 ESXi Host，就可以關機 維護/升級 啦~&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

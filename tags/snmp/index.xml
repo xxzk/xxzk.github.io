@@ -13,7 +13,7 @@
       <link>http://localhost:1313/post/20220825-moniting-device-traffic-via-snmp_exporter-with-prometheus/</link>
       <pubDate>Thu, 25 Aug 2022 11:49:44 +0000</pubDate>
       <guid>http://localhost:1313/post/20220825-moniting-device-traffic-via-snmp_exporter-with-prometheus/</guid>
-      <description>前言 本篇筆記紀錄如何使用 snmp_exporter 搭配 prometheus 與 Grafana 來即時監控網路設備流量。 公司原先使用 LibreNMS 作為即時流量的依據，由於 default polling interval 是 5 分鐘抓取一次，而且一次抓取 (walk) 的 OID</description>
+      <description>&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;&#xA;&lt;p&gt;本篇筆記紀錄如何使用 &lt;a href=&#34;https://github.com/prometheus/snmp_exporter&#34;&gt;snmp_exporter&lt;/a&gt; 搭配 &lt;a href=&#34;https://github.com/prometheus/prometheus&#34;&gt;prometheus&lt;/a&gt; 與 &lt;a href=&#34;https://github.com/grafana/grafana&#34;&gt;Grafana&lt;/a&gt; 來即時監控網路設備流量。&lt;br&gt;&#xA;公司原先使用 LibreNMS 作為即時流量的依據，由於 &lt;strong&gt;&lt;span style=&#39;color:blue&#39;&gt;default polling interval 是 5 分鐘抓取一次，而且一次抓取 (walk) 的 OID 也是世界多~&lt;/span&gt;&lt;/strong&gt;&lt;br&gt;&#xA;雖然說 LibreNMS 有提供 &lt;a href=&#34;https://docs.librenms.org/Support/1-Minute-Polling/&#34;&gt;1-Minute Polling&lt;/a&gt; 的方式，不過一次抓取就是長長一串造成設備不必要的負擔，更可能造成風暴 (前一次抓取尚未完成，時間到了又必須進行下一次)。&lt;br&gt;&#xA;況且即使 1-Minute polling 完美運作，對於流量的精細程度個人認為是遠遠不足的! 被打 DDoS 幾秒之內流量就可能飆高，若針對流量 moniting 顆粒度太大就失去了意義、無法反映實際狀況。&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

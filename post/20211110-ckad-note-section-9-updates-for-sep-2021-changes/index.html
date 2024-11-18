@@ -16,14 +16,22 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="▲ CKAD 新舊版差異 119. Define, build and modify container images 非常基礎的 Docker Image (container image) 介紹，我之前就打過一篇在公司 Bookstack 了~ 《Docker Image 介紹》 使用 docker 與 podman 大部分情況 docker 與 podman syntax 很接近~ 1" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="" /><meta name="description" content="
+▲ CKAD 新舊版差異
+119. Define, build and modify container images 非常基礎的 Docker Image (container image) 介紹，我之前就打過一篇在公司 Bookstack 了~
+《Docker Image 介紹》
+使用 docker 與 podman 大部分情況 docker 與 podman syntax 很接近~
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 ## docker multi tags sudo docker build -t registry.killer.sh:5000/sun-cipher:latest -t registry.killer.sh:5000/sun-cipher:v1-docker . ## pod man build image podman build -t registry.killer.sh:5000/sun-cipher:v1-podman . ## podman run container podman run -d --name sun-cipher registry.killer.sh:5000/sun-cipher:v1-podman ## podman show process podman ps ## podman logs podman logs sun-cipher 121. Authentication, Authorization and Admission Control 除了 master,worker node 本身的安全機制 (例如: SSH public key ONLY) 以外
+kube-apiserver 在 K8s cluster 當中扮演非常關鍵的角色必須要被嚴格控管，接下來的章節會介紹 How to
+一開始我們先來探討一下 Who can access? 與 What can they do?
+" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.133.1 with theme even" />
+<meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/post/20211110-ckad-note-section-9-updates-for-sep-2021-changes/" />
@@ -45,7 +53,13 @@
 <meta property="og:url" content="http://localhost:1313/post/20211110-ckad-note-section-9-updates-for-sep-2021-changes/">
   <meta property="og:site_name" content="老柯的學習筆記">
   <meta property="og:title" content="CKAD Note Section 9 Updates for Sep 2021 Changes">
-  <meta property="og:description" content="▲ CKAD 新舊版差異 119. Define, build and modify container images 非常基礎的 Docker Image (container image) 介紹，我之前就打過一篇在公司 Bookstack 了~ 《Docker Image 介紹》 使用 docker 與 podman 大部分情況 docker 與 podman syntax 很接近~ 1">
+  <meta property="og:description" content="▲ CKAD 新舊版差異
+119. Define, build and modify container images 非常基礎的 Docker Image (container image) 介紹，我之前就打過一篇在公司 Bookstack 了~
+《Docker Image 介紹》
+使用 docker 與 podman 大部分情況 docker 與 podman syntax 很接近~
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 ## docker multi tags sudo docker build -t registry.killer.sh:5000/sun-cipher:latest -t registry.killer.sh:5000/sun-cipher:v1-docker . ## pod man build image podman build -t registry.killer.sh:5000/sun-cipher:v1-podman . ## podman run container podman run -d --name sun-cipher registry.killer.sh:5000/sun-cipher:v1-podman ## podman show process podman ps ## podman logs podman logs sun-cipher 121. Authentication, Authorization and Admission Control 除了 master,worker node 本身的安全機制 (例如: SSH public key ONLY) 以外
+kube-apiserver 在 K8s cluster 當中扮演非常關鍵的角色必須要被嚴格控管，接下來的章節會介紹 How to
+一開始我們先來探討一下 Who can access? 與 What can they do?">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="post">
@@ -55,14 +69,26 @@
     <meta property="article:tag" content="Kubernetes">
 
   <meta itemprop="name" content="CKAD Note Section 9 Updates for Sep 2021 Changes">
-  <meta itemprop="description" content="▲ CKAD 新舊版差異 119. Define, build and modify container images 非常基礎的 Docker Image (container image) 介紹，我之前就打過一篇在公司 Bookstack 了~ 《Docker Image 介紹》 使用 docker 與 podman 大部分情況 docker 與 podman syntax 很接近~ 1">
+  <meta itemprop="description" content="▲ CKAD 新舊版差異
+119. Define, build and modify container images 非常基礎的 Docker Image (container image) 介紹，我之前就打過一篇在公司 Bookstack 了~
+《Docker Image 介紹》
+使用 docker 與 podman 大部分情況 docker 與 podman syntax 很接近~
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 ## docker multi tags sudo docker build -t registry.killer.sh:5000/sun-cipher:latest -t registry.killer.sh:5000/sun-cipher:v1-docker . ## pod man build image podman build -t registry.killer.sh:5000/sun-cipher:v1-podman . ## podman run container podman run -d --name sun-cipher registry.killer.sh:5000/sun-cipher:v1-podman ## podman show process podman ps ## podman logs podman logs sun-cipher 121. Authentication, Authorization and Admission Control 除了 master,worker node 本身的安全機制 (例如: SSH public key ONLY) 以外
+kube-apiserver 在 K8s cluster 當中扮演非常關鍵的角色必須要被嚴格控管，接下來的章節會介紹 How to
+一開始我們先來探討一下 Who can access? 與 What can they do?">
   <meta itemprop="datePublished" content="2021-11-10T11:05:08+00:00">
   <meta itemprop="dateModified" content="2022-09-15T10:38:30+08:00">
   <meta itemprop="wordCount" content="3704">
   <meta itemprop="keywords" content="CKAD,Kubernetes">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="CKAD Note Section 9 Updates for Sep 2021 Changes">
-  <meta name="twitter:description" content="▲ CKAD 新舊版差異 119. Define, build and modify container images 非常基礎的 Docker Image (container image) 介紹，我之前就打過一篇在公司 Bookstack 了~ 《Docker Image 介紹》 使用 docker 與 podman 大部分情況 docker 與 podman syntax 很接近~ 1">
+  <meta name="twitter:description" content="▲ CKAD 新舊版差異
+119. Define, build and modify container images 非常基礎的 Docker Image (container image) 介紹，我之前就打過一篇在公司 Bookstack 了~
+《Docker Image 介紹》
+使用 docker 與 podman 大部分情況 docker 與 podman syntax 很接近~
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 ## docker multi tags sudo docker build -t registry.killer.sh:5000/sun-cipher:latest -t registry.killer.sh:5000/sun-cipher:v1-docker . ## pod man build image podman build -t registry.killer.sh:5000/sun-cipher:v1-podman . ## podman run container podman run -d --name sun-cipher registry.killer.sh:5000/sun-cipher:v1-podman ## podman show process podman ps ## podman logs podman logs sun-cipher 121. Authentication, Authorization and Admission Control 除了 master,worker node 本身的安全機制 (例如: SSH public key ONLY) 以外
+kube-apiserver 在 K8s cluster 當中扮演非常關鍵的角色必須要被嚴格控管，接下來的章節會介紹 How to
+一開始我們先來探討一下 Who can access? 與 What can they do?">
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -1037,7 +1063,7 @@
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">Author</span>
-    <span class="item-content">老柯</span>
+    <span class="item-content"></span>
   </p>
   <p class="copyright-item">
     <span class="item-title">LastMod</span>
@@ -1099,7 +1125,7 @@
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

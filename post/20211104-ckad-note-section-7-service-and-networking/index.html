@@ -16,14 +16,20 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="90. Service ▲ NodePort type 的 service ▲ service 的種類: NodePort, Cluster IP, LoadBlance ▲ NodePort 總共有三個 port number 分別是: node-port, port, target-port NodePort range: 30000~32767 (option)。 如果沒有給定 targetPort，預設 port == targ" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="" /><meta name="description" content="90. Service ▲ NodePort type 的 service
+▲ service 的種類: NodePort, Cluster IP, LoadBlance
+▲ NodePort 總共有三個 port number 分別是: node-port, port, target-port
+NodePort range: 30000~32767 (option)。 如果沒有給定 targetPort，預設 port == targetPort。 1 2 3 4 5 6 7 8 9 10 11 12 apiVersion: v1 kind: Service metadata: name: my-service spec: type: NodePort selector: app: MyApp ports: - port: 80 nodePort: 30007 targetPort: 9376 NodePort service 使用 selector 來決定要將流量導向到哪些 pod 身上。
+P.S 這邊先偷吃步給一個簡單的方法:
+kubectl expose deployment nginx-rollout --port=80 --target-port=80
+" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.133.1 with theme even" />
+<meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/post/20211104-ckad-note-section-7-service-and-networking/" />
@@ -45,7 +51,12 @@
 <meta property="og:url" content="http://localhost:1313/post/20211104-ckad-note-section-7-service-and-networking/">
   <meta property="og:site_name" content="老柯的學習筆記">
   <meta property="og:title" content="CKAD Note Section 7 Service and Networking">
-  <meta property="og:description" content="90. Service ▲ NodePort type 的 service ▲ service 的種類: NodePort, Cluster IP, LoadBlance ▲ NodePort 總共有三個 port number 分別是: node-port, port, target-port NodePort range: 30000~32767 (option)。 如果沒有給定 targetPort，預設 port == targ">
+  <meta property="og:description" content="90. Service ▲ NodePort type 的 service
+▲ service 的種類: NodePort, Cluster IP, LoadBlance
+▲ NodePort 總共有三個 port number 分別是: node-port, port, target-port
+NodePort range: 30000~32767 (option)。 如果沒有給定 targetPort，預設 port == targetPort。 1 2 3 4 5 6 7 8 9 10 11 12 apiVersion: v1 kind: Service metadata: name: my-service spec: type: NodePort selector: app: MyApp ports: - port: 80 nodePort: 30007 targetPort: 9376 NodePort service 使用 selector 來決定要將流量導向到哪些 pod 身上。
+P.S 這邊先偷吃步給一個簡單的方法:
+kubectl expose deployment nginx-rollout --port=80 --target-port=80">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="post">
@@ -55,14 +66,24 @@
     <meta property="article:tag" content="Kubernetes">
 
   <meta itemprop="name" content="CKAD Note Section 7 Service and Networking">
-  <meta itemprop="description" content="90. Service ▲ NodePort type 的 service ▲ service 的種類: NodePort, Cluster IP, LoadBlance ▲ NodePort 總共有三個 port number 分別是: node-port, port, target-port NodePort range: 30000~32767 (option)。 如果沒有給定 targetPort，預設 port == targ">
+  <meta itemprop="description" content="90. Service ▲ NodePort type 的 service
+▲ service 的種類: NodePort, Cluster IP, LoadBlance
+▲ NodePort 總共有三個 port number 分別是: node-port, port, target-port
+NodePort range: 30000~32767 (option)。 如果沒有給定 targetPort，預設 port == targetPort。 1 2 3 4 5 6 7 8 9 10 11 12 apiVersion: v1 kind: Service metadata: name: my-service spec: type: NodePort selector: app: MyApp ports: - port: 80 nodePort: 30007 targetPort: 9376 NodePort service 使用 selector 來決定要將流量導向到哪些 pod 身上。
+P.S 這邊先偷吃步給一個簡單的方法:
+kubectl expose deployment nginx-rollout --port=80 --target-port=80">
   <meta itemprop="datePublished" content="2021-11-04T11:32:23+00:00">
   <meta itemprop="dateModified" content="2022-05-06T10:58:26+08:00">
   <meta itemprop="wordCount" content="2170">
   <meta itemprop="keywords" content="CKAD,Kubernetes">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="CKAD Note Section 7 Service and Networking">
-  <meta name="twitter:description" content="90. Service ▲ NodePort type 的 service ▲ service 的種類: NodePort, Cluster IP, LoadBlance ▲ NodePort 總共有三個 port number 分別是: node-port, port, target-port NodePort range: 30000~32767 (option)。 如果沒有給定 targetPort，預設 port == targ">
+  <meta name="twitter:description" content="90. Service ▲ NodePort type 的 service
+▲ service 的種類: NodePort, Cluster IP, LoadBlance
+▲ NodePort 總共有三個 port number 分別是: node-port, port, target-port
+NodePort range: 30000~32767 (option)。 如果沒有給定 targetPort，預設 port == targetPort。 1 2 3 4 5 6 7 8 9 10 11 12 apiVersion: v1 kind: Service metadata: name: my-service spec: type: NodePort selector: app: MyApp ports: - port: 80 nodePort: 30007 targetPort: 9376 NodePort service 使用 selector 來決定要將流量導向到哪些 pod 身上。
+P.S 這邊先偷吃步給一個簡單的方法:
+kubectl expose deployment nginx-rollout --port=80 --target-port=80">
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -763,7 +784,7 @@ Nginx 剩餘的設定 (例如: SSL, error log path, keep-alive &hellip;) 則是�
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">Author</span>
-    <span class="item-content">老柯</span>
+    <span class="item-content"></span>
   </p>
   <p class="copyright-item">
     <span class="item-title">LastMod</span>
@@ -825,7 +846,7 @@ Nginx 剩餘的設定 (例如: SSL, error log path, keep-alive &hellip;) 則是�
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

@@ -16,14 +16,16 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="介紹 這篇筆記會記錄如何從 metrics server 開始安裝 Kubernetes Dashboard，並且設定 Istio virtual service / gateway，最後產生一組僅有特定 namespace read-only 權限的 token。 大部分的" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="" /><meta name="description" content="介紹 這篇筆記會記錄如何從 metrics server 開始安裝 Kubernetes Dashboard，並且設定 Istio virtual service / gateway，最後產生一組僅有特定 namespace read-only 權限的 token。
+大部分的使用者可以省去安裝 metrics server 這段，因為自 Kubernetes v1.18 開始 metrics server 已是預設元件。
+" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.133.1 with theme even" />
+<meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/post/20230613-kubernetes-dashboard-install-note/" />
@@ -45,7 +47,8 @@
 <meta property="og:url" content="http://localhost:1313/post/20230613-kubernetes-dashboard-install-note/">
   <meta property="og:site_name" content="老柯的學習筆記">
   <meta property="og:title" content="Kubernetes Dashboard 安裝筆記">
-  <meta property="og:description" content="介紹 這篇筆記會記錄如何從 metrics server 開始安裝 Kubernetes Dashboard，並且設定 Istio virtual service / gateway，最後產生一組僅有特定 namespace read-only 權限的 token。 大部分的">
+  <meta property="og:description" content="介紹 這篇筆記會記錄如何從 metrics server 開始安裝 Kubernetes Dashboard，並且設定 Istio virtual service / gateway，最後產生一組僅有特定 namespace read-only 權限的 token。
+大部分的使用者可以省去安裝 metrics server 這段，因為自 Kubernetes v1.18 開始 metrics server 已是預設元件。">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="post">
@@ -54,14 +57,16 @@
     <meta property="article:tag" content="Kubernetes">
 
   <meta itemprop="name" content="Kubernetes Dashboard 安裝筆記">
-  <meta itemprop="description" content="介紹 這篇筆記會記錄如何從 metrics server 開始安裝 Kubernetes Dashboard，並且設定 Istio virtual service / gateway，最後產生一組僅有特定 namespace read-only 權限的 token。 大部分的">
+  <meta itemprop="description" content="介紹 這篇筆記會記錄如何從 metrics server 開始安裝 Kubernetes Dashboard，並且設定 Istio virtual service / gateway，最後產生一組僅有特定 namespace read-only 權限的 token。
+大部分的使用者可以省去安裝 metrics server 這段，因為自 Kubernetes v1.18 開始 metrics server 已是預設元件。">
   <meta itemprop="datePublished" content="2023-06-13T15:15:27+00:00">
   <meta itemprop="dateModified" content="2023-06-13T15:15:27+00:00">
   <meta itemprop="wordCount" content="1368">
   <meta itemprop="keywords" content="Kubernetes">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Kubernetes Dashboard 安裝筆記">
-  <meta name="twitter:description" content="介紹 這篇筆記會記錄如何從 metrics server 開始安裝 Kubernetes Dashboard，並且設定 Istio virtual service / gateway，最後產生一組僅有特定 namespace read-only 權限的 token。 大部分的">
+  <meta name="twitter:description" content="介紹 這篇筆記會記錄如何從 metrics server 開始安裝 Kubernetes Dashboard，並且設定 Istio virtual service / gateway，最後產生一組僅有特定 namespace read-only 權限的 token。
+大部分的使用者可以省去安裝 metrics server 這段，因為自 Kubernetes v1.18 開始 metrics server 已是預設元件。">
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -610,7 +615,7 @@
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">Author</span>
-    <span class="item-content">老柯</span>
+    <span class="item-content"></span>
   </p>
   <p class="copyright-item">
     <span class="item-title">LastMod</span>
@@ -671,7 +676,7 @@
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

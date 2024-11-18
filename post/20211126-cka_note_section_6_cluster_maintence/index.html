@@ -16,14 +16,18 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="117. OS Upgrades 如果我們要將某個 worder node 下線，做一些例行維護 (例如: OS Upgrade) 可以使用 1 kubectl drain &lt;node_name&gt; 來達成，原本在目標 worker node 的 pod 會被 re-schedule 到其它 worker node 上面。當維護完成再使用 1" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="" /><meta name="description" content="117. OS Upgrades 如果我們要將某個 worder node 下線，做一些例行維護 (例如: OS Upgrade) 可以使用
+1 kubectl drain &lt;node_name&gt; 來達成，原本在目標 worker node 的 pod 會被 re-schedule 到其它 worker node 上面。當維護完成再使用
+1 kubectl uncorden &lt;node_name&gt; 來告訴 master node 我好了，可以把 pod 繼續 schedule 到我身上囉! 被調度出去的 pod 不會恢復回來。
+如果單純要讓 master node 不要把 pod 調度過來 (mark as unschedulable) 的話則可以使用。
+" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.133.1 with theme even" />
+<meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/post/20211126-cka_note_section_6_cluster_maintence/" />
@@ -45,7 +49,10 @@
 <meta property="og:url" content="http://localhost:1313/post/20211126-cka_note_section_6_cluster_maintence/">
   <meta property="og:site_name" content="老柯的學習筆記">
   <meta property="og:title" content="CKA Note Section 6 Cluster Maintence">
-  <meta property="og:description" content="117. OS Upgrades 如果我們要將某個 worder node 下線，做一些例行維護 (例如: OS Upgrade) 可以使用 1 kubectl drain &lt;node_name&gt; 來達成，原本在目標 worker node 的 pod 會被 re-schedule 到其它 worker node 上面。當維護完成再使用 1">
+  <meta property="og:description" content="117. OS Upgrades 如果我們要將某個 worder node 下線，做一些例行維護 (例如: OS Upgrade) 可以使用
+1 kubectl drain &lt;node_name&gt; 來達成，原本在目標 worker node 的 pod 會被 re-schedule 到其它 worker node 上面。當維護完成再使用
+1 kubectl uncorden &lt;node_name&gt; 來告訴 master node 我好了，可以把 pod 繼續 schedule 到我身上囉! 被調度出去的 pod 不會恢復回來。
+如果單純要讓 master node 不要把 pod 調度過來 (mark as unschedulable) 的話則可以使用。">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="post">
@@ -55,14 +62,20 @@
     <meta property="article:tag" content="Kubernetes">
 
   <meta itemprop="name" content="CKA Note Section 6 Cluster Maintence">
-  <meta itemprop="description" content="117. OS Upgrades 如果我們要將某個 worder node 下線，做一些例行維護 (例如: OS Upgrade) 可以使用 1 kubectl drain &lt;node_name&gt; 來達成，原本在目標 worker node 的 pod 會被 re-schedule 到其它 worker node 上面。當維護完成再使用 1">
+  <meta itemprop="description" content="117. OS Upgrades 如果我們要將某個 worder node 下線，做一些例行維護 (例如: OS Upgrade) 可以使用
+1 kubectl drain &lt;node_name&gt; 來達成，原本在目標 worker node 的 pod 會被 re-schedule 到其它 worker node 上面。當維護完成再使用
+1 kubectl uncorden &lt;node_name&gt; 來告訴 master node 我好了，可以把 pod 繼續 schedule 到我身上囉! 被調度出去的 pod 不會恢復回來。
+如果單純要讓 master node 不要把 pod 調度過來 (mark as unschedulable) 的話則可以使用。">
   <meta itemprop="datePublished" content="2021-11-26T11:24:39+00:00">
   <meta itemprop="dateModified" content="2022-09-27T13:49:20+08:00">
   <meta itemprop="wordCount" content="1658">
   <meta itemprop="keywords" content="CKA-Note,Kubernetes">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="CKA Note Section 6 Cluster Maintence">
-  <meta name="twitter:description" content="117. OS Upgrades 如果我們要將某個 worder node 下線，做一些例行維護 (例如: OS Upgrade) 可以使用 1 kubectl drain &lt;node_name&gt; 來達成，原本在目標 worker node 的 pod 會被 re-schedule 到其它 worker node 上面。當維護完成再使用 1">
+  <meta name="twitter:description" content="117. OS Upgrades 如果我們要將某個 worder node 下線，做一些例行維護 (例如: OS Upgrade) 可以使用
+1 kubectl drain &lt;node_name&gt; 來達成，原本在目標 worker node 的 pod 會被 re-schedule 到其它 worker node 上面。當維護完成再使用
+1 kubectl uncorden &lt;node_name&gt; 來告訴 master node 我好了，可以把 pod 繼續 schedule 到我身上囉! 被調度出去的 pod 不會恢復回來。
+如果單純要讓 master node 不要把 pod 調度過來 (mark as unschedulable) 的話則可以使用。">
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -459,7 +472,7 @@
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">Author</span>
-    <span class="item-content">老柯</span>
+    <span class="item-content"></span>
   </p>
   <p class="copyright-item">
     <span class="item-title">LastMod</span>
@@ -521,7 +534,7 @@
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

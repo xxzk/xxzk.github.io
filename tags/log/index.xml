@@ -13,7 +13,7 @@
       <link>http://localhost:1313/post/20200924-httpd-log-to-graylog-with-rsyslog/</link>
       <pubDate>Thu, 24 Sep 2020 15:29:12 +0000</pubDate>
       <guid>http://localhost:1313/post/20200924-httpd-log-to-graylog-with-rsyslog/</guid>
-      <description>由於 httpd 預設沒有將 access/error log 丟到 syslog 做處理，要需手動新增 新增方式有兩種 直接編輯 httpd.conf 將 log file 導向到 syslog 編輯 rsyslog.conf 叫 rsyslog 去撈本來存放在 /var/log/httpd/(access|error).log 第一種方式會需要做 systemctl reload httpd.service ，對於</description>
+      <description>&lt;p&gt;由於 httpd 預設沒有將 access/error log 丟到 syslog 做處理，要需手動新增&lt;br&gt;&#xA;新增方式有兩種&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;直接編輯 &lt;code&gt;httpd.conf&lt;/code&gt; 將 log file 導向到 syslog&lt;/li&gt;&#xA;&lt;li&gt;編輯 &lt;code&gt;rsyslog.conf&lt;/code&gt; 叫 rsyslog 去撈本來存放在 &lt;code&gt;/var/log/httpd/(access|error).log&lt;/code&gt;&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;第一種方式會需要做 &lt;code&gt;systemctl reload httpd.service&lt;/code&gt; ，對於線上運作中的機器有一定風險 &lt;del&gt;一個弄不好鍋就是你戴好 ^^&lt;/del&gt;&lt;br&gt;&#xA;雖然有文章指出 &lt;code&gt;reload&lt;/code&gt; 不會中斷現有的 connection 不過還是少碰為妙&lt;br&gt;&#xA;&lt;a href=&#34;https://elearning.wsldp.com/pcmagazine/apache-graceful-restart-centos-7/&#34;&gt;How to do an Apache Graceful Restart in CentOS 7&lt;/a&gt;&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

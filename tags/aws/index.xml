@@ -6,35 +6,35 @@
     <description>Recent content in Aws on 老柯的學習筆記</description>
     <generator>Hugo</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 18 Sep 2024 10:10:13 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 19 Sep 2024 16:21:28 +0800</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/aws/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>AWS SES 手動發信 / SPF / DKIM 筆記</title>
       <link>http://localhost:1313/post/20240919-aws-ses/</link>
       <pubDate>Wed, 18 Sep 2024 10:10:13 +0000</pubDate>
       <guid>http://localhost:1313/post/20240919-aws-ses/</guid>
-      <description>Introduction 這篇筆記一開始會先從如何手動透過 SES 發信開始，接著會介紹如何設定 SPF 和 DKIM。 邏輯是著手設定 SPF/DKIM 之前先看看目前 E-Mail 的狀態。 在開始之前建議先了解一</description>
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;&#xA;&lt;p&gt;這篇筆記一開始會先從如何手動透過 SES 發信開始，接著會介紹如何設定 SPF 和 DKIM。 邏輯是著手設定 SPF/DKIM 之前先看看目前 E-Mail 的狀態。&lt;/p&gt;&#xA;&lt;p&gt;在開始之前建議先了解一下 E-Mail 寄送過程 An E-Mail&amp;rsquo;s Journey&lt;/p&gt;</description>
     </item>
     <item>
       <title>AWS RDS Encryption 評估</title>
       <link>http://localhost:1313/post/20240909-aws-rds-encrypt/</link>
       <pubDate>Mon, 09 Sep 2024 14:23:11 +0000</pubDate>
       <guid>http://localhost:1313/post/20240909-aws-rds-encrypt/</guid>
-      <description>Intro 這篇筆記快速紀錄 AWS RDS Encryption for Compliance requirement. Encrypting Amazon RDS resources [link] Data at rest encryption, 包含: DB instance, logs, snapshot, read replica, and automated backup. AWS 使用 AES-256 加密演算法替 RDS 加密 / 解密。 AWS 使用本身的 AWS Key Management Service (KMS) 來管理加密金</description>
+      <description>&lt;h2 id=&#34;intro&#34;&gt;Intro&lt;/h2&gt;&#xA;&lt;p&gt;這篇筆記快速紀錄 AWS RDS Encryption for Compliance requirement.&lt;/p&gt;&#xA;&lt;h2 id=&#34;encrypting-amazon-rds-resources-linkhttpsdocsawsamazoncomamazonrdslatestuserguideoverviewencryptionhtml&#34;&gt;Encrypting Amazon RDS resources &lt;a href=&#34;https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.Encryption.html&#34;&gt;[link]&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Data at rest encryption, 包含: DB instance, logs, snapshot, read replica, and automated backup.&lt;/li&gt;&#xA;&lt;li&gt;AWS 使用 AES-256 加密演算法替 RDS 加密 / 解密。&lt;/li&gt;&#xA;&lt;li&gt;AWS 使用本身的 &lt;a href=&#34;https://aws.amazon.com/kms/&#34;&gt;AWS Key Management Service (KMS)&lt;/a&gt; 來管理加密金鑰。&lt;/li&gt;&#xA;&lt;li&gt;AWS KMS 在通過 &lt;a href=&#34;https://csrc.nist.gov/projects/cryptographic-module-validation-program/certificate/4523&#34;&gt;美國聯邦資訊處理標準 FIPS 140-2&lt;/a&gt; 認證的硬體上 儲存 / 產生 客戶的金鑰。&lt;a href=&#34;https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#kms_keys&#34;&gt;ref&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#kms_keys&#34;&gt;AWS KMS - Customer keys and AWS keys 比較表格&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;&lt;img src=&#34;aws-kms-key-type.jpg&#34; alt=&#34;aws-kms-key-type&#34;&gt;&lt;/p&gt;</description>
     </item>
     <item>
       <title>Pulumi / AWS CDK Hello World</title>
       <link>http://localhost:1313/post/20230418-aws-cdk-hello-world/</link>
       <pubDate>Tue, 18 Apr 2023 14:32:50 +0000</pubDate>
       <guid>http://localhost:1313/post/20230418-aws-cdk-hello-world/</guid>
-      <description>Pulumi Get Started with AWS | Pulumi Docs Pulumi vs. AWS CDK | Pulumi Docs 快速補充 Pulumi Hello World 的部分 1 2 3 4 brew install pulumi/tap/pulumi # or Linux distro curl -fsSL https://get.pulumi.com | sh 如果使用 Python 的話，版本必須高於 3.7 且 pip 也需安裝。 Pulumi 可以使用 aws config</description>
+      <description>&lt;h2 id=&#34;pulumi&#34;&gt;Pulumi&lt;/h2&gt;&#xA;&lt;p align=&#34;center&#34;&gt;&#xA;  &lt;img src=&#34;https://www.pulumi.com/images/logo/logo-on-white.svg&#34;&gt;&#xA;&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://www.pulumi.com/docs/get-started/aws/&#34;&gt;Get Started with AWS | Pulumi Docs&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://www.pulumi.com/docs/intro/vs/cloud-template-transpilers/aws-cdk/&#34;&gt;Pulumi vs. AWS CDK | Pulumi Docs&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;快速補充 Pulumi Hello World 的部分&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;&#xA;&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;&#xA;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1&#xA;&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2&#xA;&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3&#xA;&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4&#xA;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&#xA;&lt;td class=&#34;lntd&#34;&gt;&#xA;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;brew install pulumi/tap/pulumi&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# or Linux distro&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;curl -fsSL https://get.pulumi.com &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; sh&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&#xA;&lt;/div&gt;&#xA;&lt;/div&gt;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;&lt;span style=&#39;color:red&#39;&gt;如果使用 Python 的話，版本必須高於 3.7 且 &lt;code&gt;pip&lt;/code&gt; 也需安裝。&lt;/span&gt;&lt;/strong&gt;&lt;/li&gt;&#xA;&lt;li&gt;Pulumi 可以使用 aws config 或者直接吃 &lt;code&gt;export AWS_ACCESS_KEY_ID=&amp;lt;YOUR_ACCESS_KEY_ID&amp;gt;&lt;/code&gt;, &lt;code&gt;export AWS_SECRET_ACCESS_KEY=&amp;lt;YOUR_SECRET_ACCESS_KEY&amp;gt;&lt;/code&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;切換 AWS profile 並確認 active session&lt;/p&gt;</description>
     </item>
     <item>
       <title>Udemy AWS SAA-C03 課程筆記</title>
       <link>http://localhost:1313/post/20230220-udemy-aws-saa-c03-note/</link>
       <pubDate>Mon, 13 Feb 2023 15:30:50 +0000</pubDate>
       <guid>http://localhost:1313/post/20230220-udemy-aws-saa-c03-note/</guid>
-      <description>Intro 這篇筆記會記錄 Udemy Ultimate AWS Certified Solutions Architect Associate SAA-C03 隨堂筆記。 !! 目前施工中~~~ !! AWS Free Tier 說明 ▲ Control Your AWS Costs，設定警告避免帳單爆炸。 Slides and Code Download Section 4 IAM and AWS CLI IAM Groups 只</description>
+      <description>&lt;h2 id=&#34;intro&#34;&gt;Intro&lt;/h2&gt;&#xA;&lt;p&gt;這篇筆記會記錄 &lt;a href=&#34;https://www.udemy.com/course/aws-certified-solutions-architect-associate-saa-c03/&#34;&gt;Udemy Ultimate AWS Certified Solutions Architect Associate SAA-C03&lt;/a&gt; 隨堂筆記。&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;&lt;span style=&#39;color:red&#39;&gt;!! 目前施工中~~~ !!&lt;/span&gt;&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;aws-free-tier-說明httpsawsamazoncomfree&#34;&gt;&lt;a href=&#34;https://aws.amazon.com/free/&#34;&gt;AWS Free Tier 說明&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;p&gt;&lt;img src=&#34;aws_zero_spend_budget_setting.jpg&#34; alt=&#34;aws_zero_spend_budget_setting&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;▲ &lt;a href=&#34;https://aws.amazon.com/getting-started/hands-on/control-your-costs-free-tier-budgets/&#34;&gt;Control Your AWS Costs&lt;/a&gt;，設定警告避免帳單爆炸。&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://courses.datacumulus.com/downloads/certified-solutions-architect-pn9/&#34;&gt;Slides and Code Download&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;section-4-iam-and-aws-cli&#34;&gt;Section 4 IAM and AWS CLI&lt;/h2&gt;&#xA;&lt;h3 id=&#34;iam&#34;&gt;IAM&lt;/h3&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Groups 只能包含 users， &lt;strong&gt;&lt;span style=&#39;color:red&#39;&gt;不能包含另一個 group&lt;/span&gt;&lt;/strong&gt;&lt;/li&gt;&#xA;&lt;li&gt;Policy 除了可以加在 groups 以外， &lt;strong&gt;inline policy&lt;/strong&gt; 可以直接對 user 賦予權限&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;&lt;img src=&#34;add_inline_policy_to_user.jpg&#34; alt=&#34;add_inline_policy_to_user&#34;&gt;&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

@@ -16,14 +16,19 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="使用機型 Dell R330 BIOS,iDRAC 密碼/設定檔 清除 How to reset the BIOS of a Dell PowerEdge Server? 將所有電源移除 將 NVRAM_CLR 從本來的 pins 3-5 變成 pins 1-3 (如上圖)，PWD_EN 直接拔除 等待十秒鐘以上 重新接" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="" /><meta name="description" content="使用機型 Dell R330
+BIOS,iDRAC 密碼/設定檔 清除 How to reset the BIOS of a Dell PowerEdge Server?
+將所有電源移除
+將 NVRAM_CLR 從本來的 pins 3-5 變成 pins 1-3 (如上圖)，PWD_EN 直接拔除
+等待十秒鐘以上 重新接上電源並開機 按 F2 進入 System Setting
+" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.133.1 with theme even" />
+<meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/post/20201119-clear_dell_bios_passwd_and_upgrade_driver/" />
@@ -45,7 +50,11 @@
 <meta property="og:url" content="http://localhost:1313/post/20201119-clear_dell_bios_passwd_and_upgrade_driver/">
   <meta property="og:site_name" content="老柯的學習筆記">
   <meta property="og:title" content="清除 Dell Server BIOS,iDRAC 密碼與設定值 &#43; 更新 Driver &#43; 建立 RAID">
-  <meta property="og:description" content="使用機型 Dell R330 BIOS,iDRAC 密碼/設定檔 清除 How to reset the BIOS of a Dell PowerEdge Server? 將所有電源移除 將 NVRAM_CLR 從本來的 pins 3-5 變成 pins 1-3 (如上圖)，PWD_EN 直接拔除 等待十秒鐘以上 重新接">
+  <meta property="og:description" content="使用機型 Dell R330
+BIOS,iDRAC 密碼/設定檔 清除 How to reset the BIOS of a Dell PowerEdge Server?
+將所有電源移除
+將 NVRAM_CLR 從本來的 pins 3-5 變成 pins 1-3 (如上圖)，PWD_EN 直接拔除
+等待十秒鐘以上 重新接上電源並開機 按 F2 進入 System Setting">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="post">
@@ -55,14 +64,22 @@
     <meta property="article:tag" content="Server">
 
   <meta itemprop="name" content="清除 Dell Server BIOS,iDRAC 密碼與設定值 &#43; 更新 Driver &#43; 建立 RAID">
-  <meta itemprop="description" content="使用機型 Dell R330 BIOS,iDRAC 密碼/設定檔 清除 How to reset the BIOS of a Dell PowerEdge Server? 將所有電源移除 將 NVRAM_CLR 從本來的 pins 3-5 變成 pins 1-3 (如上圖)，PWD_EN 直接拔除 等待十秒鐘以上 重新接">
+  <meta itemprop="description" content="使用機型 Dell R330
+BIOS,iDRAC 密碼/設定檔 清除 How to reset the BIOS of a Dell PowerEdge Server?
+將所有電源移除
+將 NVRAM_CLR 從本來的 pins 3-5 變成 pins 1-3 (如上圖)，PWD_EN 直接拔除
+等待十秒鐘以上 重新接上電源並開機 按 F2 進入 System Setting">
   <meta itemprop="datePublished" content="2020-11-19T10:03:54+00:00">
   <meta itemprop="dateModified" content="2022-07-06T17:57:17+08:00">
   <meta itemprop="wordCount" content="480">
   <meta itemprop="keywords" content="Dell,Server">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="清除 Dell Server BIOS,iDRAC 密碼與設定值 &#43; 更新 Driver &#43; 建立 RAID">
-  <meta name="twitter:description" content="使用機型 Dell R330 BIOS,iDRAC 密碼/設定檔 清除 How to reset the BIOS of a Dell PowerEdge Server? 將所有電源移除 將 NVRAM_CLR 從本來的 pins 3-5 變成 pins 1-3 (如上圖)，PWD_EN 直接拔除 等待十秒鐘以上 重新接">
+  <meta name="twitter:description" content="使用機型 Dell R330
+BIOS,iDRAC 密碼/設定檔 清除 How to reset the BIOS of a Dell PowerEdge Server?
+將所有電源移除
+將 NVRAM_CLR 從本來的 pins 3-5 變成 pins 1-3 (如上圖)，PWD_EN 直接拔除
+等待十秒鐘以上 重新接上電源並開機 按 F2 進入 System Setting">
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -278,7 +295,7 @@
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">Author</span>
-    <span class="item-content">老柯</span>
+    <span class="item-content"></span>
   </p>
   <p class="copyright-item">
     <span class="item-title">LastMod</span>
@@ -340,7 +357,7 @@
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

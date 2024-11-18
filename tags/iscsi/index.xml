@@ -13,7 +13,7 @@
       <link>http://localhost:1313/post/20210723-config-dell-ps6210-storage-using-minicom/</link>
       <pubDate>Fri, 23 Jul 2021 13:59:15 +0000</pubDate>
       <guid>http://localhost:1313/post/20210723-config-dell-ps6210-storage-using-minicom/</guid>
-      <description>本次 192.168.200.x/24 LAB 使用到的 Dell PS6210 本人。 參考資料: EqualLogic PS6210XS 及 CentOS 6.5 MPIO 實作 使用 minicom 連接 serial port 如果作業系統是 Windows 的話可以使用 PuTTY 連接。設定的參數都通用 (baud rate/Data bits/Stop bits/Parity) 使用到的線材:</description>
+      <description>&lt;p&gt;&lt;img src=&#34;dell_ps6210_in_207.jpg&#34; alt=&#34;dell_ps6210_in_207.jpg&#34;&gt;&lt;/p&gt;&#xA;&lt;br&gt;&#xA;&lt;p&gt;本次 &lt;code&gt;192.168.200.x/24&lt;/code&gt; LAB 使用到的 Dell PS6210 本人。&lt;br&gt;&#xA;參考資料: &lt;a href=&#34;https://www.weithenn.org/2015/03/equallogic-ps210xs-centos6-mpio.html&#34;&gt;EqualLogic PS6210XS 及 CentOS 6.5 MPIO 實作&lt;/a&gt;&lt;/p&gt;&#xA;&lt;br&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;使用-minicom-連接-serial-port&#34;&gt;使用 minicom 連接 serial port&lt;/h2&gt;&#xA;&lt;br&gt;&#xA;&lt;p&gt;&lt;strong&gt;&lt;span style=&#39;color:blue&#39;&gt;如果作業系統是 Windows 的話可以使用 PuTTY 連接。設定的參數都通用 (baud rate/Data bits/Stop bits/Parity)&lt;/span&gt;&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;br&gt;&#xA;&lt;p&gt;&lt;strong&gt;使用到的線材: RS 232&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;br&gt;&#xA;&lt;p&gt;&lt;img src=&#34;ugreen_db9_rs232.jpg&#34; alt=&#34;ugreen_db9_rs232.jpg&#34;&gt;&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

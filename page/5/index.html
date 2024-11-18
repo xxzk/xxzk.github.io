@@ -16,14 +16,14 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="Learning note." /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="" /><meta name="description" content="Learning note." /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.133.1 with theme even" />
+<meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/" />
@@ -52,8 +52,8 @@
 
   <meta itemprop="name" content="老柯的學習筆記">
   <meta itemprop="description" content="Learning note.">
-  <meta itemprop="datePublished" content="2024-09-18T10:10:13+00:00">
-  <meta itemprop="dateModified" content="2024-09-18T10:10:13+00:00">
+  <meta itemprop="datePublished" content="2024-10-09T14:47:52+00:00">
+  <meta itemprop="dateModified" content="2024-11-18T14:50:24+08:00">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="老柯的學習筆記">
   <meta name="twitter:description" content="Learning note.">
@@ -129,6 +129,32 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/20211220-diff-between-shell-and-exec-in-dockerfile/">Dockerfile - Shell 與 Exec 的差異</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2021-12-20 </span>
+      <div class="post-category">
+          <a href="/categories/dockerfile/"> dockerfile </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <br>
+<p><img src="docker-shell-vs-exec-form.jpg" alt="docker-shell-vs.-exec-form"></p>
+<br>
+<p>前陣子都在忙 <a href="https://www.cncf.io/certification/ckad/">CKAD</a> 的好久沒有在公司 Bookstack 耕耘了 XD ~<br>
+會看到這篇是因為 <a href="https://www.facebook.com/technologynoteniu/posts/432574848576653">邱 sir 的導讀</a> <del>懶惰沒有導讀完 所以我才產出這篇文 (竟敢斗膽說邱 sir 懶惰!!)</del></p>
+<p><a href="https://emmer.dev/blog/docker-shell-vs.-exec-form/">Docker Shell vs. Exec Form - Christian Emmer</a></p>
+    </div>
+    <div class="read-more">
+      <a href="/post/20211220-diff-between-shell-and-exec-in-dockerfile/" class="read-more-link">Read more...</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/20211126-linux-network-limiter-wondershaper/20211126-linux-network-limiter-wondershaper/">Linux 限制網路速度，使用 Wondershaper</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2021-11-26 </span>
@@ -140,7 +166,9 @@
   
   <div class="post-content">
     <div class="post-summary">
-      Wonder Shaper 是一支底層使用 Linux 自帶的流量控制命令 tc 的 shell script，能夠簡單、方便、快速 達成限流的目的 在 Wonder Shaper v1.3 以上版本等待列隊方式從本來的 CBQ 變更成 HT
+      <p><img src="pexels-kehn-hermano-3849167.jpg" alt="pexels-kehn-hermano-3849167"></p>
+<p><strong><span style='color:red'>Wonder Shaper 是一支底層使用 Linux 自帶的流量控制命令 <code>tc</code> 的 shell script，能夠簡單、方便、快速 達成限流的目的</span></strong> <br>
+在 Wonder Shaper v1.3 以上版本等待列隊方式從本來的 CBQ 變更成 HTB，針對 10Mb (tenmegabits) 以上的速率提供更好的流量控制方式。</p>
     </div>
     <div class="read-more">
       <a href="/post/20211126-linux-network-limiter-wondershaper/20211126-linux-network-limiter-wondershaper/" class="read-more-link">Read more...</a>
@@ -161,7 +189,28 @@
   
   <div class="post-content">
     <div class="post-summary">
-      117. OS Upgrades 如果我們要將某個 worder node 下線，做一些例行維護 (例如: OS Upgrade) 可以使用 1 kubectl drain &lt;node_name&gt; 來達成，原本在目標 worker node 的 pod 會被 re-schedule 到其它 worker node 上面。當維護完成再使用 1
+      <h2 id="117-os-upgrades">117. OS Upgrades</h2>
+<br>
+<p>如果我們要將某個 worder node 下線，做一些例行維護 (例如: OS Upgrade) 可以使用</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl drain &lt;node_name&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>來達成，原本在目標 worker node 的 <code>pod</code> 會被 re-schedule 到其它 worker node 上面。當維護完成再使用</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl uncorden &lt;node_name&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>來告訴 master node 我好了，可以把 <code>pod</code> 繼續 schedule 到我身上囉! <strong><span style='color:red'>被調度出去的 <code>pod</code> 不會恢復回來。</span></strong><br>
+如果單純要讓 master node 不要把 <code>pod</code> 調度過來 (mark as unschedulable) 的話則可以使用。</p>
     </div>
     <div class="read-more">
       <a href="/post/20211126-cka_note_section_6_cluster_maintence/" class="read-more-link">Read more...</a>
@@ -182,7 +231,21 @@
   
   <div class="post-content">
     <div class="post-summary">
-      89. Rolling Updates and Rollbacks 請參考 CKAD Note Section 6 Pod Design 82. Rolling Updates &amp; Rollbacks in Deployments。 93. Commands 請參考 CKAD Note Section 3 Configuration 37. [Pre-Request] Commands and Arguments in Docker。 97. Configure Environment Variables in Applications 請參考 CKAD Note Section 3 Configuration 42.
+      <h2 id="89-rolling-updates-and-rollbacks">89. Rolling Updates and Rollbacks</h2>
+<br>
+<p>請參考 CKAD Note Section 6 Pod Design <code>82. Rolling Updates &amp; Rollbacks in Deployments</code>。</p>
+<br>
+<h2 id="93-commands">93. Commands</h2>
+<br>
+<p>請參考 CKAD Note Section 3 Configuration <code>37. [Pre-Request] Commands and Arguments in Docker</code>。</p>
+<br>
+<h2 id="97-configure-environment-variables-in-applications">97. Configure Environment Variables in Applications</h2>
+<br>
+<p>請參考 CKAD Note Section 3 Configuration <code>42. Enviroment Variables</code>。</p>
+<br>
+<h2 id="98-configuring-configmaps-in-applications">98. Configuring ConfigMaps in Applications</h2>
+<br>
+<p>請參考 CKAD Note Section 3 Configuration <code>42. Enviroment Variables</code>。</p>
     </div>
     <div class="read-more">
       <a href="/post/20211125-cka_note_section_5_app_lifecycle_management/" class="read-more-link">Read more...</a>
@@ -203,31 +266,11 @@
   
   <div class="post-content">
     <div class="post-summary">
-      請參考 CKAD Note Section 5 Observability 76. Monitor and Debug Application 章節。
+      <br>
+<p>請參考 CKAD Note Section 5 Observability  <code>76. Monitor and Debug Application</code> 章節。</p>
     </div>
     <div class="read-more">
       <a href="/post/20211125-cka_note_section_4_logging_and_monitoring/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/20211124-cka_note_section_3_scheduling/">CKA Note Section 3 Scheduling</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2021-11-24 </span>
-      <div class="post-category">
-          <a href="/categories/cka-note/"> CKA-Note </a>
-          </div>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      50. Manual Scheduling 在 有 kube-scheduler 的情況下，我們可以在 pod definition YAML 裡面定義 pod.spec.nodeName: &lt;worker node name&gt; 來把 pod 放在指定 worker node。 在 沒有 kube-scheduler 的情況下，必須要以 json 格式 POST 到 api-server。B
-    </div>
-    <div class="read-more">
-      <a href="/post/20211124-cka_note_section_3_scheduling/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>
@@ -272,7 +315,7 @@
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

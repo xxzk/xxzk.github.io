@@ -13,28 +13,28 @@
       <link>http://localhost:1313/post/20220621-upgrade-vcsa-using-iso-file/</link>
       <pubDate>Tue, 21 Jun 2022 15:46:54 +0000</pubDate>
       <guid>http://localhost:1313/post/20220621-upgrade-vcsa-using-iso-file/</guid>
-      <description>前言 這篇簡單紀錄透過使用 patch iso 映像檔，在沒有外網的情況下去做 upgrade。更新的原因很簡單，原本的 VCSA 7.0U1 還沒有跨 vCenter vMotion (Advanced Cross vCenter Server vMotion, XVM) 移轉的功能，必</description>
+      <description>&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;&#xA;&lt;p&gt;這篇簡單紀錄透過使用 patch iso 映像檔，在沒有外網的情況下去做 upgrade。更新的原因很簡單，原本的 VCSA 7.0U1 還沒有跨 vCenter vMotion (Advanced Cross vCenter Server vMotion, XVM) 移轉的功能，必須要升級到 VCSA 7.0U1c 以上才有&lt;/p&gt;</description>
     </item>
     <item>
       <title>vSphere 顯示 VM Orphaned (虛擬機孤立狀態)</title>
       <link>http://localhost:1313/post/20210512-vsphere-showed-that-vm-is-orphanded/</link>
       <pubDate>Wed, 12 May 2021 11:25:56 +0000</pubDate>
       <guid>http://localhost:1313/post/20210512-vsphere-showed-that-vm-is-orphanded/</guid>
-      <description>通常這個狀況會發生在 ESXi 升級失敗、Firmware 更新踩到地雷爆炸、ESXi 重灌地獄，好不容易 ESXi 灌好了準備回到人間 卻在 vSphere 上面看到該 ESXi Host 所有 VM 顯</description>
+      <description>&lt;p&gt;&lt;img src=&#34;vm_orphaned.jpg&#34; alt=&#34;vm_orphaned&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;通常這個狀況會發生在 ESXi 升級失敗、Firmware 更新踩到地雷爆炸、ESXi 重灌地獄，好不容易 ESXi 灌好了準備回到人間&lt;br&gt;&#xA;卻在 vSphere 上面看到該 ESXi Host &lt;span style=&#34;color:red&#34;&gt;&lt;strong&gt;所有 VM 顯示 Orphaned (孤立)&lt;/strong&gt;&lt;/span&gt;&lt;br&gt;&#xA;&lt;del&gt;哪有可能有人這麼雖 有，就是我&lt;/del&gt;           &lt;del&gt;可能今年忘記安太座吧 (安太歲已經不流行了)&lt;/del&gt;&lt;/p&gt;</description>
     </item>
     <item>
       <title>升級 ESXi 6.5.0 -&gt; 6.7.0  Upgrading ESXi From 6.5.0 to 6.7.0</title>
       <link>http://localhost:1313/post/20210122-upgrade-esxi-650-to-670/</link>
       <pubDate>Fri, 22 Jan 2021 13:46:48 +0000</pubDate>
       <guid>http://localhost:1313/post/20210122-upgrade-esxi-650-to-670/</guid>
-      <description>圖片來源 Before Upgrading 此篇為這次針對 DCX 升級 ESXi 的安裝紀錄。新上了 4 台 Dell R630 暫時緩解 DCX 資源吃緊的情況。 使用 vMotion (VMware Live Migration 技術) 動態轉移將 VM 移至其他 ESXi Host，就可</description>
+      <description>&lt;p&gt;&lt;img src=&#34;esxi_670_logo.jpg&#34; alt=&#34;esxi_670_logo&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://clipart.me/download/maintenance-and-repair-series-of-signs-vector-9385&#34;&gt;圖片來源&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;before-upgrading&#34;&gt;Before Upgrading&lt;/h2&gt;&#xA;&lt;p&gt;此篇為這次針對 &lt;strong&gt;DCX&lt;/strong&gt; 升級 ESXi 的安裝紀錄。新上了 4 台 Dell R630 暫時緩解 &lt;strong&gt;DCX&lt;/strong&gt; 資源吃緊的情況。&lt;br&gt;&#xA;使用 vMotion (VMware Live Migration 技術) 動態轉移將 VM 移至其他 ESXi Host，就可以關機 維護/升級 啦~&lt;/p&gt;</description>
     </item>
     <item>
       <title>搞懂 vSphere、vCenter 和 ESXi 的關係</title>
       <link>http://localhost:1313/post/20201023-about-vsphere-vcenter-esxi/</link>
       <pubDate>Fri, 23 Oct 2020 14:03:42 +0000</pubDate>
       <guid>http://localhost:1313/post/20201023-about-vsphere-vcenter-esxi/</guid>
-      <description>拿 Office 2019 來舉例好了， 購買 Office 2019 其實就包含 Word、Excel、Powerpoint &amp;hellip;. 等軟體 vSphere 就好像 Office 2019 有相同概念就很好理解 ESXi ESXi 是 VMWare 公司出產的 OS Level</description>
+      <description>&lt;p&gt;&lt;strong&gt;拿 Office 2019 來舉例好了， 購買 Office 2019 其實就包含 Word、Excel、Powerpoint &amp;hellip;. 等軟體&lt;/strong&gt;&lt;br&gt;&#xA;&lt;strong&gt;vSphere 就好像 Office 2019 有相同概念就很好理解&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;img src=&#34;vSphere_suite.png&#34; alt=&#34;vSphere_suite.png&#34;&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;esxi&#34;&gt;ESXi&lt;/h2&gt;&#xA;&lt;p&gt;&lt;code&gt;ESXi&lt;/code&gt; 是 VMWare 公司出產的 &lt;code&gt;OS Level Hypervisor&lt;/code&gt; 又稱做 &lt;code&gt;Type I Hypervisor&lt;/code&gt; 對於虛擬化有不清楚的地方可以參考 洪朝貴老師的文章 (亦是圖片來源) &lt;a href=&#34;https://newtoypia.blogspot.com/2015/04/virtualization-terminology.html&#34;&gt;明智消費者的虛擬化技術基本觀念及術語 &lt;/a&gt;&lt;br&gt;&#xA;或者 &lt;a href=&#34;https://www.cyut.edu.tw/~ckhung/b/virt/virtualization.svg&#34;&gt;sozi 簡報&lt;/a&gt;&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

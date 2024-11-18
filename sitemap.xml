@@ -2,57 +2,85 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://localhost:1313/tags/aws/</loc>
-    <lastmod>2024-09-18T10:10:13+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>http://localhost:1313/categories/aws/</loc>
-    <lastmod>2024-09-18T10:10:13+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>http://localhost:1313/post/20240919-aws-ses/</loc>
-    <lastmod>2024-09-18T10:10:13+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>http://localhost:1313/categories/</loc>
-    <lastmod>2024-09-18T10:10:13+00:00</lastmod>
+    <lastmod>2024-11-18T14:50:24+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://localhost:1313/tags/kubernetes/</loc>
+    <lastmod>2024-11-18T14:50:24+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://localhost:1313/categories/kubernetes/</loc>
+    <lastmod>2024-11-18T14:50:24+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>http://localhost:1313/post/</loc>
-    <lastmod>2024-09-18T10:10:13+00:00</lastmod>
+    <lastmod>2024-11-18T14:50:24+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://localhost:1313/tags/ses/</loc>
-    <lastmod>2024-09-18T10:10:13+00:00</lastmod>
+    <loc>http://localhost:1313/tags/rabbitmq/</loc>
+    <lastmod>2024-11-18T14:50:24+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>http://localhost:1313/tags/</loc>
-    <lastmod>2024-09-18T10:10:13+00:00</lastmod>
+    <lastmod>2024-11-18T14:50:24+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://localhost:1313/post/20241009-rabbit-mq-cluster-k8s-operator/</loc>
+    <lastmod>2024-11-18T14:50:24+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>http://localhost:1313/</loc>
-    <lastmod>2024-09-18T10:10:13+00:00</lastmod>
+    <lastmod>2024-11-18T14:50:24+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://localhost:1313/tags/aws/</loc>
+    <lastmod>2024-09-19T16:21:28+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://localhost:1313/categories/aws/</loc>
+    <lastmod>2024-09-19T16:21:28+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://localhost:1313/post/20240919-aws-ses/</loc>
+    <lastmod>2024-09-19T16:21:28+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://localhost:1313/tags/ses/</loc>
+    <lastmod>2024-09-19T16:21:28+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -88,20 +116,6 @@
   <url>
     <loc>http://localhost:1313/post/20240322-macbook-hello-world/</loc>
     <lastmod>2024-03-28T16:15:48+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>http://localhost:1313/tags/kubernetes/</loc>
-    <lastmod>2023-06-13T15:15:27+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>http://localhost:1313/categories/kubernetes/</loc>
-    <lastmod>2023-06-13T15:15:27+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>

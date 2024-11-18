@@ -16,14 +16,14 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="Learning note." /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="" /><meta name="description" content="Learning note." /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.133.1 with theme even" />
+<meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/" />
@@ -52,8 +52,8 @@
 
   <meta itemprop="name" content="老柯的學習筆記">
   <meta itemprop="description" content="Learning note.">
-  <meta itemprop="datePublished" content="2024-09-18T10:10:13+00:00">
-  <meta itemprop="dateModified" content="2024-09-18T10:10:13+00:00">
+  <meta itemprop="datePublished" content="2024-10-09T14:47:52+00:00">
+  <meta itemprop="dateModified" content="2024-11-18T14:50:24+08:00">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="老柯的學習筆記">
   <meta name="twitter:description" content="Learning note.">
@@ -129,6 +129,32 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/20201023-about-vsphere-vcenter-esxi/">搞懂 vSphere、vCenter 和 ESXi 的關係</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2020-10-23 </span>
+      <div class="post-category">
+          <a href="/categories/vsphere/"> vSphere </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p><strong>拿 Office 2019 來舉例好了， 購買 Office 2019 其實就包含 Word、Excel、Powerpoint &hellip;. 等軟體</strong><br>
+<strong>vSphere 就好像 Office 2019 有相同概念就很好理解</strong></p>
+<p><img src="vSphere_suite.png" alt="vSphere_suite.png"></p>
+<h2 id="esxi">ESXi</h2>
+<p><code>ESXi</code> 是 VMWare 公司出產的 <code>OS Level Hypervisor</code> 又稱做 <code>Type I Hypervisor</code> 對於虛擬化有不清楚的地方可以參考 洪朝貴老師的文章 (亦是圖片來源) <a href="https://newtoypia.blogspot.com/2015/04/virtualization-terminology.html">明智消費者的虛擬化技術基本觀念及術語 </a><br>
+或者 <a href="https://www.cyut.edu.tw/~ckhung/b/virt/virtualization.svg">sozi 簡報</a></p>
+    </div>
+    <div class="read-more">
+      <a href="/post/20201023-about-vsphere-vcenter-esxi/" class="read-more-link">Read more...</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/20201015-ubuntu-rdp-client-remmina/">在 Ubuntu 使用 Windows 遠端桌面 (RDP)</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2020-10-15 </span>
@@ -140,7 +166,10 @@
   
   <div class="post-content">
     <div class="post-summary">
-      20201016 更新 公司架構圖的 IPsec 是 Site to Site VPN 啦! 一般使用者用的是 Remote access VPN 採用 SSL VPN FortiClient for Linux 可以正常使用喔~ 自己雷自己 這篇會出產的原因是因為&hellip;. FortiClient Linux
+      <p><strong>20201016 更新</strong></p>
+<p>公司架構圖的 IPsec 是 Site to Site VPN 啦! 一般使用者用的是 Remote access VPN 採用 SSL VPN<br>
+FortiClient for Linux 可以正常使用喔~ <del>自己雷自己</del></p>
+<p>這篇會出產的原因是因為&hellip;.</p>
     </div>
     <div class="read-more">
       <a href="/post/20201015-ubuntu-rdp-client-remmina/" class="read-more-link">Read more...</a>
@@ -161,7 +190,9 @@
   
   <div class="post-content">
     <div class="post-summary">
-      前幾天看到 G Suite 改版的消息，雖然 Education 與 Business 往後都沒有 看似 10T 實際上有無限儲存空間 的雲端硬碟能用了，不過 5TB 的空間對於一般用戶 (冷儲存) 來說已經非常夠用
+      <p><img src="rclone_logo.png" alt="rclone_logo"></p>
+<p>前幾天看到 <a href="https://www.ithome.com.tw/news/140395">G Suite 改版</a>的消息，雖然 <code>Education</code> 與 <code>Business</code> 往後都沒有 <strong>看似 10T 實際上有無限儲存空間</strong> 的雲端硬碟能用了，不過 <code>5TB</code> 的空間對於一般用戶 (冷儲存) 來說已經非常夠用。<br>
+但 個人/公司 資料放上公有雲端硬碟還是有隱私以及商業機密的問題，本篇旨意就是利用 <code>EncFS</code> 搭配 <code>Rclone</code> 來加解密 上傳、同步備份/下載、串流 放在 <code>Google Drive</code> 上面的檔案。</p>
     </div>
     <div class="read-more">
       <a href="/post/20201012-encfs-rclone/" class="read-more-link">Read more...</a>
@@ -182,7 +213,13 @@
   
   <div class="post-content">
     <div class="post-summary">
-      圖片來源 Spectra TEch 在開始之前先大致介紹一下台灣目前光纖網路接取技術使採用 GPON (Gigabit Passive Optical Network) 千兆級無源光網路，簡單架構如上圖 不知道大家有沒有曾經好奇過從數據
+      <p><img src="https://i.ytimg.com/vi/Oi0SNlMzMjQ/maxresdefault.jpg" alt="GPON_arch_Spectra TEch"><br>
+圖片來源 <a href="https://www.youtube.com/watch?v=Oi0SNlMzMjQ&amp;app=desktop">Spectra TEch</a></p>
+<hr>
+<p>在開始之前先大致介紹一下台灣目前光纖網路接取技術使採用 GPON (Gigabit Passive Optical Network) 千兆級無源光網路，簡單架構如上圖</p>
+<br>
+<blockquote>
+<p>不知道大家有沒有曾經好奇過從數據機到機房會經過哪些設備，這些設備分別又提供那些功能呢 ?</p>
     </div>
     <div class="read-more">
       <a href="/post/20200929-intro-hinet-gpon-modem-to-otl/" class="read-more-link">Read more...</a>
@@ -203,31 +240,18 @@
   
   <div class="post-content">
     <div class="post-summary">
-      由於 httpd 預設沒有將 access/error log 丟到 syslog 做處理，要需手動新增 新增方式有兩種 直接編輯 httpd.conf 將 log file 導向到 syslog 編輯 rsyslog.conf 叫 rsyslog 去撈本來存放在 /var/log/httpd/(access|error).log 第一種方式會需要做 systemctl reload httpd.service ，對於
+      <p>由於 httpd 預設沒有將 access/error log 丟到 syslog 做處理，要需手動新增<br>
+新增方式有兩種</p>
+<ol>
+<li>直接編輯 <code>httpd.conf</code> 將 log file 導向到 syslog</li>
+<li>編輯 <code>rsyslog.conf</code> 叫 rsyslog 去撈本來存放在 <code>/var/log/httpd/(access|error).log</code></li>
+</ol>
+<p>第一種方式會需要做 <code>systemctl reload httpd.service</code> ，對於線上運作中的機器有一定風險 <del>一個弄不好鍋就是你戴好 ^^</del><br>
+雖然有文章指出 <code>reload</code> 不會中斷現有的 connection 不過還是少碰為妙<br>
+<a href="https://elearning.wsldp.com/pcmagazine/apache-graceful-restart-centos-7/">How to do an Apache Graceful Restart in CentOS 7</a></p>
     </div>
     <div class="read-more">
       <a href="/post/20200924-httpd-log-to-graylog-with-rsyslog/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/20200924-graylog-installation-use-centos77/">Gralylog 安裝紀錄 (使用 Default CentOS 7.7)</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2020-09-24 </span>
-      <div class="post-category">
-          <a href="/categories//">  </a>
-          </div>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      本篇參考資料 How to install and configure Graylog on CentOS 7 執行系統更新 1 yum update -y 安裝 EPEL 1 yum install epel-release -y 安裝所需項目，其中 pwgen 套件是等等要用來產生 graylog server 設定檔的密鑰 1 yum install pwgen vim -y 安裝 java
-    </div>
-    <div class="read-more">
-      <a href="/post/20200924-graylog-installation-use-centos77/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>
@@ -272,7 +296,7 @@
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

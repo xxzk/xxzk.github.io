@@ -16,14 +16,18 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="Docker docs Use volumes 前言 Docker Volume 是一個比較好的機制將 Docker Container 產生的資料永久保存 有稍微摸索過 Docker 的人可能會有點疑惑: 不是可以透過 -v /home/xzk:/mydata 把 host OS 上面的目錄映射進去 container 裡面嗎" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="" /><meta name="description" content="Docker docs Use volumes
+前言 Docker Volume 是一個比較好的機制將 Docker Container 產生的資料永久保存
+有稍微摸索過 Docker 的人可能會有點疑惑: 不是可以透過 -v /home/xzk:/mydata 把 host OS 上面的目錄映射進去 container 裡面嗎? 為什麼我還需要 volumes ?
+的確，bind mount 某種程度上這樣很方便。不過 Docker 官方因為以下幾點原因，還是推薦使用 Docker Volume 作為永久資料保存的方式。
+" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.133.1 with theme even" />
+<meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/post/20210513-intro_docker_volume/" />
@@ -45,7 +49,10 @@
 <meta property="og:url" content="http://localhost:1313/post/20210513-intro_docker_volume/">
   <meta property="og:site_name" content="老柯的學習筆記">
   <meta property="og:title" content="Docker Volumes 介紹">
-  <meta property="og:description" content="Docker docs Use volumes 前言 Docker Volume 是一個比較好的機制將 Docker Container 產生的資料永久保存 有稍微摸索過 Docker 的人可能會有點疑惑: 不是可以透過 -v /home/xzk:/mydata 把 host OS 上面的目錄映射進去 container 裡面嗎">
+  <meta property="og:description" content="Docker docs Use volumes
+前言 Docker Volume 是一個比較好的機制將 Docker Container 產生的資料永久保存
+有稍微摸索過 Docker 的人可能會有點疑惑: 不是可以透過 -v /home/xzk:/mydata 把 host OS 上面的目錄映射進去 container 裡面嗎? 為什麼我還需要 volumes ?
+的確，bind mount 某種程度上這樣很方便。不過 Docker 官方因為以下幾點原因，還是推薦使用 Docker Volume 作為永久資料保存的方式。">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="post">
@@ -54,14 +61,20 @@
     <meta property="article:tag" content="Docker">
 
   <meta itemprop="name" content="Docker Volumes 介紹">
-  <meta itemprop="description" content="Docker docs Use volumes 前言 Docker Volume 是一個比較好的機制將 Docker Container 產生的資料永久保存 有稍微摸索過 Docker 的人可能會有點疑惑: 不是可以透過 -v /home/xzk:/mydata 把 host OS 上面的目錄映射進去 container 裡面嗎">
+  <meta itemprop="description" content="Docker docs Use volumes
+前言 Docker Volume 是一個比較好的機制將 Docker Container 產生的資料永久保存
+有稍微摸索過 Docker 的人可能會有點疑惑: 不是可以透過 -v /home/xzk:/mydata 把 host OS 上面的目錄映射進去 container 裡面嗎? 為什麼我還需要 volumes ?
+的確，bind mount 某種程度上這樣很方便。不過 Docker 官方因為以下幾點原因，還是推薦使用 Docker Volume 作為永久資料保存的方式。">
   <meta itemprop="datePublished" content="2021-05-13T13:37:47+00:00">
   <meta itemprop="dateModified" content="2022-07-04T10:24:41+08:00">
   <meta itemprop="wordCount" content="2587">
   <meta itemprop="keywords" content="Docker">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Docker Volumes 介紹">
-  <meta name="twitter:description" content="Docker docs Use volumes 前言 Docker Volume 是一個比較好的機制將 Docker Container 產生的資料永久保存 有稍微摸索過 Docker 的人可能會有點疑惑: 不是可以透過 -v /home/xzk:/mydata 把 host OS 上面的目錄映射進去 container 裡面嗎">
+  <meta name="twitter:description" content="Docker docs Use volumes
+前言 Docker Volume 是一個比較好的機制將 Docker Container 產生的資料永久保存
+有稍微摸索過 Docker 的人可能會有點疑惑: 不是可以透過 -v /home/xzk:/mydata 把 host OS 上面的目錄映射進去 container 裡面嗎? 為什麼我還需要 volumes ?
+的確，bind mount 某種程度上這樣很方便。不過 Docker 官方因為以下幾點原因，還是推薦使用 Docker Volume 作為永久資料保存的方式。">
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -791,7 +804,7 @@
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">Author</span>
-    <span class="item-content">老柯</span>
+    <span class="item-content"></span>
   </p>
   <p class="copyright-item">
     <span class="item-title">LastMod</span>
@@ -852,7 +865,7 @@
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

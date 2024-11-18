@@ -16,14 +16,17 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="Galera Cluster 是 MariaDB 多主架構 (Multi-Master) 的解決方案。 公司目前常用的主從架構 (Master-Slave) 沒辦法做到各個結點 (node) 均可讀寫，並且確保資料一致性，因此不適合做為 HA (高可用) 的解決方案" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="" /><meta name="description" content="
+Galera Cluster 是 MariaDB 多主架構 (Multi-Master) 的解決方案。
+公司目前常用的主從架構 (Master-Slave) 沒辦法做到各個結點 (node) 均可讀寫，並且確保資料一致性，因此不適合做為 HA (高可用) 的解決方案
+比較 Master-Slave Replication V.S Galera Cluster (Multi-Master) Master-Slave Replication " /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.133.1 with theme even" />
+<meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/post/20210324-mariadb-galera-cluster/" />
@@ -45,7 +48,9 @@
 <meta property="og:url" content="http://localhost:1313/post/20210324-mariadb-galera-cluster/">
   <meta property="og:site_name" content="老柯的學習筆記">
   <meta property="og:title" content="MariaDB Galera Cluster 建置">
-  <meta property="og:description" content="Galera Cluster 是 MariaDB 多主架構 (Multi-Master) 的解決方案。 公司目前常用的主從架構 (Master-Slave) 沒辦法做到各個結點 (node) 均可讀寫，並且確保資料一致性，因此不適合做為 HA (高可用) 的解決方案">
+  <meta property="og:description" content="Galera Cluster 是 MariaDB 多主架構 (Multi-Master) 的解決方案。
+公司目前常用的主從架構 (Master-Slave) 沒辦法做到各個結點 (node) 均可讀寫，並且確保資料一致性，因此不適合做為 HA (高可用) 的解決方案
+比較 Master-Slave Replication V.S Galera Cluster (Multi-Master) Master-Slave Replication">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="post">
@@ -55,14 +60,18 @@
     <meta property="article:tag" content="DB">
 
   <meta itemprop="name" content="MariaDB Galera Cluster 建置">
-  <meta itemprop="description" content="Galera Cluster 是 MariaDB 多主架構 (Multi-Master) 的解決方案。 公司目前常用的主從架構 (Master-Slave) 沒辦法做到各個結點 (node) 均可讀寫，並且確保資料一致性，因此不適合做為 HA (高可用) 的解決方案">
+  <meta itemprop="description" content="Galera Cluster 是 MariaDB 多主架構 (Multi-Master) 的解決方案。
+公司目前常用的主從架構 (Master-Slave) 沒辦法做到各個結點 (node) 均可讀寫，並且確保資料一致性，因此不適合做為 HA (高可用) 的解決方案
+比較 Master-Slave Replication V.S Galera Cluster (Multi-Master) Master-Slave Replication">
   <meta itemprop="datePublished" content="2021-03-24T11:55:50+00:00">
   <meta itemprop="dateModified" content="2023-02-21T11:36:22+08:00">
   <meta itemprop="wordCount" content="1828">
   <meta itemprop="keywords" content="MariaDB,DB">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="MariaDB Galera Cluster 建置">
-  <meta name="twitter:description" content="Galera Cluster 是 MariaDB 多主架構 (Multi-Master) 的解決方案。 公司目前常用的主從架構 (Master-Slave) 沒辦法做到各個結點 (node) 均可讀寫，並且確保資料一致性，因此不適合做為 HA (高可用) 的解決方案">
+  <meta name="twitter:description" content="Galera Cluster 是 MariaDB 多主架構 (Multi-Master) 的解決方案。
+公司目前常用的主從架構 (Master-Slave) 沒辦法做到各個結點 (node) 均可讀寫，並且確保資料一致性，因此不適合做為 HA (高可用) 的解決方案
+比較 Master-Slave Replication V.S Galera Cluster (Multi-Master) Master-Slave Replication">
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -634,7 +643,7 @@ P.S 寫成 <code>.sh</code> 檔案在給 <code>watch</code> 執行會比較方�
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">Author</span>
-    <span class="item-content">老柯</span>
+    <span class="item-content"></span>
   </p>
   <p class="copyright-item">
     <span class="item-title">LastMod</span>
@@ -696,7 +705,7 @@ P.S 寫成 <code>.sh</code> 檔案在給 <code>watch</code> 執行會比較方�
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

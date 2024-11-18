@@ -16,14 +16,18 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="LAB 架構圖 寫日記 這兩台 ESXi 主要是拿來測試 vSS 轉 vDS 用的。因為 DC1 10.x.x.53 ESXi Host 在 2021.02.19 發現 GBIC 故障 DC1 10.x.x.54 ESXi Host 2021.02.12 發生 DIMM_A3 Multi-bit memory errors (error rate 上升) &#43; 2021.02.19 Power Supply 1 (PS1) 死去。兩台共通點都是 2021.01" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="" /><meta name="description" content="
+LAB 架構圖 寫日記
+這兩台 ESXi 主要是拿來測試 vSS 轉 vDS 用的。因為 DC1 10.x.x.53 ESXi Host 在 2021.02.19 發現 GBIC 故障
+DC1 10.x.x.54 ESXi Host 2021.02.12 發生 DIMM_A3 Multi-bit memory errors (error rate 上升) &#43; 2021.02.19 Power Supply 1 (PS1) 死去。兩台共通點都是 2021.01 新上櫃 的，所以請廠商更換料件後放置觀察一周
+" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.133.1 with theme even" />
+<meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/post/20210224-what-network-will-vmware-migration-used/" />
@@ -45,7 +49,9 @@
 <meta property="og:url" content="http://localhost:1313/post/20210224-what-network-will-vmware-migration-used/">
   <meta property="og:site_name" content="老柯的學習筆記">
   <meta property="og:title" content="【實驗記錄】到底 VM 在關機 (PowerOff) 狀態搬移">
-  <meta property="og:description" content="LAB 架構圖 寫日記 這兩台 ESXi 主要是拿來測試 vSS 轉 vDS 用的。因為 DC1 10.x.x.53 ESXi Host 在 2021.02.19 發現 GBIC 故障 DC1 10.x.x.54 ESXi Host 2021.02.12 發生 DIMM_A3 Multi-bit memory errors (error rate 上升) &#43; 2021.02.19 Power Supply 1 (PS1) 死去。兩台共通點都是 2021.01">
+  <meta property="og:description" content="LAB 架構圖 寫日記
+這兩台 ESXi 主要是拿來測試 vSS 轉 vDS 用的。因為 DC1 10.x.x.53 ESXi Host 在 2021.02.19 發現 GBIC 故障
+DC1 10.x.x.54 ESXi Host 2021.02.12 發生 DIMM_A3 Multi-bit memory errors (error rate 上升) &#43; 2021.02.19 Power Supply 1 (PS1) 死去。兩台共通點都是 2021.01 新上櫃 的，所以請廠商更換料件後放置觀察一周">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="post">
@@ -55,14 +61,18 @@
     <meta property="article:tag" content="Vmotion">
 
   <meta itemprop="name" content="【實驗記錄】到底 VM 在關機 (PowerOff) 狀態搬移">
-  <meta itemprop="description" content="LAB 架構圖 寫日記 這兩台 ESXi 主要是拿來測試 vSS 轉 vDS 用的。因為 DC1 10.x.x.53 ESXi Host 在 2021.02.19 發現 GBIC 故障 DC1 10.x.x.54 ESXi Host 2021.02.12 發生 DIMM_A3 Multi-bit memory errors (error rate 上升) &#43; 2021.02.19 Power Supply 1 (PS1) 死去。兩台共通點都是 2021.01">
+  <meta itemprop="description" content="LAB 架構圖 寫日記
+這兩台 ESXi 主要是拿來測試 vSS 轉 vDS 用的。因為 DC1 10.x.x.53 ESXi Host 在 2021.02.19 發現 GBIC 故障
+DC1 10.x.x.54 ESXi Host 2021.02.12 發生 DIMM_A3 Multi-bit memory errors (error rate 上升) &#43; 2021.02.19 Power Supply 1 (PS1) 死去。兩台共通點都是 2021.01 新上櫃 的，所以請廠商更換料件後放置觀察一周">
   <meta itemprop="datePublished" content="2021-02-24T13:21:00+00:00">
   <meta itemprop="dateModified" content="2022-09-08T14:59:58+08:00">
   <meta itemprop="wordCount" content="295">
   <meta itemprop="keywords" content="Vmware,Vmotion">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="【實驗記錄】到底 VM 在關機 (PowerOff) 狀態搬移">
-  <meta name="twitter:description" content="LAB 架構圖 寫日記 這兩台 ESXi 主要是拿來測試 vSS 轉 vDS 用的。因為 DC1 10.x.x.53 ESXi Host 在 2021.02.19 發現 GBIC 故障 DC1 10.x.x.54 ESXi Host 2021.02.12 發生 DIMM_A3 Multi-bit memory errors (error rate 上升) &#43; 2021.02.19 Power Supply 1 (PS1) 死去。兩台共通點都是 2021.01">
+  <meta name="twitter:description" content="LAB 架構圖 寫日記
+這兩台 ESXi 主要是拿來測試 vSS 轉 vDS 用的。因為 DC1 10.x.x.53 ESXi Host 在 2021.02.19 發現 GBIC 故障
+DC1 10.x.x.54 ESXi Host 2021.02.12 發生 DIMM_A3 Multi-bit memory errors (error rate 上升) &#43; 2021.02.19 Power Supply 1 (PS1) 死去。兩台共通點都是 2021.01 新上櫃 的，所以請廠商更換料件後放置觀察一周">
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -206,7 +216,7 @@ vmnic 6 -&gt; vMotion (vSwitch1)</span></strong></p>
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">Author</span>
-    <span class="item-content">老柯</span>
+    <span class="item-content"></span>
   </p>
   <p class="copyright-item">
     <span class="item-title">LastMod</span>
@@ -268,7 +278,7 @@ vmnic 6 -&gt; vMotion (vSwitch1)</span></strong></p>
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

@@ -16,14 +16,15 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="235. Application Failure 厚，debug 到眼睛快脫窗 先開 App Web 頁面查看錯誤訊息 (不確定正式考試時網頁是不是也設計成顯示錯誤訊息)，判斷可能出問題的地方 第一題網頁能" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="" /><meta name="description" content="235. Application Failure 厚，debug 到眼睛快脫窗
+先開 App Web 頁面查看錯誤訊息 (不確定正式考試時網頁是不是也設計成顯示錯誤訊息)，判斷可能出問題的地方 第一題網頁能開判斷 Web pod &#43; service =&gt; 無問題，網頁顯示 -2 Name does not resolve =&gt; 連不到 DB =&gt; 往 mysql-service &ldquo;DNS name&rdquo; 查找 第二題一樣，網頁顯示 111 Connection refused =&gt; (1) 拒絕 =&gt; DB credential 有問題 =&gt; 要嘛在 Web pod env 不然就是 db pod env (2) svc port 號 OR selector 錯誤 OR pod 身上 port 錯誤 第三題 網頁直接打不開啊! =&gt; 等待時間先去查 web svc =&gt; curl http://&lt;svc_IP&gt;:&lt;port&gt; (1) 後來噴出 504 Gateway Error =&gt; 5xx 系列 server 內部問題 =&gt; 都要查! (包含 web svc) 槓 (2) k get all -o wide 先看一下能不能看出端倪，果然看到 selector:name=sql00001 =&gt; k get pod mysql --show-labels 第四題 env DB_User 不符合題目要求。 第五題 兩個 issue，第一個承上題。Access denied for user &#39;root&#39;@&#39;10.42.0.20&#39; (using password: YES) =&gt; 這 error 是 DB 噴的代表 DB svc 沒問題 第六題 三個 issue (1) web-service NodePort 錯誤 (2) env DB_User 錯誤 " /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.133.1 with theme even" />
+<meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/post/20220726-cka_note_section_13_troubleshooting/" />
@@ -45,7 +46,8 @@
 <meta property="og:url" content="http://localhost:1313/post/20220726-cka_note_section_13_troubleshooting/">
   <meta property="og:site_name" content="老柯的學習筆記">
   <meta property="og:title" content="CKA Note Section 13 Troubleshooting">
-  <meta property="og:description" content="235. Application Failure 厚，debug 到眼睛快脫窗 先開 App Web 頁面查看錯誤訊息 (不確定正式考試時網頁是不是也設計成顯示錯誤訊息)，判斷可能出問題的地方 第一題網頁能">
+  <meta property="og:description" content="235. Application Failure 厚，debug 到眼睛快脫窗
+先開 App Web 頁面查看錯誤訊息 (不確定正式考試時網頁是不是也設計成顯示錯誤訊息)，判斷可能出問題的地方 第一題網頁能開判斷 Web pod &#43; service =&gt; 無問題，網頁顯示 -2 Name does not resolve =&gt; 連不到 DB =&gt; 往 mysql-service “DNS name” 查找 第二題一樣，網頁顯示 111 Connection refused =&gt; (1) 拒絕 =&gt; DB credential 有問題 =&gt; 要嘛在 Web pod env 不然就是 db pod env (2) svc port 號 OR selector 錯誤 OR pod 身上 port 錯誤 第三題 網頁直接打不開啊! =&gt; 等待時間先去查 web svc =&gt; curl http://&lt;svc_IP&gt;:&lt;port&gt; (1) 後來噴出 504 Gateway Error =&gt; 5xx 系列 server 內部問題 =&gt; 都要查! (包含 web svc) 槓 (2) k get all -o wide 先看一下能不能看出端倪，果然看到 selector:name=sql00001 =&gt; k get pod mysql --show-labels 第四題 env DB_User 不符合題目要求。 第五題 兩個 issue，第一個承上題。Access denied for user &#39;root&#39;@&#39;10.42.0.20&#39; (using password: YES) =&gt; 這 error 是 DB 噴的代表 DB svc 沒問題 第六題 三個 issue (1) web-service NodePort 錯誤 (2) env DB_User 錯誤">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="post">
@@ -55,14 +57,16 @@
     <meta property="article:tag" content="Kubernetes">
 
   <meta itemprop="name" content="CKA Note Section 13 Troubleshooting">
-  <meta itemprop="description" content="235. Application Failure 厚，debug 到眼睛快脫窗 先開 App Web 頁面查看錯誤訊息 (不確定正式考試時網頁是不是也設計成顯示錯誤訊息)，判斷可能出問題的地方 第一題網頁能">
+  <meta itemprop="description" content="235. Application Failure 厚，debug 到眼睛快脫窗
+先開 App Web 頁面查看錯誤訊息 (不確定正式考試時網頁是不是也設計成顯示錯誤訊息)，判斷可能出問題的地方 第一題網頁能開判斷 Web pod &#43; service =&gt; 無問題，網頁顯示 -2 Name does not resolve =&gt; 連不到 DB =&gt; 往 mysql-service “DNS name” 查找 第二題一樣，網頁顯示 111 Connection refused =&gt; (1) 拒絕 =&gt; DB credential 有問題 =&gt; 要嘛在 Web pod env 不然就是 db pod env (2) svc port 號 OR selector 錯誤 OR pod 身上 port 錯誤 第三題 網頁直接打不開啊! =&gt; 等待時間先去查 web svc =&gt; curl http://&lt;svc_IP&gt;:&lt;port&gt; (1) 後來噴出 504 Gateway Error =&gt; 5xx 系列 server 內部問題 =&gt; 都要查! (包含 web svc) 槓 (2) k get all -o wide 先看一下能不能看出端倪，果然看到 selector:name=sql00001 =&gt; k get pod mysql --show-labels 第四題 env DB_User 不符合題目要求。 第五題 兩個 issue，第一個承上題。Access denied for user &#39;root&#39;@&#39;10.42.0.20&#39; (using password: YES) =&gt; 這 error 是 DB 噴的代表 DB svc 沒問題 第六題 三個 issue (1) web-service NodePort 錯誤 (2) env DB_User 錯誤">
   <meta itemprop="datePublished" content="2022-07-26T13:55:27+00:00">
   <meta itemprop="dateModified" content="2022-08-03T15:32:40+08:00">
   <meta itemprop="wordCount" content="999">
   <meta itemprop="keywords" content="CKA-Note,Kubernetes">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="CKA Note Section 13 Troubleshooting">
-  <meta name="twitter:description" content="235. Application Failure 厚，debug 到眼睛快脫窗 先開 App Web 頁面查看錯誤訊息 (不確定正式考試時網頁是不是也設計成顯示錯誤訊息)，判斷可能出問題的地方 第一題網頁能">
+  <meta name="twitter:description" content="235. Application Failure 厚，debug 到眼睛快脫窗
+先開 App Web 頁面查看錯誤訊息 (不確定正式考試時網頁是不是也設計成顯示錯誤訊息)，判斷可能出問題的地方 第一題網頁能開判斷 Web pod &#43; service =&gt; 無問題，網頁顯示 -2 Name does not resolve =&gt; 連不到 DB =&gt; 往 mysql-service “DNS name” 查找 第二題一樣，網頁顯示 111 Connection refused =&gt; (1) 拒絕 =&gt; DB credential 有問題 =&gt; 要嘛在 Web pod env 不然就是 db pod env (2) svc port 號 OR selector 錯誤 OR pod 身上 port 錯誤 第三題 網頁直接打不開啊! =&gt; 等待時間先去查 web svc =&gt; curl http://&lt;svc_IP&gt;:&lt;port&gt; (1) 後來噴出 504 Gateway Error =&gt; 5xx 系列 server 內部問題 =&gt; 都要查! (包含 web svc) 槓 (2) k get all -o wide 先看一下能不能看出端倪，果然看到 selector:name=sql00001 =&gt; k get pod mysql --show-labels 第四題 env DB_User 不符合題目要求。 第五題 兩個 issue，第一個承上題。Access denied for user &#39;root&#39;@&#39;10.42.0.20&#39; (using password: YES) =&gt; 這 error 是 DB 噴的代表 DB svc 沒問題 第六題 三個 issue (1) web-service NodePort 錯誤 (2) env DB_User 錯誤">
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -278,7 +282,7 @@
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">Author</span>
-    <span class="item-content">老柯</span>
+    <span class="item-content"></span>
   </p>
   <p class="copyright-item">
     <span class="item-title">LastMod</span>
@@ -340,7 +344,7 @@
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

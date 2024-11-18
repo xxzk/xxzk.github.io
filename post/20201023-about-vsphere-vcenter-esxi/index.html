@@ -16,14 +16,17 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="拿 Office 2019 來舉例好了， 購買 Office 2019 其實就包含 Word、Excel、Powerpoint &hellip;. 等軟體 vSphere 就好像 Office 2019 有相同概念就很好理解 ESXi ESXi 是 VMWare 公司出產的 OS Level" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="" /><meta name="description" content="拿 Office 2019 來舉例好了， 購買 Office 2019 其實就包含 Word、Excel、Powerpoint &hellip;. 等軟體
+vSphere 就好像 Office 2019 有相同概念就很好理解
+ESXi ESXi 是 VMWare 公司出產的 OS Level Hypervisor 又稱做 Type I Hypervisor 對於虛擬化有不清楚的地方可以參考 洪朝貴老師的文章 (亦是圖片來源) 明智消費者的虛擬化技術基本觀念及術語 或者 sozi 簡報
+" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.133.1 with theme even" />
+<meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/post/20201023-about-vsphere-vcenter-esxi/" />
@@ -45,7 +48,9 @@
 <meta property="og:url" content="http://localhost:1313/post/20201023-about-vsphere-vcenter-esxi/">
   <meta property="og:site_name" content="老柯的學習筆記">
   <meta property="og:title" content="搞懂 vSphere、vCenter 和 ESXi 的關係">
-  <meta property="og:description" content="拿 Office 2019 來舉例好了， 購買 Office 2019 其實就包含 Word、Excel、Powerpoint …. 等軟體 vSphere 就好像 Office 2019 有相同概念就很好理解 ESXi ESXi 是 VMWare 公司出產的 OS Level">
+  <meta property="og:description" content="拿 Office 2019 來舉例好了， 購買 Office 2019 其實就包含 Word、Excel、Powerpoint …. 等軟體
+vSphere 就好像 Office 2019 有相同概念就很好理解
+ESXi ESXi 是 VMWare 公司出產的 OS Level Hypervisor 又稱做 Type I Hypervisor 對於虛擬化有不清楚的地方可以參考 洪朝貴老師的文章 (亦是圖片來源) 明智消費者的虛擬化技術基本觀念及術語 或者 sozi 簡報">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="post">
@@ -54,14 +59,18 @@
     <meta property="article:tag" content="Vsphere">
 
   <meta itemprop="name" content="搞懂 vSphere、vCenter 和 ESXi 的關係">
-  <meta itemprop="description" content="拿 Office 2019 來舉例好了， 購買 Office 2019 其實就包含 Word、Excel、Powerpoint …. 等軟體 vSphere 就好像 Office 2019 有相同概念就很好理解 ESXi ESXi 是 VMWare 公司出產的 OS Level">
+  <meta itemprop="description" content="拿 Office 2019 來舉例好了， 購買 Office 2019 其實就包含 Word、Excel、Powerpoint …. 等軟體
+vSphere 就好像 Office 2019 有相同概念就很好理解
+ESXi ESXi 是 VMWare 公司出產的 OS Level Hypervisor 又稱做 Type I Hypervisor 對於虛擬化有不清楚的地方可以參考 洪朝貴老師的文章 (亦是圖片來源) 明智消費者的虛擬化技術基本觀念及術語 或者 sozi 簡報">
   <meta itemprop="datePublished" content="2020-10-23T14:03:42+00:00">
   <meta itemprop="dateModified" content="2022-12-22T16:18:02+08:00">
   <meta itemprop="wordCount" content="399">
   <meta itemprop="keywords" content="Vsphere">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="搞懂 vSphere、vCenter 和 ESXi 的關係">
-  <meta name="twitter:description" content="拿 Office 2019 來舉例好了， 購買 Office 2019 其實就包含 Word、Excel、Powerpoint …. 等軟體 vSphere 就好像 Office 2019 有相同概念就很好理解 ESXi ESXi 是 VMWare 公司出產的 OS Level">
+  <meta name="twitter:description" content="拿 Office 2019 來舉例好了， 購買 Office 2019 其實就包含 Word、Excel、Powerpoint …. 等軟體
+vSphere 就好像 Office 2019 有相同概念就很好理解
+ESXi ESXi 是 VMWare 公司出產的 OS Level Hypervisor 又稱做 Type I Hypervisor 對於虛擬化有不清楚的地方可以參考 洪朝貴老師的文章 (亦是圖片來源) 明智消費者的虛擬化技術基本觀念及術語 或者 sozi 簡報">
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -197,7 +206,7 @@ ESXi 少掉了一層 <code>Host OS</code> 動作更靈敏 (效能) 更不容易�
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">Author</span>
-    <span class="item-content">老柯</span>
+    <span class="item-content"></span>
   </p>
   <p class="copyright-item">
     <span class="item-title">LastMod</span>
@@ -258,7 +267,7 @@ ESXi 少掉了一層 <code>Host OS</code> 動作更靈敏 (效能) 更不容易�
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

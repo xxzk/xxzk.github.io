@@ -16,14 +16,14 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="Learning note." /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="" /><meta name="description" content="Learning note." /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.133.1 with theme even" />
+<meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/" />
@@ -52,8 +52,8 @@
 
   <meta itemprop="name" content="老柯的學習筆記">
   <meta itemprop="description" content="Learning note.">
-  <meta itemprop="datePublished" content="2024-09-18T10:10:13+00:00">
-  <meta itemprop="dateModified" content="2024-09-18T10:10:13+00:00">
+  <meta itemprop="datePublished" content="2024-10-09T14:47:52+00:00">
+  <meta itemprop="dateModified" content="2024-11-18T14:50:24+08:00">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="老柯的學習筆記">
   <meta name="twitter:description" content="Learning note.">
@@ -129,6 +129,61 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/20211102-ckad-note-section-6-pod-design/">CKAD Note Section 6 Pod Design</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2021-11-02 </span>
+      <div class="post-category">
+          <a href="/categories/ckad-note/"> CKAD-Note </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <h2 id="79-labels-selectors-and-annotations">79. Labels, Selectors and Annotations</h2>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Pod</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">label-demo</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">environment</span><span class="p">:</span><span class="w"> </span><span class="l">production</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">nginx</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">containers</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">nginx</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">nginx:1.14.2</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">containerPort</span><span class="p">:</span><span class="w"> </span><span class="m">80</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>我們可以在 kubernetes object 上貼上標籤 (labels) 用於分類。使用 <code>kubectl get pod --selector &lt;key&gt;=&lt;value&gt;</code> 可以篩選。</p>
+    </div>
+    <div class="read-more">
+      <a href="/post/20211102-ckad-note-section-6-pod-design/" class="read-more-link">Read more...</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/20211027-ckad-note-section-5-observability/">CKAD Note Section 5 Observability</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2021-10-27 </span>
@@ -140,7 +195,16 @@
   
   <div class="post-content">
     <div class="post-summary">
-      70. Readiness and Liveness Probes Readiness Probes 透過前面的章節我們可以得知 Pod 具有狀態 (status) 與 條件 (condition)，前者顯示 lifecycle 階段 (pending, containerCreating, running) pending: scheduler 正在安排 pod 到 worker-node 上，或者有問題 (kubectl describe 可
+      <h2 id="70-readiness-and-liveness-probes">70. Readiness and Liveness Probes</h2>
+<br>
+<h3 id="readiness-probes">Readiness Probes</h3>
+<p>透過前面的章節我們可以得知 <code>Pod</code> 具有狀態 (status) 與 條件 (condition)，前者顯示 lifecycle 階段 (pending, containerCreating, running)</p>
+<ul>
+<li>pending: scheduler 正在安排 <code>pod</code> 到 worker-node 上，或者有問題 (<code>kubectl describe</code> 可以查)</li>
+<li>containerCreating: <code>pod</code> 已經被放在 worker-node 上，正在建立容器</li>
+<li>running: 執行中</li>
+</ul>
+<p>Condition 的部分就有點類似細項，透過 <code>kubectl describe</code> 可以觀察。</p>
     </div>
     <div class="read-more">
       <a href="/post/20211027-ckad-note-section-5-observability/" class="read-more-link">Read more...</a>
@@ -161,7 +225,14 @@
   
   <div class="post-content">
     <div class="post-summary">
-      更新紀錄 2022.12.20: 整合另一篇筆記，關於缺少中繼憑證 (issuer certificate, intermediate certificate) 導致 curl 報錯，而瀏覽器沒事的 trouble shooting 過程。 介紹 Let&rsquo;s Encrypt 是一個 ISRG 建立的非營利項目，免費提供 TLS/SSL Certi
+      <center>
+<p><img src="https://letsencrypt.org/images/letsencrypt-logo-horizontal.svg" alt="Let&rsquo;s Encrypt logo"></p>
+</center>
+<h2 id="更新紀錄">更新紀錄</h2>
+<p>2022.12.20: 整合另一篇筆記，關於缺少中繼憑證 (issuer certificate, intermediate certificate) 導致 <code>curl</code> 報錯，而瀏覽器沒事的 trouble shooting 過程。</p>
+<h2 id="介紹">介紹</h2>
+<p><a href="https://letsencrypt.org/">Let&rsquo;s Encrypt</a> 是一個 <a href="https://www.abetterinternet.org/">ISRG</a> 建立的非營利項目，<strong>免費提供 TLS/SSL Certification</strong>。<br>
+除了有超多網路巨頭 <a href="https://letsencrypt.org/sponsors/">贊助商</a> 同時也是 <a href="https://www.linuxfoundation.org/projects">Linux Foundation 合作的項目</a></p>
     </div>
     <div class="read-more">
       <a href="/post/20211013-get-lets-encrypt-cert-using-certbot/" class="read-more-link">Read more...</a>
@@ -182,7 +253,59 @@
   
   <div class="post-content">
     <div class="post-summary">
-      Introduction to Terraform Terraform 是一款 Infrastructure as Code (IaC) 工具，以 code 來 定義 / 建造 (build) / 修改 (change) / 版本控制 (version) 基礎設施，支援地端 (on-prem) 與 雲端 (Cloud)。 安裝 Terraform CLI Install Terraform 1 2 3 4 5 6 sudo yum install -y
+      <p><img src="terraform_logo.jpg" alt="terraform_logo"></p>
+<p><a href="https://www.terraform.io/intro/index.html">Introduction to Terraform </a></p>
+<p><strong>Terraform</strong> 是一款 Infrastructure as Code (IaC) 工具，以 code 來 定義 / 建造 (build) / 修改 (change) / 版本控制 (version) 基礎設施，支援地端 (on-prem) 與 雲端 (Cloud)。</p>
+<h2 id="安裝-terraform-cli">安裝 Terraform CLI</h2>
+<p><a href="https://learn.hashicorp.com/tutorials/terraform/install-cli">Install Terraform</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo yum install -y yum-utils
+</span></span><span class="line"><span class="cl">sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo
+</span></span><span class="line"><span class="cl">sudo yum -y install terraform
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## Auto Completion</span>
+</span></span><span class="line"><span class="cl">terraform -install-autocomplete
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## show version</span>
+</span></span><span class="line"><span class="cl">terraform --version
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Terraform v1.0.7
+</span></span><span class="line"><span class="cl">on linux_amd64
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## The auto completion file in bashrc</span>
+</span></span><span class="line"><span class="cl">tail ~/.bashrc
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">...
+</span></span><span class="line"><span class="cl"><span class="nb">complete</span> -C /usr/bin/terraform terraform
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="terraform-hello-world-using-docker-provider">Terraform Hello World using Docker provider</h2>
+<p><a href="https://learn.hashicorp.com/tutorials/terraform/docker-build?in=terraform/docker-get-started">Build Infrastructure</a></p>
     </div>
     <div class="read-more">
       <a href="/post/20210922-terraform-hello-world/" class="read-more-link">Read more...</a>
@@ -203,31 +326,14 @@
   
   <div class="post-content">
     <div class="post-summary">
-      圖片來源 為什麼使用 Jumpserver 要上靜態路由? 公司現有 VM Network 環境只要是 Web server 的， default gateway 都是設定 Private IP Class B (172.x.0.0/16) 網段，也就是 Load Balance 身上。同時該台 VM 也會有 192.168.x.0/23 /24 的網卡 (192.168.x.254 or 253
+      <p><img src="pexels-athena-910299.jpg" alt="pexels-athena-910299"></p>
+<p><a href="https://www.pexels.com/zh-tw/photo/910299/">圖片來源</a></p>
+<h2 id="為什麼使用-jumpserver-要上靜態路由">為什麼使用 Jumpserver 要上靜態路由?</h2>
+<p>公司現有 VM Network 環境只要是 Web server 的， default gateway 都是設定 Private IP Class B (172.x.0.0/16) 網段，也就是 <strong><span style='color:blue'>Load Balance</span></strong> 身上。同時該台 VM 也會有 <code>192.168.x.0/23 /24</code> 的網卡 (<code>192.168.x.254 or 253</code> 在 <strong><span style='color:red'>Forti</span></strong> 身上)<br>
+直接上 routing table 會比文字敘述更清楚~</p>
     </div>
     <div class="read-more">
       <a href="/post/20210907-setting-jumpserver-static-route-with-ansible-playbook/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/20210730-ckad-note-section-3-configuration/">CKAD Note Section 3 Configuration</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2021-07-30 </span>
-      <div class="post-category">
-          <a href="/categories/ckad-note/"> CKAD-Note </a>
-          </div>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      37. [Pre-Request] Commands and Arguments in Docker 課程一開始就先來複習 Docker File 當中的 CMD 與 ENTRYPOINT，雖然講師說不在 CKAD 的考試範圍，不過 CKAD-2021 (即將在 2021 Q3 改版) 看起來是有被納入的
-    </div>
-    <div class="read-more">
-      <a href="/post/20210730-ckad-note-section-3-configuration/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>
@@ -272,7 +378,7 @@
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

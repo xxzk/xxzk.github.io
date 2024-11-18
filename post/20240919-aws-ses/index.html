@@ -16,14 +16,16 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="Introduction 這篇筆記一開始會先從如何手動透過 SES 發信開始，接著會介紹如何設定 SPF 和 DKIM。 邏輯是著手設定 SPF/DKIM 之前先看看目前 E-Mail 的狀態。 在開始之前建議先了解一" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="" /><meta name="description" content="Introduction 這篇筆記一開始會先從如何手動透過 SES 發信開始，接著會介紹如何設定 SPF 和 DKIM。 邏輯是著手設定 SPF/DKIM 之前先看看目前 E-Mail 的狀態。
+在開始之前建議先了解一下 E-Mail 寄送過程 An E-Mail&rsquo;s Journey
+" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.133.1 with theme even" />
+<meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/post/20240919-aws-ses/" />
@@ -45,24 +47,27 @@
 <meta property="og:url" content="http://localhost:1313/post/20240919-aws-ses/">
   <meta property="og:site_name" content="老柯的學習筆記">
   <meta property="og:title" content="AWS SES 手動發信 / SPF / DKIM 筆記">
-  <meta property="og:description" content="Introduction 這篇筆記一開始會先從如何手動透過 SES 發信開始，接著會介紹如何設定 SPF 和 DKIM。 邏輯是著手設定 SPF/DKIM 之前先看看目前 E-Mail 的狀態。 在開始之前建議先了解一">
+  <meta property="og:description" content="Introduction 這篇筆記一開始會先從如何手動透過 SES 發信開始，接著會介紹如何設定 SPF 和 DKIM。 邏輯是著手設定 SPF/DKIM 之前先看看目前 E-Mail 的狀態。
+在開始之前建議先了解一下 E-Mail 寄送過程 An E-Mail’s Journey">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="post">
     <meta property="article:published_time" content="2024-09-18T10:10:13+00:00">
-    <meta property="article:modified_time" content="2024-09-18T10:10:13+00:00">
+    <meta property="article:modified_time" content="2024-09-19T16:21:28+08:00">
     <meta property="article:tag" content="Aws">
     <meta property="article:tag" content="Ses">
 
   <meta itemprop="name" content="AWS SES 手動發信 / SPF / DKIM 筆記">
-  <meta itemprop="description" content="Introduction 這篇筆記一開始會先從如何手動透過 SES 發信開始，接著會介紹如何設定 SPF 和 DKIM。 邏輯是著手設定 SPF/DKIM 之前先看看目前 E-Mail 的狀態。 在開始之前建議先了解一">
+  <meta itemprop="description" content="Introduction 這篇筆記一開始會先從如何手動透過 SES 發信開始，接著會介紹如何設定 SPF 和 DKIM。 邏輯是著手設定 SPF/DKIM 之前先看看目前 E-Mail 的狀態。
+在開始之前建議先了解一下 E-Mail 寄送過程 An E-Mail’s Journey">
   <meta itemprop="datePublished" content="2024-09-18T10:10:13+00:00">
-  <meta itemprop="dateModified" content="2024-09-18T10:10:13+00:00">
+  <meta itemprop="dateModified" content="2024-09-19T16:21:28+08:00">
   <meta itemprop="wordCount" content="1748">
   <meta itemprop="keywords" content="Aws,Ses">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="AWS SES 手動發信 / SPF / DKIM 筆記">
-  <meta name="twitter:description" content="Introduction 這篇筆記一開始會先從如何手動透過 SES 發信開始，接著會介紹如何設定 SPF 和 DKIM。 邏輯是著手設定 SPF/DKIM 之前先看看目前 E-Mail 的狀態。 在開始之前建議先了解一">
+  <meta name="twitter:description" content="Introduction 這篇筆記一開始會先從如何手動透過 SES 發信開始，接著會介紹如何設定 SPF 和 DKIM。 邏輯是著手設定 SPF/DKIM 之前先看看目前 E-Mail 的狀態。
+在開始之前建議先了解一下 E-Mail 寄送過程 An E-Mail’s Journey">
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -620,13 +625,13 @@
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">Author</span>
-    <span class="item-content">老柯</span>
+    <span class="item-content"></span>
   </p>
   <p class="copyright-item">
     <span class="item-title">LastMod</span>
     <span class="item-content">
-        2024-09-18
-        
+        2024-09-19
+        <a href="/commit/4a4ab08166ea1f3f6c81e6716bab1c3bb2247bdf" title="update">(4a4ab08)</a>
     </span>
   </p>
   
@@ -638,7 +643,11 @@
           <a href="/tags/ses/">ses</a>
           </div>
       <nav class="post-nav">
-        
+        <a class="prev" href="/post/20241009-rabbit-mq-cluster-k8s-operator/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">在 Kubernetes 建設 RabbitMQ 使用 RabbitMQ Operator</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
         <a class="next" href="/post/20240909-aws-rds-encrypt/">
             <span class="next-text nav-default">AWS RDS Encryption 評估</span>
             <span class="next-text nav-mobile">Next</span>
@@ -678,7 +687,7 @@
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

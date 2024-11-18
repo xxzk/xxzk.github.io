@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>在 Kubernetes 建設 RabbitMQ 使用 RabbitMQ Operator - 老柯的學習筆記</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="" /><meta name="description" content="前言 本來託管在 AWS 的 RabbitMQ 因為成本考量只開 single instance，每次 maintenance windows 時 app 都會受到影響。因此決定嘗試在 Kubernetes 上建構 RabbitMQ cluster。
+RabbitMQ 版本: v3.13.7 (fallow operator default) Kubernetes (EKS) 版本: v1.30
+Installing RabbitMQ Cluster Operator in a Kubernetes Cluster [ref] 這個 Operator 負責建立 RabbitMQ Cluster，版本我固定當前最新版 v2.11.0，預設建立的 RabbitMQ 版本是 v3.13.7 (ref)。
+" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.136.5 with theme even" />
+
+
+<link rel="canonical" href="http://localhost:1313/post/20241009-rabbit-mq-cluster-k8s-operator/" />
+
+
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:url" content="http://localhost:1313/post/20241009-rabbit-mq-cluster-k8s-operator/">
+  <meta property="og:site_name" content="老柯的學習筆記">
+  <meta property="og:title" content="在 Kubernetes 建設 RabbitMQ 使用 RabbitMQ Operator">
+  <meta property="og:description" content="前言 本來託管在 AWS 的 RabbitMQ 因為成本考量只開 single instance，每次 maintenance windows 時 app 都會受到影響。因此決定嘗試在 Kubernetes 上建構 RabbitMQ cluster。
+RabbitMQ 版本: v3.13.7 (fallow operator default) Kubernetes (EKS) 版本: v1.30
+Installing RabbitMQ Cluster Operator in a Kubernetes Cluster [ref] 這個 Operator 負責建立 RabbitMQ Cluster，版本我固定當前最新版 v2.11.0，預設建立的 RabbitMQ 版本是 v3.13.7 (ref)。">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="post">
+    <meta property="article:published_time" content="2024-10-09T14:47:52+00:00">
+    <meta property="article:modified_time" content="2024-11-18T14:50:24+08:00">
+    <meta property="article:tag" content="Rabbitmq">
+    <meta property="article:tag" content="Kubernetes">
+
+  <meta itemprop="name" content="在 Kubernetes 建設 RabbitMQ 使用 RabbitMQ Operator">
+  <meta itemprop="description" content="前言 本來託管在 AWS 的 RabbitMQ 因為成本考量只開 single instance，每次 maintenance windows 時 app 都會受到影響。因此決定嘗試在 Kubernetes 上建構 RabbitMQ cluster。
+RabbitMQ 版本: v3.13.7 (fallow operator default) Kubernetes (EKS) 版本: v1.30
+Installing RabbitMQ Cluster Operator in a Kubernetes Cluster [ref] 這個 Operator 負責建立 RabbitMQ Cluster，版本我固定當前最新版 v2.11.0，預設建立的 RabbitMQ 版本是 v3.13.7 (ref)。">
+  <meta itemprop="datePublished" content="2024-10-09T14:47:52+00:00">
+  <meta itemprop="dateModified" content="2024-11-18T14:50:24+08:00">
+  <meta itemprop="wordCount" content="657">
+  <meta itemprop="keywords" content="Rabbitmq,Kubernetes">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="在 Kubernetes 建設 RabbitMQ 使用 RabbitMQ Operator">
+  <meta name="twitter:description" content="前言 本來託管在 AWS 的 RabbitMQ 因為成本考量只開 single instance，每次 maintenance windows 時 app 都會受到影響。因此決定嘗試在 Kubernetes 上建構 RabbitMQ cluster。
+RabbitMQ 版本: v3.13.7 (fallow operator default) Kubernetes (EKS) 版本: v1.30
+Installing RabbitMQ Cluster Operator in a Kubernetes Cluster [ref] 這個 Operator 負責建立 RabbitMQ Cluster，版本我固定當前最新版 v2.11.0，預設建立的 RabbitMQ 版本是 v3.13.7 (ref)。">
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">老柯的學習筆記</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">老柯的學習筆記</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">在 Kubernetes 建設 RabbitMQ 使用 RabbitMQ Operator</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2024-10-09 </span>
+        <div class="post-category">
+            <a href="/categories/kubernetes/"> kubernetes </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#前言">前言</a></li>
+        <li><a href="#installing-rabbitmq-cluster-operator-in-a-kubernetes-cluster-refhttpswwwrabbitmqcomkubernetesoperatorinstall-operator">Installing RabbitMQ Cluster Operator in a Kubernetes Cluster [<a href="https://www.rabbitmq.com/kubernetes/operator/install-operator">ref</a>]</a></li>
+        <li><a href="#creating-a-rabbitmq-cluster-examplehttpsgithubcomrabbitmqcluster-operatortreemaindocsexamples">Creating a RabbitMQ Cluster [<a href="https://github.com/rabbitmq/cluster-operator/tree/main/docs/examples/">example</a>]</a></li>
+        <li><a href="#pdb-refhttpswwwrabbitmqcomkubernetesoperatorusing-operatorcreate-pdb">PDB [<a href="https://www.rabbitmq.com/kubernetes/operator/using-operator#create-pdb">ref</a>]</a></li>
+        <li><a href="#壓力連線-測試-refhttpswwwrabbitmqcomkubernetesoperatorquickstart-operatorconnect-an-application-to-the-cluster">壓力/連線 測試 [<a href="https://www.rabbitmq.com/kubernetes/operator/quickstart-operator#connect-an-application-to-the-cluster">ref</a>]</a></li>
+        <li><a href="#參考資料">參考資料</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>本來託管在 AWS 的 RabbitMQ 因為成本考量只開 single instance，每次 maintenance windows 時 app 都會受到影響。因此決定嘗試在 Kubernetes 上建構 RabbitMQ cluster。</p>
+<blockquote>
+<p>RabbitMQ 版本: v3.13.7 (fallow operator default) <br>
+Kubernetes (EKS) 版本: v1.30</p>
+</blockquote>
+<h2 id="installing-rabbitmq-cluster-operator-in-a-kubernetes-cluster-refhttpswwwrabbitmqcomkubernetesoperatorinstall-operator">Installing RabbitMQ Cluster Operator in a Kubernetes Cluster [<a href="https://www.rabbitmq.com/kubernetes/operator/install-operator">ref</a>]</h2>
+<p>這個 Operator 負責建立 RabbitMQ Cluster，版本我固定當前最新版 v2.11.0，預設建立的 RabbitMQ 版本是 v3.13.7 (<a href="https://github.com/rabbitmq/cluster-operator/tree/v2.10.0?tab=readme-ov-file#supported-versions">ref</a>)。</p>
+<p>RabbitMQ instance 版本是由 Operator 控制 (目前沒找到可以自訂版本的方法，maybe set image ?)，可以在 <a href="https://github.com/rabbitmq/cluster-operator/releases">release Changelog</a> 看到。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl apply -f <span class="s2">&#34;https://github.com/rabbitmq/cluster-operator/releases/download/v2.11.0/cluster-operator.yml&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># namespace/rabbitmq-system created</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># customresourcedefinition.apiextensions.k8s.io/rabbitmqclusters.rabbitmq.com created</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># serviceaccount/rabbitmq-cluster-operator created</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># role.rbac.authorization.k8s.io/rabbitmq-cluster-leader-election-role created</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># clusterrole.rbac.authorization.k8s.io/rabbitmq-cluster-operator-role created</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># rolebinding.rbac.authorization.k8s.io/rabbitmq-cluster-leader-election-rolebinding created</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># clusterrolebinding.rbac.authorization.k8s.io/rabbitmq-cluster-operator-rolebinding created</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># deployment.apps/rabbitmq-cluster-operator created</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="creating-a-rabbitmq-cluster-examplehttpsgithubcomrabbitmqcluster-operatortreemaindocsexamples">Creating a RabbitMQ Cluster [<a href="https://github.com/rabbitmq/cluster-operator/tree/main/docs/examples/">example</a>]</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">rabbitmq.com/v1beta1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">RabbitmqCluster</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">dev-rabbitmq</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">app.kubernetes.io/name</span><span class="p">:</span><span class="w"> </span><span class="l">dev-rabbitmq</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="m">3</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">resources</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">requests</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="l">300m</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l">256Mi</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">limits</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="l">2000m</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l">256Mi</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">rabbitmq</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">additionalConfig</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">      vm_memory_high_watermark.absolute = 200MB</span><span class="w">      
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">affinity</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">podAntiAffinity</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">preferredDuringSchedulingIgnoredDuringExecution</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">weight</span><span class="p">:</span><span class="w"> </span><span class="m">100</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">podAffinityTerm</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">labelSelector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">matchExpressions</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span>- <span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l">app.kubernetes.io/name</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="l">In</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="nt">values</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span>- <span class="l">dev-rabbitmq</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">topologyKey</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes.io/hostname</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">nodeAffinity</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">requiredDuringSchedulingIgnoredDuringExecution</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">nodeSelectorTerms</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="nt">matchExpressions</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span>- <span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l">eks.amazonaws.com/nodegroup</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="l">In</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="nt">values</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                  </span>- <span class="l">ARM-t4g-medium-1a</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="pdb-refhttpswwwrabbitmqcomkubernetesoperatorusing-operatorcreate-pdb">PDB [<a href="https://www.rabbitmq.com/kubernetes/operator/using-operator#create-pdb">ref</a>]</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="w">    </span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">policy/v1beta1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">PodDisruptionBudget</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">dev-rabbitmq</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">maxUnavailable</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">selector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">matchLabels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">app.kubernetes.io/name</span><span class="p">:</span><span class="w"> </span><span class="l">dev-rabbitmq</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="壓力連線-測試-refhttpswwwrabbitmqcomkubernetesoperatorquickstart-operatorconnect-an-application-to-the-cluster">壓力/連線 測試 [<a href="https://www.rabbitmq.com/kubernetes/operator/quickstart-operator#connect-an-application-to-the-cluster">ref</a>]</h2>
+<p><strong><span style='color:red'>自行替換 <code>hello-world</code></span></strong></p>
+<ul>
+<li><code>--metrics-format compact</code> 簡化 output 格式 <a href="https://perftest.rabbitmq.com/#console-output-format">Console Output Format (min/median/75th/95th/99th)</a></li>
+<li><code>--use-millis</code> 使用毫秒單位</li>
+<li><code>--quorum-queue --queue eric-quorum</code> 使用 <code>eric-quorum</code> 這個 quorum queue 作為壓測對象</li>
+<li><code>--rate 1000</code> 每秒 1000 則訊息 <a href="https://perftest.rabbitmq.com/#limiting-and-varying-publishing-rate">Limiting and varying publishing rate</a></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">username</span><span class="o">=</span><span class="s2">&#34;</span><span class="k">$(</span>kubectl get secret dev-rabbitmq-default-user -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.data.username}&#39;</span> <span class="p">|</span> base64 --decode<span class="k">)</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">password</span><span class="o">=</span><span class="s2">&#34;</span><span class="k">$(</span>kubectl get secret dev-rabbitmq-default-user -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.data.password}&#39;</span> <span class="p">|</span> base64 --decode<span class="k">)</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">service</span><span class="o">=</span><span class="s2">&#34;</span><span class="k">$(</span>kubectl get service dev-rabbitmq -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.spec.clusterIP}&#39;</span><span class="k">)</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">kubectl run perf-test --image<span class="o">=</span>pivotalrabbitmq/perf-test -- --uri amqp://<span class="nv">$username</span>:<span class="nv">$password</span>@<span class="nv">$service</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## test quorum queue</span>
+</span></span><span class="line"><span class="cl">kubectl run perf-test --image<span class="o">=</span>pivotalrabbitmq/perf-test -- --uri amqp://<span class="nv">$username</span>:<span class="nv">$password</span>@<span class="nv">$service</span> --quorum-queue --queue eric-quorum --metrics-format compact --use-millis --rate <span class="m">100</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## Test client HPA (Fill up the queue)</span>
+</span></span><span class="line"><span class="cl">kubectl run perf-test --image<span class="o">=</span>pivotalrabbitmq/perf-test -- <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--uri amqp://<span class="nv">$username</span>:<span class="nv">$password</span>@<span class="nv">$service</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--quorum-queue --queue eric-quorum <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--producers <span class="m">1</span> --consumers <span class="m">0</span> --predeclared --routing-key rk <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--metrics-format compact --use-millis --rate <span class="m">100</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># pod/perf-test created</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">kubectl logs -f perf-test 2&gt;<span class="p">&amp;</span><span class="m">1</span> <span class="p">|</span> tee  ~/Downloads/rabbitMQ-cluster-perf-test-<span class="k">$(</span>date <span class="s2">&#34;+%m-%d-%H-%M&#34;</span><span class="k">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong><span style='color:red'>預設情況下 60% RAM usage 就會觸發 RabbitMQ 的 memory high watermark，同時 alerm triggered + blocked connection。</span></strong><a href="https://www.rabbitmq.com/docs/memory#threshold">ref</a></p>
+<p>可以透過設定 <del><code>vm_memory_high_watermark.relative = 0.8</code></del> =&gt; Container 環境官方說不適合用 % 數 <code>vm_memory_high_watermark.absolute = 200MB</code> 來調整，running 中的 node 也可透過 <code>rabbitmqctl set_vm_memory_high_watermark &lt;fraction&gt;</code> <strong><span style='color:red'>動態調整</span></strong>。</p>
+<h2 id="參考資料">參考資料</h2>
+<ul>
+<li><a href="https://www.infracloud.io/blogs/setup-rabbitmq-ha-mode-kubernetes-operator/">Setup RabbitMQ in HA Mode using Kubernetes Operator</a></li>
+<li><a href="https://github.com/rabbitmq/cluster-operator/issues/1003">manage rabbitmq version with operator · Issue #1003 · rabbitmq/cluster-operator</a></li>
+<li><a href="https://www.rabbitmq.com/docs/quorum-queues">Quorum Queues | RabbitMQ</a></li>
+<li><a href="https://www.rabbitmq.com/blog/2023/03/02/quorum-queues-migration#finding-the-queues-and-features-being-used">Migrating from Mirrored Classic Queues to Quorum Queues | RabbitMQ</a></li>
+<li><a href="https://knowledge.broadcom.com/external/article/293163/rabbitmq-quorum-queue-baseline-performan.html">RabbitMQ Quorum Queue baseline performance testing</a></li>
+</ul>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content"></span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2024-11-18
+        <a href="/commit/9f81df12860f54810466ef4e3f96a9f476f28ad4" title="update">(9f81df1)</a>
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/rabbitmq/">rabbitmq</a>
+          <a href="/tags/kubernetes/">kubernetes</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/20240919-aws-ses/">
+            <span class="next-text nav-default">AWS SES 手動發信 / SPF / DKIM 筆記</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/xxzk" class="iconfont icon-github" title="github"></a>
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2022 - 
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

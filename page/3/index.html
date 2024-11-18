@@ -16,14 +16,14 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="Learning note." /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="" /><meta name="description" content="Learning note." /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.133.1 with theme even" />
+<meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/" />
@@ -52,8 +52,8 @@
 
   <meta itemprop="name" content="老柯的學習筆記">
   <meta itemprop="description" content="Learning note.">
-  <meta itemprop="datePublished" content="2024-09-18T10:10:13+00:00">
-  <meta itemprop="dateModified" content="2024-09-18T10:10:13+00:00">
+  <meta itemprop="datePublished" content="2024-10-09T14:47:52+00:00">
+  <meta itemprop="dateModified" content="2024-11-18T14:50:24+08:00">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="老柯的學習筆記">
   <meta name="twitter:description" content="Learning note.">
@@ -129,6 +129,29 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/20220721-cka_note_section_11_install_k8s_the_kubeadm_way/">CKA Note Section 11 Install K8s the kubeadm way</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2022-07-21 </span>
+      <div class="post-category">
+          <a href="/categories/cka-note/"> CKA-Note </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <h2 id="225-important-update-kubernetes-the-hard-way">225. Important Update: Kubernetes the Hard Way</h2>
+<p>這個章節其實是 Section 10 的最後一個 lecture，不過我想擺在這裡應該會比較合適!<br>
+講師提供一系列 Youtube 影片來示範如何像個硬漢一樣 <a href="https://www.youtube.com/watch?v=uUupRagM7m0&amp;list=PL2We04F3Y_41jYdadX55fdJplDvgNGENo">Install Kubernetes from Scratch</a> 課程中所有範例可以在  <a href="https://github.com/mmumshad/kubernetes-the-hard-way">mmumshad / kubernetes-the-hard-way </a> 找到。</p>
+    </div>
+    <div class="read-more">
+      <a href="/post/20220721-cka_note_section_11_install_k8s_the_kubeadm_way/" class="read-more-link">Read more...</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/20220719-cka_note_section_10_design_and_install_a_kubernetes_cluster/">CKA Note Section 10 Design and Install a Kubernetes Cluster</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2022-07-19 </span>
@@ -140,7 +163,11 @@
   
   <div class="post-content">
     <div class="post-summary">
-      222. Choosing Kubernetes Infrastructure 這個章節在講如何選擇 K8s 建在哪裡，知道了一個蠻有趣的名詞 Kubernetes Turnkey Cloud Solutions 223. Configure High Availability ▲ api-server 可以是 Active-Active mode，不過 kubectl config 一次只能設定一個 URL，所以建議
+      <h2 id="222-choosing-kubernetes-infrastructure">222. Choosing Kubernetes Infrastructure</h2>
+<p>這個章節在講如何選擇 K8s 建在哪裡，知道了一個蠻有趣的名詞 <a href="https://kubernetes.io/docs/setup/production-environment/turnkey-solutions/">Kubernetes Turnkey Cloud Solutions</a></p>
+<h2 id="223-configure-high-availability">223. Configure High Availability</h2>
+<p><img src="api_server_ha_0.jpg" alt="api_server_ha_0"></p>
+<p>▲ <code>api-server</code> 可以是 Active-Active mode，不過 <code>kubectl</code> config 一次只能設定一個 URL，所以建議在前面放一個 load blancer</p>
     </div>
     <div class="read-more">
       <a href="/post/20220719-cka_note_section_10_design_and_install_a_kubernetes_cluster/" class="read-more-link">Read more...</a>
@@ -161,7 +188,9 @@
   
   <div class="post-content">
     <div class="post-summary">
-      前言 這次主要是有放了一千年的老舊服務 VM 疑似被攻擊/入侵的疑慮，才找工具來掃看看~ 一開始是用 開源系統安全稽核工具：Lynis ，但使用後發現 Lynis 比
+      <p><img src="clamav_official_site.jpg" alt="clamav_official_site"></p>
+<h2 id="前言">前言</h2>
+<p>這次主要是有放了一千年的老舊服務 VM 疑似被攻擊/入侵的疑慮，才找工具來掃看看~ 一開始是用 <a href="https://ithelp.ithome.com.tw/articles/10217009">開源系統安全稽核工具：Lynis </a>，但使用後發現 Lynis 比較像是安全稽核，沒有掃描惡意程式的功能。</p>
     </div>
     <div class="read-more">
       <a href="/post/20220718-linux-antivirus-tool-clamav-how-to-use/" class="read-more-link">Read more...</a>
@@ -182,7 +211,15 @@
   
   <div class="post-content">
     <div class="post-summary">
-      前言 既然這個章節是介紹 Kubernetes Networking 那就先來複習一下之前看過的優質文章吧! [Hwchiu Docker Network - 網路模型 系列] Docker Network - 網路模型 [Day10] Container Network Interface 介紹 188. Prerequisite - Network Namespaces ▲ 使用 ip netns exec &lt;NAMESPACE&gt; ip link
+      <h2 id="前言">前言</h2>
+<p>既然這個章節是介紹 Kubernetes Networking 那就先來複習一下之前看過的優質文章吧!</p>
+<ul>
+<li><a href="https://www.hwchiu.com/docker-network-model.html">[Hwchiu Docker Network - 網路模型 系列] Docker Network - 網路模型</a></li>
+<li><a href="https://ithelp.ithome.com.tw/articles/10220626">[Day10] Container Network Interface 介紹</a></li>
+</ul>
+<h2 id="188-prerequisite---network-namespaces">188. Prerequisite - Network Namespaces</h2>
+<p><img src="list_link_as_ns.jpg" alt="list_link_as_ns"></p>
+<p>▲ 使用 <code>ip netns exec &lt;NAMESPACE&gt; ip link</code> 能以 <code>&lt;NAMESPACE&gt;</code> 的視角查看，<strong><span style='color:blue'>或者更快的 <code>ip -n &lt;NAMESPACE&gt; link</code></span></strong>。</p>
     </div>
     <div class="read-more">
       <a href="/post/20220704-cka_note_section_9_networking/" class="read-more-link">Read more...</a>
@@ -203,31 +240,18 @@
   
   <div class="post-content">
     <div class="post-summary">
-      169. Storage in Docker 這個章節主要在講 Docker container image/volume 的概念，可以參考我之前打的兩篇文章: Docker Image 介紹 Docker Volumes 介紹 171. Container Storage Interface (CSI) 關於 CRI 的介紹非常推薦 Hwchiu 鐵人賽系列: [Day5] Kubernetes &amp; CRI (Container Runtime Interface)(I)
+      <h2 id="169-storage-in-docker">169. Storage in Docker</h2>
+<p>這個章節主要在講 Docker container image/volume 的概念，可以參考我之前打的兩篇文章:</p>
+<ul>
+<li><a href="https://blog.xxzk.me/post/20210608-intro_docker_image/">Docker Image 介紹 </a></li>
+<li><a href="https://blog.xxzk.me/post/20210513-intro_docker_volume/">Docker Volumes 介紹</a></li>
+</ul>
+<h2 id="171-container-storage-interface-csi">171. Container Storage Interface (CSI)</h2>
+<p>關於 CRI 的介紹非常推薦 Hwchiu 鐵人賽系列: <a href="https://ithelp.ithome.com.tw/articles/10218127">[Day5] Kubernetes &amp; CRI (Container Runtime Interface)(I) </a></p>
+<p><img src="three_interface_in_k8s.jpg" alt="three_interface_in_k8s"></p>
     </div>
     <div class="read-more">
       <a href="/post/20220704-cka_note_section_8_storage/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/20220623-install-librenms-with-docker-container/">使用 container 快速部屬 LibreNMS</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2022-06-23 </span>
-      <div class="post-category">
-          <a href="/categories/librenms/"> LibreNMS </a>
-          </div>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      前言 本篇文章紀錄如何透過 docker-compose 快速架一個 LibreNMS 起來。這篇會出現的原因是為了要監控/debug IDC 0F iDRAC/ESXi 電口對接 Cisco Switch 的問題~ 安裝 docker-compose 【standalone】
-    </div>
-    <div class="read-more">
-      <a href="/post/20220623-install-librenms-with-docker-container/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>
@@ -272,7 +296,7 @@
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

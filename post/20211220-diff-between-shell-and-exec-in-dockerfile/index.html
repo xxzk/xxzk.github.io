@@ -16,14 +16,18 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="前陣子都在忙 CKAD 的好久沒有在公司 Bookstack 耕耘了 XD ~ 會看到這篇是因為 邱 sir 的導讀 懶惰沒有導讀完 所以我才產出這篇文 (竟敢斗膽說邱 sir 懶惰!!) Docker Shell vs. Exec Form - Christian" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="" /><meta name="description" content="
+前陣子都在忙 CKAD 的好久沒有在公司 Bookstack 耕耘了 XD ~
+會看到這篇是因為 邱 sir 的導讀 懶惰沒有導讀完 所以我才產出這篇文 (竟敢斗膽說邱 sir 懶惰!!)
+Docker Shell vs. Exec Form - Christian Emmer
+" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.133.1 with theme even" />
+<meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/post/20211220-diff-between-shell-and-exec-in-dockerfile/" />
@@ -45,7 +49,9 @@
 <meta property="og:url" content="http://localhost:1313/post/20211220-diff-between-shell-and-exec-in-dockerfile/">
   <meta property="og:site_name" content="老柯的學習筆記">
   <meta property="og:title" content="Dockerfile - Shell 與 Exec 的差異">
-  <meta property="og:description" content="前陣子都在忙 CKAD 的好久沒有在公司 Bookstack 耕耘了 XD ~ 會看到這篇是因為 邱 sir 的導讀 懶惰沒有導讀完 所以我才產出這篇文 (竟敢斗膽說邱 sir 懶惰!!) Docker Shell vs. Exec Form - Christian">
+  <meta property="og:description" content="前陣子都在忙 CKAD 的好久沒有在公司 Bookstack 耕耘了 XD ~
+會看到這篇是因為 邱 sir 的導讀 懶惰沒有導讀完 所以我才產出這篇文 (竟敢斗膽說邱 sir 懶惰!!)
+Docker Shell vs. Exec Form - Christian Emmer">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="post">
@@ -54,14 +60,18 @@
     <meta property="article:tag" content="Docker">
 
   <meta itemprop="name" content="Dockerfile - Shell 與 Exec 的差異">
-  <meta itemprop="description" content="前陣子都在忙 CKAD 的好久沒有在公司 Bookstack 耕耘了 XD ~ 會看到這篇是因為 邱 sir 的導讀 懶惰沒有導讀完 所以我才產出這篇文 (竟敢斗膽說邱 sir 懶惰!!) Docker Shell vs. Exec Form - Christian">
+  <meta itemprop="description" content="前陣子都在忙 CKAD 的好久沒有在公司 Bookstack 耕耘了 XD ~
+會看到這篇是因為 邱 sir 的導讀 懶惰沒有導讀完 所以我才產出這篇文 (竟敢斗膽說邱 sir 懶惰!!)
+Docker Shell vs. Exec Form - Christian Emmer">
   <meta itemprop="datePublished" content="2021-12-20T11:15:34+00:00">
   <meta itemprop="dateModified" content="2022-06-22T14:49:46+08:00">
   <meta itemprop="wordCount" content="748">
   <meta itemprop="keywords" content="Docker">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Dockerfile - Shell 與 Exec 的差異">
-  <meta name="twitter:description" content="前陣子都在忙 CKAD 的好久沒有在公司 Bookstack 耕耘了 XD ~ 會看到這篇是因為 邱 sir 的導讀 懶惰沒有導讀完 所以我才產出這篇文 (竟敢斗膽說邱 sir 懶惰!!) Docker Shell vs. Exec Form - Christian">
+  <meta name="twitter:description" content="前陣子都在忙 CKAD 的好久沒有在公司 Bookstack 耕耘了 XD ~
+會看到這篇是因為 邱 sir 的導讀 懶惰沒有導讀完 所以我才產出這篇文 (竟敢斗膽說邱 sir 懶惰!!)
+Docker Shell vs. Exec Form - Christian Emmer">
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -314,7 +324,7 @@ To say containers or OCI containers rather than docker containers<br>
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">Author</span>
-    <span class="item-content">老柯</span>
+    <span class="item-content"></span>
   </p>
   <p class="copyright-item">
     <span class="item-title">LastMod</span>
@@ -375,7 +385,7 @@ To say containers or OCI containers rather than docker containers<br>
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

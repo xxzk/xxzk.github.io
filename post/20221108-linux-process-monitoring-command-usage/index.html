@@ -16,14 +16,16 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="前言 每次想要查系統資源使用狀況都要 Google 一次 (除了 ps -aux, top, htop 很直覺的以外啦)，不如趁這次偕同 RD team 查找 iowait 高的原因整理一篇自己的筆記節省時間。 【常用指" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="" /><meta name="description" content="前言 每次想要查系統資源使用狀況都要 Google 一次 (除了 ps -aux, top, htop 很直覺的以外啦)，不如趁這次偕同 RD team 查找 iowait 高的原因整理一篇自己的筆記節省時間。
+【常用指令】 cheatsheet ps 常用指令 以 %CPU 排序前 5 名 1 ps -eo user,command,pcpu,pmem --sort -pcpu | head -5 以 %MEM 排序前 5 名 1 ps -eo user,command,pcpu,pmem --sort -pmem | head -5 How to sort ps output
+" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.133.1 with theme even" />
+<meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/post/20221108-linux-process-monitoring-command-usage/" />
@@ -45,7 +47,8 @@
 <meta property="og:url" content="http://localhost:1313/post/20221108-linux-process-monitoring-command-usage/">
   <meta property="og:site_name" content="老柯的學習筆記">
   <meta property="og:title" content="Linux 系統監控命令使用筆記 (ps,top,htop)">
-  <meta property="og:description" content="前言 每次想要查系統資源使用狀況都要 Google 一次 (除了 ps -aux, top, htop 很直覺的以外啦)，不如趁這次偕同 RD team 查找 iowait 高的原因整理一篇自己的筆記節省時間。 【常用指">
+  <meta property="og:description" content="前言 每次想要查系統資源使用狀況都要 Google 一次 (除了 ps -aux, top, htop 很直覺的以外啦)，不如趁這次偕同 RD team 查找 iowait 高的原因整理一篇自己的筆記節省時間。
+【常用指令】 cheatsheet ps 常用指令 以 %CPU 排序前 5 名 1 ps -eo user,command,pcpu,pmem --sort -pcpu | head -5 以 %MEM 排序前 5 名 1 ps -eo user,command,pcpu,pmem --sort -pmem | head -5 How to sort ps output">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="post">
@@ -54,14 +57,16 @@
     <meta property="article:tag" content="Linux">
 
   <meta itemprop="name" content="Linux 系統監控命令使用筆記 (ps,top,htop)">
-  <meta itemprop="description" content="前言 每次想要查系統資源使用狀況都要 Google 一次 (除了 ps -aux, top, htop 很直覺的以外啦)，不如趁這次偕同 RD team 查找 iowait 高的原因整理一篇自己的筆記節省時間。 【常用指">
+  <meta itemprop="description" content="前言 每次想要查系統資源使用狀況都要 Google 一次 (除了 ps -aux, top, htop 很直覺的以外啦)，不如趁這次偕同 RD team 查找 iowait 高的原因整理一篇自己的筆記節省時間。
+【常用指令】 cheatsheet ps 常用指令 以 %CPU 排序前 5 名 1 ps -eo user,command,pcpu,pmem --sort -pcpu | head -5 以 %MEM 排序前 5 名 1 ps -eo user,command,pcpu,pmem --sort -pmem | head -5 How to sort ps output">
   <meta itemprop="datePublished" content="2022-11-08T13:49:51+00:00">
   <meta itemprop="dateModified" content="2022-11-21T17:40:30+08:00">
   <meta itemprop="wordCount" content="1783">
   <meta itemprop="keywords" content="Linux">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Linux 系統監控命令使用筆記 (ps,top,htop)">
-  <meta name="twitter:description" content="前言 每次想要查系統資源使用狀況都要 Google 一次 (除了 ps -aux, top, htop 很直覺的以外啦)，不如趁這次偕同 RD team 查找 iowait 高的原因整理一篇自己的筆記節省時間。 【常用指">
+  <meta name="twitter:description" content="前言 每次想要查系統資源使用狀況都要 Google 一次 (除了 ps -aux, top, htop 很直覺的以外啦)，不如趁這次偕同 RD team 查找 iowait 高的原因整理一篇自己的筆記節省時間。
+【常用指令】 cheatsheet ps 常用指令 以 %CPU 排序前 5 名 1 ps -eo user,command,pcpu,pmem --sort -pcpu | head -5 以 %MEM 排序前 5 名 1 ps -eo user,command,pcpu,pmem --sort -pmem | head -5 How to sort ps output">
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -413,7 +418,7 @@
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">Author</span>
-    <span class="item-content">老柯</span>
+    <span class="item-content"></span>
   </p>
   <p class="copyright-item">
     <span class="item-title">LastMod</span>
@@ -474,7 +479,7 @@
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

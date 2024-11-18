@@ -16,14 +16,18 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="圖片來源 Before Upgrading 此篇為這次針對 DCX 升級 ESXi 的安裝紀錄。新上了 4 台 Dell R630 暫時緩解 DCX 資源吃緊的情況。 使用 vMotion (VMware Live Migration 技術) 動態轉移將 VM 移至其他 ESXi Host，就可" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="" /><meta name="description" content="
+圖片來源
+Before Upgrading 此篇為這次針對 DCX 升級 ESXi 的安裝紀錄。新上了 4 台 Dell R630 暫時緩解 DCX 資源吃緊的情況。
+使用 vMotion (VMware Live Migration 技術) 動態轉移將 VM 移至其他 ESXi Host，就可以關機 維護/升級 啦~
+" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.133.1 with theme even" />
+<meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/post/20210122-upgrade-esxi-650-to-670/" />
@@ -45,7 +49,9 @@
 <meta property="og:url" content="http://localhost:1313/post/20210122-upgrade-esxi-650-to-670/">
   <meta property="og:site_name" content="老柯的學習筆記">
   <meta property="og:title" content="升級 ESXi 6.5.0 -&gt; 6.7.0 Upgrading ESXi From 6.5.0 to 6.7.0">
-  <meta property="og:description" content="圖片來源 Before Upgrading 此篇為這次針對 DCX 升級 ESXi 的安裝紀錄。新上了 4 台 Dell R630 暫時緩解 DCX 資源吃緊的情況。 使用 vMotion (VMware Live Migration 技術) 動態轉移將 VM 移至其他 ESXi Host，就可">
+  <meta property="og:description" content="圖片來源
+Before Upgrading 此篇為這次針對 DCX 升級 ESXi 的安裝紀錄。新上了 4 台 Dell R630 暫時緩解 DCX 資源吃緊的情況。
+使用 vMotion (VMware Live Migration 技術) 動態轉移將 VM 移至其他 ESXi Host，就可以關機 維護/升級 啦~">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="post">
@@ -56,14 +62,18 @@
     <meta property="article:tag" content="Vsphere">
 
   <meta itemprop="name" content="升級 ESXi 6.5.0 -&gt; 6.7.0 Upgrading ESXi From 6.5.0 to 6.7.0">
-  <meta itemprop="description" content="圖片來源 Before Upgrading 此篇為這次針對 DCX 升級 ESXi 的安裝紀錄。新上了 4 台 Dell R630 暫時緩解 DCX 資源吃緊的情況。 使用 vMotion (VMware Live Migration 技術) 動態轉移將 VM 移至其他 ESXi Host，就可">
+  <meta itemprop="description" content="圖片來源
+Before Upgrading 此篇為這次針對 DCX 升級 ESXi 的安裝紀錄。新上了 4 台 Dell R630 暫時緩解 DCX 資源吃緊的情況。
+使用 vMotion (VMware Live Migration 技術) 動態轉移將 VM 移至其他 ESXi Host，就可以關機 維護/升級 啦~">
   <meta itemprop="datePublished" content="2021-01-22T13:46:48+00:00">
   <meta itemprop="dateModified" content="2022-12-26T10:51:21+08:00">
   <meta itemprop="wordCount" content="1078">
   <meta itemprop="keywords" content="Dell,ESXi,Vsphere">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="升級 ESXi 6.5.0 -&gt; 6.7.0 Upgrading ESXi From 6.5.0 to 6.7.0">
-  <meta name="twitter:description" content="圖片來源 Before Upgrading 此篇為這次針對 DCX 升級 ESXi 的安裝紀錄。新上了 4 台 Dell R630 暫時緩解 DCX 資源吃緊的情況。 使用 vMotion (VMware Live Migration 技術) 動態轉移將 VM 移至其他 ESXi Host，就可">
+  <meta name="twitter:description" content="圖片來源
+Before Upgrading 此篇為這次針對 DCX 升級 ESXi 的安裝紀錄。新上了 4 台 Dell R630 暫時緩解 DCX 資源吃緊的情況。
+使用 vMotion (VMware Live Migration 技術) 動態轉移將 VM 移至其他 ESXi Host，就可以關機 維護/升級 啦~">
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -267,7 +277,7 @@ ESXi 屬於會將整個 OS 載入 RAM 的類型。 <a href="https://community.sp
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">Author</span>
-    <span class="item-content">老柯</span>
+    <span class="item-content"></span>
   </p>
   <p class="copyright-item">
     <span class="item-title">LastMod</span>
@@ -330,7 +340,7 @@ ESXi 屬於會將整個 OS 載入 RAM 的類型。 <a href="https://community.sp
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

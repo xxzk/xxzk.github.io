@@ -16,14 +16,18 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="這篇筆記紀錄閱讀 Dell R730XD owners manual 記憶體 (memory) 學到的東西，藉此還債。 ▲ 主修資工腦袋空空 科普資源 在開始讀 owner manual 之前，有幾個關於 DIMM (Double In-line Memory Module) 的科普資源，建議先看。" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="" /><meta name="description" content="這篇筆記紀錄閱讀 Dell R730XD owners manual 記憶體 (memory) 學到的東西，藉此還債。
+▲ 主修資工腦袋空空
+科普資源 在開始讀 owner manual 之前，有幾個關於 DIMM (Double In-line Memory Module) 的科普資源，建議先看。
+1) 硬件茶談-为什么装机内存条推荐安装到第24槽而不是13槽？为什么ITX主板超频内存更容易？ 【硬件科普】为什么装机内存条推荐安装到第24槽而不是13槽？为什么ITX主板超频内存更容易？
+" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.133.1 with theme even" />
+<meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/post/20220606-read-r730xd-owner-manual-learning-about-server-dimm/" />
@@ -45,7 +49,10 @@
 <meta property="og:url" content="http://localhost:1313/post/20220606-read-r730xd-owner-manual-learning-about-server-dimm/">
   <meta property="og:site_name" content="老柯的學習筆記">
   <meta property="og:title" content="閱讀 R730XD owner manual 淺析伺服器記憶體">
-  <meta property="og:description" content="這篇筆記紀錄閱讀 Dell R730XD owners manual 記憶體 (memory) 學到的東西，藉此還債。 ▲ 主修資工腦袋空空 科普資源 在開始讀 owner manual 之前，有幾個關於 DIMM (Double In-line Memory Module) 的科普資源，建議先看。">
+  <meta property="og:description" content="這篇筆記紀錄閱讀 Dell R730XD owners manual 記憶體 (memory) 學到的東西，藉此還債。
+▲ 主修資工腦袋空空
+科普資源 在開始讀 owner manual 之前，有幾個關於 DIMM (Double In-line Memory Module) 的科普資源，建議先看。
+1) 硬件茶談-为什么装机内存条推荐安装到第24槽而不是13槽？为什么ITX主板超频内存更容易？ 【硬件科普】为什么装机内存条推荐安装到第24槽而不是13槽？为什么ITX主板超频内存更容易？">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="post">
@@ -55,14 +62,20 @@
     <meta property="article:tag" content="Dimm">
 
   <meta itemprop="name" content="閱讀 R730XD owner manual 淺析伺服器記憶體">
-  <meta itemprop="description" content="這篇筆記紀錄閱讀 Dell R730XD owners manual 記憶體 (memory) 學到的東西，藉此還債。 ▲ 主修資工腦袋空空 科普資源 在開始讀 owner manual 之前，有幾個關於 DIMM (Double In-line Memory Module) 的科普資源，建議先看。">
+  <meta itemprop="description" content="這篇筆記紀錄閱讀 Dell R730XD owners manual 記憶體 (memory) 學到的東西，藉此還債。
+▲ 主修資工腦袋空空
+科普資源 在開始讀 owner manual 之前，有幾個關於 DIMM (Double In-line Memory Module) 的科普資源，建議先看。
+1) 硬件茶談-为什么装机内存条推荐安装到第24槽而不是13槽？为什么ITX主板超频内存更容易？ 【硬件科普】为什么装机内存条推荐安装到第24槽而不是13槽？为什么ITX主板超频内存更容易？">
   <meta itemprop="datePublished" content="2022-06-06T09:19:33+00:00">
   <meta itemprop="dateModified" content="2022-06-09T15:02:43+08:00">
   <meta itemprop="wordCount" content="1871">
   <meta itemprop="keywords" content="Server,Dimm">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="閱讀 R730XD owner manual 淺析伺服器記憶體">
-  <meta name="twitter:description" content="這篇筆記紀錄閱讀 Dell R730XD owners manual 記憶體 (memory) 學到的東西，藉此還債。 ▲ 主修資工腦袋空空 科普資源 在開始讀 owner manual 之前，有幾個關於 DIMM (Double In-line Memory Module) 的科普資源，建議先看。">
+  <meta name="twitter:description" content="這篇筆記紀錄閱讀 Dell R730XD owners manual 記憶體 (memory) 學到的東西，藉此還債。
+▲ 主修資工腦袋空空
+科普資源 在開始讀 owner manual 之前，有幾個關於 DIMM (Double In-line Memory Module) 的科普資源，建議先看。
+1) 硬件茶談-为什么装机内存条推荐安装到第24槽而不是13槽？为什么ITX主板超频内存更容易？ 【硬件科普】为什么装机内存条推荐安装到第24槽而不是13槽？为什么ITX主板超频内存更容易？">
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -282,7 +295,7 @@ impose any specific slot population requirements.</p>
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">Author</span>
-    <span class="item-content">老柯</span>
+    <span class="item-content"></span>
   </p>
   <p class="copyright-item">
     <span class="item-title">LastMod</span>
@@ -344,7 +357,7 @@ impose any specific slot population requirements.</p>
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

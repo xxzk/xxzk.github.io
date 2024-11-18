@@ -13,14 +13,14 @@
       <link>http://localhost:1313/post/20220621-upgrade-vcsa-using-iso-file/</link>
       <pubDate>Tue, 21 Jun 2022 15:46:54 +0000</pubDate>
       <guid>http://localhost:1313/post/20220621-upgrade-vcsa-using-iso-file/</guid>
-      <description>前言 這篇簡單紀錄透過使用 patch iso 映像檔，在沒有外網的情況下去做 upgrade。更新的原因很簡單，原本的 VCSA 7.0U1 還沒有跨 vCenter vMotion (Advanced Cross vCenter Server vMotion, XVM) 移轉的功能，必</description>
+      <description>&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;&#xA;&lt;p&gt;這篇簡單紀錄透過使用 patch iso 映像檔，在沒有外網的情況下去做 upgrade。更新的原因很簡單，原本的 VCSA 7.0U1 還沒有跨 vCenter vMotion (Advanced Cross vCenter Server vMotion, XVM) 移轉的功能，必須要升級到 VCSA 7.0U1c 以上才有&lt;/p&gt;</description>
     </item>
     <item>
       <title>VCSA 7.0 (vCenter) 安裝教學</title>
       <link>http://localhost:1313/post/20210127-how-to-install-vcsa7-via-ova/</link>
       <pubDate>Wed, 27 Jan 2021 15:13:00 +0000</pubDate>
       <guid>http://localhost:1313/post/20210127-how-to-install-vcsa7-via-ova/</guid>
-      <description>先前準備 建議在同一台 ESXi host 上開一台 Windows 10 主機，並將 .iso 丟入這樣在上傳會比較快。 將 .iso 掛載 or 解壓縮後可以看到安裝所需檔案: vcsa-ui-installer: 圖形化安裝精靈 (有 Wind</description>
+      <description>&lt;p&gt;&lt;img src=&#34;vsphere_7_simple.jpg&#34; alt=&#34;vsphere_7_simple&#34;&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;先前準備&#34;&gt;先前準備&lt;/h2&gt;&#xA;&lt;p&gt;建議在同一台 ESXi host 上開一台 Windows 10 主機，並將 &lt;code&gt;.iso&lt;/code&gt; 丟入這樣在上傳會比較快。&lt;/p&gt;&#xA;&lt;p&gt;將 &lt;code&gt;.iso&lt;/code&gt; 掛載 or 解壓縮後可以看到安裝所需檔案:&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;vcsa-ui-installer: 圖形化安裝精靈 (有 Windows、Mac 與 Linux 版本)&lt;/li&gt;&#xA;&lt;li&gt;vcsa-cli-installer: 文字命令列安裝，一樣三個平台都有&lt;/li&gt;&#xA;&lt;li&gt;vcsa: OVF 檔案存放目錄&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;h2 id=&#34;安裝步驟&#34;&gt;安裝步驟&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;本次教學採用 OVA 建立 VCSA&lt;/strong&gt;&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

@@ -16,14 +16,16 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="Pulumi Get Started with AWS | Pulumi Docs Pulumi vs. AWS CDK | Pulumi Docs 快速補充 Pulumi Hello World 的部分 1 2 3 4 brew install pulumi/tap/pulumi # or Linux distro curl -fsSL https://get.pulumi.com | sh 如果使用 Python 的話，版本必須高於 3.7 且 pip 也需安裝。 Pulumi 可以使用 aws config" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="" /><meta name="description" content="Pulumi Get Started with AWS | Pulumi Docs Pulumi vs. AWS CDK | Pulumi Docs 快速補充 Pulumi Hello World 的部分
+1 2 3 4 brew install pulumi/tap/pulumi # or Linux distro curl -fsSL https://get.pulumi.com | sh 如果使用 Python 的話，版本必須高於 3.7 且 pip 也需安裝。 Pulumi 可以使用 aws config 或者直接吃 export AWS_ACCESS_KEY_ID=&lt;YOUR_ACCESS_KEY_ID&gt;, export AWS_SECRET_ACCESS_KEY=&lt;YOUR_SECRET_ACCESS_KEY&gt; 切換 AWS profile 並確認 active session
+" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.133.1 with theme even" />
+<meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/post/20230418-aws-cdk-hello-world/" />
@@ -45,7 +47,8 @@
 <meta property="og:url" content="http://localhost:1313/post/20230418-aws-cdk-hello-world/">
   <meta property="og:site_name" content="老柯的學習筆記">
   <meta property="og:title" content="Pulumi / AWS CDK Hello World">
-  <meta property="og:description" content="Pulumi Get Started with AWS | Pulumi Docs Pulumi vs. AWS CDK | Pulumi Docs 快速補充 Pulumi Hello World 的部分 1 2 3 4 brew install pulumi/tap/pulumi # or Linux distro curl -fsSL https://get.pulumi.com | sh 如果使用 Python 的話，版本必須高於 3.7 且 pip 也需安裝。 Pulumi 可以使用 aws config">
+  <meta property="og:description" content="Pulumi Get Started with AWS | Pulumi Docs Pulumi vs. AWS CDK | Pulumi Docs 快速補充 Pulumi Hello World 的部分
+1 2 3 4 brew install pulumi/tap/pulumi # or Linux distro curl -fsSL https://get.pulumi.com | sh 如果使用 Python 的話，版本必須高於 3.7 且 pip 也需安裝。 Pulumi 可以使用 aws config 或者直接吃 export AWS_ACCESS_KEY_ID=&lt;YOUR_ACCESS_KEY_ID&gt;, export AWS_SECRET_ACCESS_KEY=&lt;YOUR_SECRET_ACCESS_KEY&gt; 切換 AWS profile 並確認 active session">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="post">
@@ -54,14 +57,16 @@
     <meta property="article:tag" content="Aws">
 
   <meta itemprop="name" content="Pulumi / AWS CDK Hello World">
-  <meta itemprop="description" content="Pulumi Get Started with AWS | Pulumi Docs Pulumi vs. AWS CDK | Pulumi Docs 快速補充 Pulumi Hello World 的部分 1 2 3 4 brew install pulumi/tap/pulumi # or Linux distro curl -fsSL https://get.pulumi.com | sh 如果使用 Python 的話，版本必須高於 3.7 且 pip 也需安裝。 Pulumi 可以使用 aws config">
+  <meta itemprop="description" content="Pulumi Get Started with AWS | Pulumi Docs Pulumi vs. AWS CDK | Pulumi Docs 快速補充 Pulumi Hello World 的部分
+1 2 3 4 brew install pulumi/tap/pulumi # or Linux distro curl -fsSL https://get.pulumi.com | sh 如果使用 Python 的話，版本必須高於 3.7 且 pip 也需安裝。 Pulumi 可以使用 aws config 或者直接吃 export AWS_ACCESS_KEY_ID=&lt;YOUR_ACCESS_KEY_ID&gt;, export AWS_SECRET_ACCESS_KEY=&lt;YOUR_SECRET_ACCESS_KEY&gt; 切換 AWS profile 並確認 active session">
   <meta itemprop="datePublished" content="2023-04-18T14:32:50+00:00">
   <meta itemprop="dateModified" content="2023-04-26T11:44:27+08:00">
   <meta itemprop="wordCount" content="2530">
   <meta itemprop="keywords" content="Aws">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Pulumi / AWS CDK Hello World">
-  <meta name="twitter:description" content="Pulumi Get Started with AWS | Pulumi Docs Pulumi vs. AWS CDK | Pulumi Docs 快速補充 Pulumi Hello World 的部分 1 2 3 4 brew install pulumi/tap/pulumi # or Linux distro curl -fsSL https://get.pulumi.com | sh 如果使用 Python 的話，版本必須高於 3.7 且 pip 也需安裝。 Pulumi 可以使用 aws config">
+  <meta name="twitter:description" content="Pulumi Get Started with AWS | Pulumi Docs Pulumi vs. AWS CDK | Pulumi Docs 快速補充 Pulumi Hello World 的部分
+1 2 3 4 brew install pulumi/tap/pulumi # or Linux distro curl -fsSL https://get.pulumi.com | sh 如果使用 Python 的話，版本必須高於 3.7 且 pip 也需安裝。 Pulumi 可以使用 aws config 或者直接吃 export AWS_ACCESS_KEY_ID=&lt;YOUR_ACCESS_KEY_ID&gt;, export AWS_SECRET_ACCESS_KEY=&lt;YOUR_SECRET_ACCESS_KEY&gt; 切換 AWS profile 並確認 active session">
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -893,7 +898,7 @@
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">Author</span>
-    <span class="item-content">老柯</span>
+    <span class="item-content"></span>
   </p>
   <p class="copyright-item">
     <span class="item-title">LastMod</span>
@@ -954,7 +959,7 @@
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

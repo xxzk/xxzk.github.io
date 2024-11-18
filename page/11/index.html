@@ -16,14 +16,14 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="Learning note." /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="" /><meta name="description" content="Learning note." /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.133.1 with theme even" />
+<meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/" />
@@ -52,8 +52,8 @@
 
   <meta itemprop="name" content="老柯的學習筆記">
   <meta itemprop="description" content="Learning note.">
-  <meta itemprop="datePublished" content="2024-09-18T10:10:13+00:00">
-  <meta itemprop="dateModified" content="2024-09-18T10:10:13+00:00">
+  <meta itemprop="datePublished" content="2024-10-09T14:47:52+00:00">
+  <meta itemprop="dateModified" content="2024-11-18T14:50:24+08:00">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="老柯的學習筆記">
   <meta name="twitter:description" content="Learning note.">
@@ -129,6 +129,30 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/20210302-librenms-alert-setting-note/">LibreNMS 警報建置實務 LibreNMS Alarm Setting</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2021-03-02 </span>
+      <div class="post-category">
+          <a href="/categories/librenms/"> librenms </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>此篇筆記紀錄如何使用 LibreNMS 發送 IPMI 警報至 RocketChat WebHook Channel</p>
+<h2 id="librenms-動態分組-dynamic-grouping">LibreNMS 動態分組 Dynamic Grouping</h2>
+<p>動態群組可以自動將裝置依照設定的條件自動加入群組 (新加的裝置也可以喔)。這個功能除了方便 管理/查找 外，待會的警報建置也會派上用場~<br>
+<a href="https://docs.librenms.org/Extensions/Device-Groups/">LibreNMS Docs-Dynamic Groups</a></p>
+    </div>
+    <div class="read-more">
+      <a href="/post/20210302-librenms-alert-setting-note/" class="read-more-link">Read more...</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/20210224-what-network-will-vmware-migration-used/">【實驗記錄】到底 VM 在關機 (PowerOff) 狀態搬移</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2021-02-24 </span>
@@ -140,7 +164,15 @@
   
   <div class="post-content">
     <div class="post-summary">
-      LAB 架構圖 寫日記 這兩台 ESXi 主要是拿來測試 vSS 轉 vDS 用的。因為 DC1 10.x.x.53 ESXi Host 在 2021.02.19 發現 GBIC 故障 DC1 10.x.x.54 ESXi Host 2021.02.12 發生 DIMM_A3 Multi-bit memory errors (error rate 上升) + 2021.02.19 Power Supply 1 (PS1) 死去。兩台共通點都是 2021.01
+      <p><img src="pexels-brett-sayles-1624895.jpg" alt="pexels-brett-sayles-1624895"></p>
+<br>
+<h2 id="lab-架構圖">LAB 架構圖</h2>
+<br>
+<p><img src="lab_dc1_overview.jpg" alt="lab_dc1_overview"></p>
+<br>
+<p><del>寫日記</del><br>
+這兩台 ESXi 主要是拿來測試 vSS 轉 vDS 用的。因為 <code>DC1 10.x.x.53 ESXi Host</code> 在 2021.02.19 發現 GBIC 故障<br>
+<code>DC1 10.x.x.54 ESXi Host</code> 2021.02.12 發生 DIMM_A3 Multi-bit memory errors (error rate 上升) + 2021.02.19 Power Supply 1 (PS1) 死去。兩台共通點都是 <a href="https://blog.xxzk.me">2021.01 新上櫃</a> 的，所以請廠商更換料件後放置觀察一周</p>
     </div>
     <div class="read-more">
       <a href="/post/20210224-what-network-will-vmware-migration-used/" class="read-more-link">Read more...</a>
@@ -162,7 +194,13 @@
   
   <div class="post-content">
     <div class="post-summary">
-      此篇筆記記錄如何隱藏客戶端看到 Web Server 使用的版本號 判斷標準是用最無腦的 Browser Plug-in 當作依據，推薦使用 Wappalyzer 如果透過 CloudFlare 訪問這些敏感資訊都會被過濾掉;直接使用 IP
+      <br>
+<p><img src="pexels-markus-spiske-1089438.jpg" alt="pexels-markus-spiske-1089438"></p>
+<br>
+<hr>
+<p><strong>此篇筆記記錄如何隱藏客戶端看到 Web Server 使用的版本號</strong><br>
+<strong>判斷標準是用最無腦的 Browser Plug-in 當作依據，推薦使用 <a href="https://www.wappalyzer.com/">Wappalyzer</a></strong><br>
+<strong>如果透過 CloudFlare 訪問這些敏感資訊都會被過濾掉;直接使用 IP 則否。</strong></p>
     </div>
     <div class="read-more">
       <a href="/post/20210223-hide-apache-php-openssl-nginx-version/" class="read-more-link">Read more...</a>
@@ -183,7 +221,28 @@
   
   <div class="post-content">
     <div class="post-summary">
-      httpd 版本資訊 1 2 Server version: Apache/2.4.6 (CentOS) Server built: Nov 16 2020 16:18:20 敬啟者 開頭就一堆屁話，根本沒有人會看的 (愛開玩笑 自己的筆記也屁話一堆還敢說開發者 XD 節錄幾個重點好了 更多資訊
+      <h2 id="httpd-版本資訊">httpd 版本資訊</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">Server version: Apache/2.4.6 (CentOS)
+</span></span><span class="line"><span class="cl">Server built:   Nov 16 2020 16:18:20
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="敬啟者">敬啟者</h2>
+<br>
+<p><del>開頭就一堆屁話，根本沒有人會看的 (愛開玩笑 自己的筆記也屁話一堆還敢說開發者 XD</del><br>
+<strong>節錄幾個重點好了</strong></p>
+<ol>
+<li>更多資訊請到 <a href="http://httpd.apache.org/docs/2.4/">Apache 2.4 版官方文件</a> 參閱，或者更詳細的 <a href="http://httpd.apache.org/docs/2.4/mod/directives.html">指示 (Directives)</a></li>
+<li>配置 logfile 路徑規則。</li>
+</ol>
+<p>如果路徑是由 <code>/</code> 起始的，httpd 會使用<strong>絕對路徑</strong> (換句話說: 直接在 Linux 下 <code>ls -al &lt;path&gt;</code> 的地方)。<br>
+若不是，則使用<strong>相對路徑</strong>，以 <code>ServerRoot</code> 當作參考點，舉個例子:<br>
+當 <code>ServerRoot /www</code> 時 <code>log/access_log</code> 的路徑會是 <code>/www/log/access_log</code></p>
     </div>
     <div class="read-more">
       <a href="/post/20210220-apache-httpd-main-conf/" class="read-more-link">Read more...</a>
@@ -204,31 +263,23 @@
   
   <div class="post-content">
     <div class="post-summary">
-      更新紀錄 2022.12 刪改原有內容、新增 全域/區域 變數設定方式 新增 playbook 簡介 Ansible 是一種開源配置工具，Linux 系統管理員使用的自動化工具。 Ansible 能讓系統管理員從一
+      <p><img src="ansible_hello_world_logo.jpg" alt="ansible_hello_world_logo"></p>
+<h2 id="更新紀錄">更新紀錄</h2>
+<ul>
+<li>2022.12
+<ol>
+<li>刪改原有內容、新增 <code>全域/區域 變數設定方式</code></li>
+<li>新增 <code>playbook</code></li>
+</ol>
+</li>
+</ul>
+<h2 id="簡介">簡介</h2>
+<p><strong>Ansible 是一種開源配置工具，Linux 系統管理員使用的自動化工具。</strong><br>
+<strong>Ansible 能讓系統管理員從一個控制節點（即 Ansible 服務器）管理數百台服務器。</strong><br>
+<strong>Ansible 不需要任何代理，並且可以在 SSH 和 python 上工作。</strong></p>
     </div>
     <div class="read-more">
       <a href="/post/20210128-ansible-hello-world/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/20210127-how-to-install-vcsa7-via-ova/">VCSA 7.0 (vCenter) 安裝教學</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2021-01-27 </span>
-      <div class="post-category">
-          <a href="/categories/vcsa/"> VCSA </a>
-          </div>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      先前準備 建議在同一台 ESXi host 上開一台 Windows 10 主機，並將 .iso 丟入這樣在上傳會比較快。 將 .iso 掛載 or 解壓縮後可以看到安裝所需檔案: vcsa-ui-installer: 圖形化安裝精靈 (有 Wind
-    </div>
-    <div class="read-more">
-      <a href="/post/20210127-how-to-install-vcsa7-via-ova/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>
@@ -273,7 +324,7 @@
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

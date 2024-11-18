@@ -16,14 +16,16 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="50. Manual Scheduling 在 有 kube-scheduler 的情況下，我們可以在 pod definition YAML 裡面定義 pod.spec.nodeName: &lt;worker node name&gt; 來把 pod 放在指定 worker node。 在 沒有 kube-scheduler 的情況下，必須要以 json 格式 POST 到 api-server。B" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="" /><meta name="description" content="50. Manual Scheduling 在 有 kube-scheduler 的情況下，我們可以在 pod definition YAML 裡面定義 pod.spec.nodeName: &lt;worker node name&gt; 來把 pod 放在指定 worker node。
+在 沒有 kube-scheduler 的情況下，必須要以 json 格式 POST 到 api-server。BTW，我找不到 docs 耶 = =
+" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.133.1 with theme even" />
+<meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/post/20211124-cka_note_section_3_scheduling/" />
@@ -45,7 +47,8 @@
 <meta property="og:url" content="http://localhost:1313/post/20211124-cka_note_section_3_scheduling/">
   <meta property="og:site_name" content="老柯的學習筆記">
   <meta property="og:title" content="CKA Note Section 3 Scheduling">
-  <meta property="og:description" content="50. Manual Scheduling 在 有 kube-scheduler 的情況下，我們可以在 pod definition YAML 裡面定義 pod.spec.nodeName: &lt;worker node name&gt; 來把 pod 放在指定 worker node。 在 沒有 kube-scheduler 的情況下，必須要以 json 格式 POST 到 api-server。B">
+  <meta property="og:description" content="50. Manual Scheduling 在 有 kube-scheduler 的情況下，我們可以在 pod definition YAML 裡面定義 pod.spec.nodeName: &lt;worker node name&gt; 來把 pod 放在指定 worker node。
+在 沒有 kube-scheduler 的情況下，必須要以 json 格式 POST 到 api-server。BTW，我找不到 docs 耶 = =">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="post">
@@ -55,14 +58,16 @@
     <meta property="article:tag" content="Kubernetes">
 
   <meta itemprop="name" content="CKA Note Section 3 Scheduling">
-  <meta itemprop="description" content="50. Manual Scheduling 在 有 kube-scheduler 的情況下，我們可以在 pod definition YAML 裡面定義 pod.spec.nodeName: &lt;worker node name&gt; 來把 pod 放在指定 worker node。 在 沒有 kube-scheduler 的情況下，必須要以 json 格式 POST 到 api-server。B">
+  <meta itemprop="description" content="50. Manual Scheduling 在 有 kube-scheduler 的情況下，我們可以在 pod definition YAML 裡面定義 pod.spec.nodeName: &lt;worker node name&gt; 來把 pod 放在指定 worker node。
+在 沒有 kube-scheduler 的情況下，必須要以 json 格式 POST 到 api-server。BTW，我找不到 docs 耶 = =">
   <meta itemprop="datePublished" content="2021-11-24T15:03:28+00:00">
   <meta itemprop="dateModified" content="2022-08-03T15:32:40+08:00">
   <meta itemprop="wordCount" content="743">
   <meta itemprop="keywords" content="CKA-Note,Kubernetes">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="CKA Note Section 3 Scheduling">
-  <meta name="twitter:description" content="50. Manual Scheduling 在 有 kube-scheduler 的情況下，我們可以在 pod definition YAML 裡面定義 pod.spec.nodeName: &lt;worker node name&gt; 來把 pod 放在指定 worker node。 在 沒有 kube-scheduler 的情況下，必須要以 json 格式 POST 到 api-server。B">
+  <meta name="twitter:description" content="50. Manual Scheduling 在 有 kube-scheduler 的情況下，我們可以在 pod definition YAML 裡面定義 pod.spec.nodeName: &lt;worker node name&gt; 來把 pod 放在指定 worker node。
+在 沒有 kube-scheduler 的情況下，必須要以 json 格式 POST 到 api-server。BTW，我找不到 docs 耶 = =">
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -204,26 +209,26 @@
 <br>
 <p><img src="static_pod_4.jpg" alt="static_pod_4"></p>
 <table>
-<thead>
-<tr>
-<th style="text-align:center">Static PODs</th>
-<th style="text-align:center">DaemonSets</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">由 <code>kubelet</code> 發起建立</td>
-<td style="text-align:center">由 <code>api-server</code> 發起建立 (DaemonSet controller)</td>
-</tr>
-<tr>
-<td style="text-align:center">用途: 部屬 control plane 所需元件</td>
-<td style="text-align:center">用途: 部屬 monitoring agent, logging agent</td>
-</tr>
-<tr>
-<td style="text-align:center"><strong><span style='color:red'>都被 <code>kube-scheduler</code> 忽略</span></strong></td>
-<td style="text-align:center"><strong><span style='color:red'>都被 <code>kube-scheduler</code> 忽略</span></strong></td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th style="text-align: center">Static PODs</th>
+          <th style="text-align: center">DaemonSets</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: center">由 <code>kubelet</code> 發起建立</td>
+          <td style="text-align: center">由 <code>api-server</code> 發起建立 (DaemonSet controller)</td>
+      </tr>
+      <tr>
+          <td style="text-align: center">用途: 部屬 control plane 所需元件</td>
+          <td style="text-align: center">用途: 部屬 monitoring agent, logging agent</td>
+      </tr>
+      <tr>
+          <td style="text-align: center"><strong><span style='color:red'>都被 <code>kube-scheduler</code> 忽略</span></strong></td>
+          <td style="text-align: center"><strong><span style='color:red'>都被 <code>kube-scheduler</code> 忽略</span></strong></td>
+      </tr>
+  </tbody>
 </table>
 <p>▲ static pod 與 daemonset 的差異</p>
 <br>
@@ -325,7 +330,7 @@
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">Author</span>
-    <span class="item-content">老柯</span>
+    <span class="item-content"></span>
   </p>
   <p class="copyright-item">
     <span class="item-title">LastMod</span>
@@ -387,7 +392,7 @@
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

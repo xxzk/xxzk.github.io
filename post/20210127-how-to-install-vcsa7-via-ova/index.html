@@ -16,14 +16,18 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="先前準備 建議在同一台 ESXi host 上開一台 Windows 10 主機，並將 .iso 丟入這樣在上傳會比較快。 將 .iso 掛載 or 解壓縮後可以看到安裝所需檔案: vcsa-ui-installer: 圖形化安裝精靈 (有 Wind" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="" /><meta name="description" content="
+先前準備 建議在同一台 ESXi host 上開一台 Windows 10 主機，並將 .iso 丟入這樣在上傳會比較快。
+將 .iso 掛載 or 解壓縮後可以看到安裝所需檔案:
+vcsa-ui-installer: 圖形化安裝精靈 (有 Windows、Mac 與 Linux 版本) vcsa-cli-installer: 文字命令列安裝，一樣三個平台都有 vcsa: OVF 檔案存放目錄 安裝步驟 本次教學採用 OVA 建立 VCSA
+" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.133.1 with theme even" />
+<meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/post/20210127-how-to-install-vcsa7-via-ova/" />
@@ -45,7 +49,9 @@
 <meta property="og:url" content="http://localhost:1313/post/20210127-how-to-install-vcsa7-via-ova/">
   <meta property="og:site_name" content="老柯的學習筆記">
   <meta property="og:title" content="VCSA 7.0 (vCenter) 安裝教學">
-  <meta property="og:description" content="先前準備 建議在同一台 ESXi host 上開一台 Windows 10 主機，並將 .iso 丟入這樣在上傳會比較快。 將 .iso 掛載 or 解壓縮後可以看到安裝所需檔案: vcsa-ui-installer: 圖形化安裝精靈 (有 Wind">
+  <meta property="og:description" content="先前準備 建議在同一台 ESXi host 上開一台 Windows 10 主機，並將 .iso 丟入這樣在上傳會比較快。
+將 .iso 掛載 or 解壓縮後可以看到安裝所需檔案:
+vcsa-ui-installer: 圖形化安裝精靈 (有 Windows、Mac 與 Linux 版本) vcsa-cli-installer: 文字命令列安裝，一樣三個平台都有 vcsa: OVF 檔案存放目錄 安裝步驟 本次教學採用 OVA 建立 VCSA">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="post">
@@ -55,14 +61,18 @@
     <meta property="article:tag" content="Vcsa">
 
   <meta itemprop="name" content="VCSA 7.0 (vCenter) 安裝教學">
-  <meta itemprop="description" content="先前準備 建議在同一台 ESXi host 上開一台 Windows 10 主機，並將 .iso 丟入這樣在上傳會比較快。 將 .iso 掛載 or 解壓縮後可以看到安裝所需檔案: vcsa-ui-installer: 圖形化安裝精靈 (有 Wind">
+  <meta itemprop="description" content="先前準備 建議在同一台 ESXi host 上開一台 Windows 10 主機，並將 .iso 丟入這樣在上傳會比較快。
+將 .iso 掛載 or 解壓縮後可以看到安裝所需檔案:
+vcsa-ui-installer: 圖形化安裝精靈 (有 Windows、Mac 與 Linux 版本) vcsa-cli-installer: 文字命令列安裝，一樣三個平台都有 vcsa: OVF 檔案存放目錄 安裝步驟 本次教學採用 OVA 建立 VCSA">
   <meta itemprop="datePublished" content="2021-01-27T15:13:00+00:00">
   <meta itemprop="dateModified" content="2022-12-21T16:39:27+08:00">
   <meta itemprop="wordCount" content="622">
   <meta itemprop="keywords" content="Vsphere,Vcsa">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="VCSA 7.0 (vCenter) 安裝教學">
-  <meta name="twitter:description" content="先前準備 建議在同一台 ESXi host 上開一台 Windows 10 主機，並將 .iso 丟入這樣在上傳會比較快。 將 .iso 掛載 or 解壓縮後可以看到安裝所需檔案: vcsa-ui-installer: 圖形化安裝精靈 (有 Wind">
+  <meta name="twitter:description" content="先前準備 建議在同一台 ESXi host 上開一台 Windows 10 主機，並將 .iso 丟入這樣在上傳會比較快。
+將 .iso 掛載 or 解壓縮後可以看到安裝所需檔案:
+vcsa-ui-installer: 圖形化安裝精靈 (有 Windows、Mac 與 Linux 版本) vcsa-cli-installer: 文字命令列安裝，一樣三個平台都有 vcsa: OVF 檔案存放目錄 安裝步驟 本次教學採用 OVA 建立 VCSA">
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -302,7 +312,7 @@
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">Author</span>
-    <span class="item-content">老柯</span>
+    <span class="item-content"></span>
   </p>
   <p class="copyright-item">
     <span class="item-title">LastMod</span>
@@ -364,7 +374,7 @@
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

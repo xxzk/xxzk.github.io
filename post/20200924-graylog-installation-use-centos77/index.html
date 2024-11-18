@@ -16,14 +16,16 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="本篇參考資料 How to install and configure Graylog on CentOS 7 執行系統更新 1 yum update -y 安裝 EPEL 1 yum install epel-release -y 安裝所需項目，其中 pwgen 套件是等等要用來產生 graylog server 設定檔的密鑰 1 yum install pwgen vim -y 安裝 java" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="" /><meta name="description" content="本篇參考資料 How to install and configure Graylog on CentOS 7
+執行系統更新 1 yum update -y 安裝 EPEL 1 yum install epel-release -y 安裝所需項目，其中 pwgen 套件是等等要用來產生 graylog server 設定檔的密鑰 1 yum install pwgen vim -y 安裝 java 1 2 3 yum install java-1.8.0-openjdk-headless.x86_64 -y 確認安裝正確可以使用 java -version 安裝 MongoDB ，由於 RHEL 預設 repo 沒有這個項目必須手動增加 repo 1 vim /etc/yum.repos.d/mongodb-org.repo 新增內容如下
+" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.133.1 with theme even" />
+<meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/post/20200924-graylog-installation-use-centos77/" />
@@ -45,7 +47,8 @@
 <meta property="og:url" content="http://localhost:1313/post/20200924-graylog-installation-use-centos77/">
   <meta property="og:site_name" content="老柯的學習筆記">
   <meta property="og:title" content="Gralylog 安裝紀錄 (使用 Default CentOS 7.7)">
-  <meta property="og:description" content="本篇參考資料 How to install and configure Graylog on CentOS 7 執行系統更新 1 yum update -y 安裝 EPEL 1 yum install epel-release -y 安裝所需項目，其中 pwgen 套件是等等要用來產生 graylog server 設定檔的密鑰 1 yum install pwgen vim -y 安裝 java">
+  <meta property="og:description" content="本篇參考資料 How to install and configure Graylog on CentOS 7
+執行系統更新 1 yum update -y 安裝 EPEL 1 yum install epel-release -y 安裝所需項目，其中 pwgen 套件是等等要用來產生 graylog server 設定檔的密鑰 1 yum install pwgen vim -y 安裝 java 1 2 3 yum install java-1.8.0-openjdk-headless.x86_64 -y 確認安裝正確可以使用 java -version 安裝 MongoDB ，由於 RHEL 預設 repo 沒有這個項目必須手動增加 repo 1 vim /etc/yum.repos.d/mongodb-org.repo 新增內容如下">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="post">
@@ -54,14 +57,16 @@
     <meta property="article:tag" content="Graylog">
 
   <meta itemprop="name" content="Gralylog 安裝紀錄 (使用 Default CentOS 7.7)">
-  <meta itemprop="description" content="本篇參考資料 How to install and configure Graylog on CentOS 7 執行系統更新 1 yum update -y 安裝 EPEL 1 yum install epel-release -y 安裝所需項目，其中 pwgen 套件是等等要用來產生 graylog server 設定檔的密鑰 1 yum install pwgen vim -y 安裝 java">
+  <meta itemprop="description" content="本篇參考資料 How to install and configure Graylog on CentOS 7
+執行系統更新 1 yum update -y 安裝 EPEL 1 yum install epel-release -y 安裝所需項目，其中 pwgen 套件是等等要用來產生 graylog server 設定檔的密鑰 1 yum install pwgen vim -y 安裝 java 1 2 3 yum install java-1.8.0-openjdk-headless.x86_64 -y 確認安裝正確可以使用 java -version 安裝 MongoDB ，由於 RHEL 預設 repo 沒有這個項目必須手動增加 repo 1 vim /etc/yum.repos.d/mongodb-org.repo 新增內容如下">
   <meta itemprop="datePublished" content="2020-09-24T15:09:16+00:00">
   <meta itemprop="dateModified" content="2022-06-22T14:49:46+08:00">
   <meta itemprop="wordCount" content="544">
   <meta itemprop="keywords" content="Graylog">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Gralylog 安裝紀錄 (使用 Default CentOS 7.7)">
-  <meta name="twitter:description" content="本篇參考資料 How to install and configure Graylog on CentOS 7 執行系統更新 1 yum update -y 安裝 EPEL 1 yum install epel-release -y 安裝所需項目，其中 pwgen 套件是等等要用來產生 graylog server 設定檔的密鑰 1 yum install pwgen vim -y 安裝 java">
+  <meta name="twitter:description" content="本篇參考資料 How to install and configure Graylog on CentOS 7
+執行系統更新 1 yum update -y 安裝 EPEL 1 yum install epel-release -y 安裝所需項目，其中 pwgen 套件是等等要用來產生 graylog server 設定檔的密鑰 1 yum install pwgen vim -y 安裝 java 1 2 3 yum install java-1.8.0-openjdk-headless.x86_64 -y 確認安裝正確可以使用 java -version 安裝 MongoDB ，由於 RHEL 預設 repo 沒有這個項目必須手動增加 repo 1 vim /etc/yum.repos.d/mongodb-org.repo 新增內容如下">
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -462,7 +467,7 @@
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">Author</span>
-    <span class="item-content">老柯</span>
+    <span class="item-content"></span>
   </p>
   <p class="copyright-item">
     <span class="item-title">LastMod</span>
@@ -523,7 +528,7 @@
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

@@ -16,14 +16,19 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="由於 httpd 預設沒有將 access/error log 丟到 syslog 做處理，要需手動新增 新增方式有兩種 直接編輯 httpd.conf 將 log file 導向到 syslog 編輯 rsyslog.conf 叫 rsyslog 去撈本來存放在 /var/log/httpd/(access|error).log 第一種方式會需要做 systemctl reload httpd.service ，對於" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="" /><meta name="description" content="由於 httpd 預設沒有將 access/error log 丟到 syslog 做處理，要需手動新增
+新增方式有兩種
+直接編輯 httpd.conf 將 log file 導向到 syslog 編輯 rsyslog.conf 叫 rsyslog 去撈本來存放在 /var/log/httpd/(access|error).log 第一種方式會需要做 systemctl reload httpd.service ，對於線上運作中的機器有一定風險 一個弄不好鍋就是你戴好 ^^
+雖然有文章指出 reload 不會中斷現有的 connection 不過還是少碰為妙
+How to do an Apache Graceful Restart in CentOS 7
+" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.133.1 with theme even" />
+<meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/post/20200924-httpd-log-to-graylog-with-rsyslog/" />
@@ -45,7 +50,11 @@
 <meta property="og:url" content="http://localhost:1313/post/20200924-httpd-log-to-graylog-with-rsyslog/">
   <meta property="og:site_name" content="老柯的學習筆記">
   <meta property="og:title" content="將 Apache access,error log 透過 rsyslog 發至 Graylog">
-  <meta property="og:description" content="由於 httpd 預設沒有將 access/error log 丟到 syslog 做處理，要需手動新增 新增方式有兩種 直接編輯 httpd.conf 將 log file 導向到 syslog 編輯 rsyslog.conf 叫 rsyslog 去撈本來存放在 /var/log/httpd/(access|error).log 第一種方式會需要做 systemctl reload httpd.service ，對於">
+  <meta property="og:description" content="由於 httpd 預設沒有將 access/error log 丟到 syslog 做處理，要需手動新增
+新增方式有兩種
+直接編輯 httpd.conf 將 log file 導向到 syslog 編輯 rsyslog.conf 叫 rsyslog 去撈本來存放在 /var/log/httpd/(access|error).log 第一種方式會需要做 systemctl reload httpd.service ，對於線上運作中的機器有一定風險 一個弄不好鍋就是你戴好 ^^
+雖然有文章指出 reload 不會中斷現有的 connection 不過還是少碰為妙
+How to do an Apache Graceful Restart in CentOS 7">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="post">
@@ -56,14 +65,22 @@
     <meta property="article:tag" content="Log">
 
   <meta itemprop="name" content="將 Apache access,error log 透過 rsyslog 發至 Graylog">
-  <meta itemprop="description" content="由於 httpd 預設沒有將 access/error log 丟到 syslog 做處理，要需手動新增 新增方式有兩種 直接編輯 httpd.conf 將 log file 導向到 syslog 編輯 rsyslog.conf 叫 rsyslog 去撈本來存放在 /var/log/httpd/(access|error).log 第一種方式會需要做 systemctl reload httpd.service ，對於">
+  <meta itemprop="description" content="由於 httpd 預設沒有將 access/error log 丟到 syslog 做處理，要需手動新增
+新增方式有兩種
+直接編輯 httpd.conf 將 log file 導向到 syslog 編輯 rsyslog.conf 叫 rsyslog 去撈本來存放在 /var/log/httpd/(access|error).log 第一種方式會需要做 systemctl reload httpd.service ，對於線上運作中的機器有一定風險 一個弄不好鍋就是你戴好 ^^
+雖然有文章指出 reload 不會中斷現有的 connection 不過還是少碰為妙
+How to do an Apache Graceful Restart in CentOS 7">
   <meta itemprop="datePublished" content="2020-09-24T15:29:12+00:00">
   <meta itemprop="dateModified" content="2022-12-22T15:28:33+08:00">
   <meta itemprop="wordCount" content="629">
   <meta itemprop="keywords" content="Httpd,Apache,Log">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="將 Apache access,error log 透過 rsyslog 發至 Graylog">
-  <meta name="twitter:description" content="由於 httpd 預設沒有將 access/error log 丟到 syslog 做處理，要需手動新增 新增方式有兩種 直接編輯 httpd.conf 將 log file 導向到 syslog 編輯 rsyslog.conf 叫 rsyslog 去撈本來存放在 /var/log/httpd/(access|error).log 第一種方式會需要做 systemctl reload httpd.service ，對於">
+  <meta name="twitter:description" content="由於 httpd 預設沒有將 access/error log 丟到 syslog 做處理，要需手動新增
+新增方式有兩種
+直接編輯 httpd.conf 將 log file 導向到 syslog 編輯 rsyslog.conf 叫 rsyslog 去撈本來存放在 /var/log/httpd/(access|error).log 第一種方式會需要做 systemctl reload httpd.service ，對於線上運作中的機器有一定風險 一個弄不好鍋就是你戴好 ^^
+雖然有文章指出 reload 不會中斷現有的 connection 不過還是少碰為妙
+How to do an Apache Graceful Restart in CentOS 7">
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -303,7 +320,7 @@
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">Author</span>
-    <span class="item-content">老柯</span>
+    <span class="item-content"></span>
   </p>
   <p class="copyright-item">
     <span class="item-title">LastMod</span>
@@ -366,7 +383,7 @@
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

@@ -13,7 +13,7 @@
       <link>http://localhost:1313/post/20210223-hide-apache-php-openssl-nginx-version/</link>
       <pubDate>Tue, 23 Feb 2021 14:33:37 +0000</pubDate>
       <guid>http://localhost:1313/post/20210223-hide-apache-php-openssl-nginx-version/</guid>
-      <description>此篇筆記記錄如何隱藏客戶端看到 Web Server 使用的版本號 判斷標準是用最無腦的 Browser Plug-in 當作依據，推薦使用 Wappalyzer 如果透過 CloudFlare 訪問這些敏感資訊都會被過濾掉;直接使用 IP</description>
+      <description>&lt;br&gt;&#xA;&lt;p&gt;&lt;img src=&#34;pexels-markus-spiske-1089438.jpg&#34; alt=&#34;pexels-markus-spiske-1089438&#34;&gt;&lt;/p&gt;&#xA;&lt;br&gt;&#xA;&lt;hr&gt;&#xA;&lt;p&gt;&lt;strong&gt;此篇筆記記錄如何隱藏客戶端看到 Web Server 使用的版本號&lt;/strong&gt;&lt;br&gt;&#xA;&lt;strong&gt;判斷標準是用最無腦的 Browser Plug-in 當作依據，推薦使用 &lt;a href=&#34;https://www.wappalyzer.com/&#34;&gt;Wappalyzer&lt;/a&gt;&lt;/strong&gt;&lt;br&gt;&#xA;&lt;strong&gt;如果透過 CloudFlare 訪問這些敏感資訊都會被過濾掉;直接使用 IP 則否。&lt;/strong&gt;&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

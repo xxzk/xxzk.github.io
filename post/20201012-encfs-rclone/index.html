@@ -16,14 +16,17 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="前幾天看到 G Suite 改版的消息，雖然 Education 與 Business 往後都沒有 看似 10T 實際上有無限儲存空間 的雲端硬碟能用了，不過 5TB 的空間對於一般用戶 (冷儲存) 來說已經非常夠用" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="" /><meta name="description" content="
+前幾天看到 G Suite 改版的消息，雖然 Education 與 Business 往後都沒有 看似 10T 實際上有無限儲存空間 的雲端硬碟能用了，不過 5TB 的空間對於一般用戶 (冷儲存) 來說已經非常夠用。
+但 個人/公司 資料放上公有雲端硬碟還是有隱私以及商業機密的問題，本篇旨意就是利用 EncFS 搭配 Rclone 來加解密 上傳、同步備份/下載、串流 放在 Google Drive 上面的檔案。
+" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.133.1 with theme even" />
+<meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/post/20201012-encfs-rclone/" />
@@ -45,7 +48,8 @@
 <meta property="og:url" content="http://localhost:1313/post/20201012-encfs-rclone/">
   <meta property="og:site_name" content="老柯的學習筆記">
   <meta property="og:title" content="EncFS &#43; Rclone 公有雲變私有雲，還能掛載串流!">
-  <meta property="og:description" content="前幾天看到 G Suite 改版的消息，雖然 Education 與 Business 往後都沒有 看似 10T 實際上有無限儲存空間 的雲端硬碟能用了，不過 5TB 的空間對於一般用戶 (冷儲存) 來說已經非常夠用">
+  <meta property="og:description" content="前幾天看到 G Suite 改版的消息，雖然 Education 與 Business 往後都沒有 看似 10T 實際上有無限儲存空間 的雲端硬碟能用了，不過 5TB 的空間對於一般用戶 (冷儲存) 來說已經非常夠用。
+但 個人/公司 資料放上公有雲端硬碟還是有隱私以及商業機密的問題，本篇旨意就是利用 EncFS 搭配 Rclone 來加解密 上傳、同步備份/下載、串流 放在 Google Drive 上面的檔案。">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="post">
@@ -54,14 +58,16 @@
     <meta property="article:tag" content="Rclone">
 
   <meta itemprop="name" content="EncFS &#43; Rclone 公有雲變私有雲，還能掛載串流!">
-  <meta itemprop="description" content="前幾天看到 G Suite 改版的消息，雖然 Education 與 Business 往後都沒有 看似 10T 實際上有無限儲存空間 的雲端硬碟能用了，不過 5TB 的空間對於一般用戶 (冷儲存) 來說已經非常夠用">
+  <meta itemprop="description" content="前幾天看到 G Suite 改版的消息，雖然 Education 與 Business 往後都沒有 看似 10T 實際上有無限儲存空間 的雲端硬碟能用了，不過 5TB 的空間對於一般用戶 (冷儲存) 來說已經非常夠用。
+但 個人/公司 資料放上公有雲端硬碟還是有隱私以及商業機密的問題，本篇旨意就是利用 EncFS 搭配 Rclone 來加解密 上傳、同步備份/下載、串流 放在 Google Drive 上面的檔案。">
   <meta itemprop="datePublished" content="2020-10-12T13:48:24+00:00">
   <meta itemprop="dateModified" content="2022-09-13T17:47:30+08:00">
   <meta itemprop="wordCount" content="1032">
   <meta itemprop="keywords" content="Rclone">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="EncFS &#43; Rclone 公有雲變私有雲，還能掛載串流!">
-  <meta name="twitter:description" content="前幾天看到 G Suite 改版的消息，雖然 Education 與 Business 往後都沒有 看似 10T 實際上有無限儲存空間 的雲端硬碟能用了，不過 5TB 的空間對於一般用戶 (冷儲存) 來說已經非常夠用">
+  <meta name="twitter:description" content="前幾天看到 G Suite 改版的消息，雖然 Education 與 Business 往後都沒有 看似 10T 實際上有無限儲存空間 的雲端硬碟能用了，不過 5TB 的空間對於一般用戶 (冷儲存) 來說已經非常夠用。
+但 個人/公司 資料放上公有雲端硬碟還是有隱私以及商業機密的問題，本篇旨意就是利用 EncFS 搭配 Rclone 來加解密 上傳、同步備份/下載、串流 放在 Google Drive 上面的檔案。">
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -309,7 +315,7 @@
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">Author</span>
-    <span class="item-content">老柯</span>
+    <span class="item-content"></span>
   </p>
   <p class="copyright-item">
     <span class="item-title">LastMod</span>
@@ -370,7 +376,7 @@
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

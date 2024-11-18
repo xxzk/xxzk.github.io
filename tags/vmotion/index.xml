@@ -13,7 +13,7 @@
       <link>http://localhost:1313/post/20210224-what-network-will-vmware-migration-used/</link>
       <pubDate>Wed, 24 Feb 2021 13:21:00 +0000</pubDate>
       <guid>http://localhost:1313/post/20210224-what-network-will-vmware-migration-used/</guid>
-      <description>LAB 架構圖 寫日記 這兩台 ESXi 主要是拿來測試 vSS 轉 vDS 用的。因為 DC1 10.x.x.53 ESXi Host 在 2021.02.19 發現 GBIC 故障 DC1 10.x.x.54 ESXi Host 2021.02.12 發生 DIMM_A3 Multi-bit memory errors (error rate 上升) + 2021.02.19 Power Supply 1 (PS1) 死去。兩台共通點都是 2021.01</description>
+      <description>&lt;p&gt;&lt;img src=&#34;pexels-brett-sayles-1624895.jpg&#34; alt=&#34;pexels-brett-sayles-1624895&#34;&gt;&lt;/p&gt;&#xA;&lt;br&gt;&#xA;&lt;h2 id=&#34;lab-架構圖&#34;&gt;LAB 架構圖&lt;/h2&gt;&#xA;&lt;br&gt;&#xA;&lt;p&gt;&lt;img src=&#34;lab_dc1_overview.jpg&#34; alt=&#34;lab_dc1_overview&#34;&gt;&lt;/p&gt;&#xA;&lt;br&gt;&#xA;&lt;p&gt;&lt;del&gt;寫日記&lt;/del&gt;&lt;br&gt;&#xA;這兩台 ESXi 主要是拿來測試 vSS 轉 vDS 用的。因為 &lt;code&gt;DC1 10.x.x.53 ESXi Host&lt;/code&gt; 在 2021.02.19 發現 GBIC 故障&lt;br&gt;&#xA;&lt;code&gt;DC1 10.x.x.54 ESXi Host&lt;/code&gt; 2021.02.12 發生 DIMM_A3 Multi-bit memory errors (error rate 上升) + 2021.02.19 Power Supply 1 (PS1) 死去。兩台共通點都是 &lt;a href=&#34;https://blog.xxzk.me&#34;&gt;2021.01 新上櫃&lt;/a&gt; 的，所以請廠商更換料件後放置觀察一周&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

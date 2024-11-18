@@ -16,14 +16,17 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="本篇筆記參考: NGINX Document-High Availability Support Based on keepalived [sysctl]CentLinux-keepalived: Configure Floating IP in CentOS 7 Servers nixCraft-Verify: Keepalived IP Failover Working Or Not With tcpdump Command man keepalived.conf Keepalived 是一套由 C 語言撰寫的路由軟體 (Routing software)，主要目的是提供 Linux 設施" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="" /><meta name="description" content="
+本篇筆記參考:
+NGINX Document-High Availability Support Based on keepalived [sysctl]CentLinux-keepalived: Configure Floating IP in CentOS 7 Servers nixCraft-Verify: Keepalived IP Failover Working Or Not With tcpdump Command man keepalived.conf Keepalived 是一套由 C 語言撰寫的路由軟體 (Routing software)，主要目的是提供 Linux 設施簡單的高可用 (High-Availability) 以及平衡負載 (Loadbalancing) 方案。
+" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.133.1 with theme even" />
+<meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/post/20210419-introduce-keepalived/" />
@@ -45,7 +48,8 @@
 <meta property="og:url" content="http://localhost:1313/post/20210419-introduce-keepalived/">
   <meta property="og:site_name" content="老柯的學習筆記">
   <meta property="og:title" content="Nginx Keepalived (HA) 設定">
-  <meta property="og:description" content="本篇筆記參考: NGINX Document-High Availability Support Based on keepalived [sysctl]CentLinux-keepalived: Configure Floating IP in CentOS 7 Servers nixCraft-Verify: Keepalived IP Failover Working Or Not With tcpdump Command man keepalived.conf Keepalived 是一套由 C 語言撰寫的路由軟體 (Routing software)，主要目的是提供 Linux 設施">
+  <meta property="og:description" content="本篇筆記參考:
+NGINX Document-High Availability Support Based on keepalived [sysctl]CentLinux-keepalived: Configure Floating IP in CentOS 7 Servers nixCraft-Verify: Keepalived IP Failover Working Or Not With tcpdump Command man keepalived.conf Keepalived 是一套由 C 語言撰寫的路由軟體 (Routing software)，主要目的是提供 Linux 設施簡單的高可用 (High-Availability) 以及平衡負載 (Loadbalancing) 方案。">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="post">
@@ -54,14 +58,16 @@
     <meta property="article:tag" content="Keepalived">
 
   <meta itemprop="name" content="Nginx Keepalived (HA) 設定">
-  <meta itemprop="description" content="本篇筆記參考: NGINX Document-High Availability Support Based on keepalived [sysctl]CentLinux-keepalived: Configure Floating IP in CentOS 7 Servers nixCraft-Verify: Keepalived IP Failover Working Or Not With tcpdump Command man keepalived.conf Keepalived 是一套由 C 語言撰寫的路由軟體 (Routing software)，主要目的是提供 Linux 設施">
+  <meta itemprop="description" content="本篇筆記參考:
+NGINX Document-High Availability Support Based on keepalived [sysctl]CentLinux-keepalived: Configure Floating IP in CentOS 7 Servers nixCraft-Verify: Keepalived IP Failover Working Or Not With tcpdump Command man keepalived.conf Keepalived 是一套由 C 語言撰寫的路由軟體 (Routing software)，主要目的是提供 Linux 設施簡單的高可用 (High-Availability) 以及平衡負載 (Loadbalancing) 方案。">
   <meta itemprop="datePublished" content="2021-04-19T15:40:55+00:00">
   <meta itemprop="dateModified" content="2022-12-26T14:47:20+08:00">
   <meta itemprop="wordCount" content="1530">
   <meta itemprop="keywords" content="Keepalived">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Nginx Keepalived (HA) 設定">
-  <meta name="twitter:description" content="本篇筆記參考: NGINX Document-High Availability Support Based on keepalived [sysctl]CentLinux-keepalived: Configure Floating IP in CentOS 7 Servers nixCraft-Verify: Keepalived IP Failover Working Or Not With tcpdump Command man keepalived.conf Keepalived 是一套由 C 語言撰寫的路由軟體 (Routing software)，主要目的是提供 Linux 設施">
+  <meta name="twitter:description" content="本篇筆記參考:
+NGINX Document-High Availability Support Based on keepalived [sysctl]CentLinux-keepalived: Configure Floating IP in CentOS 7 Servers nixCraft-Verify: Keepalived IP Failover Working Or Not With tcpdump Command man keepalived.conf Keepalived 是一套由 C 語言撰寫的路由軟體 (Routing software)，主要目的是提供 Linux 設施簡單的高可用 (High-Availability) 以及平衡負載 (Loadbalancing) 方案。">
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -407,7 +413,7 @@
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">Author</span>
-    <span class="item-content">老柯</span>
+    <span class="item-content"></span>
   </p>
   <p class="copyright-item">
     <span class="item-title">LastMod</span>
@@ -468,7 +474,7 @@
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

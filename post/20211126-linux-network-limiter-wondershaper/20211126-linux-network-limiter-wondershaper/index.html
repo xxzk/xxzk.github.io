@@ -16,14 +16,16 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="Wonder Shaper 是一支底層使用 Linux 自帶的流量控制命令 tc 的 shell script，能夠簡單、方便、快速 達成限流的目的 在 Wonder Shaper v1.3 以上版本等待列隊方式從本來的 CBQ 變更成 HT" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="" /><meta name="description" content="
+Wonder Shaper 是一支底層使用 Linux 自帶的流量控制命令 tc 的 shell script，能夠簡單、方便、快速 達成限流的目的 在 Wonder Shaper v1.3 以上版本等待列隊方式從本來的 CBQ 變更成 HTB，針對 10Mb (tenmegabits) 以上的速率提供更好的流量控制方式。
+" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.133.1 with theme even" />
+<meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/post/20211126-linux-network-limiter-wondershaper/20211126-linux-network-limiter-wondershaper/" />
@@ -45,7 +47,7 @@
 <meta property="og:url" content="http://localhost:1313/post/20211126-linux-network-limiter-wondershaper/20211126-linux-network-limiter-wondershaper/">
   <meta property="og:site_name" content="老柯的學習筆記">
   <meta property="og:title" content="Linux 限制網路速度，使用 Wondershaper">
-  <meta property="og:description" content="Wonder Shaper 是一支底層使用 Linux 自帶的流量控制命令 tc 的 shell script，能夠簡單、方便、快速 達成限流的目的 在 Wonder Shaper v1.3 以上版本等待列隊方式從本來的 CBQ 變更成 HT">
+  <meta property="og:description" content="Wonder Shaper 是一支底層使用 Linux 自帶的流量控制命令 tc 的 shell script，能夠簡單、方便、快速 達成限流的目的 在 Wonder Shaper v1.3 以上版本等待列隊方式從本來的 CBQ 變更成 HTB，針對 10Mb (tenmegabits) 以上的速率提供更好的流量控制方式。">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="post">
@@ -54,14 +56,14 @@
     <meta property="article:tag" content="Network">
 
   <meta itemprop="name" content="Linux 限制網路速度，使用 Wondershaper">
-  <meta itemprop="description" content="Wonder Shaper 是一支底層使用 Linux 自帶的流量控制命令 tc 的 shell script，能夠簡單、方便、快速 達成限流的目的 在 Wonder Shaper v1.3 以上版本等待列隊方式從本來的 CBQ 變更成 HT">
+  <meta itemprop="description" content="Wonder Shaper 是一支底層使用 Linux 自帶的流量控制命令 tc 的 shell script，能夠簡單、方便、快速 達成限流的目的 在 Wonder Shaper v1.3 以上版本等待列隊方式從本來的 CBQ 變更成 HTB，針對 10Mb (tenmegabits) 以上的速率提供更好的流量控制方式。">
   <meta itemprop="datePublished" content="2021-11-26T14:23:11+00:00">
   <meta itemprop="dateModified" content="2022-12-22T15:38:04+08:00">
   <meta itemprop="wordCount" content="681">
   <meta itemprop="keywords" content="Network">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Linux 限制網路速度，使用 Wondershaper">
-  <meta name="twitter:description" content="Wonder Shaper 是一支底層使用 Linux 自帶的流量控制命令 tc 的 shell script，能夠簡單、方便、快速 達成限流的目的 在 Wonder Shaper v1.3 以上版本等待列隊方式從本來的 CBQ 變更成 HT">
+  <meta name="twitter:description" content="Wonder Shaper 是一支底層使用 Linux 自帶的流量控制命令 tc 的 shell script，能夠簡單、方便、快速 達成限流的目的 在 Wonder Shaper v1.3 以上版本等待列隊方式從本來的 CBQ 變更成 HTB，針對 10Mb (tenmegabits) 以上的速率提供更好的流量控制方式。">
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -387,7 +389,7 @@
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">Author</span>
-    <span class="item-content">老柯</span>
+    <span class="item-content"></span>
   </p>
   <p class="copyright-item">
     <span class="item-title">LastMod</span>
@@ -448,7 +450,7 @@
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

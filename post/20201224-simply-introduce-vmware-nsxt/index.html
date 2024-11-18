@@ -16,14 +16,22 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="VMwatre NSX Network Virtualization Platform 是一個涵蓋 L2 ~ L7 的網路虛擬化平台 是 VMWare 併購 Nicira 後的產物 什麼是網路虛擬化 ▲ 圖片來源 The VMware NSX Network Virtualization Platform 白皮書 左邊的 Server Virtualization 是將 Bare-Metal (Hardware," /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="" /><meta name="description" content="
+VMwatre NSX Network Virtualization Platform 是一個涵蓋 L2 ~ L7 的網路虛擬化平台
+是 VMWare 併購 Nicira 後的產物
+什麼是網路虛擬化 ▲ 圖片來源 The VMware NSX Network Virtualization Platform 白皮書
+左邊的 Server Virtualization 是將 Bare-Metal (Hardware,硬體) 透過 Virtualization Layer aka Hypervisor (講白話: 公司用的 VMWare ESXi) 模擬出多個一台電腦所需的硬體資源，並在這個條件上建立 Virtual Mechine (VM)。
+各台 VM 在邏輯上可以視為獨立環境 (isolate) 彼此互不干擾、享有獨立資源。實際上還是會發生硬體爭用的情況
+延伸相關閱讀 解析 vRealize 發生「BIOS 電源管理未設定為 [由作業系統控制] 」 BIOS power management not set to OS controlled facing CPU contention
+將硬體虛擬化的好處是可以充分利用硬體效能、加快部屬時間&hellip;. 等
+" /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.133.1 with theme even" />
+<meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/post/20201224-simply-introduce-vmware-nsxt/" />
@@ -45,7 +53,13 @@
 <meta property="og:url" content="http://localhost:1313/post/20201224-simply-introduce-vmware-nsxt/">
   <meta property="og:site_name" content="老柯的學習筆記">
   <meta property="og:title" content="簡單介紹 VMWare NSX Network Virtualization Platform">
-  <meta property="og:description" content="VMwatre NSX Network Virtualization Platform 是一個涵蓋 L2 ~ L7 的網路虛擬化平台 是 VMWare 併購 Nicira 後的產物 什麼是網路虛擬化 ▲ 圖片來源 The VMware NSX Network Virtualization Platform 白皮書 左邊的 Server Virtualization 是將 Bare-Metal (Hardware,">
+  <meta property="og:description" content="VMwatre NSX Network Virtualization Platform 是一個涵蓋 L2 ~ L7 的網路虛擬化平台
+是 VMWare 併購 Nicira 後的產物
+什麼是網路虛擬化 ▲ 圖片來源 The VMware NSX Network Virtualization Platform 白皮書
+左邊的 Server Virtualization 是將 Bare-Metal (Hardware,硬體) 透過 Virtualization Layer aka Hypervisor (講白話: 公司用的 VMWare ESXi) 模擬出多個一台電腦所需的硬體資源，並在這個條件上建立 Virtual Mechine (VM)。
+各台 VM 在邏輯上可以視為獨立環境 (isolate) 彼此互不干擾、享有獨立資源。實際上還是會發生硬體爭用的情況
+延伸相關閱讀 解析 vRealize 發生「BIOS 電源管理未設定為 [由作業系統控制] 」 BIOS power management not set to OS controlled facing CPU contention
+將硬體虛擬化的好處是可以充分利用硬體效能、加快部屬時間…. 等">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="post">
@@ -56,14 +70,26 @@
     <meta property="article:tag" content="Vsphere">
 
   <meta itemprop="name" content="簡單介紹 VMWare NSX Network Virtualization Platform">
-  <meta itemprop="description" content="VMwatre NSX Network Virtualization Platform 是一個涵蓋 L2 ~ L7 的網路虛擬化平台 是 VMWare 併購 Nicira 後的產物 什麼是網路虛擬化 ▲ 圖片來源 The VMware NSX Network Virtualization Platform 白皮書 左邊的 Server Virtualization 是將 Bare-Metal (Hardware,">
+  <meta itemprop="description" content="VMwatre NSX Network Virtualization Platform 是一個涵蓋 L2 ~ L7 的網路虛擬化平台
+是 VMWare 併購 Nicira 後的產物
+什麼是網路虛擬化 ▲ 圖片來源 The VMware NSX Network Virtualization Platform 白皮書
+左邊的 Server Virtualization 是將 Bare-Metal (Hardware,硬體) 透過 Virtualization Layer aka Hypervisor (講白話: 公司用的 VMWare ESXi) 模擬出多個一台電腦所需的硬體資源，並在這個條件上建立 Virtual Mechine (VM)。
+各台 VM 在邏輯上可以視為獨立環境 (isolate) 彼此互不干擾、享有獨立資源。實際上還是會發生硬體爭用的情況
+延伸相關閱讀 解析 vRealize 發生「BIOS 電源管理未設定為 [由作業系統控制] 」 BIOS power management not set to OS controlled facing CPU contention
+將硬體虛擬化的好處是可以充分利用硬體效能、加快部屬時間…. 等">
   <meta itemprop="datePublished" content="2020-12-24T13:46:50+00:00">
   <meta itemprop="dateModified" content="2022-12-26T15:08:10+08:00">
   <meta itemprop="wordCount" content="1032">
   <meta itemprop="keywords" content="Nsx-T,Vmware,Vsphere">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="簡單介紹 VMWare NSX Network Virtualization Platform">
-  <meta name="twitter:description" content="VMwatre NSX Network Virtualization Platform 是一個涵蓋 L2 ~ L7 的網路虛擬化平台 是 VMWare 併購 Nicira 後的產物 什麼是網路虛擬化 ▲ 圖片來源 The VMware NSX Network Virtualization Platform 白皮書 左邊的 Server Virtualization 是將 Bare-Metal (Hardware,">
+  <meta name="twitter:description" content="VMwatre NSX Network Virtualization Platform 是一個涵蓋 L2 ~ L7 的網路虛擬化平台
+是 VMWare 併購 Nicira 後的產物
+什麼是網路虛擬化 ▲ 圖片來源 The VMware NSX Network Virtualization Platform 白皮書
+左邊的 Server Virtualization 是將 Bare-Metal (Hardware,硬體) 透過 Virtualization Layer aka Hypervisor (講白話: 公司用的 VMWare ESXi) 模擬出多個一台電腦所需的硬體資源，並在這個條件上建立 Virtual Mechine (VM)。
+各台 VM 在邏輯上可以視為獨立環境 (isolate) 彼此互不干擾、享有獨立資源。實際上還是會發生硬體爭用的情況
+延伸相關閱讀 解析 vRealize 發生「BIOS 電源管理未設定為 [由作業系統控制] 」 BIOS power management not set to OS controlled facing CPU contention
+將硬體虛擬化的好處是可以充分利用硬體效能、加快部屬時間…. 等">
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -223,7 +249,7 @@ VMware 官網列出四大項 <strong>VMware NSX-T 帶來的優勢</strong></p>
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">Author</span>
-    <span class="item-content">老柯</span>
+    <span class="item-content"></span>
   </p>
   <p class="copyright-item">
     <span class="item-title">LastMod</span>
@@ -286,7 +312,7 @@ VMware 官網列出四大項 <strong>VMware NSX-T 帶來的優勢</strong></p>
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

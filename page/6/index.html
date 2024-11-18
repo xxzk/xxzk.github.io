@@ -16,14 +16,14 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="老柯" /><meta name="description" content="Learning note." /><meta name="keywords" content="IT, Kubernetes, DevOps" />
+<meta name="author" content="" /><meta name="description" content="Learning note." /><meta name="keywords" content="IT, Kubernetes, DevOps" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.133.1 with theme even" />
+<meta name="generator" content="Hugo 0.136.5 with theme even" />
 
 
 <link rel="canonical" href="http://localhost:1313/" />
@@ -52,8 +52,8 @@
 
   <meta itemprop="name" content="老柯的學習筆記">
   <meta itemprop="description" content="Learning note.">
-  <meta itemprop="datePublished" content="2024-09-18T10:10:13+00:00">
-  <meta itemprop="dateModified" content="2024-09-18T10:10:13+00:00">
+  <meta itemprop="datePublished" content="2024-10-09T14:47:52+00:00">
+  <meta itemprop="dateModified" content="2024-11-18T14:50:24+08:00">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="老柯的學習筆記">
   <meta name="twitter:description" content="Learning note.">
@@ -129,6 +129,30 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/20211124-cka_note_section_3_scheduling/">CKA Note Section 3 Scheduling</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2021-11-24 </span>
+      <div class="post-category">
+          <a href="/categories/cka-note/"> CKA-Note </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <h2 id="50-manual-scheduling">50. Manual Scheduling</h2>
+<br>
+<p>在 <strong>有</strong> <code>kube-scheduler</code> 的情況下，我們可以在 <code>pod</code> definition YAML 裡面定義 <code>pod.spec.nodeName: &lt;worker node name&gt;</code> 來把 <code>pod</code> 放在指定 worker node。<br>
+在 <strong>沒有</strong> <code>kube-scheduler</code> 的情況下，必須要以 <code>json</code> 格式 POST 到 <code>api-server</code>。BTW，我找不到 docs 耶 = =</p>
+    </div>
+    <div class="read-more">
+      <a href="/post/20211124-cka_note_section_3_scheduling/" class="read-more-link">Read more...</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/20211123-cka_note_section_2_core_concepts/">CKA Note Section 2 Core Concepts</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2021-11-23 </span>
@@ -140,7 +164,19 @@
   
   <div class="post-content">
     <div class="post-summary">
-      10. Cluster Architecture ▲ Kubernetes controll plane / worker node 組件 12. ETCD in Kubernetes 透過 kubectl get 都是 (透過 api-server ) 向 etcd 查詢資料。 講師提供的練習環境是使用 kubeadm 搭建的，課程最後的章節會教導如何從 scratch 建立 Kubernetes cl
+      <h2 id="10-cluster-architecture">10. Cluster Architecture</h2>
+<br>
+<p><img src="k8s_arch.jpg" alt="k8s_arch"></p>
+<p>▲ Kubernetes controll plane / worker node 組件</p>
+<br>
+<h2 id="12-etcd-in-kubernetes">12. ETCD in Kubernetes</h2>
+<br>
+<ul>
+<li>透過 <code>kubectl get</code> 都是 (透過 <code>api-server</code> ) 向 etcd 查詢資料。</li>
+<li>講師提供的練習環境是使用 <code>kubeadm</code> 搭建的，課程最後的章節會教導如何從 scratch 建立 Kubernetes cluster。</li>
+</ul>
+<br>
+<p><img src="etcd_manual_install_0.jpg" alt="etcd_manual_install_0"></p>
     </div>
     <div class="read-more">
       <a href="/post/20211123-cka_note_section_2_core_concepts/" class="read-more-link">Read more...</a>
@@ -161,7 +197,57 @@
   
   <div class="post-content">
     <div class="post-summary">
-      ▲ CKAD 新舊版差異 119. Define, build and modify container images 非常基礎的 Docker Image (container image) 介紹，我之前就打過一篇在公司 Bookstack 了~ 《Docker Image 介紹》 使用 docker 與 podman 大部分情況 docker 與 podman syntax 很接近~ 1
+      <br>
+<p><img src="CKAD_20210928_change.jpg" alt="CKAD_20210928_change"></p>
+<p>▲ CKAD 新舊版差異</p>
+<br>
+<h2 id="119-define-build-and-modify-container-images">119. Define, build and modify container images</h2>
+<br>
+<p>非常基礎的 Docker Image (container image) 介紹，我之前就打過一篇在公司 Bookstack 了~<br>
+《Docker Image 介紹》</p>
+<h3 id="使用-docker-與-podman">使用 <code>docker</code> 與 <code>podman</code></h3>
+<p>大部分情況 <code>docker</code> 與 <code>podman</code> syntax 很接近~</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## docker multi tags</span>
+</span></span><span class="line"><span class="cl">sudo docker build -t registry.killer.sh:5000/sun-cipher:latest -t registry.killer.sh:5000/sun-cipher:v1-docker .
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## pod man build image</span>
+</span></span><span class="line"><span class="cl">podman build -t registry.killer.sh:5000/sun-cipher:v1-podman .
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## podman run container</span>
+</span></span><span class="line"><span class="cl">podman run -d --name sun-cipher registry.killer.sh:5000/sun-cipher:v1-podman
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## podman show process</span>
+</span></span><span class="line"><span class="cl">podman ps
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## podman logs</span>
+</span></span><span class="line"><span class="cl">podman logs sun-cipher
+</span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<br>
+<h2 id="121-authentication-authorization-and-admission-control">121. Authentication, Authorization and Admission Control</h2>
+<br>
+<p>除了 master,worker node 本身的安全機制 (例如: SSH public key ONLY) 以外<br>
+<code>kube-apiserver</code> 在 K8s cluster 當中扮演非常關鍵的角色必須要被嚴格控管，接下來的章節會介紹 How to<br>
+一開始我們先來探討一下 <strong>Who can access?</strong> 與 <strong>What can they do?</strong></p>
     </div>
     <div class="read-more">
       <a href="/post/20211110-ckad-note-section-9-updates-for-sep-2021-changes/" class="read-more-link">Read more...</a>
@@ -182,7 +268,12 @@
   
   <div class="post-content">
     <div class="post-summary">
-      105. Volumes hostPath 這個範例 mount worker-node 的 /data 進 pod 裡面，並且 mapping 到 container 裡面的 /test-pd。 實際上我們並不會這樣做，因為 worker-node 之間的資料並沒辦法同步，一般來說會使用 shared storage 例
+      <h2 id="105-volumes">105. Volumes</h2>
+<br>
+<h3 id="hostpath">hostPath</h3>
+<br>
+<p>這個範例 mount worker-node 的 <code>/data</code> 進 <code>pod</code> 裡面，並且 mapping 到 container 裡面的 <code>/test-pd</code>。<br>
+實際上我們並不會這樣做，因為 worker-node 之間的資料並沒辦法同步，一般來說會使用 shared storage 例如: NFS, ClusterFS, Ceph, AWS EBS, AzureDisk &hellip;.</p>
     </div>
     <div class="read-more">
       <a href="/post/20211105-ckad-note-section-8-state-persistence/" class="read-more-link">Read more...</a>
@@ -203,31 +294,59 @@
   
   <div class="post-content">
     <div class="post-summary">
-      90. Service ▲ NodePort type 的 service ▲ service 的種類: NodePort, Cluster IP, LoadBlance ▲ NodePort 總共有三個 port number 分別是: node-port, port, target-port NodePort range: 30000~32767 (option)。 如果沒有給定 targetPort，預設 port == targ
+      <h2 id="90-service">90. Service</h2>
+<br>
+<p><img src="serivce_0.jpg" alt="serivce_0"></p>
+<p>▲ NodePort type 的 <code>service</code></p>
+<br>
+<p><img src="service_type.jpg" alt="service_type"></p>
+<p>▲ <code>service</code> 的種類: NodePort, Cluster IP, LoadBlance</p>
+<br>
+<p><img src="nodeport_0.jpg" alt="nodeport_0"></p>
+<p>▲ NodePort 總共有三個 port number 分別是: node-port, port, target-port</p>
+<br>
+<ul>
+<li>NodePort range: 30000~32767 (option)。</li>
+<li>如果沒有給定 targetPort，預設 <code>port == targetPort</code>。</li>
+</ul>
+<br>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Service</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">my-service</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">NodePort</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">selector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">MyApp</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">80</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">nodePort</span><span class="p">:</span><span class="w"> </span><span class="m">30007</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">targetPort</span><span class="p">:</span><span class="w"> </span><span class="m">9376</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><br>
+<p>NodePort <code>service</code> 使用 <code>selector</code> 來決定要將流量導向到哪些 <code>pod</code> 身上。<br>
+P.S 這邊先偷吃步給一個簡單的方法:<br>
+<code>kubectl expose deployment nginx-rollout --port=80 --target-port=80</code></p>
     </div>
     <div class="read-more">
       <a href="/post/20211104-ckad-note-section-7-service-and-networking/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/20211102-ckad-note-section-6-pod-design/">CKAD Note Section 6 Pod Design</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2021-11-02 </span>
-      <div class="post-category">
-          <a href="/categories/ckad-note/"> CKAD-Note </a>
-          </div>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      79. Labels, Selectors and Annotations 1 2 3 4 5 6 7 8 9 10 11 12 13 apiVersion: v1 kind: Pod metadata: name: label-demo labels: environment: production app: nginx spec: containers: - name: nginx image: nginx:1.14.2 ports: - containerPort: 80 我們可以在 kubernetes object 上貼上標籤 (labels) 用於分類。使用 kubectl get pod --selector &lt;key&gt;=&lt;value&gt; 可以篩選
-    </div>
-    <div class="read-more">
-      <a href="/post/20211102-ckad-note-section-6-pod-design/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>
@@ -272,7 +391,7 @@
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span>老柯</span>
+    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

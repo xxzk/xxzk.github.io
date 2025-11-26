@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.136.5 with theme even" />
+<meta name="generator" content="Hugo 0.152.2 with theme even" />
 
 
 <link rel="canonical" href="https://blog.xxzk.me/" />
@@ -39,7 +39,7 @@
 
 
 
-<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link href="/sass/main.min.af7fd1da18d66c2b017df5b4cae508ef44cfcac3fb4c7c7a327fe4f4f9e28b08.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
@@ -52,8 +52,8 @@
 
   <meta itemprop="name" content="老柯的學習筆記">
   <meta itemprop="description" content="Learning note.">
-  <meta itemprop="datePublished" content="2024-10-09T14:47:52+00:00">
-  <meta itemprop="dateModified" content="2024-11-18T15:59:00+00:00">
+  <meta itemprop="datePublished" content="2025-10-14T15:55:25+00:00">
+  <meta itemprop="dateModified" content="2025-11-26T10:50:19+08:00">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="老柯的學習筆記">
   <meta name="twitter:description" content="Learning note.">
@@ -127,6 +127,48 @@
       <div class="content-wrapper">
         <div id="content" class="content">
           <section id="posts" class="posts">
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/20210220-apache-httpd-main-conf/">httpd.conf 研究筆記</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2021-02-20 </span>
+      <div class="post-category">
+          <a href="/categories/apache/"> apache </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <h2 id="httpd-版本資訊">httpd 版本資訊</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">Server version: Apache/2.4.6 (CentOS)
+</span></span><span class="line"><span class="cl">Server built:   Nov 16 2020 16:18:20
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="敬啟者">敬啟者</h2>
+<br>
+<p><del>開頭就一堆屁話，根本沒有人會看的 (愛開玩笑 自己的筆記也屁話一堆還敢說開發者 XD</del><br>
+<strong>節錄幾個重點好了</strong></p>
+<ol>
+<li>更多資訊請到 <a href="http://httpd.apache.org/docs/2.4/">Apache 2.4 版官方文件</a> 參閱，或者更詳細的 <a href="http://httpd.apache.org/docs/2.4/mod/directives.html">指示 (Directives)</a></li>
+<li>配置 logfile 路徑規則。</li>
+</ol>
+<p>如果路徑是由 <code>/</code> 起始的，httpd 會使用<strong>絕對路徑</strong> (換句話說: 直接在 Linux 下 <code>ls -al &lt;path&gt;</code> 的地方)。<br>
+若不是，則使用<strong>相對路徑</strong>，以 <code>ServerRoot</code> 當作參考點，舉個例子:<br>
+當 <code>ServerRoot /www</code> 時 <code>log/access_log</code> 的路徑會是 <code>/www/log/access_log</code></p>
+    </div>
+    <div class="read-more">
+      <a href="/post/20210220-apache-httpd-main-conf/" class="read-more-link">Read more...</a>
+    </div>
+  </div>
+</article>
+
     <article class="post">
   <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/20210128-ansible-hello-world/">我的第一支 Ansible。 Ansible Hello World</a></h1>
@@ -249,29 +291,6 @@
   </div>
 </article>
 
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/20201221-hands-on-wireguard-wan-ip-version/">Wireguard 實作 (WAN IP version)</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2020-12-21 </span>
-      <div class="post-category">
-          <a href="/categories/network/"> network </a>
-          </div>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      <p><img src="https://www.wireguard.com/img/wireguard.svg" alt="logo"></p>
-<h2 id="介紹">介紹</h2>
-<p>WireGuard 是一款開放原始碼的 VPN 程式，主打簡單快速 (任何設備) 並且效能比 IPSec、OpenVPN 更快，安全性方面更是強調 &ldquo;state of the art&rdquo; (最先進的) 安全協議包括但不限於:  Noise protocol framework, Curve25519, ChaCha20, Poly1305, BLAKE2, SipHash24, HKDF <a href="https://www.wireguard.com/protocol/">Protocol &amp; Cryptography - WireGuard</a>。 Source Code 也僅僅約 4000 行，相比其他 VPN 軟體更容易維護以及稽查安全漏洞</p>
-    </div>
-    <div class="read-more">
-      <a href="/post/20201221-hands-on-wireguard-wan-ip-version/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
     </section>
   
   <nav class="pagination">
@@ -312,7 +331,7 @@
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
+    2025<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

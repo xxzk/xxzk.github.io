@@ -27,7 +27,7 @@ Section 4 IAM and AWS CLI IAM Groups 只能包含 users， 不能包含另一個
 
 
 
-<meta name="generator" content="Hugo 0.136.5 with theme even" />
+<meta name="generator" content="Hugo 0.152.2 with theme even" />
 
 
 <link rel="canonical" href="https://blog.xxzk.me/post/20230220-udemy-aws-saa-c03-note/" />
@@ -42,7 +42,7 @@ Section 4 IAM and AWS CLI IAM Groups 只能包含 users， 不能包含另一個
 
 
 
-<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link href="/sass/main.min.af7fd1da18d66c2b017df5b4cae508ef44cfcac3fb4c7c7a327fe4f4f9e28b08.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
@@ -170,7 +170,7 @@ Section 4 IAM and AWS CLI IAM Groups 只能包含 users， 不能包含另一個
     <li>
       <ul>
         <li><a href="#intro">Intro</a></li>
-        <li><a href="#aws-free-tier-說明httpsawsamazoncomfree"><a href="https://aws.amazon.com/free/">AWS Free Tier 說明</a></a></li>
+        <li><a href="#aws-free-tier-說明">AWS Free Tier 說明</a></li>
         <li><a href="#section-4-iam-and-aws-cli">Section 4 IAM and AWS CLI</a>
           <ul>
             <li><a href="#iam">IAM</a></li>
@@ -184,19 +184,19 @@ Section 4 IAM and AWS CLI IAM Groups 只能包含 users， 不能包含另一個
         </li>
         <li><a href="#section-6-ec2-solutions-architect-associate-level">Section 6 EC2 Solutions Architect Associate Level</a>
           <ul>
-            <li><a href="#placement-grouphttpsdocsawsamazoncomawsec2latestuserguideplacement-groupshtml-放置群組"><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-groups.html">Placement Group</a> 放置群組</a></li>
-            <li><a href="#elastic-network-interfaces-enihttpsdocsawsamazoncomawsec2latestuserguideusing-enihtml">Elastic network interfaces (<a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-eni.html">ENI</a>)</a></li>
+            <li><a href="#placement-group-放置群組">Placement Group 放置群組</a></li>
+            <li><a href="#elastic-network-interfaces-eni">Elastic network interfaces (ENI)</a></li>
           </ul>
         </li>
         <li><a href="#section-7-ec2-instance-storage">Section 7 EC2 Instance Storage</a>
           <ul>
-            <li><a href="#ebshttpsdocsawsamazoncomawsec2latestuserguideebs-volumeshtml"><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volumes.html">EBS</a></a></li>
-            <li><a href="#ebs-volume-typeshttpsdocsawsamazoncomawsec2latestuserguideebs-volume-typeshtml"><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html">EBS volume types</a></a></li>
-            <li><a href="#ebs-snapshothttpsdocsawsamazoncomawsec2latestuserguideebssnapshotshtml"><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSSnapshots.html">EBS Snapshot</a></a></li>
-            <li><a href="#ebs-encryptionhttpsdocsawsamazoncomawsec2latestuserguideebsencryptionhtml"><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html">EBS encryption</a></a></li>
-            <li><a href="#ec2-instance-storehttpsdocsawsamazoncomawsec2latestuserguideinstancestoragehtml"><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/InstanceStorage.html">EC2 instance store</a></a></li>
-            <li><a href="#ami-amazon-machine-imageshttpsdocsawsamazoncomawsec2latestuserguideamishtml"><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AMIs.html">AMI Amazon Machine Images</a></a></li>
-            <li><a href="#efs-amazon-elastic-file-systemhttpsdocsawsamazoncomefslatestugwhatisefshtml"><a href="https://docs.aws.amazon.com/efs/latest/ug/whatisefs.html">EFS, Amazon Elastic File System</a></a></li>
+            <li><a href="#ebs">EBS</a></li>
+            <li><a href="#ebs-volume-types">EBS volume types</a></li>
+            <li><a href="#ebs-snapshot">EBS Snapshot</a></li>
+            <li><a href="#ebs-encryption">EBS encryption</a></li>
+            <li><a href="#ec2-instance-store">EC2 instance store</a></li>
+            <li><a href="#ami-amazon-machine-images">AMI Amazon Machine Images</a></li>
+            <li><a href="#efs-amazon-elastic-file-system">EFS, Amazon Elastic File System</a></li>
           </ul>
         </li>
         <li><a href="#section-8-high-availability-and-scalabilityelb--asg">Section 8 High Availability and Scalability:ELB &amp; ASG</a>
@@ -209,13 +209,13 @@ Section 4 IAM and AWS CLI IAM Groups 只能包含 users， 不能包含另一個
         </li>
         <li><a href="#section-9-rds--aurora--elasticache">Section 9 RDS + Aurora + ElastiCache</a>
           <ul>
-            <li><a href="#rds-amazon-relational-database-servicehttpsdocsawsamazoncomamazonrdslatestuserguidewelcomehtml"><a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Welcome.html">RDS, Amazon Relational Database Service</a></a></li>
-            <li><a href="#aurorahttpsdocsawsamazoncomamazonrdslatestaurorauserguidechap_auroraoverviewhtml"><a href="https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/CHAP_AuroraOverview.html">Aurora</a></a></li>
-            <li><a href="#aurora-cloninghttpsdocsawsamazoncomamazonrdslatestaurorauserguideauroramanagingclonehtml"><a href="https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.Managing.Clone.html">Aurora Cloning</a></a></li>
-            <li><a href="#elastic-cachehttpsdocsawsamazoncomelasticacheindexhtml"><a href="https://docs.aws.amazon.com/elasticache/index.html">Elastic Cache</a></a></li>
+            <li><a href="#rds-amazon-relational-database-service">RDS, Amazon Relational Database Service</a></li>
+            <li><a href="#aurora">Aurora</a></li>
+            <li><a href="#aurora-cloning">Aurora Cloning</a></li>
+            <li><a href="#elastic-cache">Elastic Cache</a></li>
           </ul>
         </li>
-        <li><a href="#section-10-route-53httpsawsamazoncomroute53">Section 10 <a href="https://aws.amazon.com/route53/">Route 53</a></a></li>
+        <li><a href="#section-10-route-53">Section 10 Route 53</a></li>
         <li><a href="#section-11-classic-solutions-architecture-discussions">Section 11 Classic Solutions Architecture Discussions</a>
           <ul>
             <li><a href="#elastic-beanstalk">Elastic Beanstalk</a></li>
@@ -261,7 +261,7 @@ Section 4 IAM and AWS CLI IAM Groups 只能包含 users， 不能包含另一個
       <h2 id="intro">Intro</h2>
 <p>這篇筆記會記錄 <a href="https://www.udemy.com/course/aws-certified-solutions-architect-associate-saa-c03/">Udemy Ultimate AWS Certified Solutions Architect Associate SAA-C03</a> 隨堂筆記。</p>
 <p><strong><span style='color:red'>!! 目前施工中~~~ !!</span></strong></p>
-<h2 id="aws-free-tier-說明httpsawsamazoncomfree"><a href="https://aws.amazon.com/free/">AWS Free Tier 說明</a></h2>
+<h2 id="aws-free-tier-說明"><a href="https://aws.amazon.com/free/">AWS Free Tier 說明</a></h2>
 <p><img src="aws_zero_spend_budget_setting.jpg" alt="aws_zero_spend_budget_setting"></p>
 <p>▲ <a href="https://aws.amazon.com/getting-started/hands-on/control-your-costs-free-tier-budgets/">Control Your AWS Costs</a>，設定警告避免帳單爆炸。</p>
 <p><a href="https://courses.datacumulus.com/downloads/certified-solutions-architect-pn9/">Slides and Code Download</a></p>
@@ -354,7 +354,7 @@ Section 4 IAM and AWS CLI IAM Groups 只能包含 users， 不能包含另一個
 <ul>
 <li>Elastic IP 如果申請後不使用會被收錢。</li>
 </ul>
-<h3 id="placement-grouphttpsdocsawsamazoncomawsec2latestuserguideplacement-groupshtml-放置群組"><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-groups.html">Placement Group</a> 放置群組</h3>
+<h3 id="placement-group-放置群組"><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-groups.html">Placement Group</a> 放置群組</h3>
 <p>這有點像 VMware 的 DRS (Distributed Resource Schedler)</p>
 <ul>
 <li>Cluster placement groups
@@ -379,16 +379,16 @@ Section 4 IAM and AWS CLI IAM Groups 只能包含 users， 不能包含另一個
 </ul>
 <p><img src="https://d2908q01vomqb2.cloudfront.net/1b6453892473a467d07372d45eb05abc2031647a/2019/04/22/PPG1-1.png" alt="partition placement diagram"></p>
 <p>▲ 圖片來源: <a href="https://aws.amazon.com/tw/blogs/compute/using-partition-placement-groups-for-large-distributed-and-replicated-workloads-in-amazon-ec2/">Using partition placement groups for large distributed and replicated workloads in Amazon EC2</a></p>
-<h3 id="elastic-network-interfaces-enihttpsdocsawsamazoncomawsec2latestuserguideusing-enihtml">Elastic network interfaces (<a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-eni.html">ENI</a>)</h3>
+<h3 id="elastic-network-interfaces-eni">Elastic network interfaces (<a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-eni.html">ENI</a>)</h3>
 <p><strong>An ENI is a logical networking component in a VPC that represents a virtual network card</strong></p>
 <h2 id="section-7-ec2-instance-storage">Section 7 EC2 Instance Storage</h2>
-<h3 id="ebshttpsdocsawsamazoncomawsec2latestuserguideebs-volumeshtml"><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volumes.html">EBS</a></h3>
+<h3 id="ebs"><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volumes.html">EBS</a></h3>
 <ul>
 <li>A network drive</li>
 <li>Locked to AZ. (Snapshot 後可搬遷)</li>
 <li>Each EBS attach <strong>ONLY 1</strong> EC2 instance ( <strong><span style='color:red'>1:1，但是 io1 / io2 除外!</span></strong> )</li>
 </ul>
-<h3 id="ebs-volume-typeshttpsdocsawsamazoncomawsec2latestuserguideebs-volume-typeshtml"><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html">EBS volume types</a></h3>
+<h3 id="ebs-volume-types"><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html">EBS volume types</a></h3>
 <ul>
 <li><strong><span style='color:red'>gp2 效能與硬碟大小有正相關性</span></strong></li>
 <li>gp2 要開到 5334 GB才能獲得最高 IOPS 16,000。(3 IOPS per GB)</li>
@@ -406,16 +406,16 @@ Section 4 IAM and AWS CLI IAM Groups 只能包含 users， 不能包含另一個
 <ul>
 <li><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html#vol-type-hdd">Hard disk drive (HDD) volumes</a>: st1 / sc1 (cold HDD)</li>
 </ul>
-<h3 id="ebs-snapshothttpsdocsawsamazoncomawsec2latestuserguideebssnapshotshtml"><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSSnapshots.html">EBS Snapshot</a></h3>
+<h3 id="ebs-snapshot"><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSSnapshots.html">EBS Snapshot</a></h3>
 <ul>
 <li>EBS snapshot -&gt; EBS archive，可以節省 75% 的花費，但可能會花費 72 小時 restore (講師是說 24-72 啦)</li>
 <li>Fast Snapshot Restore (FSR) 能夠快速復原到 EBS，但是要花錢。</li>
 </ul>
-<h3 id="ebs-encryptionhttpsdocsawsamazoncomawsec2latestuserguideebsencryptionhtml"><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html">EBS encryption</a></h3>
+<h3 id="ebs-encryption"><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html">EBS encryption</a></h3>
 <ul>
 <li>想對 未加密 EBS 加密的話，步驟如下: snapshot -&gt; <strong><span style='color:red'>copy snapshot with encrypted</span></strong> -&gt; create EBS from encrypted snapshot</li>
 </ul>
-<h3 id="ec2-instance-storehttpsdocsawsamazoncomawsec2latestuserguideinstancestoragehtml"><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/InstanceStorage.html">EC2 instance store</a></h3>
+<h3 id="ec2-instance-store"><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/InstanceStorage.html">EC2 instance store</a></h3>
 <ul>
 <li>有鑑於 EBS 是 network drive， <strong><span style='color:red'>EC2 instance store 是使用 server 身上的硬碟</span></strong></li>
 <li>有較好的 I/O performance</li>
@@ -423,14 +423,14 @@ Section 4 IAM and AWS CLI IAM Groups 只能包含 users， 不能包含另一個
 <li>缺點: <strong><span style='color:red'>EC2 instance stop 之後 instance store 就會消失! 所以又被稱為 ephemeral store</span></strong></li>
 <li>缺點: server hardware failed 在上面的資料也跟著 failed (不知道有沒有做 RAID)</li>
 </ul>
-<h3 id="ami-amazon-machine-imageshttpsdocsawsamazoncomawsec2latestuserguideamishtml"><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AMIs.html">AMI Amazon Machine Images</a></h3>
+<h3 id="ami-amazon-machine-images"><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AMIs.html">AMI Amazon Machine Images</a></h3>
 <ul>
 <li>能夠客製化 OS image (預裝所需套件、監控)</li>
 <li>region level，可以被複製到其他區域</li>
 <li><a href="https://aws.amazon.com/marketplace">AMI Marketplace</a> 歡迎參觀選購</li>
 <li>製作方式跟 VMware Template 很像， VM 開機 -&gt; 裝飾 -&gt; 關機 (EC2 利用 snapshot，無須關機) -&gt; 製作範本</li>
 </ul>
-<h3 id="efs-amazon-elastic-file-systemhttpsdocsawsamazoncomefslatestugwhatisefshtml"><a href="https://docs.aws.amazon.com/efs/latest/ug/whatisefs.html">EFS, Amazon Elastic File System</a></h3>
+<h3 id="efs-amazon-elastic-file-system"><a href="https://docs.aws.amazon.com/efs/latest/ug/whatisefs.html">EFS, Amazon Elastic File System</a></h3>
 <ul>
 <li>NFS drive，只支援 Linux base AMI</li>
 <li>Region base == cross AZ</li>
@@ -470,7 +470,7 @@ Section 4 IAM and AWS CLI IAM Groups 只能包含 users， 不能包含另一個
 <p><img src="cross_zone_lb_diagram.jpg" alt="cross_zone_lb_diagram"></p>
 <p>▲ ELB cross zone V.S without cross zone</p>
 <h2 id="section-9-rds--aurora--elasticache">Section 9 RDS + Aurora + ElastiCache</h2>
-<h3 id="rds-amazon-relational-database-servicehttpsdocsawsamazoncomamazonrdslatestuserguidewelcomehtml"><a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Welcome.html">RDS, Amazon Relational Database Service</a></h3>
+<h3 id="rds-amazon-relational-database-service"><a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Welcome.html">RDS, Amazon Relational Database Service</a></h3>
 <ul>
 <li>AWS 代管 DB 服務， <strong><span style='color:red'>使用者沒有 EC2 SSH 訪問權限。</span></strong></li>
 <li>可跨 AZ， (可選) AWS 會自動幫你在不同 AZ 產一個 standby instance + maintain</li>
@@ -494,7 +494,7 @@ Section 4 IAM and AWS CLI IAM Groups 只能包含 users， 不能包含另一個
 <p>▲ DNS domain name 能夠達成 automatic failed over</p>
 <p><img src="rds_proxy.jpg" alt="rds_proxy"></p>
 <p>▲ RDS proxy， <strong><span style='color:blue'>reverse proxy for DB，而且是 serverless &amp; auto scaling</span></strong></p>
-<h3 id="aurorahttpsdocsawsamazoncomamazonrdslatestaurorauserguidechap_auroraoverviewhtml"><a href="https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/CHAP_AuroraOverview.html">Aurora</a></h3>
+<h3 id="aurora"><a href="https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/CHAP_AuroraOverview.html">Aurora</a></h3>
 <ul>
 <li>AWS 代管更強大的 DB 服務， DB Engine 提供 MySQL 與 PostgreSQL</li>
 <li><strong><span style='color:red'>Master node (Write)</span></strong> 能夠建立 <strong><span style='color:red'>cross region</span></strong></li>
@@ -507,17 +507,17 @@ Section 4 IAM and AWS CLI IAM Groups 只能包含 users， 不能包含另一個
 <p>▲ Aurora 讀寫分離 (提供兩組 DNS domain name)</p>
 <p><img src="aurora_custom_endpoint.jpg" alt="aurora_custom_endpoint"></p>
 <p>▲ Aurora 可以創造 custom endpoint</p>
-<h3 id="aurora-cloninghttpsdocsawsamazoncomamazonrdslatestaurorauserguideauroramanagingclonehtml"><a href="https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.Managing.Clone.html">Aurora Cloning</a></h3>
+<h3 id="aurora-cloning"><a href="https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.Managing.Clone.html">Aurora Cloning</a></h3>
 <ul>
 <li>使用 CoW (Copy-on-Write) 節省使用空間 ($$)</li>
 <li>適合用於測試環境</li>
 </ul>
 <p><img src="https://www.sqlshack.com/wp-content/uploads/2021/01/stores-the-content-on-a-new-page.png" alt="stores-the-content-on-a-new-page"></p>
 <p>▲ CoW 機制。ref: <a href="https://www.sqlshack.com/database-cloning-in-amazon-aurora/">Database Cloning in Amazon Aurora</a></p>
-<h3 id="elastic-cachehttpsdocsawsamazoncomelasticacheindexhtml"><a href="https://docs.aws.amazon.com/elasticache/index.html">Elastic Cache</a></h3>
+<h3 id="elastic-cache"><a href="https://docs.aws.amazon.com/elasticache/index.html">Elastic Cache</a></h3>
 <p><img src="elastic_cache.jpg" alt="elastic_cache"></p>
 <p>▲ redis V.S memcached</p>
-<h2 id="section-10-route-53httpsawsamazoncomroute53">Section 10 <a href="https://aws.amazon.com/route53/">Route 53</a></h2>
+<h2 id="section-10-route-53">Section 10 <a href="https://aws.amazon.com/route53/">Route 53</a></h2>
 <ul>
 <li>AWS managed 的 HA DNS hosting 服務，AWS 承諾 100% SLA</li>
 <li>sub-domain 才能有 CNAME record</li>
@@ -891,7 +891,7 @@ Then objects created in bucket 1 are not replicated to bucket 3</p>
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
+    2025<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

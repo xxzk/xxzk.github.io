@@ -26,7 +26,7 @@ NGINX Document-High Availability Support Based on keepalived [sysctl]CentLinux-k
 
 
 
-<meta name="generator" content="Hugo 0.136.5 with theme even" />
+<meta name="generator" content="Hugo 0.152.2 with theme even" />
 
 
 <link rel="canonical" href="https://blog.xxzk.me/post/20210419-introduce-keepalived/" />
@@ -41,7 +41,7 @@ NGINX Document-High Availability Support Based on keepalived [sysctl]CentLinux-k
 
 
 
-<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link href="/sass/main.min.af7fd1da18d66c2b017df5b4cae508ef44cfcac3fb4c7c7a327fe4f4f9e28b08.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
@@ -163,7 +163,7 @@ NGINX Document-High Availability Support Based on keepalived [sysctl]CentLinux-k
         <li><a href="#sysctl-設定">sysctl 設定</a></li>
         <li><a href="#keepalivedconf">keepalived.conf</a></li>
         <li><a href="#vrrp_script-script_name">vrrp_script &lt;SCRIPT_NAME&gt;</a></li>
-        <li><a href="#vrrp_instance-string">vrrp_instance <STRING></a></li>
+        <li><a href="#vrrp_instance">vrrp_instance</a></li>
         <li><a href="#觀察-vrrp-封包-可看優先權">觀察 VRRP 封包 (可看優先權)</a></li>
       </ul>
     </li>
@@ -377,7 +377,7 @@ NGINX Document-High Availability Support Based on keepalived [sysctl]CentLinux-k
 <code>timeout &lt;INTEGER&gt;</code> 設定腳本執行 <code>&lt;INTEGER&gt;</code> 秒後沒有結束，直接判定失敗。<br>
 <code>init_fail</code> 預設腳本是失敗狀態。<br>
 <del>好像把所有參數說完了 XD</del></p>
-<h2 id="vrrp_instance-string">vrrp_instance <STRING></h2>
+<h2 id="vrrp_instance">vrrp_instance <STRING></h2>
 <p><a href="https://manpages.debian.org/unstable/keepalived/keepalived.conf.5.en.html#VRRP_instance(s)">#VRRP_instance</a></p>
 <p><code>state</code> 可以是 <code>MASTER</code> or <code>BACKUP</code>。也可以選擇不設定，因為當其他候選人 (在同個廣播域、設定相同 <code>virtual_router_id</code>) 上線後，就會舉辦選舉優先權最高者勝出成為 Master 拿到 VIP 使用權<br>
 <code>interface</code> 設定已取得內部 IP 的網卡，也是 VIP 綁定的目標網卡 (除非有另外設定)。<br>
@@ -474,7 +474,7 @@ NGINX Document-High Availability Support Based on keepalived [sysctl]CentLinux-k
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
+    2025<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

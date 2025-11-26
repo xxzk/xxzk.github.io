@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.136.5 with theme even" />
+<meta name="generator" content="Hugo 0.152.2 with theme even" />
 
 
 <link rel="canonical" href="https://blog.xxzk.me/" />
@@ -39,7 +39,7 @@
 
 
 
-<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link href="/sass/main.min.af7fd1da18d66c2b017df5b4cae508ef44cfcac3fb4c7c7a327fe4f4f9e28b08.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
@@ -52,8 +52,8 @@
 
   <meta itemprop="name" content="老柯的學習筆記">
   <meta itemprop="description" content="Learning note.">
-  <meta itemprop="datePublished" content="2024-10-09T14:47:52+00:00">
-  <meta itemprop="dateModified" content="2024-11-18T15:59:00+00:00">
+  <meta itemprop="datePublished" content="2025-10-14T15:55:25+00:00">
+  <meta itemprop="dateModified" content="2025-11-26T10:50:19+08:00">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="老柯的學習筆記">
   <meta name="twitter:description" content="Learning note.">
@@ -127,6 +127,35 @@
       <div class="content-wrapper">
         <div id="content" class="content">
           <section id="posts" class="posts">
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/20220704-cka_note_section_9_networking/">CKA Note Section 9 Networking</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2022-07-04 </span>
+      <div class="post-category">
+          <a href="/categories/cka-note/"> CKA-Note </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <h2 id="前言">前言</h2>
+<p>既然這個章節是介紹 Kubernetes Networking 那就先來複習一下之前看過的優質文章吧!</p>
+<ul>
+<li><a href="https://www.hwchiu.com/docker-network-model.html">[Hwchiu Docker Network - 網路模型 系列] Docker Network - 網路模型</a></li>
+<li><a href="https://ithelp.ithome.com.tw/articles/10220626">[Day10] Container Network Interface 介紹</a></li>
+</ul>
+<h2 id="188-prerequisite---network-namespaces">188. Prerequisite - Network Namespaces</h2>
+<p><img src="list_link_as_ns.jpg" alt="list_link_as_ns"></p>
+<p>▲ 使用 <code>ip netns exec &lt;NAMESPACE&gt; ip link</code> 能以 <code>&lt;NAMESPACE&gt;</code> 的視角查看，<strong><span style='color:blue'>或者更快的 <code>ip -n &lt;NAMESPACE&gt; link</code></span></strong>。</p>
+    </div>
+    <div class="read-more">
+      <a href="/post/20220704-cka_note_section_9_networking/" class="read-more-link">Read more...</a>
+    </div>
+  </div>
+</article>
+
     <article class="post">
   <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/20220704-cka_note_section_8_storage/">CKA Note Section 8 Storage</a></h1>
@@ -247,34 +276,6 @@
   </div>
 </article>
 
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/20220503-use-hexo-and-github-pages-to-build-blog/">使用 Hexo 搭配 GitHub Pages 架設靜態網站</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2022-04-28 </span>
-      <div class="post-category">
-          <a href="/categories/github/"> GitHub </a>
-          </div>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      <h2 id="更新紀錄">更新紀錄</h2>
-<ul>
-<li>2022.04.28: 此篇記錄第一次使用 Hexo 搭配 GitHub Pages 來架設 blog。</li>
-<li>2022.12.19: 調整順序 (將 VSCode Snippet 片段放在前面)，因為後來實際是使用 <a href="https://gohugo.io/">Hugo</a> 架設，之後將會新增 Hugo 安裝章節。</li>
-<li>2022.12.20: 新增 <code>Install Hugo on Linux</code> 章節。</li>
-</ul>
-<h2 id="install-hugo-on-linux">Install Hugo on Linux</h2>
-<p><a href="https://gohugo.io/installation/linux/">Install Hugo on Linux</a></p>
-    </div>
-    <div class="read-more">
-      <a href="/post/20220503-use-hexo-and-github-pages-to-build-blog/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
     </section>
   
   <nav class="pagination">
@@ -315,7 +316,7 @@
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
+    2025<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

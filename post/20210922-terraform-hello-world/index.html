@@ -27,7 +27,7 @@ Introduction to Terraform Terraform 是一款 Infrastructure as Code (IaC) 工�
 
 
 
-<meta name="generator" content="Hugo 0.136.5 with theme even" />
+<meta name="generator" content="Hugo 0.152.2 with theme even" />
 
 
 <link rel="canonical" href="https://blog.xxzk.me/post/20210922-terraform-hello-world/" />
@@ -42,7 +42,7 @@ Introduction to Terraform Terraform 是一款 Infrastructure as Code (IaC) 工�
 
 
 
-<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link href="/sass/main.min.af7fd1da18d66c2b017df5b4cae508ef44cfcac3fb4c7c7a327fe4f4f9e28b08.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
@@ -294,26 +294,26 @@ Introduction to Terraform Terraform 是一款 Infrastructure as Code (IaC) 工�
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-terraform" data-lang="terraform"><span class="line"><span class="cl"><span class="nx">terraform</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">required_providers</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="na">docker</span> = <span class="p">{</span>
-</span></span><span class="line"><span class="cl">      <span class="na">source</span> = <span class="s2">&#34;kreuzwerker/docker&#34;</span>
-</span></span><span class="line"><span class="cl">      <span class="na">version</span> = <span class="s2">&#34;~&gt; 2.13.0&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">docker</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">source</span> <span class="o">=</span> <span class="s2">&#34;kreuzwerker/docker&#34;</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">version</span> <span class="o">=</span> <span class="s2">&#34;~&gt; 2.13.0&#34;</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">  <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="kr">
-</span></span></span><span class="line"><span class="cl"><span class="kr">provider</span> <span class="s2">&#34;docker&#34;</span> <span class="p">{}</span>
-</span></span><span class="line"><span class="cl"><span class="kr">
-</span></span></span><span class="line"><span class="cl"><span class="kr">resource</span> <span class="s2">&#34;docker_image&#34;</span> <span class="s2">&#34;nginx&#34;</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="na">name</span>         = <span class="s2">&#34;nginx:latest&#34;</span>
-</span></span><span class="line"><span class="cl">  <span class="na">keep_locally</span> = <span class="kc">false</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">provider</span> <span class="s2">&#34;docker&#34;</span> <span class="p">{}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">resource</span> <span class="s2">&#34;docker_image&#34;</span> <span class="s2">&#34;nginx&#34;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">name</span>         <span class="o">=</span> <span class="s2">&#34;nginx:latest&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">keep_locally</span> <span class="o">=</span> <span class="kc">false</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="kr">
-</span></span></span><span class="line"><span class="cl"><span class="kr">resource</span> <span class="s2">&#34;docker_container&#34;</span> <span class="s2">&#34;nginx&#34;</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="na">image</span> = <span class="nx">docker_image</span><span class="p">.</span><span class="nx">nginx</span><span class="p">.</span><span class="nx">latest</span>
-</span></span><span class="line"><span class="cl">  <span class="na">name</span>  = <span class="s2">&#34;tutorial&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">resource</span> <span class="s2">&#34;docker_container&#34;</span> <span class="s2">&#34;nginx&#34;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">image</span> <span class="o">=</span> <span class="nx">docker_image</span><span class="p">.</span><span class="nx">nginx</span><span class="p">.</span><span class="nx">latest</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">name</span>  <span class="o">=</span> <span class="s2">&#34;tutorial&#34;</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">ports</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="na">internal</span> = <span class="m">80</span>
-</span></span><span class="line"><span class="cl">    <span class="na">external</span> = <span class="m">8000</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">internal</span> <span class="o">=</span> <span class="m">80</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">external</span> <span class="o">=</span> <span class="m">8000</span>
 </span></span><span class="line"><span class="cl">  <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
@@ -333,9 +333,9 @@ Introduction to Terraform Terraform 是一款 Infrastructure as Code (IaC) 工�
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-terraform" data-lang="terraform"><span class="line"><span class="cl"><span class="kr">provider</span> <span class="s2">&#34;aws&#34;</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="na">access_key</span> = <span class="s2">&#34;ACCESS_KEY_HERE&#34;</span>
-</span></span><span class="line"><span class="cl">  <span class="na">secret_key</span> = <span class="s2">&#34;SECRET_KEY_HERE&#34;</span>
-</span></span><span class="line"><span class="cl">  <span class="na">region</span>     = <span class="s2">&#34;ap-northeast-1&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">access_key</span> <span class="o">=</span> <span class="s2">&#34;ACCESS_KEY_HERE&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">secret_key</span> <span class="o">=</span> <span class="s2">&#34;SECRET_KEY_HERE&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">region</span>     <span class="o">=</span> <span class="s2">&#34;ap-northeast-1&#34;</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
@@ -533,9 +533,9 @@ Introduction to Terraform Terraform 是一款 Infrastructure as Code (IaC) 工�
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-terraform" data-lang="terraform"><span class="line"><span class="cl"><span class="kr">variable</span> <span class="s2">&#34;container_name&#34;</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="na">description</span> = <span class="s2">&#34;Value of the name for the Docker container&#34;</span>
-</span></span><span class="line"><span class="cl">  <span class="na">type</span>        = <span class="nx">string</span>
-</span></span><span class="line"><span class="cl">  <span class="na">default</span>     = <span class="s2">&#34;EVG2603Container&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">description</span> <span class="o">=</span> <span class="s2">&#34;Value of the name for the Docker container&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">type</span>        <span class="o">=</span> <span class="nx">string</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">default</span>     <span class="o">=</span> <span class="s2">&#34;EVG2603Container&#34;</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
@@ -578,13 +578,13 @@ Introduction to Terraform Terraform 是一款 Infrastructure as Code (IaC) 工�
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-terraform" data-lang="terraform"><span class="line"><span class="cl"><span class="kr">output</span> <span class="s2">&#34;container_id&#34;</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="na">description</span> = <span class="s2">&#34;ID of the Docker container&#34;</span>
-</span></span><span class="line"><span class="cl">  <span class="na">value</span>       = <span class="nx">docker_container</span><span class="p">.</span><span class="nx">nginx</span><span class="p">.</span><span class="nx">id</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">description</span> <span class="o">=</span> <span class="s2">&#34;ID of the Docker container&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">value</span>       <span class="o">=</span> <span class="nx">docker_container</span><span class="p">.</span><span class="nx">nginx</span><span class="p">.</span><span class="nx">id</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="kr">
-</span></span></span><span class="line"><span class="cl"><span class="kr">output</span> <span class="s2">&#34;image_id&#34;</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="na">description</span> = <span class="s2">&#34;ID of the Docker image&#34;</span>
-</span></span><span class="line"><span class="cl">  <span class="na">value</span>       = <span class="nx">docker_image</span><span class="p">.</span><span class="nx">nginx</span><span class="p">.</span><span class="nx">id</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">output</span> <span class="s2">&#34;image_id&#34;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">description</span> <span class="o">=</span> <span class="s2">&#34;ID of the Docker image&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">value</span>       <span class="o">=</span> <span class="nx">docker_image</span><span class="p">.</span><span class="nx">nginx</span><span class="p">.</span><span class="nx">id</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
@@ -644,9 +644,9 @@ Introduction to Terraform Terraform 是一款 Infrastructure as Code (IaC) 工�
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-terraform" data-lang="terraform"><span class="line"><span class="cl"><span class="nx">terraform</span> <span class="p">{</span>                                                                                                                          
 </span></span><span class="line"><span class="cl">  <span class="nx">required_providers</span> <span class="p">{</span>                                                                                                               
-</span></span><span class="line"><span class="cl">    <span class="na">docker</span> = <span class="p">{</span>                                                                                                                       
-</span></span><span class="line"><span class="cl">      <span class="na">source</span>  = <span class="s2">&#34;kreuzwerker/docker&#34;</span>                                                                                                 
-</span></span><span class="line"><span class="cl">      <span class="na">version</span> = <span class="s2">&#34;~&gt; 2.13.0&#34;</span>                                                                                                          
+</span></span><span class="line"><span class="cl">    <span class="nx">docker</span> <span class="o">=</span> <span class="p">{</span>                                                                                                                       
+</span></span><span class="line"><span class="cl">      <span class="nx">source</span>  <span class="o">=</span> <span class="s2">&#34;kreuzwerker/docker&#34;</span>                                                                                                 
+</span></span><span class="line"><span class="cl">      <span class="nx">version</span> <span class="o">=</span> <span class="s2">&#34;~&gt; 2.13.0&#34;</span>                                                                                                          
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>                                                                                                                                
 </span></span><span class="line"><span class="cl">  <span class="p">}</span>                                                                                                                                  
 </span></span><span class="line"><span class="cl"><span class="p">}</span>                                                                                                                                    
@@ -654,16 +654,16 @@ Introduction to Terraform Terraform 是一款 Infrastructure as Code (IaC) 工�
 </span></span><span class="line"><span class="cl"><span class="kr">provider</span> <span class="s2">&#34;docker&#34;</span> <span class="p">{}</span>                                                                                                                 
 </span></span><span class="line"><span class="cl">                                                                                                                                     
 </span></span><span class="line"><span class="cl"><span class="kr">resource</span> <span class="s2">&#34;docker_image&#34;</span> <span class="s2">&#34;nginx&#34;</span> <span class="p">{</span>                                                                                                    
-</span></span><span class="line"><span class="cl">  <span class="na">name</span>         = <span class="s2">&#34;nginx:latest&#34;</span>                                                                                                      
-</span></span><span class="line"><span class="cl">  <span class="na">keep_locally</span> = <span class="kc">false</span>                                                                                                               
+</span></span><span class="line"><span class="cl">  <span class="nx">name</span>         <span class="o">=</span> <span class="s2">&#34;nginx:latest&#34;</span>                                                                                                      
+</span></span><span class="line"><span class="cl">  <span class="nx">keep_locally</span> <span class="o">=</span> <span class="kc">false</span>                                                                                                               
 </span></span><span class="line"><span class="cl"><span class="p">}</span>                                                                                                                                    
 </span></span><span class="line"><span class="cl">                                                                                                                                     
 </span></span><span class="line"><span class="cl"><span class="kr">resource</span> <span class="s2">&#34;docker_container&#34;</span> <span class="s2">&#34;nginx&#34;</span> <span class="p">{</span>                                                                                                
-</span></span><span class="line"><span class="cl">  <span class="na">image</span> = <span class="nx">docker_image</span><span class="p">.</span><span class="nx">nginx</span><span class="p">.</span><span class="nx">latest</span>                                                                                                  
-</span></span><span class="line"><span class="cl">  <span class="na">name</span>  = <span class="nb">var</span><span class="p">.</span><span class="nx">container_name</span>                                                                                                         
+</span></span><span class="line"><span class="cl">  <span class="nx">image</span> <span class="o">=</span> <span class="nx">docker_image</span><span class="p">.</span><span class="nx">nginx</span><span class="p">.</span><span class="nx">latest</span>                                                                                                  
+</span></span><span class="line"><span class="cl">  <span class="nx">name</span>  <span class="o">=</span> <span class="nb">var</span><span class="p">.</span><span class="nx">container_name</span>                                                                                                         
 </span></span><span class="line"><span class="cl">  <span class="nx">ports</span> <span class="p">{</span>                                                                                                                            
-</span></span><span class="line"><span class="cl">    <span class="na">internal</span> = <span class="m">80</span>                                                                                                                    
-</span></span><span class="line"><span class="cl">    <span class="na">external</span> = <span class="m">8000</span>                                                                                                                  
+</span></span><span class="line"><span class="cl">    <span class="nx">internal</span> <span class="o">=</span> <span class="m">80</span>                                                                                                                    
+</span></span><span class="line"><span class="cl">    <span class="nx">external</span> <span class="o">=</span> <span class="m">8000</span>                                                                                                                  
 </span></span><span class="line"><span class="cl">  <span class="p">}</span>                                                                                                                                  
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
@@ -679,9 +679,9 @@ Introduction to Terraform Terraform 是一款 Infrastructure as Code (IaC) 工�
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-terraform" data-lang="terraform"><span class="line"><span class="cl"><span class="kr">variable</span> <span class="s2">&#34;container_name&#34;</span> <span class="p">{</span>                                                                                                          
-</span></span><span class="line"><span class="cl">  <span class="na">description</span> = <span class="s2">&#34;Value of the name for the Docker container&#34;</span>                                                                         
-</span></span><span class="line"><span class="cl">  <span class="na">type</span>        = <span class="nx">string</span>                                                                                                               
-</span></span><span class="line"><span class="cl">  <span class="na">sensitive</span>   = <span class="kc">true</span>                                                                                                                 
+</span></span><span class="line"><span class="cl">  <span class="nx">description</span> <span class="o">=</span> <span class="s2">&#34;Value of the name for the Docker container&#34;</span>                                                                         
+</span></span><span class="line"><span class="cl">  <span class="nx">type</span>        <span class="o">=</span> <span class="nx">string</span>                                                                                                               
+</span></span><span class="line"><span class="cl">  <span class="nx">sensitive</span>   <span class="o">=</span> <span class="kc">true</span>                                                                                                                 
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
@@ -781,7 +781,7 @@ Introduction to Terraform Terraform 是一款 Infrastructure as Code (IaC) 工�
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
+    2025<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

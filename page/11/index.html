@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.136.5 with theme even" />
+<meta name="generator" content="Hugo 0.152.2 with theme even" />
 
 
 <link rel="canonical" href="https://blog.xxzk.me/" />
@@ -39,7 +39,7 @@
 
 
 
-<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link href="/sass/main.min.af7fd1da18d66c2b017df5b4cae508ef44cfcac3fb4c7c7a327fe4f4f9e28b08.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
@@ -52,8 +52,8 @@
 
   <meta itemprop="name" content="老柯的學習筆記">
   <meta itemprop="description" content="Learning note.">
-  <meta itemprop="datePublished" content="2024-10-09T14:47:52+00:00">
-  <meta itemprop="dateModified" content="2024-11-18T15:59:00+00:00">
+  <meta itemprop="datePublished" content="2025-10-14T15:55:25+00:00">
+  <meta itemprop="dateModified" content="2025-11-26T10:50:19+08:00">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="老柯的學習筆記">
   <meta name="twitter:description" content="Learning note.">
@@ -127,6 +127,78 @@
       <div class="content-wrapper">
         <div id="content" class="content">
           <section id="posts" class="posts">
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/20210401-bookstack-fronts-customising/">Bookstack 自訂字形與樣式 Customising Visuals</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2021-04-01 </span>
+      <div class="post-category">
+          <a href="/categories/bookstack/"> bookstack </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p><img src="google_noto_sans_tc.jpg" alt="google_noto_sans_tc"></p>
+<p><a href="https://www.bookstackapp.com/docs/admin/visual-customisation/">Bookstack Customising Visuals</a></p>
+<p><strong>Bookstack 可以針對外觀做客製化，也就是修改 css</strong><br>
+<strong>目前使用的是 Google 與 Adobe 合作釋出的開源字體 &ldquo;Noto Sans&rdquo;</strong><br>
+<strong>若要使用其它 Google Fonts 提供的字體可以訪問: <a href="https://fonts.google.com">Google Fonts</a></strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-css" data-lang="css"><span class="line"><span class="cl"><span class="o">&lt;</span><span class="nt">link</span> <span class="nt">href</span><span class="o">=</span><span class="s2">&#34;https://fonts.googleapis.com/css?family=Noto+Sans+TC&#34;</span> <span class="nt">rel</span><span class="o">=</span><span class="s2">&#34;stylesheet&#34;</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="o">&lt;</span><span class="nt">style</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nt">body</span><span class="o">,</span> <span class="nt">button</span><span class="o">,</span> <span class="nt">input</span><span class="o">,</span> <span class="nt">select</span><span class="o">,</span> <span class="nt">label</span><span class="o">,</span> <span class="nt">textarea</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">font-family</span><span class="p">:</span> <span class="s1">&#39;Noto Sans TC&#39;</span><span class="p">,</span> <span class="n">Light</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">font-size</span><span class="p">:</span> <span class="mi">17</span><span class="kt">px</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">.</span><span class="nc">CodeMirror</span><span class="o">,</span> <span class="nt">blockquote</span><span class="o">,</span> <span class="nt">pre</span><span class="o">,</span> <span class="p">#</span><span class="nn">markdown-editor-input</span><span class="o">,</span> <span class="p">.</span><span class="nc">editor-toolbar</span><span class="o">,</span> <span class="p">.</span><span class="nc">code-base</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">font-family</span><span class="p">:</span> <span class="s1">&#39;Noto Sans TC&#39;</span><span class="p">,</span> <span class="n">Light</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">font-size</span><span class="p">:</span> <span class="mi">13</span><span class="kt">px</span>
+</span></span><span class="line"><span class="cl">  <span class="k">margin-right</span><span class="o">:</span> <span class="mi">150</span><span class="kt">px</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nt">blockquote</span><span class="p">:</span><span class="nd">before</span> <span class="p">{</span>                                     
+</span></span><span class="line"><span class="cl">  <span class="k">content</span><span class="p">:</span> <span class="kc">open-quote</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">vertical-align</span><span class="p">:</span> <span class="kc">top</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">&lt;/</span><span class="nt">style</span><span class="o">&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>css 小弟沒學過，東拼西湊而已。歡迎來信建議 XD</p>
+    </div>
+    <div class="read-more">
+      <a href="/post/20210401-bookstack-fronts-customising/" class="read-more-link">Read more...</a>
+    </div>
+  </div>
+</article>
+
     <article class="post">
   <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/20210324-mariadb-galera-cluster/">MariaDB Galera Cluster 建置</a></h1>
@@ -234,48 +306,6 @@
   </div>
 </article>
 
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/20210220-apache-httpd-main-conf/">httpd.conf 研究筆記</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2021-02-20 </span>
-      <div class="post-category">
-          <a href="/categories/apache/"> apache </a>
-          </div>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      <h2 id="httpd-版本資訊">httpd 版本資訊</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">Server version: Apache/2.4.6 (CentOS)
-</span></span><span class="line"><span class="cl">Server built:   Nov 16 2020 16:18:20
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="敬啟者">敬啟者</h2>
-<br>
-<p><del>開頭就一堆屁話，根本沒有人會看的 (愛開玩笑 自己的筆記也屁話一堆還敢說開發者 XD</del><br>
-<strong>節錄幾個重點好了</strong></p>
-<ol>
-<li>更多資訊請到 <a href="http://httpd.apache.org/docs/2.4/">Apache 2.4 版官方文件</a> 參閱，或者更詳細的 <a href="http://httpd.apache.org/docs/2.4/mod/directives.html">指示 (Directives)</a></li>
-<li>配置 logfile 路徑規則。</li>
-</ol>
-<p>如果路徑是由 <code>/</code> 起始的，httpd 會使用<strong>絕對路徑</strong> (換句話說: 直接在 Linux 下 <code>ls -al &lt;path&gt;</code> 的地方)。<br>
-若不是，則使用<strong>相對路徑</strong>，以 <code>ServerRoot</code> 當作參考點，舉個例子:<br>
-當 <code>ServerRoot /www</code> 時 <code>log/access_log</code> 的路徑會是 <code>/www/log/access_log</code></p>
-    </div>
-    <div class="read-more">
-      <a href="/post/20210220-apache-httpd-main-conf/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
     </section>
   
   <nav class="pagination">
@@ -316,7 +346,7 @@
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
+    2025<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

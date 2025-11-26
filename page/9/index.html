@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.136.5 with theme even" />
+<meta name="generator" content="Hugo 0.152.2 with theme even" />
 
 
 <link rel="canonical" href="https://blog.xxzk.me/" />
@@ -39,7 +39,7 @@
 
 
 
-<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link href="/sass/main.min.af7fd1da18d66c2b017df5b4cae508ef44cfcac3fb4c7c7a327fe4f4f9e28b08.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
@@ -52,8 +52,8 @@
 
   <meta itemprop="name" content="老柯的學習筆記">
   <meta itemprop="description" content="Learning note.">
-  <meta itemprop="datePublished" content="2024-10-09T14:47:52+00:00">
-  <meta itemprop="dateModified" content="2024-11-18T15:59:00+00:00">
+  <meta itemprop="datePublished" content="2025-10-14T15:55:25+00:00">
+  <meta itemprop="dateModified" content="2025-11-26T10:50:19+08:00">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="老柯的學習筆記">
   <meta name="twitter:description" content="Learning note.">
@@ -127,6 +127,31 @@
       <div class="content-wrapper">
         <div id="content" class="content">
           <section id="posts" class="posts">
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/20210722-lab-200-network-device-setting-note/">200 LAB Network 網通設備設定筆記</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2021-07-22 </span>
+      <div class="post-category">
+          <a href="/categories/infra/"> infra </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <h2 id="cisco-3750g">Cisco 3750G</h2>
+<h3 id="前言日記">前言日記</h3>
+<p>在記錄設定前先來段日記 XD，Cisco 3750G 章節紀錄機櫃搬遷後 Cisco 3750G 24TS 作為系統組自管 ToS (Top of Switch) 使用。<br>
+原先 K8s LAB 因為留停期間同事有拿來實驗 OpenStack，再加上大主管說要召回 Forti 200D，我就交接給同事自行處理/規劃了~~ <br>
+我想辦公室的那四台 R620 應該非常夠我練習 Kubernetes 相關了~ 畢竟目前還在用 minikube 練 CKA。</p>
+    </div>
+    <div class="read-more">
+      <a href="/post/20210722-lab-200-network-device-setting-note/" class="read-more-link">Read more...</a>
+    </div>
+  </div>
+</article>
+
     <article class="post">
   <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/20210629-docker-container-link/">Docker 容器與容器的連結。Grafana &#43; Prometheus &#43; Blackbox_expoter</a></h1>
@@ -257,71 +282,6 @@
   </div>
 </article>
 
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/20210527-install-nextcloud-with-docker-compose/">Nextcloud 建置，使用 Docker Compose</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2021-05-27 </span>
-      <div class="post-category">
-          <a href="/categories/nextcloud/"> nextcloud </a>
-          </div>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      <p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Nextcloud_Logo.svg/2560px-Nextcloud_Logo.svg.png" alt="nextcloud_logo"></p>
-<p><a href="https://commons.wikimedia.org/wiki/File:Nextcloud_Logo.svg">圖片來源: wiki</a></p>
-<h2 id="安裝-docker-與-docker-compose">安裝 Docker 與 Docker Compose</h2>
-<h3 id="docker">Docker</h3>
-<p>參考文章: <a href="https://docs.docker.com/engine/install/centos/">Install Docker Engine on CentOS</a></p>
-<p>新增 docker repo</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">yum install -y yum-utils
-</span></span><span class="line"><span class="cl">yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>安裝 docker-ce</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">yum install docker-ce docker-ce-cli containerd.io -y
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>enable/start docker</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">systemctl <span class="nb">enable</span> --now  docker.service
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>跑個 docker hello world 確認 docker 安裝成功</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker run hello-world
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="docker-compose">Docker Compose</h3>
-<p><a href="https://docs.docker.com/compose/install/">Install Compose on Linux systems</a></p>
-    </div>
-    <div class="read-more">
-      <a href="/post/20210527-install-nextcloud-with-docker-compose/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
     </section>
   
   <nav class="pagination">
@@ -362,7 +322,7 @@
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
+    2025<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

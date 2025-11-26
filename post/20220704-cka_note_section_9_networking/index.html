@@ -25,7 +25,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.136.5 with theme even" />
+<meta name="generator" content="Hugo 0.152.2 with theme even" />
 
 
 <link rel="canonical" href="https://blog.xxzk.me/post/20220704-cka_note_section_9_networking/" />
@@ -40,7 +40,7 @@
 
 
 
-<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link href="/sass/main.min.af7fd1da18d66c2b017df5b4cae508ef44cfcac3fb4c7c7a327fe4f4f9e28b08.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
@@ -166,7 +166,7 @@
         <li><a href="#197-cni-in-kubernetes">197. CNI in kubernetes</a></li>
         <li><a href="#198-cni-weave">198. CNI weave</a>
           <ul>
-            <li><a href="#understanding-weave-nethttpswwwweaveworksdocsnetlatestconceptshow-it-works"><a href="https://www.weave.works/docs/net/latest/concepts/how-it-works/">Understanding Weave Net</a></a></li>
+            <li><a href="#understanding-weave-net">Understanding Weave Net</a></li>
           </ul>
         </li>
         <li><a href="#199-practice-test---explore-cni-weave">199. Practice Test - Explore CNI Weave</a></li>
@@ -259,7 +259,7 @@ CNI 還有提供 library 可以自行開發屬於你自己的 CNI plugins~</p>
 <p>▲ Weave (CNI) 運作的方式就是在各個 worker node 部屬一個 agent，每個 agent 會告知彼此身上有哪些路由 (聽起來有點像 BGP)，<strong><span style='color:red'>並且重新封裝 (encapsulation) 把原始封包變成它的 payload</span></strong></p>
 <p><img src="waeve_cni_1.jpg" alt="waeve_cni_1"></p>
 <p>▲ <strong><span style='color:red'>不管 CNI 為何，container 內的 routing table 都必須存在。</span></strong></p>
-<h3 id="understanding-weave-nethttpswwwweaveworksdocsnetlatestconceptshow-it-works"><a href="https://www.weave.works/docs/net/latest/concepts/how-it-works/">Understanding Weave Net</a></h3>
+<h3 id="understanding-weave-net"><a href="https://www.weave.works/docs/net/latest/concepts/how-it-works/">Understanding Weave Net</a></h3>
 <p><img src="https://www.weave.works/docs/net/latest/concepts/top-diag1.png" alt="waeve_peer_network"></p>
 <ul>
 <li>Weave Network 各個節點稱做 peer。</li>
@@ -411,7 +411,7 @@ CNI 還有提供 library 可以自行開發屬於你自己的 CNI plugins~</p>
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
+    2025<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

@@ -2,78 +2,106 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://blog.xxzk.me/tags/aws/</loc>
-    <lastmod>2024-11-18T15:59:00+00:00</lastmod>
+    <loc>https://blog.xxzk.me/tags/android/</loc>
+    <lastmod>2025-11-26T10:50:19+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://blog.xxzk.me/categories/aws/</loc>
-    <lastmod>2024-11-18T15:59:00+00:00</lastmod>
+    <loc>https://blog.xxzk.me/categories/app/</loc>
+    <lastmod>2025-11-26T10:50:19+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://blog.xxzk.me/categories/</loc>
-    <lastmod>2024-11-18T15:59:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.xxzk.me/post/20241118-route53-and-jq/</loc>
-    <lastmod>2024-11-18T15:59:00+00:00</lastmod>
+    <lastmod>2025-11-26T10:50:19+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://blog.xxzk.me/post/</loc>
-    <lastmod>2024-11-18T15:59:00+00:00</lastmod>
+    <lastmod>2025-11-26T10:50:19+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/tags/rootca/</loc>
+    <lastmod>2025-11-26T10:50:19+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://blog.xxzk.me/tags/</loc>
-    <lastmod>2024-11-18T15:59:00+00:00</lastmod>
+    <lastmod>2025-11-26T10:50:19+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://blog.xxzk.me/</loc>
-    <lastmod>2024-11-18T15:59:00+00:00</lastmod>
+    <lastmod>2025-11-26T10:50:19+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://blog.xxzk.me/tags/kubernetes/</loc>
-    <lastmod>2024-11-18T14:50:24+08:00</lastmod>
+    <loc>https://blog.xxzk.me/post/20251014-app-rootca-pinning/</loc>
+    <lastmod>2025-11-26T10:50:19+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/categories/aws/</loc>
+    <lastmod>2024-11-18T16:37:41+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/tags/aws/</loc>
+    <lastmod>2024-11-18T16:37:41+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/post/20241118-route53-and-jq/</loc>
+    <lastmod>2024-11-18T16:37:41+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://blog.xxzk.me/categories/kubernetes/</loc>
-    <lastmod>2024-11-18T14:50:24+08:00</lastmod>
+    <lastmod>2024-11-18T16:37:41+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/tags/kubernetes/</loc>
+    <lastmod>2024-11-18T16:37:41+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://blog.xxzk.me/tags/rabbitmq/</loc>
-    <lastmod>2024-11-18T14:50:24+08:00</lastmod>
+    <lastmod>2024-11-18T16:37:41+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://blog.xxzk.me/post/20241009-rabbit-mq-cluster-k8s-operator/</loc>
-    <lastmod>2024-11-18T14:50:24+08:00</lastmod>
+    <lastmod>2024-11-18T16:37:41+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -107,14 +135,14 @@
   </url>
   
   <url>
-    <loc>https://blog.xxzk.me/tags/macos/</loc>
+    <loc>https://blog.xxzk.me/categories/macos/</loc>
     <lastmod>2024-03-28T16:15:48+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://blog.xxzk.me/categories/macos/</loc>
+    <loc>https://blog.xxzk.me/tags/macos/</loc>
     <lastmod>2024-03-28T16:15:48+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -156,14 +184,14 @@
   </url>
   
   <url>
-    <loc>https://blog.xxzk.me/tags/linux/</loc>
+    <loc>https://blog.xxzk.me/categories/linux/</loc>
     <lastmod>2022-11-21T17:40:30+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://blog.xxzk.me/categories/linux/</loc>
+    <loc>https://blog.xxzk.me/tags/linux/</loc>
     <lastmod>2022-11-21T17:40:30+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -219,14 +247,14 @@
   </url>
   
   <url>
-    <loc>https://blog.xxzk.me/tags/cka-note/</loc>
+    <loc>https://blog.xxzk.me/categories/cka-note/</loc>
     <lastmod>2022-10-18T11:54:59+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://blog.xxzk.me/categories/cka-note/</loc>
+    <loc>https://blog.xxzk.me/tags/cka-note/</loc>
     <lastmod>2022-10-18T11:54:59+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -289,14 +317,14 @@
   </url>
   
   <url>
-    <loc>https://blog.xxzk.me/tags/librenms/</loc>
+    <loc>https://blog.xxzk.me/categories/librenms/</loc>
     <lastmod>2022-12-26T14:16:46+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://blog.xxzk.me/categories/librenms/</loc>
+    <loc>https://blog.xxzk.me/tags/librenms/</loc>
     <lastmod>2022-12-26T14:16:46+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -359,14 +387,14 @@
   </url>
   
   <url>
-    <loc>https://blog.xxzk.me/tags/github/</loc>
+    <loc>https://blog.xxzk.me/categories/github/</loc>
     <lastmod>2022-12-20T14:30:02+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://blog.xxzk.me/categories/github/</loc>
+    <loc>https://blog.xxzk.me/tags/github/</loc>
     <lastmod>2022-12-20T14:30:02+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -415,15 +443,15 @@
   </url>
   
   <url>
-    <loc>https://blog.xxzk.me/tags/network/</loc>
-    <lastmod>2022-12-22T15:38:04+08:00</lastmod>
+    <loc>https://blog.xxzk.me/categories/network/</loc>
+    <lastmod>2022-12-27T14:48:53+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://blog.xxzk.me/categories/network/</loc>
-    <lastmod>2022-12-27T14:48:53+08:00</lastmod>
+    <loc>https://blog.xxzk.me/tags/network/</loc>
+    <lastmod>2022-12-22T15:38:04+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -520,14 +548,14 @@
   </url>
   
   <url>
-    <loc>https://blog.xxzk.me/tags/ssl-tls-certification/</loc>
+    <loc>https://blog.xxzk.me/categories/ssl-tls-certification/</loc>
     <lastmod>2022-12-21T14:10:33+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://blog.xxzk.me/categories/ssl-tls-certification/</loc>
+    <loc>https://blog.xxzk.me/tags/ssl-tls-certification/</loc>
     <lastmod>2022-12-21T14:10:33+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -541,14 +569,14 @@
   </url>
   
   <url>
-    <loc>https://blog.xxzk.me/tags/terraform/</loc>
+    <loc>https://blog.xxzk.me/categories/terraform/</loc>
     <lastmod>2022-09-08T14:59:58+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://blog.xxzk.me/categories/terraform/</loc>
+    <loc>https://blog.xxzk.me/tags/terraform/</loc>
     <lastmod>2022-09-08T14:59:58+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -562,14 +590,14 @@
   </url>
   
   <url>
-    <loc>https://blog.xxzk.me/tags/ansible/</loc>
+    <loc>https://blog.xxzk.me/categories/ansible/</loc>
     <lastmod>2022-12-13T14:51:27+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://blog.xxzk.me/categories/ansible/</loc>
+    <loc>https://blog.xxzk.me/tags/ansible/</loc>
     <lastmod>2022-12-13T14:51:27+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -709,14 +737,14 @@
   </url>
   
   <url>
-    <loc>https://blog.xxzk.me/tags/nextcloud/</loc>
+    <loc>https://blog.xxzk.me/categories/nextcloud/</loc>
     <lastmod>2022-12-26T11:34:31+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://blog.xxzk.me/categories/nextcloud/</loc>
+    <loc>https://blog.xxzk.me/tags/nextcloud/</loc>
     <lastmod>2022-12-26T11:34:31+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -751,14 +779,14 @@
   </url>
   
   <url>
-    <loc>https://blog.xxzk.me/tags/minio/</loc>
+    <loc>https://blog.xxzk.me/categories/minio/</loc>
     <lastmod>2022-09-20T13:56:02+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://blog.xxzk.me/categories/minio/</loc>
+    <loc>https://blog.xxzk.me/tags/minio/</loc>
     <lastmod>2022-09-20T13:56:02+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -772,14 +800,14 @@
   </url>
   
   <url>
-    <loc>https://blog.xxzk.me/tags/keepalived/</loc>
+    <loc>https://blog.xxzk.me/categories/keepalived/</loc>
     <lastmod>2022-12-26T14:47:20+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://blog.xxzk.me/categories/keepalived/</loc>
+    <loc>https://blog.xxzk.me/tags/keepalived/</loc>
     <lastmod>2022-12-26T14:47:20+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -793,14 +821,14 @@
   </url>
   
   <url>
-    <loc>https://blog.xxzk.me/tags/bookstack/</loc>
+    <loc>https://blog.xxzk.me/categories/bookstack/</loc>
     <lastmod>2022-09-12T13:48:23+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://blog.xxzk.me/categories/bookstack/</loc>
+    <loc>https://blog.xxzk.me/tags/bookstack/</loc>
     <lastmod>2022-09-12T13:48:23+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -814,14 +842,14 @@
   </url>
   
   <url>
-    <loc>https://blog.xxzk.me/tags/db/</loc>
+    <loc>https://blog.xxzk.me/categories/db/</loc>
     <lastmod>2023-02-21T11:36:22+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://blog.xxzk.me/categories/db/</loc>
+    <loc>https://blog.xxzk.me/tags/db/</loc>
     <lastmod>2023-02-21T11:36:22+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -870,13 +898,6 @@
   </url>
   
   <url>
-    <loc>https://blog.xxzk.me/tags/vmware/</loc>
-    <lastmod>2022-12-26T16:35:11+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.xxzk.me/categories/vmware/</loc>
     <lastmod>2022-09-14T16:53:14+08:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -884,8 +905,8 @@
   </url>
   
   <url>
-    <loc>https://blog.xxzk.me/tags/apache/</loc>
-    <lastmod>2022-12-22T15:28:33+08:00</lastmod>
+    <loc>https://blog.xxzk.me/tags/vmware/</loc>
+    <lastmod>2022-12-26T16:35:11+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -898,14 +919,21 @@
   </url>
   
   <url>
-    <loc>https://blog.xxzk.me/tags/nginx/</loc>
-    <lastmod>2022-06-22T15:05:09+08:00</lastmod>
+    <loc>https://blog.xxzk.me/tags/apache/</loc>
+    <lastmod>2022-12-22T15:28:33+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://blog.xxzk.me/categories/nginx/</loc>
+    <lastmod>2022-06-22T15:05:09+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.xxzk.me/tags/nginx/</loc>
     <lastmod>2022-06-22T15:05:09+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -1024,14 +1052,14 @@
   </url>
   
   <url>
-    <loc>https://blog.xxzk.me/tags/dns/</loc>
+    <loc>https://blog.xxzk.me/categories/dns/</loc>
     <lastmod>2022-09-12T13:48:23+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://blog.xxzk.me/categories/dns/</loc>
+    <loc>https://blog.xxzk.me/tags/dns/</loc>
     <lastmod>2022-09-12T13:48:23+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -1066,14 +1094,14 @@
   </url>
   
   <url>
-    <loc>https://blog.xxzk.me/tags/forti/</loc>
+    <loc>https://blog.xxzk.me/categories/forti/</loc>
     <lastmod>2022-07-06T16:45:10+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://blog.xxzk.me/categories/forti/</loc>
+    <loc>https://blog.xxzk.me/tags/forti/</loc>
     <lastmod>2022-07-06T16:45:10+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -1108,14 +1136,14 @@
   </url>
   
   <url>
-    <loc>https://blog.xxzk.me/tags/ubuntu/</loc>
+    <loc>https://blog.xxzk.me/categories/ubuntu/</loc>
     <lastmod>2022-12-22T15:28:33+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://blog.xxzk.me/categories/ubuntu/</loc>
+    <loc>https://blog.xxzk.me/tags/ubuntu/</loc>
     <lastmod>2022-12-22T15:28:33+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -1136,14 +1164,14 @@
   </url>
   
   <url>
-    <loc>https://blog.xxzk.me/tags/rclone/</loc>
+    <loc>https://blog.xxzk.me/categories/rclone/</loc>
     <lastmod>2022-09-13T17:47:30+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://blog.xxzk.me/categories/rclone/</loc>
+    <loc>https://blog.xxzk.me/tags/rclone/</loc>
     <lastmod>2022-09-13T17:47:30+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -1207,14 +1235,14 @@
   
   <url>
     <loc>https://blog.xxzk.me/post/20200924-graylog-installation-use-centos77/</loc>
-    <lastmod>2022-06-22T14:49:46+08:00</lastmod>
+    <lastmod>2025-11-26T10:50:19+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://blog.xxzk.me/tags/graylog/</loc>
-    <lastmod>2022-09-14T16:26:27+08:00</lastmod>
+    <lastmod>2025-11-26T10:50:19+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>

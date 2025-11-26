@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.136.5 with theme even" />
+<meta name="generator" content="Hugo 0.152.2 with theme even" />
 
 
 <link rel="canonical" href="https://blog.xxzk.me/" />
@@ -39,7 +39,7 @@
 
 
 
-<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link href="/sass/main.min.af7fd1da18d66c2b017df5b4cae508ef44cfcac3fb4c7c7a327fe4f4f9e28b08.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
@@ -52,8 +52,8 @@
 
   <meta itemprop="name" content="老柯的學習筆記">
   <meta itemprop="description" content="Learning note.">
-  <meta itemprop="datePublished" content="2024-10-09T14:47:52+00:00">
-  <meta itemprop="dateModified" content="2024-11-18T15:59:00+00:00">
+  <meta itemprop="datePublished" content="2025-10-14T15:55:25+00:00">
+  <meta itemprop="dateModified" content="2025-11-26T10:50:19+08:00">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="老柯的學習筆記">
   <meta name="twitter:description" content="Learning note.">
@@ -127,6 +127,32 @@
       <div class="content-wrapper">
         <div id="content" class="content">
           <section id="posts" class="posts">
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/20211105-ckad-note-section-8-state-persistence/">CKAD Note Section 8 State Persistence</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2021-11-05 </span>
+      <div class="post-category">
+          <a href="/categories/ckad-note/"> CKAD-Note </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <h2 id="105-volumes">105. Volumes</h2>
+<br>
+<h3 id="hostpath">hostPath</h3>
+<br>
+<p>這個範例 mount worker-node 的 <code>/data</code> 進 <code>pod</code> 裡面，並且 mapping 到 container 裡面的 <code>/test-pd</code>。<br>
+實際上我們並不會這樣做，因為 worker-node 之間的資料並沒辦法同步，一般來說會使用 shared storage 例如: NFS, ClusterFS, Ceph, AWS EBS, AzureDisk &hellip;.</p>
+    </div>
+    <div class="read-more">
+      <a href="/post/20211105-ckad-note-section-8-state-persistence/" class="read-more-link">Read more...</a>
+    </div>
+  </div>
+</article>
+
     <article class="post">
   <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/20211104-ckad-note-section-7-service-and-networking/">CKAD Note Section 7 Service and Networking</a></h1>
@@ -310,79 +336,6 @@ P.S 這邊先偷吃步給一個簡單的方法:<br>
   </div>
 </article>
 
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/20210922-terraform-hello-world/">我的第一支 Terraform</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2021-09-22 </span>
-      <div class="post-category">
-          <a href="/categories/terraform/"> terraform </a>
-          </div>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      <p><img src="terraform_logo.jpg" alt="terraform_logo"></p>
-<p><a href="https://www.terraform.io/intro/index.html">Introduction to Terraform </a></p>
-<p><strong>Terraform</strong> 是一款 Infrastructure as Code (IaC) 工具，以 code 來 定義 / 建造 (build) / 修改 (change) / 版本控制 (version) 基礎設施，支援地端 (on-prem) 與 雲端 (Cloud)。</p>
-<h2 id="安裝-terraform-cli">安裝 Terraform CLI</h2>
-<p><a href="https://learn.hashicorp.com/tutorials/terraform/install-cli">Install Terraform</a></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo yum install -y yum-utils
-</span></span><span class="line"><span class="cl">sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo
-</span></span><span class="line"><span class="cl">sudo yum -y install terraform
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1">## Auto Completion</span>
-</span></span><span class="line"><span class="cl">terraform -install-autocomplete
-</span></span></code></pre></td></tr></table>
-</div>
-</div><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## show version</span>
-</span></span><span class="line"><span class="cl">terraform --version
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">Terraform v1.0.7
-</span></span><span class="line"><span class="cl">on linux_amd64
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1">## The auto completion file in bashrc</span>
-</span></span><span class="line"><span class="cl">tail ~/.bashrc
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">...
-</span></span><span class="line"><span class="cl"><span class="nb">complete</span> -C /usr/bin/terraform terraform
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="terraform-hello-world-using-docker-provider">Terraform Hello World using Docker provider</h2>
-<p><a href="https://learn.hashicorp.com/tutorials/terraform/docker-build?in=terraform/docker-get-started">Build Infrastructure</a></p>
-    </div>
-    <div class="read-more">
-      <a href="/post/20210922-terraform-hello-world/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
     </section>
   
   <nav class="pagination">
@@ -423,7 +376,7 @@ P.S 這邊先偷吃步給一個簡單的方法:<br>
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
+    2025<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

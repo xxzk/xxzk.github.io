@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.136.5 with theme even" />
+<meta name="generator" content="Hugo 0.152.2 with theme even" />
 
 
 <link rel="canonical" href="https://blog.xxzk.me/" />
@@ -39,7 +39,7 @@
 
 
 
-<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link href="/sass/main.min.af7fd1da18d66c2b017df5b4cae508ef44cfcac3fb4c7c7a327fe4f4f9e28b08.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
@@ -52,8 +52,8 @@
 
   <meta itemprop="name" content="老柯的學習筆記">
   <meta itemprop="description" content="Learning note.">
-  <meta itemprop="datePublished" content="2024-10-09T14:47:52+00:00">
-  <meta itemprop="dateModified" content="2024-11-18T15:59:00+00:00">
+  <meta itemprop="datePublished" content="2025-10-14T15:55:25+00:00">
+  <meta itemprop="dateModified" content="2025-11-26T10:50:19+08:00">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="老柯的學習筆記">
   <meta name="twitter:description" content="Learning note.">
@@ -129,6 +129,27 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/20251014-app-rootca-pinning/">解析 Android 自定義 rootCA 白名單</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2025-10-14 </span>
+      <div class="post-category">
+          <a href="/categories/app/"> app </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>這篇筆記紀錄如何解析 Android APP 的自定義 rootCA 白名單，也就是 CA pinning。本來還有 iOS 的部分，但就連撰寫 iOS App 的同事都不知道究竟是如何編碼，自己花了一些時間也始終看不懂，所以就先不寫了。</p>
+    </div>
+    <div class="read-more">
+      <a href="/post/20251014-app-rootca-pinning/" class="read-more-link">Read more...</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/20241118-route53-and-jq/">jq 與 AWS Route53 (DNS hosting)</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2024-11-18 </span>
@@ -169,7 +190,7 @@
 <p>RabbitMQ 版本: v3.13.7 (fallow operator default) <br>
 Kubernetes (EKS) 版本: v1.30</p>
 </blockquote>
-<h2 id="installing-rabbitmq-cluster-operator-in-a-kubernetes-cluster-refhttpswwwrabbitmqcomkubernetesoperatorinstall-operator">Installing RabbitMQ Cluster Operator in a Kubernetes Cluster [<a href="https://www.rabbitmq.com/kubernetes/operator/install-operator">ref</a>]</h2>
+<h2 id="installing-rabbitmq-cluster-operator-in-a-kubernetes-cluster-ref">Installing RabbitMQ Cluster Operator in a Kubernetes Cluster [<a href="https://www.rabbitmq.com/kubernetes/operator/install-operator">ref</a>]</h2>
 <p>這個 Operator 負責建立 RabbitMQ Cluster，版本我固定當前最新版 v2.11.0，預設建立的 RabbitMQ 版本是 v3.13.7 (<a href="https://github.com/rabbitmq/cluster-operator/tree/v2.10.0?tab=readme-ov-file#supported-versions">ref</a>)。</p>
     </div>
     <div class="read-more">
@@ -216,7 +237,7 @@ Kubernetes (EKS) 版本: v1.30</p>
     <div class="post-summary">
       <h2 id="intro">Intro</h2>
 <p>這篇筆記快速紀錄 AWS RDS Encryption for Compliance requirement.</p>
-<h2 id="encrypting-amazon-rds-resources-linkhttpsdocsawsamazoncomamazonrdslatestuserguideoverviewencryptionhtml">Encrypting Amazon RDS resources <a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.Encryption.html">[link]</a></h2>
+<h2 id="encrypting-amazon-rds-resources-">Encrypting Amazon RDS resources <a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.Encryption.html">[link]</a></h2>
 <ul>
 <li>Data at rest encryption, 包含: DB instance, logs, snapshot, read replica, and automated backup.</li>
 <li>AWS 使用 AES-256 加密演算法替 RDS 加密 / 解密。</li>
@@ -228,30 +249,6 @@ Kubernetes (EKS) 版本: v1.30</p>
     </div>
     <div class="read-more">
       <a href="/post/20240909-aws-rds-encrypt/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/20240322-macbook-hello-world/">MacOS 新手筆記</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2024-03-22 </span>
-      <div class="post-category">
-          <a href="/categories/macos/"> macos </a>
-          </div>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      <p><img src="eric-macbook.jpg" alt="eric-macbook"></p>
-<h2 id="前言">前言</h2>
-<p>好久沒有打 blog 了 囧，第一篇先用 <strong>MacOS 新手筆記</strong> 來練筆吧 XD</p>
-<p>在 2023.04.10 進公司之前我完全沒有使用過 MacOS，此篇記錄一位 MacOS 新手如何上手的心得還有推薦安裝的軟體。</p>
-    </div>
-    <div class="read-more">
-      <a href="/post/20240322-macbook-hello-world/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>
@@ -293,7 +290,7 @@ Kubernetes (EKS) 版本: v1.30</p>
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
+    2025<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

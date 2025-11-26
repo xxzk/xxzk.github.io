@@ -25,7 +25,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.136.5 with theme even" />
+<meta name="generator" content="Hugo 0.152.2 with theme even" />
 
 
 <link rel="canonical" href="https://blog.xxzk.me/post/20230418-aws-cdk-hello-world/" />
@@ -40,7 +40,7 @@
 
 
 
-<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link href="/sass/main.min.af7fd1da18d66c2b017df5b4cae508ef44cfcac3fb4c7c7a327fe4f4f9e28b08.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
@@ -158,7 +158,7 @@
     <li>
       <ul>
         <li><a href="#pulumi">Pulumi</a></li>
-        <li><a href="#getting-started-with-the-aws-cdkhttpsdocsawsamazoncomcdkv2guidegetting_startedhtml"><a href="https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html">Getting started with the AWS CDK</a></a></li>
+        <li><a href="#getting-started-with-the-aws-cdk">Getting started with the AWS CDK</a></li>
         <li><a href="#install-aws-cdk">Install AWS CDK</a>
           <ul>
             <li><a href="#自動補齊">自動補齊</a></li>
@@ -174,7 +174,7 @@
         <li><a href="#init-with-python">init with Python</a></li>
         <li><a href="#常用指令">常用指令</a>
           <ul>
-            <li><a href="#bootstraphttpsdocsawsamazoncomcdkv2guidegetting_startedhtmlgetting_started_bootstrap"><a href="https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_bootstrap">bootstrap</a></a></li>
+            <li><a href="#bootstrap">bootstrap</a></li>
             <li><a href="#產生-cloudformation-template">產生 CloudFormation template</a></li>
             <li><a href="#others">others</a></li>
           </ul>
@@ -431,7 +431,7 @@
 <p>To delete the stack itself, run pulumi stack rm. Note that this removes the stack entirely from Pulumi Cloud, along with all of its update history.</p>
 </blockquote>
 <hr>
-<h2 id="getting-started-with-the-aws-cdkhttpsdocsawsamazoncomcdkv2guidegetting_startedhtml"><a href="https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html">Getting started with the AWS CDK</a></h2>
+<h2 id="getting-started-with-the-aws-cdk"><a href="https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html">Getting started with the AWS CDK</a></h2>
 <p>這篇筆記會紀錄我認識 AWS CDK (Cloud Development Kit) 的過程。 AWS CDK 作為官方提供搭建基礎設施 (infra) 的 IaC 解決方案，支援多種語言撰寫 例如： NodeJS, TypeScript, JavaScript, Python, Java, C#, Go 。</p>
 <p><strong><span style='color:red'>值得一提的是，不論使用何種語言，後端都會是 NodeJS</span></strong></p>
 <blockquote>
@@ -612,7 +612,7 @@
 </div><p>當我們執行 <code>cdk init --language python</code> 時，預設會幫我們建立 <a href="https://docs.python.org/zh-tw/3/tutorial/venv.html">Python Virtualenv</a>， <strong><span style='color:blue'>使用 <code>source .venv/bin/activate</code> 可以啟動獨立環境。</span></strong></p>
 <p>一但啟用 virtualenv 之後就能透過 <code>pip install -r requirements.txt</code> 安裝相依套件 (當然是在虛擬獨立環境)</p>
 <h2 id="常用指令">常用指令</h2>
-<h3 id="bootstraphttpsdocsawsamazoncomcdkv2guidegetting_startedhtmlgetting_started_bootstrap"><a href="https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_bootstrap">bootstrap</a></h3>
+<h3 id="bootstrap"><a href="https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_bootstrap">bootstrap</a></h3>
 <p>在使用 <code>cdk deploy</code> 部署 infra 之前，必須要先執行 bootstrap 這個前置動作來產生 cdk 所需環境。通常會創造一個名為 <code>CDKToolkit</code> 的 Amazon Cloudfomation stack。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -959,7 +959,7 @@
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
+    2025<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

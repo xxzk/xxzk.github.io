@@ -6,12 +6,19 @@
     <description>Recent content in Categories on 老柯的學習筆記</description>
     <generator>Hugo</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 18 Nov 2024 15:59:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 26 Nov 2025 10:50:19 +0800</lastBuildDate>
     <atom:link href="https://blog.xxzk.me/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>App</title>
+      <link>https://blog.xxzk.me/categories/app/</link>
+      <pubDate>Tue, 14 Oct 2025 15:55:25 +0000</pubDate>
+      <guid>https://blog.xxzk.me/categories/app/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Aws</title>
       <link>https://blog.xxzk.me/categories/aws/</link>
-      <pubDate>Wed, 18 Sep 2024 10:10:13 +0000</pubDate>
+      <pubDate>Mon, 18 Nov 2024 15:59:00 +0000</pubDate>
       <guid>https://blog.xxzk.me/categories/aws/</guid>
       <description></description>
     </item>

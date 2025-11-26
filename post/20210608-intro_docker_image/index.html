@@ -27,7 +27,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.136.5 with theme even" />
+<meta name="generator" content="Hugo 0.152.2 with theme even" />
 
 
 <link rel="canonical" href="https://blog.xxzk.me/post/20210608-intro_docker_image/" />
@@ -42,7 +42,7 @@
 
 
 
-<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link href="/sass/main.min.af7fd1da18d66c2b017df5b4cae508ef44cfcac3fb4c7c7a327fe4f4f9e28b08.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
@@ -229,7 +229,7 @@ To say containers or OCI containers rather than docker containers</p>
 </span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="line"><span class="cl"><span class="k">FROM</span><span class="s"> ubuntu:18.04</span><span class="err">
+<pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="line"><span class="cl"><span class="k">FROM</span><span class="w"> </span><span class="s">ubuntu:18.04</span><span class="err">
 </span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">COPY</span> . /app<span class="err">
 </span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> make /app<span class="err">
 </span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">CMD</span> python /app/app.py<span class="err">
@@ -398,7 +398,7 @@ To say containers or OCI containers rather than docker containers</p>
 </span><span class="lnt">10
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="line"><span class="cl"><span class="k">FROM</span><span class="s"> centos:7</span><span class="err">
+<pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="line"><span class="cl"><span class="k">FROM</span><span class="w"> </span><span class="s">centos:7</span><span class="err">
 </span></span></span><span class="line"><span class="cl"><span class="err">
 </span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> sed -i <span class="s1">&#39;s/^mirrorlist/#mirrorlist/g&#39;</span> /etc/yum.repos.d/*.repo <span class="o">&amp;&amp;</span><span class="se">\
 </span></span></span><span class="line"><span class="cl"><span class="se"></span>    sed -i <span class="s1">&#39;s/^#baseurl/baseurl/g&#39;</span> /etc/yum.repos.d/*.repo <span class="o">&amp;&amp;</span><span class="se">\
@@ -502,7 +502,7 @@ To say containers or OCI containers rather than docker containers</p>
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
+    2025<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

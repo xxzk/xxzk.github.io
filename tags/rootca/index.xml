@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>RootCA on 老柯的學習筆記</title>
+    <link>https://blog.xxzk.me/tags/rootca/</link>
+    <description>Recent content in RootCA on 老柯的學習筆記</description>
+    <generator>Hugo</generator>
+    <language>en</language>
+    <lastBuildDate>Wed, 26 Nov 2025 10:50:19 +0800</lastBuildDate>
+    <atom:link href="https://blog.xxzk.me/tags/rootca/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>解析 Android 自定義 rootCA 白名單</title>
+      <link>https://blog.xxzk.me/post/20251014-app-rootca-pinning/</link>
+      <pubDate>Tue, 14 Oct 2025 15:55:25 +0000</pubDate>
+      <guid>https://blog.xxzk.me/post/20251014-app-rootca-pinning/</guid>
+      <description>&lt;p&gt;這篇筆記紀錄如何解析 Android APP 的自定義 rootCA 白名單，也就是 CA pinning。本來還有 iOS 的部分，但就連撰寫 iOS App 的同事都不知道究竟是如何編碼，自己花了一些時間也始終看不懂，所以就先不寫了。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

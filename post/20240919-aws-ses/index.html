@@ -25,7 +25,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.136.5 with theme even" />
+<meta name="generator" content="Hugo 0.152.2 with theme even" />
 
 
 <link rel="canonical" href="https://blog.xxzk.me/post/20240919-aws-ses/" />
@@ -40,7 +40,7 @@
 
 
 
-<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link href="/sass/main.min.af7fd1da18d66c2b017df5b4cae508ef44cfcac3fb4c7c7a327fe4f4f9e28b08.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
@@ -159,8 +159,8 @@
     <li>
       <ul>
         <li><a href="#introduction">Introduction</a></li>
-        <li><a href="#透過-cli-請-aws-ses-發信-using-the-command-line-to-send-email-using-the-amazon-ses-smtp-interfacehttpsdocsawsamazoncomseslatestdgsend-email-smtp-client-command-linehtml">透過 CLI 請 AWS SES 發信 (<a href="https://docs.aws.amazon.com/ses/latest/dg/send-email-smtp-client-command-line.html">Using the command line to send email using the Amazon SES SMTP interface</a>)</a></li>
-        <li><a href="#spf-authenticating-email-with-spf-in-amazon-seshttpsdocsawsamazoncomseslatestdgsend-email-authentication-spfhtml">SPF (<a href="https://docs.aws.amazon.com/ses/latest/dg/send-email-authentication-spf.html">Authenticating Email with SPF in Amazon SES</a>)</a>
+        <li><a href="#透過-cli-請-aws-ses-發信-using-the-command-line-to-send-email-using-the-amazon-ses-smtp-interface">透過 CLI 請 AWS SES 發信 (Using the command line to send email using the Amazon SES SMTP interface)</a></li>
+        <li><a href="#spf-authenticating-email-with-spf-in-amazon-ses">SPF (Authenticating Email with SPF in Amazon SES)</a>
           <ul>
             <li><a href="#spf-茶包射手">SPF 茶包射手</a></li>
           </ul>
@@ -183,7 +183,7 @@
 <p>▲ 圖片來源 (大推這篇文章): <a href="https://tech-blog.cymetrics.io/posts/crystal/email-sec-theory/">[Cymetrics] 關於 email security 的大小事 — 原理篇</a></p>
 <p><img src="https://tech-blog.cymetrics.io/img/posts/crystal/email-sec-theory/identity-ref-1920w.webp" alt="Identity References in a Message"></p>
 <p>▲ 圖片來源: <a href="https://tech-blog.cymetrics.io/posts/crystal/email-sec-theory/">[Cymetrics] 關於 email security 的大小事 — 原理篇</a>, <a href="https://bbiw.net/specifications/draft-crocker-email-arch-03.html#rfc.section.4.1.4">RFC</a></p>
-<h2 id="透過-cli-請-aws-ses-發信-using-the-command-line-to-send-email-using-the-amazon-ses-smtp-interfacehttpsdocsawsamazoncomseslatestdgsend-email-smtp-client-command-linehtml">透過 CLI 請 AWS SES 發信 (<a href="https://docs.aws.amazon.com/ses/latest/dg/send-email-smtp-client-command-line.html">Using the command line to send email using the Amazon SES SMTP interface</a>)</h2>
+<h2 id="透過-cli-請-aws-ses-發信-using-the-command-line-to-send-email-using-the-amazon-ses-smtp-interface">透過 CLI 請 AWS SES 發信 (<a href="https://docs.aws.amazon.com/ses/latest/dg/send-email-smtp-client-command-line.html">Using the command line to send email using the Amazon SES SMTP interface</a>)</h2>
 <p>首先我們先測試一下 client 是否能碰到 AWS SES。<a href="https://docs.aws.amazon.com/ses/latest/dg/send-email-smtp-client-command-line.html#send-email-smtp-client-command-line-testing">Testing your connection to the Amazon SES SMTP interface</a></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -338,7 +338,7 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>可以看到 <code>554 Message rejected: Email address is not verified. The following identities failed the check in region US-WEST-2: non-exist@xxzk.me</code> 錯誤，<strong><span style='color:blue'>因為 <code>no-exist@xxzk.me</code> 不在 SES Identities 當中</span></strong>。將 <code>Sender email address</code> 修正後即可排除。</p>
-<h2 id="spf-authenticating-email-with-spf-in-amazon-seshttpsdocsawsamazoncomseslatestdgsend-email-authentication-spfhtml">SPF (<a href="https://docs.aws.amazon.com/ses/latest/dg/send-email-authentication-spf.html">Authenticating Email with SPF in Amazon SES</a>)</h2>
+<h2 id="spf-authenticating-email-with-spf-in-amazon-ses">SPF (<a href="https://docs.aws.amazon.com/ses/latest/dg/send-email-authentication-spf.html">Authenticating Email with SPF in Amazon SES</a>)</h2>
 <p><strong><span style='color:red'>SPF 驗證 sender E-Mail server 是否在 SPF record 的白名單內。</span></strong></p>
 <p>攻擊手法: 阿貓阿狗都能自架 E-Mail server 發信，只有 SPF 不夠安全。</p>
 <blockquote>
@@ -687,7 +687,7 @@
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
+    2025<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

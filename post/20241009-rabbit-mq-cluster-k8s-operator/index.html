@@ -26,7 +26,7 @@ Installing RabbitMQ Cluster Operator in a Kubernetes Cluster [ref] 這個 Operat
 
 
 
-<meta name="generator" content="Hugo 0.136.5 with theme even" />
+<meta name="generator" content="Hugo 0.152.2 with theme even" />
 
 
 <link rel="canonical" href="https://blog.xxzk.me/post/20241009-rabbit-mq-cluster-k8s-operator/" />
@@ -41,7 +41,7 @@ Installing RabbitMQ Cluster Operator in a Kubernetes Cluster [ref] 這個 Operat
 
 
 
-<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link href="/sass/main.min.af7fd1da18d66c2b017df5b4cae508ef44cfcac3fb4c7c7a327fe4f4f9e28b08.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
@@ -55,7 +55,7 @@ Installing RabbitMQ Cluster Operator in a Kubernetes Cluster [ref] 這個 Operat
   <meta property="og:type" content="article">
     <meta property="article:section" content="post">
     <meta property="article:published_time" content="2024-10-09T14:47:52+00:00">
-    <meta property="article:modified_time" content="2024-11-18T14:50:24+08:00">
+    <meta property="article:modified_time" content="2024-11-18T16:37:41+08:00">
     <meta property="article:tag" content="Rabbitmq">
     <meta property="article:tag" content="Kubernetes">
 
@@ -64,7 +64,7 @@ Installing RabbitMQ Cluster Operator in a Kubernetes Cluster [ref] 這個 Operat
 RabbitMQ 版本: v3.13.7 (fallow operator default) Kubernetes (EKS) 版本: v1.30
 Installing RabbitMQ Cluster Operator in a Kubernetes Cluster [ref] 這個 Operator 負責建立 RabbitMQ Cluster，版本我固定當前最新版 v2.11.0，預設建立的 RabbitMQ 版本是 v3.13.7 (ref)。">
   <meta itemprop="datePublished" content="2024-10-09T14:47:52+00:00">
-  <meta itemprop="dateModified" content="2024-11-18T14:50:24+08:00">
+  <meta itemprop="dateModified" content="2024-11-18T16:37:41+08:00">
   <meta itemprop="wordCount" content="657">
   <meta itemprop="keywords" content="Rabbitmq,Kubernetes">
   <meta name="twitter:card" content="summary">
@@ -163,10 +163,10 @@ Installing RabbitMQ Cluster Operator in a Kubernetes Cluster [ref] 這個 Operat
     <li>
       <ul>
         <li><a href="#前言">前言</a></li>
-        <li><a href="#installing-rabbitmq-cluster-operator-in-a-kubernetes-cluster-refhttpswwwrabbitmqcomkubernetesoperatorinstall-operator">Installing RabbitMQ Cluster Operator in a Kubernetes Cluster [<a href="https://www.rabbitmq.com/kubernetes/operator/install-operator">ref</a>]</a></li>
-        <li><a href="#creating-a-rabbitmq-cluster-examplehttpsgithubcomrabbitmqcluster-operatortreemaindocsexamples">Creating a RabbitMQ Cluster [<a href="https://github.com/rabbitmq/cluster-operator/tree/main/docs/examples/">example</a>]</a></li>
-        <li><a href="#pdb-refhttpswwwrabbitmqcomkubernetesoperatorusing-operatorcreate-pdb">PDB [<a href="https://www.rabbitmq.com/kubernetes/operator/using-operator#create-pdb">ref</a>]</a></li>
-        <li><a href="#壓力連線-測試-refhttpswwwrabbitmqcomkubernetesoperatorquickstart-operatorconnect-an-application-to-the-cluster">壓力/連線 測試 [<a href="https://www.rabbitmq.com/kubernetes/operator/quickstart-operator#connect-an-application-to-the-cluster">ref</a>]</a></li>
+        <li><a href="#installing-rabbitmq-cluster-operator-in-a-kubernetes-cluster-ref">Installing RabbitMQ Cluster Operator in a Kubernetes Cluster [ref]</a></li>
+        <li><a href="#creating-a-rabbitmq-cluster-example">Creating a RabbitMQ Cluster [example]</a></li>
+        <li><a href="#pdb-ref">PDB [ref]</a></li>
+        <li><a href="#壓力連線-測試-ref">壓力/連線 測試 [ref]</a></li>
         <li><a href="#參考資料">參考資料</a></li>
       </ul>
     </li>
@@ -181,7 +181,7 @@ Installing RabbitMQ Cluster Operator in a Kubernetes Cluster [ref] 這個 Operat
 <p>RabbitMQ 版本: v3.13.7 (fallow operator default) <br>
 Kubernetes (EKS) 版本: v1.30</p>
 </blockquote>
-<h2 id="installing-rabbitmq-cluster-operator-in-a-kubernetes-cluster-refhttpswwwrabbitmqcomkubernetesoperatorinstall-operator">Installing RabbitMQ Cluster Operator in a Kubernetes Cluster [<a href="https://www.rabbitmq.com/kubernetes/operator/install-operator">ref</a>]</h2>
+<h2 id="installing-rabbitmq-cluster-operator-in-a-kubernetes-cluster-ref">Installing RabbitMQ Cluster Operator in a Kubernetes Cluster [<a href="https://www.rabbitmq.com/kubernetes/operator/install-operator">ref</a>]</h2>
 <p>這個 Operator 負責建立 RabbitMQ Cluster，版本我固定當前最新版 v2.11.0，預設建立的 RabbitMQ 版本是 v3.13.7 (<a href="https://github.com/rabbitmq/cluster-operator/tree/v2.10.0?tab=readme-ov-file#supported-versions">ref</a>)。</p>
 <p>RabbitMQ instance 版本是由 Operator 控制 (目前沒找到可以自訂版本的方法，maybe set image ?)，可以在 <a href="https://github.com/rabbitmq/cluster-operator/releases">release Changelog</a> 看到。</p>
 <div class="highlight"><div class="chroma">
@@ -208,7 +208,7 @@ Kubernetes (EKS) 版本: v1.30</p>
 </span></span><span class="line"><span class="cl"><span class="c1"># deployment.apps/rabbitmq-cluster-operator created</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="creating-a-rabbitmq-cluster-examplehttpsgithubcomrabbitmqcluster-operatortreemaindocsexamples">Creating a RabbitMQ Cluster [<a href="https://github.com/rabbitmq/cluster-operator/tree/main/docs/examples/">example</a>]</h2>
+</div><h2 id="creating-a-rabbitmq-cluster-example">Creating a RabbitMQ Cluster [<a href="https://github.com/rabbitmq/cluster-operator/tree/main/docs/examples/">example</a>]</h2>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -268,7 +268,7 @@ Kubernetes (EKS) 版本: v1.30</p>
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l">256Mi</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">rabbitmq</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">additionalConfig</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">      vm_memory_high_watermark.absolute = 200MB</span><span class="w">      
+</span></span></span><span class="line"><span class="cl"><span class="sd">      vm_memory_high_watermark.absolute = 200MB</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">affinity</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">podAntiAffinity</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">preferredDuringSchedulingIgnoredDuringExecution</span><span class="p">:</span><span class="w">
@@ -291,7 +291,7 @@ Kubernetes (EKS) 版本: v1.30</p>
 </span></span></span><span class="line"><span class="cl"><span class="w">                  </span>- <span class="l">ARM-t4g-medium-1a</span><span class="w">
 </span></span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="pdb-refhttpswwwrabbitmqcomkubernetesoperatorusing-operatorcreate-pdb">PDB [<a href="https://www.rabbitmq.com/kubernetes/operator/using-operator#create-pdb">ref</a>]</h2>
+</div><h2 id="pdb-ref">PDB [<a href="https://www.rabbitmq.com/kubernetes/operator/using-operator#create-pdb">ref</a>]</h2>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -316,7 +316,7 @@ Kubernetes (EKS) 版本: v1.30</p>
 </span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">app.kubernetes.io/name</span><span class="p">:</span><span class="w"> </span><span class="l">dev-rabbitmq</span><span class="w">
 </span></span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="壓力連線-測試-refhttpswwwrabbitmqcomkubernetesoperatorquickstart-operatorconnect-an-application-to-the-cluster">壓力/連線 測試 [<a href="https://www.rabbitmq.com/kubernetes/operator/quickstart-operator#connect-an-application-to-the-cluster">ref</a>]</h2>
+</div><h2 id="壓力連線-測試-ref">壓力/連線 測試 [<a href="https://www.rabbitmq.com/kubernetes/operator/quickstart-operator#connect-an-application-to-the-cluster">ref</a>]</h2>
 <p><strong><span style='color:red'>自行替換 <code>hello-world</code></span></strong></p>
 <ul>
 <li><code>--metrics-format compact</code> 簡化 output 格式 <a href="https://perftest.rabbitmq.com/#console-output-format">Console Output Format (min/median/75th/95th/99th)</a></li>
@@ -388,7 +388,7 @@ Kubernetes (EKS) 版本: v1.30</p>
     <span class="item-title">LastMod</span>
     <span class="item-content">
         2024-11-18
-        <a href="/commit/9f81df12860f54810466ef4e3f96a9f476f28ad4" title="update">(9f81df1)</a>
+        <a href="/commit/6179cc3a844aaa90bae4635185b85d5602fbd801" title="update">(6179cc3)</a>
     </span>
   </p>
   
@@ -444,7 +444,7 @@ Kubernetes (EKS) 版本: v1.30</p>
   <span class="copyright-year">
     &copy; 
     2022 - 
-    2024<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
+    2025<span class="heart"><i class="iconfont icon-heart"></i></span><span></span>
   </span>
 </div>
 

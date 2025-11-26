@@ -62,7 +62,7 @@
 在 2023.04.10 進公司之前我完全沒有使用過 MacOS，此篇記錄一位 MacOS 新手如何上手的心得還有推薦安裝的軟體。">
   <meta itemprop="datePublished" content="2024-03-22T11:10:55+00:00">
   <meta itemprop="dateModified" content="2024-03-28T16:15:48+08:00">
-  <meta itemprop="wordCount" content="1401">
+  <meta itemprop="wordCount" content="1503">
   <meta itemprop="keywords" content="Macos">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="MacOS 新手筆記">
@@ -398,7 +398,81 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><a href="https://smallsharpsoftwaretools.com/tutorials/use-colima-to-run-docker-containers-on-macos/">Use Colima to Run Docker Containers on macOS – Small Sharp Software Tools</a></p>
-<h3 id="app-系列">App 系列</h3>
+<ul>
+<li><a href="https://github.com/gkpln3/CapsLockNoDelay">CapsLockNoDelay</a></li>
+</ul>
+<p>MacOS 真的貼心、delay no more! CapsLock 按到快壞了 ^^</p>
+<p>即時生效，但重開機後就消失。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">hidutil property --set <span class="s1">&#39;{&#34;CapsLockDelayOverride&#34;:0}&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>設定開機自動啟動</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim ~/Library/LaunchAgents/com.user.capslockfix.plist
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="cp">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="cp">&lt;!DOCTYPE plist PUBLIC &#34;-//Apple//DTD PLIST 1.0//EN&#34; &#34;http://www.apple.com/DTDs/PropertyList-1.0.dtd&#34;&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;plist</span> <span class="na">version=</span><span class="s">&#34;1.0&#34;</span><span class="nt">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;dict&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;key&gt;</span>Label<span class="nt">&lt;/key&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;string&gt;</span>com.user.capslockfix<span class="nt">&lt;/string&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;key&gt;</span>ProgramArguments<span class="nt">&lt;/key&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;array&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;string&gt;</span>/usr/bin/hidutil<span class="nt">&lt;/string&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;string&gt;</span>property<span class="nt">&lt;/string&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;string&gt;</span>--set<span class="nt">&lt;/string&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;string&gt;</span>{&#34;CapsLockDelayOverride&#34;:0}<span class="nt">&lt;/string&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;/array&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;key&gt;</span>RunAtLoad<span class="nt">&lt;/key&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;true/&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;key&gt;</span>KeepAlive<span class="nt">&lt;/key&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;false/&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/dict&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/plist&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">launchctl load ~/Library/LaunchAgents/com.user.capslockfix.plist
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="app-系列">App 系列</h3>
 <p><img src="stats.png" alt="stats"></p>
 <p>▲ <a href="https://github.com/exelban/stats">GitHub</a> macOS system monitor in your menu bar</p>
 <p><img src="aidente-applealmond.jpg" alt="aidente-applealmond"></p>
